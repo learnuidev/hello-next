@@ -1,7 +1,5 @@
-import { useListDictionaryQuery } from "@/app/(auth)/clipboard/hooks/use-list-dictionary-query";
 import { useListHSKWordsQuery } from "@/domain/hsk/hsk.queries";
 import { segmentText } from "@/libs/utils/segment-text";
-import { useDictionaryStore } from "./use-dictionary-store";
 
 export const useGetDictionaryHandler = (lang: string) => {
   const { data: hskWords } = useListHSKWordsQuery();
@@ -9,7 +7,7 @@ export const useGetDictionaryHandler = (lang: string) => {
   const getDictionaryHandler = async (
     text: string,
     lang: string,
-    options?: any
+    options?: any,
   ) => {
     try {
       const respJson: any = options?.words
@@ -18,7 +16,7 @@ export const useGetDictionaryHandler = (lang: string) => {
 
       const respWithHsk = respJson.map((item: any) => {
         const hskLevel = hskWords?.find(
-          (hskWord: any) => hskWord?.hanzi === item?.input
+          (hskWord: any) => hskWord?.hanzi === item?.input,
         );
 
         return {

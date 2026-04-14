@@ -9,8 +9,6 @@ import { useSettingsDialogState } from "@/components/settings-dialog/settings-di
 import { useGetReviewUrl } from "@/components/settings-dialog/use-get-review-url";
 import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
 import { useListCharacterReviewList } from "@/hooks/use-character-review-list";
-import { useClipboardState } from "../clipboard/hooks/use-clipboard-state";
-import { useClipboardViewMode } from "../clipboard/hooks/use-clipboard-view-mode";
 
 function AppLinkItem({
   href,
@@ -46,8 +44,6 @@ export default function AppsPage() {
   const setOpen = useSettingsDialogState((state) => state.setIsOpen);
   const { data: reviewList } = useListCharacterReviewList();
 
-  const { mode, setMode } = useClipboardViewMode();
-  const { state, setState } = useClipboardState();
   const isSuperAdmin = useIsSuperAdmin();
 
   const reviewUrl = useGetReviewUrl();
@@ -100,16 +96,6 @@ export default function AppsPage() {
       href: "/translator",
       title: "Translator",
       Icon: Icons.microphone,
-    },
-    {
-      href: "/clipboard",
-      title: "Clipboard",
-      Icon: Icons.clipboard,
-      // hidden: !isSuperAdmin,
-      hidden: true,
-      onClick: () => {
-        setMode("edit");
-      },
     },
   ];
   return (

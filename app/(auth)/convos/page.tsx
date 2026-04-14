@@ -17,7 +17,7 @@ import { BaseTabs } from "@/components/ui/base-tabs";
 import { createIndexDBStore } from "@/libs/index-db/index-db";
 import { useIsProMember } from "../plans/hooks/use-is-pro-member";
 import { ContentsList } from "./contents-list";
-import { NewBook } from "./new-book/new-book";
+
 import { NewContentV2 } from "./new-content-v2/new-content-v2";
 
 const useViewTypeStore = createIndexDBStore({
@@ -45,37 +45,8 @@ const ContentViewMode = () => {
 
   const router = useRouter();
 
-  if (!addMode) {
-    return (
-      <div className="flex justify-center items-center flex-col mt-32">
-        <h1 className="text-2xl">What would you like to add</h1>
-
-        <div className="flex gap-8 mt-12 text-xl">
-          <button
-            onClick={() => {
-              router.push(`/convos?type=add&variant=book`);
-            }}
-          >
-            Book
-          </button>
-          <button
-            onClick={() => {
-              router.push(`/convos?type=add&variant=content`);
-            }}
-          >
-            Content
-          </button>
-        </div>
-      </div>
-    );
-  }
-
   if (addMode === "content") {
     return <NewContentV2 />;
-  }
-
-  if (addMode === "book") {
-    return <NewBook />;
   }
 };
 

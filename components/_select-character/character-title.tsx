@@ -2,7 +2,6 @@ import { useGetComponentQuery } from "@/domain/lesson/use-get-component-query";
 
 import { getStatusIcon } from "@/app/(auth)/insights/insights-v2/precision-insight-view/status-icons";
 import { useGetComponentId } from "@/app/nmm/[component-id]/use-get-component-id";
-import { BookmarkButton } from "@/app/nmm/bookmark-button";
 import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
 import { useListComponentVariantsQuery } from "@/domain/component/list-component-variants";
 
@@ -10,7 +9,6 @@ import { useGetCharacter } from "@/hooks/use-get-character";
 import { useRef, useState } from "react";
 import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
 
-import { useListDictionaryMeaningsQuery } from "@/app/next/features/html-parser/hooks/use-dictionary-list-meanings";
 import { getSelectedText } from "@/app/review/review-cloze-content/utils/get-selected-text";
 import { useListDiscoveryQuery } from "@/domain/sentence/use-list-discovery-query";
 import { useUpdateDiscoveryMutation } from "@/domain/sentence/use-update-discovery-mutation";
@@ -21,8 +19,12 @@ import { getNmmLink } from "@/libs/utils/get-nmm-link";
 import { useSegmentTextQuery } from "@/libs/utils/segment-text";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
+import { ChinglishButton } from "../chinglish-button";
+import { EnButton } from "../en-button";
+import { PinyinButton } from "../pinyin-button";
 import { ReadModeButton, useReadModeState } from "../read-mode-button";
 import { useAudioProviderState } from "../settings-dialog/hooks/use-audio-provider-state";
+import { useChinglishState } from "../settings-dialog/use-chinglish-state";
 import { useYoutubeVideoUrl } from "../summary/with-youtube-video";
 import { Icons } from "../ui/icons.v2";
 import { useCurrentTime } from "../youtube-page/use-current-time-store";
@@ -36,10 +38,6 @@ import { useCharacterEditStore } from "./use-character-edit-store";
 import { useYoutubeRefState } from "./use-youtube-ref-state";
 import { isNonRomanLang } from "./utils/is-non-roman-lang";
 import { WithInteractiveTitle } from "./with-interative-title";
-import { PinyinButton } from "../pinyin-button";
-import { EnButton } from "../en-button";
-import { ChinglishButton } from "../chinglish-button";
-import { useChinglishState } from "../settings-dialog/use-chinglish-state";
 
 export const CharacterTitle = (props: any) => {
   const {
@@ -122,11 +120,6 @@ export const CharacterTitle = (props: any) => {
   const { isPlaying, setIsPlaying } = useIsPlayingState(id);
 
   const isHsk = relatedHskWords?.find((word) => word?.hanzi === characterId);
-
-  const { data: _data } = useListDictionaryMeaningsQuery(
-    selectedCompInput,
-    lang,
-  );
 
   const { data: _segmentedData } = useSegmentTextQuery({
     text: selectedCompInput,

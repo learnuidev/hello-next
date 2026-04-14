@@ -1,29 +1,28 @@
-import { useGetContentQuery } from "@/domain/content/content.queries";
-import { useContentItemParams } from "../../hooks/use-content-item-params";
-import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
 import { useMusicV2 } from "@/app/(auth)/convos/_play-v2/use-music-v2";
-import { cn } from "@/lib/utils";
-import { Icons } from "@/components/ui/icons.v2";
 import { formatTime } from "@/app/(auth)/convos/_play/utils";
 import { CharacterAnalytics } from "@/components/_select-character/character-analytics";
-import { useContentEditStore } from "@/components/youtube-page/use-content-edit-store";
-import { useListDictionaryMeaningsQuery } from "@/app/next/features/html-parser/hooks/use-dictionary-list-meanings";
-import { useUpdateContentMutation } from "@/domain/content/use-update-content-mutation";
-import { UploadFileButton } from "@/domain/file-upload/upload-file-button";
-import { useRouter } from "next/navigation";
-import { IContent } from "@/domain/content/content.api";
+import { useViewModeStore } from "@/components/convos/useViewModeStore";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger,
   DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faVideo, faVideoSlash } from "@fortawesome/pro-thin-svg-icons";
-import { useViewModeStore } from "@/components/convos/useViewModeStore";
+import { Icons } from "@/components/ui/icons.v2";
 import { usePlayerViewModeStore } from "@/components/youtube-page/player-view-mode-store";
+import { useContentEditStore } from "@/components/youtube-page/use-content-edit-store";
+import { IContent } from "@/domain/content/content.api";
+import { useGetContentQuery } from "@/domain/content/content.queries";
+import { useUpdateContentMutation } from "@/domain/content/use-update-content-mutation";
+import { UploadFileButton } from "@/domain/file-upload/upload-file-button";
+import { cn } from "@/lib/utils";
+import { faVideo, faVideoSlash } from "@fortawesome/pro-thin-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
+import { useContentItemParams } from "../../hooks/use-content-item-params";
 
 const sizes = {
   0: ["text-xs", "text-xl", "my-4", "px-[1px]"],
@@ -44,8 +43,6 @@ function SectionView({
   currentTime,
   setActive,
 }: any) {
-  const { data: context } = useListDictionaryMeaningsQuery(section?.input);
-
   const editMode = useContentEditStore((state) => state.editMode);
   const setEditMode = useContentEditStore((state) => state.setEditMode);
   const resetTimes = useContentEditStore((state) => state.resetTimes);
@@ -56,7 +53,7 @@ function SectionView({
 
   const setTimer = (
     type: "start" | "end" | "pinyin" | "hanzi" | "roman" | "en" | "input",
-    newValue?: string
+    newValue?: string,
   ) => {
     const offset = newValue || currentTime - 0.2;
     setTimes((prev: any) => {
@@ -83,7 +80,7 @@ function SectionView({
   };
 
   const selectedSection = times?.find(
-    (time: any) => time?.id === section?.id
+    (time: any) => time?.id === section?.id,
   ) as any;
 
   const router = useRouter();
@@ -95,10 +92,10 @@ function SectionView({
           viewPinyin ? "my-2" : "my-4",
           currentTime > section?.start && currentTime < section.end
             ? "dark:text-white text-black"
-            : "text-gray-400"
+            : "text-gray-400",
         )}
       >
-        {(context || section?.context)?.map((item: any) => {
+        {section?.context?.map((item: any) => {
           return (
             <span
               onClick={() => {
@@ -115,7 +112,7 @@ function SectionView({
               }}
               className={cn(
                 "text-gray-300 text-lg sm:text-xl hover:text-blue-400 inline-flex flex-col items-center",
-                textSize?.[3]
+                textSize?.[3],
               )}
               key={JSON.stringify(item)}
             >
@@ -142,7 +139,7 @@ function SectionView({
 
                     selected?.pinyin === item?.pinyin
                       ? "text-rose-500 dark:text-rose-400"
-                      : ""
+                      : "",
                   )}
                 >
                   {item?.pinyin || ""}
@@ -167,7 +164,7 @@ function SectionView({
 
                   item?.pinyin && selected?.pinyin === item?.pinyin
                     ? "text-rose-500 dark:text-rose-400"
-                    : ""
+                    : "",
                 )}
               >
                 {item?.hanzi}
@@ -278,7 +275,7 @@ export const AudioPlayer = () => {
 
   const activeSubtitle: any = content?.transcriptions?.find(
     (subtitle: any) =>
-      currentTime > subtitle?.start && currentTime < subtitle.end
+      currentTime > subtitle?.start && currentTime < subtitle.end,
   );
 
   const updateContentMutation = useUpdateContentMutation();
@@ -384,10 +381,10 @@ export const AudioPlayer = () => {
     const viewMode = useViewModeStore((state) => state.viewMode);
     const setViewMode = useViewModeStore((state) => state.setViewMode);
     const isVideoHidden = usePlayerViewModeStore(
-      (state) => state.isVideoHidden
+      (state) => state.isVideoHidden,
     );
     const setIsVideoHidden = usePlayerViewModeStore(
-      (state) => state.setIsVideoHidden
+      (state) => state.setIsVideoHidden,
     );
 
     const isYoutubeOrVideo =
@@ -398,7 +395,7 @@ export const AudioPlayer = () => {
     const toggleKaraokeMode = () => {
       setViewMode((prev: any) => (prev === "karaoke" ? null : "karaoke"));
       setIsVideoHidden((isHidden: any) =>
-        viewMode !== "karaoke" ? true : false
+        viewMode !== "karaoke" ? true : false,
       );
     };
 
@@ -427,13 +424,13 @@ export const AudioPlayer = () => {
                 transcriptions: content?.transcriptions?.map(
                   (transcription: any) => {
                     const time = times?.find(
-                      (t: any) => t?.id === transcription?.id
+                      (t: any) => t?.id === transcription?.id,
                     ) as any;
                     return {
                       ...transcription,
                       ...time,
                     };
-                  }
+                  },
                 ),
               };
 
@@ -457,7 +454,7 @@ export const AudioPlayer = () => {
               <Icons.gear
                 className={cn(
                   "sm:text-2xl text-2xl",
-                  editMode ? "dark:text-white text-black" : "text-gray-400"
+                  editMode ? "dark:text-white text-black" : "text-gray-400",
                 )}
               />
             </button>
@@ -469,7 +466,7 @@ export const AudioPlayer = () => {
                 "cursor-pointer",
                 viewMode === "karaoke"
                   ? "text-rose-500 font-bold"
-                  : "text-gray-600"
+                  : "text-gray-600",
               )}
             >
               Karaoke View
@@ -477,14 +474,14 @@ export const AudioPlayer = () => {
             <DropdownMenuItem
               onClick={() =>
                 setViewMode((prev: string | null) =>
-                  prev === "para" ? null : "para"
+                  prev === "para" ? null : "para",
                 )
               }
               className={cn(
                 "cursor-pointer",
                 viewMode === "para"
                   ? "text-rose-500 font-bold"
-                  : "text-gray-600"
+                  : "text-gray-600",
               )}
             >
               Paragraph View
@@ -496,7 +493,7 @@ export const AudioPlayer = () => {
                   onClick={() => setIsVideoHidden((isHidden: any) => !isHidden)}
                   className={cn(
                     "cursor-pointer",
-                    isVideoHidden ? "text-rose-500 font-bold" : "text-gray-600"
+                    isVideoHidden ? "text-rose-500 font-bold" : "text-gray-600",
                   )}
                 >
                   {isVideoHidden ? (
@@ -519,7 +516,7 @@ export const AudioPlayer = () => {
         <button
           onClick={() => {
             setViewMode((viewMode: string) =>
-              viewMode === "stats" ? "core" : "stats"
+              viewMode === "stats" ? "core" : "stats",
             );
           }}
         >
@@ -528,7 +525,7 @@ export const AudioPlayer = () => {
               "sm:text-2xl text-2xl",
               viewMode === "stats"
                 ? "dark:text-white text-black"
-                : "text-gray-400"
+                : "text-gray-400",
             )}
           />
         </button>
@@ -540,7 +537,7 @@ export const AudioPlayer = () => {
           <Icons.language
             className={cn(
               "sm:text-2xl text-2xl",
-              viewPinyin ? "dark:text-white text-black" : "text-gray-400"
+              viewPinyin ? "dark:text-white text-black" : "text-gray-400",
             )}
           />
         </button>
@@ -638,7 +635,7 @@ export const AudioPlayer = () => {
               onClick={increaseFontSize}
               className={cn(
                 textSizeIndex === 3 ? "text-gray-400" : "",
-                "text-2xl"
+                "text-2xl",
               )}
             >
               A
@@ -665,7 +662,7 @@ export const AudioPlayer = () => {
             <button
               className={cn(
                 "sm:text-2xl text-lg",
-                loop ? "text-white" : "text-gray-600"
+                loop ? "text-white" : "text-gray-600",
               )}
               disabled={!activeSubtitle}
               onClick={() => {

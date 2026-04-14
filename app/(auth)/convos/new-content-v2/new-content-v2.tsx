@@ -1,28 +1,18 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { contentTypesListV2, contentTypesV2 } from "./constants/content-types";
-import { useIsNewContentFormEnabled } from "@/libs/posthog/hooks/use-is-new-content-form-enabled";
-import { NewConvo } from "../new-convo/new-convo";
-import { useViewModeStore } from "../new-convo/use-viewmode-store";
-import { Icons } from "@/components/ui/icons.v2";
 import { useNewConvoStore } from "@/components/step";
+import { Icons } from "@/components/ui/icons.v2";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { AddContentButton } from "./components/add-content-button";
-import { useRouter } from "next/navigation";
+import { contentTypesListV2, contentTypesV2 } from "./constants/content-types";
 
 export const NewContentV2 = () => {
-  const isNewContentEnabled = useIsNewContentFormEnabled();
-  const setViewMode = useViewModeStore((state: any) => state.setViewMode);
   const router = useRouter();
 
   const [showPreview, setShowPreview] = useState(false);
 
   const setConvo = useNewConvoStore((state) => state.setConvo);
   const newConvo = useNewConvoStore((state) => state.convo) as any;
-
-  // come back to this later
-  if (!isNewContentEnabled) {
-    return <NewConvo />;
-  }
 
   return (
     <div className="px-8 sm:px-32">

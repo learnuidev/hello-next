@@ -9,7 +9,6 @@ import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
 import { useGetContentQuery } from "@/domain/content/content.queries";
 
 import Link from "next/link";
-import { useClipboardViewMode } from "../clipboard/hooks/use-clipboard-view-mode";
 import { useIsContentAuthor } from "./[content-id]/hooks/use-is-content-author";
 import { useUpsetContentAnalyticsHandler } from "./[content-id]/hooks/use-upsert-content-analytics-handler";
 
@@ -93,7 +92,6 @@ const options = [
 
 export const ConvosNavBar = () => {
   const removeLessonId = useConvosStore((state: any) => state?.removeConvoId);
-  const { mode, setMode } = useClipboardViewMode();
 
   const setViewType = useConvosStore((state: any) => state?.setViewType);
   const searchParams = useSearchParams();

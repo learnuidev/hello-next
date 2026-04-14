@@ -1,10 +1,9 @@
 "use client";
 
+import { calculateTotalWordsFrequency } from "@/components/youtube-page/hooks/use-words-clicked-history-state";
 import { useGetContentQuery } from "@/domain/content/content.queries";
 import { FancyAreaChart } from "../../insights/insights-v3/components/fancy-area-chart";
 import { useGetContentInsights } from "./hooks/use-content-insights";
-import Link from "next/link";
-import { calculateTotalWordsFrequency } from "@/components/youtube-page/hooks/use-words-clicked-history-state";
 
 export const TotalPlaysChart = ({ contentId }: { contentId: string }) => {
   const props = useGetContentInsights({

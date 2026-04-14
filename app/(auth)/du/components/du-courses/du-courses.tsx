@@ -1,9 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
-import Link from "next/link";
-import { useListTopLessons } from "../../hooks/use-list-top-lessons";
-import { useGetDuParams } from "../../hooks/use-get-du-params";
-import { useDuStore } from "../../hooks/use-du-store";
 import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
+import Link from "next/link";
+import { useDuStore } from "../../hooks/use-du-store";
+import { useGetDuParams } from "../../hooks/use-get-du-params";
+import { useListTopLessons } from "../../hooks/use-list-top-lessons";
 import { DuForYou } from "../du-for-you/du-for-you";
 
 export const DuCourses = () => {
@@ -12,7 +12,7 @@ export const DuCourses = () => {
   const { data, isLoading } = useListTopLessons({ cookie, levels });
 
   const duCourses = data?.sections?.filter(
-    (section) => section?.item_type === "course"
+    (section) => section?.item_type === "course",
   );
 
   if (isLoading) {

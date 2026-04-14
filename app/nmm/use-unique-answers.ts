@@ -1,9 +1,4 @@
 "use client";
-import React from "react";
-
-
-import { Music } from "@/components/music";
-import { NomadMethod } from "./nomad-method";
 
 import { useListAnswersQuery } from "@/domain/lesson/answer.queries";
 
@@ -17,7 +12,7 @@ export function useUniqueAnswers(selectedId: string) {
       refetchOnFocus: false,
       refetchOnMount: false,
       refetchOnReconnect: false,
-    }
+    },
   );
 
   const relevantAnswers = allAnswers?.filter((answer: any) => {

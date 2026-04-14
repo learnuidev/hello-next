@@ -37,7 +37,9 @@ export function TextPercentageColorizerV2({
   const finalColor = color ?? defaultColor;
   const finalUncoloredColor = uncoloredColor ?? defaultUncoloredColor;
 
-  if (words && words.length > 0) {
+  console.log("WORDS", words);
+
+  if (words && words.length > 0 && Number.isFinite(words?.[0]?.start)) {
     let charIndex = 0;
 
     return (
@@ -52,7 +54,7 @@ export function TextPercentageColorizerV2({
           const wordElapsed = Math.max(0, currentTime - wordStart);
           const wordPercentage = Math.min(
             Math.max(wordElapsed / Math.max(wordDuration, 0.1), 0),
-            1
+            1,
           );
 
           const exactCharPosition = wordText.length * wordPercentage;
@@ -105,7 +107,7 @@ export function TextPercentageColorizerV2({
   const elapsed = Math.max(0, currentTime - startTime);
   const percentage = Math.min(
     Math.max(elapsed / Math.max(duration, 0.1), 0),
-    1
+    1,
   );
 
   const exactCharPosition = text.length * percentage;

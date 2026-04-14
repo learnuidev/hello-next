@@ -272,7 +272,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
             )}
 
             {/* {!editMode && ( */}
-            <div className="p-0 sm:p-4 bg-gray-100 dark:bg-[rgb(15,16,17)] mb-2">
+            <div className="p-0">
               <AudioBookPlayerControls
                 loop={loop}
                 setLoop={setLoop}
@@ -287,8 +287,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
                 isReaderView={viewMode === "reader"}
               />
 
-              <div className="flex items-center gap-4">
-                <span className="text-sm w-14">{formatTime(currentTime)}</span>
+              <div className="flex items-center gap-4 sm:px-8 px-4 pb-4">
                 <Slider
                   min={0}
                   max={duration}
@@ -297,8 +296,11 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
                   defaultValue={[currentTime]}
                   onValueChange={handleSeekChange}
                   className="w-full"
+                  hidden
                 />
-                <span className="text-sm">{formatTime(duration)}</span>
+                {/* <span className="text-sm sm:text-lg sm:w-24 w-14 font-extralight">
+                  {formatTime(currentTime)}
+                </span> */}
               </div>
             </div>
             {/* )} */}

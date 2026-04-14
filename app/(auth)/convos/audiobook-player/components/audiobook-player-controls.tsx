@@ -31,15 +31,10 @@ export function AudioBookPlayerControls({
   isReaderView,
 }: any) {
   return (
-    <div className="bg-gray-50 dark:bg-[rgb(11,12,13)] sm:dark:bg-black p-0 pb-2 sm:p-4 rounded-2xl shadow-sm mb-2 sm:mb-8">
-      <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-16">
-        <div className="hidden sm:flex p-2 px-8 gap-4 rounded-full">
-          <FontSizeControls />
-          <PreviewButton className="text-2xl w-8" />
-          <ContentEditButton className="text-2xl w-8" />
-        </div>
-
-        <div className="dark:bg-[rgb(21,22,23)] bg-gray-200 p-2 px-6 sm:px-8 flex items-center gap-4 rounded-full">
+    <div className="p-0">
+      <div className="flex flex-col sm:flex-row items-center justify-between sm:px-4 gap-3 sm:gap-16">
+        <div></div>
+        <div className="px-6 sm:px-8 flex items-center gap-4 rounded-full">
           <button
             onClick={() => {
               setLoop((loop: any) => {
@@ -62,6 +57,10 @@ export function AudioBookPlayerControls({
             )}
           </button>
 
+          <button onClick={seekBefore} className="p-2 rounded-full">
+            <Icons.rotateLeft className="text-xl" />
+          </button>
+
           <button
             onClick={handlePlayPause}
             className="rounded-full w-10 sm:w-8"
@@ -71,10 +70,6 @@ export function AudioBookPlayerControls({
             ) : (
               <Icons.play className="text-2xl" />
             )}
-          </button>
-
-          <button onClick={seekBefore} className="p-2 rounded-full">
-            <Icons.rotateLeft className="text-xl" />
           </button>
 
           <button onClick={seekAfter} className="p-2 rounded-full">
@@ -89,14 +84,7 @@ export function AudioBookPlayerControls({
           />
         </div>
 
-        <div className="hidden sm:flex p-2 px-8 gap-4 rounded-full">
-          <PinyinButton className="text-2xl" />
-          <EnButton className="text-2xl" />
-          <ReadModeButton className="text-2xl" />
-          {containsChinglish && (
-            <ChinglishButton disabled={!showEn} className={"text-2xl"} />
-          )}
-        </div>
+        <div></div>
       </div>
     </div>
   );

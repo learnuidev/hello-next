@@ -12,6 +12,13 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { usePlayerViewModeStore } from "@/components/youtube-page/player-view-mode-store";
 import { ActiveButtons } from "./active-buttons";
+import { PinyinButton } from "@/components/pinyin-button";
+import { EnButton } from "@/components/en-button";
+import { ReadModeButton } from "@/components/read-mode-button";
+import { ChinglishButton } from "@/components/chinglish-button";
+import { ContentEditButton } from "@/components/youtube-page/content-edit-button";
+import { PreviewButton } from "@/components/settings-dialog/preview-button";
+import { FontSizeControls } from "./font-size-controls";
 
 function ViewTypeButton({
   icon: Icon,
@@ -73,6 +80,18 @@ export function AudioBookSettingsPopover({
               <ActiveButtons isReaderView={isReaderView} />
             </div>
 
+            <div className="flex items-center space-x-2 justify-between">
+              <Label htmlFor="perc">PERC</Label>
+              <div className="flex gap-8 rounded-full">
+                <PinyinButton className="text-2xl" />
+                <EnButton className="text-2xl" />
+                <ReadModeButton className="text-2xl" />
+                {containsChinglish && (
+                  <ChinglishButton disabled={!showEn} className={"text-2xl"} />
+                )}
+              </div>
+            </div>
+
             <div className="flex items-center gap-2 justify-between mb-4">
               <Label>View Type</Label>
               <div className="flex gap-6">
@@ -119,6 +138,20 @@ export function AudioBookSettingsPopover({
                 />
               </div>
             )}
+
+            <div className="flex items-center space-x-2 justify-between">
+              <Label htmlFor="meta-view">Meta View</Label>
+              <PreviewButton className="text-2xl w-8" />
+            </div>
+            <div className="flex items-center space-x-2 justify-between">
+              <Label htmlFor="video-visible">Font Size</Label>
+              <FontSizeControls />
+            </div>
+
+            <div className="flex items-center space-x-2 justify-between">
+              <Label htmlFor="edit-transcription">Edit Transcriptions</Label>
+              <ContentEditButton className="text-2xl w-8" />
+            </div>
           </div>
         </div>
       </PopoverContent>

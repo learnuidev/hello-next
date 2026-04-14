@@ -38,7 +38,7 @@ export default function ContentDetailsPage() {
       seek(time);
       play();
     },
-    [seek, play]
+    [seek, play],
   );
 
   const onReady = useCallback((data: any) => {
@@ -67,7 +67,7 @@ export default function ContentDetailsPage() {
       return (
         transcription?.start <= currentTime && transcription?.end >= currentTime
       );
-    }
+    },
   )?.[0]?.input;
 
   const PROGRESS_INTERVAL = 100;

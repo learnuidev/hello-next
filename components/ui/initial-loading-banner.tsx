@@ -1,8 +1,9 @@
 "use client";
 
 import { MandarinoLoadingBanner } from "./mandarino-loading-banner";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
+import { useInitialLoadingBannerStore } from "@/stores/use-initial-loading-banner-store";
 
 export function InitialLoadingBanner({
   children,
@@ -11,14 +12,28 @@ export function InitialLoadingBanner({
 }) {
   const [isLoading, setIsLoading] = useState(true);
   const pathname = usePathname();
+  const { lastShownDate, setLastShownDate } = useInitialLoadingBannerStore();
+  const hasInitialized = useRef(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 2500);
+    if (hasInitialized.current) return;
 
-    return () => clearTimeout(timer);
-  }, []);
+    const today = new Date().toDateString();
+    const shouldShowBanner = pathname === "/" && lastShownDate !== today;
+
+    if (shouldShowBanner) {
+      setLastShownDate(today);
+      new Promise<void>((resolve) => {
+        setTimeout(() => {
+          setIsLoading(false);
+          resolve();
+        }, 2500);
+      });
+    } else {
+      setIsLoading(false);
+    }
+    hasInitialized.current = true;
+  }, [pathname, lastShownDate, setLastShownDate]);
 
   if (isLoading && pathname === "/") {
     return <MandarinoLoadingBanner />;

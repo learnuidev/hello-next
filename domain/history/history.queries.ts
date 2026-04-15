@@ -43,7 +43,7 @@ const getHistory = async (
   params: GetHistoryParams,
   opts: {
     Authorization: string;
-  }
+  },
 ): Promise<HistoryItem> => {
   const res = await fetch(`${siteConfig.apiUrl}/v1/get-history`, {
     method: "POST",
@@ -58,7 +58,7 @@ const getHistory = async (
 
 export function useGetHistoryQuery(
   params: GetHistoryParams,
-  options = {} as any
+  options = {} as any,
 ) {
   const { data: authUser } = useCurrentAuthUser({});
 
@@ -95,6 +95,9 @@ export function useListHistoryQuery() {
     queryFn: async () => {
       const res = await fetch(`${siteConfig.apiUrl}/v1/list-history`, {
         method: "POST",
+        body: JSON.stringify({
+          limit: 5000,
+        }),
         headers: {
           Authorization: `Bearer ${authUser?.jwt}`,
         },

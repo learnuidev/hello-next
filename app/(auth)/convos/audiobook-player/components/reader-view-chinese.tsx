@@ -74,10 +74,10 @@ export function ReaderViewChinese({
             >
               {showPinyin && (
                 <span
-                  style={{
-                    fontSize: `${Math.max(Math.min(20, fontSize * 0.75), 12)}px`,
-                  }}
-                  className={cn("dark:text-gray-500 text-gray-800")}
+                  className={cn(
+                    "dark:text-gray-500 text-gray-800",
+                    "sm:text-sm text-[10px]",
+                  )}
                 >
                   {formatRoman(item)}
                 </span>
@@ -102,12 +102,9 @@ export function ReaderViewChinese({
                   return (
                     <span key={`${charItem}-pinin-view-${charIdx}`}>
                       <CharacterItem
-                        style={{
-                          fontSize: `${Math.min(fontSize * 1.25, 42)}px !important`,
-                        }}
                         character={charItem}
                         className={cn(
-                          "!text-3xl",
+                          "sm:!text-3xl text-xl",
                           isSelected
                             ? "dark:bg-emerald-600 bg-emerald-300"
                             : "",

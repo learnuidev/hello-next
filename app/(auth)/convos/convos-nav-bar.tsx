@@ -213,7 +213,7 @@ export const ConvosNavBar = () => {
           </Link>
         )}
 
-        <Link
+        {/* <Link
           href={`/convos/${contentId}?view=ai&start=${searchParams.get("start") || 0}`}
           onClick={() => {
             setViewType("ai");
@@ -225,7 +225,7 @@ export const ConvosNavBar = () => {
           } hover:text-black dark:hover:text-white transition text-xl`}
         >
           <Icons.ai />
-        </Link>
+        </Link> */}
       </div>
     </div>
   );

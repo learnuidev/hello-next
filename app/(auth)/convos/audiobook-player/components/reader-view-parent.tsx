@@ -52,118 +52,110 @@ export const ReaderViewParent = ({
     <div className={cn("px-4 pb-24", "max-w-4xl")}>
       <EnglishTopView currentTranscription={currentTranscription} />
 
-      <div className="pb-32 sm:mt-16">
+      <div className="pb-32 sm:mt-16 mt-8">
         <div>
           <div>
             <div className="">
               <div className="text-sm sm:text-2xl gap-4">
                 <div className="py-4 sm:space-y-8 space-y-2">
-                  {group
-                    // ?.filter((item: any) => {
-                    //   if (isSmall) {
-                    //     return item?.id === currentTranscription?.id;
-                    //   }
-
-                    //   return true;
-                    // })
-                    ?.map((transcription: ContentTranscription) => {
-                      if (readMode) {
-                        return (
-                          <ReaderView
-                            key={JSON.stringify(transcription)}
-                            currentTime={currentTime}
-                            hideEnglish
-                            currentTranscription={transcription}
-                            containsChinglish={false}
-                            className={cn(
-                              transcription.start < currentTime &&
-                                transcription.end > currentTime
-                                ? "dark:text-white text-black dark:bg-[rgb(9,10,11)]"
-                                : cn(`opacity-50`),
-                              // : "dark:text-white text-black",
-                            )}
-                            contentId={content?.id}
-                            lang={content?.lang}
-                          />
-                        );
-                      }
-
+                  {group?.map((transcription: ContentTranscription) => {
+                    if (readMode) {
                       return (
-                        <div key={JSON.stringify(transcription)}>
-                          {showPinyin && (
-                            <p
-                              style={{
-                                fontSize: `${Math.max(Math.min(20, fontSize * 0.75), 12)}px`,
-                              }}
-                              className="font-extralight text-gray-500"
-                            >
-                              {transcription.pinyin || transcription?.roman}
-                            </p>
+                        <ReaderView
+                          key={JSON.stringify(transcription)}
+                          currentTime={currentTime}
+                          hideEnglish
+                          currentTranscription={transcription}
+                          containsChinglish={false}
+                          className={cn(
+                            transcription.start < currentTime &&
+                              transcription.end > currentTime
+                              ? "dark:text-white text-black dark:bg-[rgb(9,10,11)]"
+                              : cn(`opacity-50`),
+                            // : "dark:text-white text-black",
                           )}
-                          <p
-                            className={cn(
-                              transcription.start < currentTime &&
-                                transcription.end > currentTime
-                                ? "dark:text-white text-black dark:bg-[rgb(9,10,11)]"
-                                : cn(`opacity-50`),
-                            )}
-                          >
-                            {smartSplit({
-                              input: transcription?.input,
-                              lang: transcription?.lang,
-                            })?.map((item: any, idx: any) => {
-                              const containsInUnknown =
-                                contentUnknowns?.items?.find((val) => {
-                                  return isCharacterPartOfWordMatch(
-                                    transcription?.input,
-                                    val?.input,
-                                    item,
-                                    idx,
-                                  );
-                                });
-                              return (
-                                <span
-                                  key={`${item}-pinin-view-${idx}`}
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    const selectedText = getSelectedText();
-
-                                    const text =
-                                      selectedText && selectedText?.length < 36
-                                        ? selectedText
-                                        : item;
-
-                                    setShowMenuBar({
-                                      text,
-                                      position: {
-                                        x: e.clientX,
-                                        y: e.clientY,
-                                      },
-                                      startTime: transcription?.start ?? null,
-                                    });
-                                  }}
-                                >
-                                  <CharacterItem
-                                    style={{
-                                      fontSize: `${Math.min(42, fontSize * 1.75)}px`,
-                                    }}
-                                    className={cn(
-                                      transcription.start < currentTime &&
-                                        transcription.end > currentTime
-                                        ? "   !dark:text-white"
-                                        : "dark:text-gray-500",
-                                      containsInUnknown &&
-                                        "font-light dark:!text-pink-300 !text-pink-500",
-                                    )}
-                                    character={item}
-                                  />
-                                </span>
-                              );
-                            })}
-                          </p>
-                        </div>
+                          contentId={content?.id}
+                          lang={content?.lang}
+                        />
                       );
-                    })}
+                    }
+
+                    return (
+                      <div key={JSON.stringify(transcription)}>
+                        {showPinyin && (
+                          <p
+                            style={{
+                              fontSize: `${Math.max(Math.min(20, fontSize * 0.75), 12)}px`,
+                            }}
+                            className="font-extralight text-gray-500"
+                          >
+                            {transcription.pinyin || transcription?.roman}
+                          </p>
+                        )}
+                        <p
+                          className={cn(
+                            transcription.start < currentTime &&
+                              transcription.end > currentTime
+                              ? "dark:text-white text-black dark:bg-[rgb(9,10,11)]"
+                              : cn(`opacity-50`),
+                          )}
+                        >
+                          {smartSplit({
+                            input: transcription?.input,
+                            lang: transcription?.lang,
+                          })?.map((item: any, idx: any) => {
+                            const containsInUnknown =
+                              contentUnknowns?.items?.find((val) => {
+                                return isCharacterPartOfWordMatch(
+                                  transcription?.input,
+                                  val?.input,
+                                  item,
+                                  idx,
+                                );
+                              });
+                            return (
+                              <span
+                                key={`${item}-pinin-view-${idx}`}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  const selectedText = getSelectedText();
+
+                                  const text =
+                                    selectedText && selectedText?.length < 36
+                                      ? selectedText
+                                      : item;
+
+                                  setShowMenuBar({
+                                    text,
+                                    position: {
+                                      x: e.clientX,
+                                      y: e.clientY,
+                                    },
+                                    startTime: transcription?.start ?? null,
+                                  });
+                                }}
+                              >
+                                <CharacterItem
+                                  style={{
+                                    fontSize: `${Math.min(42, fontSize * 1.75)}px`,
+                                  }}
+                                  className={cn(
+                                    transcription.start < currentTime &&
+                                      transcription.end > currentTime
+                                      ? "   !dark:text-white"
+                                      : "dark:text-gray-500",
+                                    containsInUnknown &&
+                                      "font-light dark:!text-pink-300 !text-pink-500",
+                                  )}
+                                  character={item}
+                                />
+                              </span>
+                            );
+                          })}
+                        </p>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </div>

@@ -30,7 +30,7 @@ export const EnglishTopView = ({
       <div className="pb-4 mt-8">
         <div
           className={cn(
-            `flex justify-between items-center mt-2 w-full px-2`,
+            `flex justify-between items-center mt-2 w-full`,
             view.length > 400 ? "h-36" : view.length > 200 ? "h-24" : "h-16",
           )}
         >

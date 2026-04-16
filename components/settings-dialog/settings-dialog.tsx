@@ -71,7 +71,7 @@ export function SettingsDialogInner({
                 value="tracking"
               >
                 <Icons.track />
-                <span>Tracking</span>
+                <span>General</span>
               </TabsTrigger>
               <TabsTrigger
                 className={cn(

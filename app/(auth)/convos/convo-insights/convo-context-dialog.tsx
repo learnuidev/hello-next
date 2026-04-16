@@ -31,32 +31,20 @@ export const ConvoContextDialog = ({
       data?.transcriptions
         ?.filter((item: any) =>
           (item?.input || item?.hanzi)?.includes(
-            selected?.input || selected?.hanzi
-          )
+            selected?.input || selected?.hanzi,
+          ),
         )
         ?.map((item: any) => ({
           ...item,
           contentId: item?.contentId || contentId,
         })),
-    [data?.transcriptions, contentId]
+    [data?.transcriptions, contentId],
   );
 
   const containsChinglish = !!data?.transcriptions?.[0]?.chinglish;
 
   return (
     <Dialog open={isOpen}>
-      <DialogHeader>
-        <div>
-          <Link
-            target="_blank"
-            className="text-white"
-            href={`/nmm/${selected?.input || selected?.hanzi}?lang=${data?.lang}`}
-          >
-            Selected: {selected?.input || selected?.hanzi}
-          </Link>
-        </div>
-      </DialogHeader>
-
       <DialogContent
         onClick={() => {
           closeDialog();

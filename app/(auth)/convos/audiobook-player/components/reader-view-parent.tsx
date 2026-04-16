@@ -136,10 +136,8 @@ export const ReaderViewParent = ({
                                 }}
                               >
                                 <CharacterItem
-                                  style={{
-                                    fontSize: `${Math.min(42, fontSize * 1.75)}px`,
-                                  }}
                                   className={cn(
+                                    "sm:!text-3xl text-xl",
                                     transcription.start < currentTime &&
                                       transcription.end > currentTime
                                       ? "   !dark:text-white"

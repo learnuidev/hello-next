@@ -74,17 +74,13 @@ export const ParaView = ({
     <div className={cn("px-4 pb-24", "max-w-4xl")}>
       <EnglishTopView currentTranscription={currentTranscription} />
 
-      <div className="pb-32">
+      <div className="mb-8 sm:mt-16 mt-8">
         <ScrollArea
           className={cn(
             `space-y-4 rounded-md dark:border-gray-900 w-full pb-8`,
-            "h-[400px] sm:h-[640px]",
           )}
         >
-          <div
-            className="space-y-8"
-            style={{ lineHeight: `${fontSize * 2.25}px` }}
-          >
+          <div className="space-y-8" style={{ lineHeight: `32px` }}>
             {paraTranscriptions?.map((transcriptions: any) => {
               const hanzis = transcriptions
                 ?.map((t: any) => t?.hanzi)
@@ -92,6 +88,7 @@ export const ParaView = ({
 
               return (
                 <div
+                  className="space-y-32"
                   key={`${JSON.stringify(transcriptions)}-${JSON.stringify(hanzis)}`}
                 >
                   <div className="flex flex-wrap">
@@ -144,11 +141,9 @@ export const ParaView = ({
                                 key={`para-mode-${item}-${idx}-${transcriptionInput}`}
                               >
                                 <CharacterItem
-                                  style={{
-                                    fontSize: `${Math.min(42, fontSize * 1)}px`,
-                                  }}
                                   character={item}
                                   className={cn(
+                                    "text-xl",
                                     containsInUnknown &&
                                       "font-light dark:!text-pink-300 !text-pink-500",
                                     currentTime

@@ -250,7 +250,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
                 <div
                   className={
                     isVideoHidden || !isYoutubeOrVideo
-                      ? "col-span-12 mx-auto max-w-4xl mt-32"
+                      ? "col-span-12 mx-auto max-w-4xl sm:mt-32 mt-8"
                       : ""
                   }
                 >

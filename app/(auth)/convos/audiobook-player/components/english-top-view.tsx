@@ -34,7 +34,7 @@ export const EnglishTopView = ({
             view.length > 400 ? "h-36" : view.length > 200 ? "h-24" : "h-16",
           )}
         >
-          <p className="space-x-2 font-extralight pb-[4px] overflow sm:text-lg text-md">
+          <p className="space-x-2 font-extralight pb-[4px] overflow sm:text-xl text-md">
             {showEn
               ? showChinglish
                 ? currentTranscription?.chinglish || currentTranscription?.en

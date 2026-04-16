@@ -52,12 +52,12 @@ export const ReaderViewParent = ({
     <div className={cn("px-4 pb-24", "max-w-4xl")}>
       <EnglishTopView currentTranscription={currentTranscription} />
 
-      <div className="pb-32">
+      <div className="pb-32 sm:mt-16">
         <div>
           <div>
             <div className="">
               <div className="text-sm sm:text-2xl gap-4">
-                <div className="py-4 sm:space-y-4 space-y-2">
+                <div className="py-4 sm:space-y-8 space-y-2">
                   {group
                     // ?.filter((item: any) => {
                     //   if (isSmall) {

@@ -13,7 +13,7 @@ const baseSchema = z.object({
   lang: z.string(),
   title: z.string(),
   input: z.any(),
-  author: z.string(),
+  author: z.string().optional(),
 });
 
 const thumbnailImageSchema = z.object({

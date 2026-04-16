@@ -106,7 +106,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
                   width="100%"
                   height={isSmall ? "200px" : "450px"}
                   onReady={onReady}
-                  playing={false}
+                  // playing={false}
                   controls={false}
                   ref={playerRef}
                   onProgress={(value) => {
@@ -164,7 +164,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
                   width="100%"
                   height={isSmall ? "200px" : isFSM ? "600px" : "450px"}
                   onReady={onReady}
-                  playing={false}
+                  // playing={false}
                   controls={false}
                   ref={playerRef}
                   onProgress={(value) => {

@@ -23,6 +23,7 @@ interface UpdatePreferenceResponse {
   contentViewType?: string;
   autoScroll?: boolean;
   smartSet?: boolean;
+  autoConversion?: boolean;
 }
 
 type UpdateUserPreferenceResponse = GetUserPreferenceResponse & {
@@ -35,7 +36,7 @@ export const useUpdateUserPrefenceMutation = () => {
 
   return useMutation({
     mutationFn: async (
-      params: UpdatePreferenceResponse
+      params: UpdatePreferenceResponse,
     ): Promise<UpdateUserPreferenceResponse> => {
       const res = await fetch(
         `${siteConfig.apiUrl}/v1/update-user-preference`,
@@ -45,7 +46,7 @@ export const useUpdateUserPrefenceMutation = () => {
             Authorization: `${authUser?.jwt}`,
           },
           body: JSON.stringify(params),
-        }
+        },
       );
       const resp = await res.json();
       return resp;

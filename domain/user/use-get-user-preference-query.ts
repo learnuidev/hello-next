@@ -30,6 +30,7 @@ export interface GetUserPreferenceResponse {
   contentViewType?: string;
   autoScroll: boolean;
   smartSet: boolean;
+  autoConversion: boolean;
 }
 
 const getUserPrefrence = async (opts: {
@@ -52,7 +53,7 @@ export const getUserPreferenceKey = "get-user-preference";
 export function useGetUserPreferenceQuery(options = {} as any) {
   const { data: authUser } = useCurrentAuthUser({});
   const setUserPreferenceState = useSettingsDialogState(
-    (state) => state.setUserPreferenceState
+    (state) => state.setUserPreferenceState,
   );
 
   return useQuery<GetUserPreferenceResponse, Error>({

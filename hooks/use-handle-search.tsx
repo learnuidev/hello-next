@@ -19,10 +19,13 @@ import { useGetCurrentLang } from "./use-get-current-lang";
 import { useGetLangParams } from "./use-get-lang-params";
 
 import { useIsSearchTrackingEnabled } from "./use-is-search-tracking-enabled";
+import { useGetUserPreferenceQuery } from "@/domain/user/use-get-user-preference-query";
 
 export const useHandleSearch = () => {
   const router = useRouter();
   const path = usePathname();
+
+  const { data: userPreferences } = useGetUserPreferenceQuery();
 
   const _lang = useGetLangParams();
   const _langState = useGetCurrentLang();
@@ -185,7 +188,11 @@ export const useHandleSearch = () => {
           } as any);
         }
 
-        const selectedChar = chineseConverter(querySync);
+        let selectedChar = querySync;
+
+        if (userPreferences?.autoConversion) {
+          selectedChar = chineseConverter(querySync);
+        }
 
         if (selectedChar === querySync) {
           router.push(`/nmm/${encodeURIComponent(querySync)}?lang=${lang}`);

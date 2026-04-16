@@ -102,7 +102,7 @@ export function CharacterAnalytics({
         return {
           ...item,
           totalFrequency: totalFrequency,
-          hskLevel: "N/A",
+          hskLevel: null,
         };
       }
     });

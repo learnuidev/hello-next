@@ -190,7 +190,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
                 <div
                   className={
                     isVideoHidden || !isYoutubeOrVideo
-                      ? "col-span-12 mx-auto max-w-4xl"
+                      ? "col-span-12 mx-auto max-w-4xl mt-32"
                       : "col-span-12 md:col-span-5"
                   }
                 >
@@ -229,17 +229,31 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
                   </div>
                 </div>
               ) : viewMode === "reader" ? (
-                <div className={isVideoHidden ? "mx-auto max-w-4xl" : ""}>
-                  <ReaderViewParent
-                    content={content}
-                    currentTranscription={currentTranscription}
-                    currentTime={currentTime}
-                    isPlaying={playing}
-                    loop={loop}
-                  />
+                <div
+                  className={
+                    isVideoHidden || !isYoutubeOrVideo
+                      ? "col-span-12 mx-auto max-w-4xl mt-32"
+                      : ""
+                  }
+                >
+                  <div className={isVideoHidden ? "mx-auto max-w-4xl" : ""}>
+                    <ReaderViewParent
+                      content={content}
+                      currentTranscription={currentTranscription}
+                      currentTime={currentTime}
+                      isPlaying={playing}
+                      loop={loop}
+                    />
+                  </div>
                 </div>
               ) : (
-                <div className={isVideoHidden ? "mx-auto max-w-4xl" : ""}>
+                <div
+                  className={
+                    isVideoHidden || !isYoutubeOrVideo
+                      ? "col-span-12 mx-auto max-w-4xl mt-32"
+                      : ""
+                  }
+                >
                   <ParaView
                     loop={loop}
                     content={content}

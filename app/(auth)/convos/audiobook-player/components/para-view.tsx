@@ -77,7 +77,7 @@ export const ParaView = ({
       <div className="pb-32">
         <ScrollArea
           className={cn(
-            `space-y-4 rounded-md  p-2 dark:border-gray-900 w-full pb-8`,
+            `space-y-4 rounded-md dark:border-gray-900 w-full pb-8`,
             "h-[400px] sm:h-[640px]",
           )}
         >

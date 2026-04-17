@@ -29,11 +29,11 @@ const DiscoverButton = ({ characterId }: { characterId: string }) => {
     hanzi: characterId,
   });
 
-  if (characterId?.length > 3) {
+  if (characterId?.length > 4) {
     return null;
   }
 
-  if (characterId?.length === 3 && data?.group) {
+  if (characterId?.length === 4 && data?.group) {
     return null;
   }
 

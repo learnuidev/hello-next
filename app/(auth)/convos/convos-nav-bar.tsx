@@ -11,6 +11,7 @@ import { useGetContentQuery } from "@/domain/content/content.queries";
 import Link from "next/link";
 import { useIsContentAuthor } from "./[content-id]/hooks/use-is-content-author";
 import { useUpsetContentAnalyticsHandler } from "./[content-id]/hooks/use-upsert-content-analytics-handler";
+import { useCurrentTime } from "@/components/youtube-page/use-current-time-store";
 
 const indexOfAll = (str: any, w: any, res = [] as any): any => {
   const idx = str.indexOf(w);
@@ -104,6 +105,10 @@ export const ConvosNavBar = () => {
 
   const contentId = params["content-id"];
 
+  const { currentTime: _currentTime } = useCurrentTime(contentId);
+
+  const currentTime = _currentTime || searchParams.get("start") || 0;
+
   const { data: content } = useGetContentQuery({ contentId });
 
   const isAuthor = useIsContentAuthor(contentId);
@@ -129,7 +134,7 @@ export const ConvosNavBar = () => {
 
       <div className="my-2 flex justify-center items-center space-x-8 text-xs md:text-md">
         <Link
-          href={`/convos/${contentId}?view=listen&start=${searchParams.get("start") || 0}`}
+          href={`/convos/${contentId}?view=listen&start=${currentTime}`}
           className={`transition ${
             !viewType || viewType === "listen"
               ? "text-black dark:text-gray-200"
@@ -143,7 +148,7 @@ export const ConvosNavBar = () => {
           onClick={() => {
             setViewType("dynacloze");
           }}
-          href={`/convos/${contentId}?view=dynacloze${searchParams.get("start") ? `&start=${searchParams.get("start")}` : ""}`}
+          href={`/convos/${contentId}?view=dynacloze${currentTime ? `&start=${currentTime}` : ""}`}
           className={`transition ${
             viewType === "dynacloze"
               ? "text-black dark:text-gray-200"
@@ -157,7 +162,7 @@ export const ConvosNavBar = () => {
           onClick={() => {
             setViewType("speak");
           }}
-          href={`/convos/${contentId}?view=speak&start=${searchParams.get("start") || 0}`}
+          href={`/convos/${contentId}?view=speak&start=${currentTime}`}
           className={`transition ${
             viewType === "speak"
               ? "text-black dark:text-gray-200"
@@ -169,7 +174,7 @@ export const ConvosNavBar = () => {
 
         {content?.lang === "zh" && (
           <Link
-            href={`/convos/${contentId}?view=write&start=${searchParams.get("start") || 0}`}
+            href={`/convos/${contentId}?view=write&start=${currentTime}`}
             onClick={() => {
               setViewType("write");
             }}
@@ -184,7 +189,7 @@ export const ConvosNavBar = () => {
         )}
 
         <Link
-          href={`/convos/${contentId}?view=insights&start=${searchParams.get("start") || 0}`}
+          href={`/convos/${contentId}?view=insights&start=${currentTime}`}
           onClick={() => {
             setViewType("insights");
           }}
@@ -202,7 +207,7 @@ export const ConvosNavBar = () => {
             onClick={() => {
               setViewType("settings");
             }}
-            href={`/convos/${contentId}?view=settings&start=${searchParams.get("start") || 0}`}
+            href={`/convos/${contentId}?view=settings&start=${currentTime}`}
             className={`transition ${
               viewType === "settings"
                 ? "text-black dark:text-gray-200"

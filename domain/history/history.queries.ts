@@ -96,7 +96,7 @@ export function useListHistoryQuery() {
       const res = await fetch(`${siteConfig.apiUrl}/v1/list-history`, {
         method: "POST",
         body: JSON.stringify({
-          limit: 5000,
+          limit: 500,
         }),
         headers: {
           Authorization: `Bearer ${authUser?.jwt}`,

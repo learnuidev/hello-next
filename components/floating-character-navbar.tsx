@@ -21,6 +21,7 @@ import { useCharacterEditStore } from "./_select-character/use-character-edit-st
 import { PreviewButton } from "./settings-dialog/preview-button";
 import { TheDock } from "./the-dock";
 import { useSelectedCharacterData } from "./use-selected-character";
+import { useGetContentQuery } from "@/domain/content/content.queries";
 
 const DiscoverButton = ({ characterId }: { characterId: string }) => {
   const discoverMutation = useDiscoverMutation();
@@ -97,6 +98,8 @@ export const FloatingCharacterNavbar = ({
 
   const searchParams = useSearchParams();
 
+  const contentId = searchParams?.get("contentId");
+
   const context = searchParams?.get("context");
 
   const currentCharacter = selectedComp;
@@ -107,16 +110,53 @@ export const FloatingCharacterNavbar = ({
 
   const isAutomatic = useShowAutomaticallyTheDock();
 
+  const { data: content } = useGetContentQuery({
+    contentId: contentId || "",
+  });
+
+  const filteredTranscriptions =
+    content?.transcriptions
+      ?.filter((transcription: any) =>
+        transcription.input?.includes(characterId),
+      )
+      ?.map((item: any) => {
+        return {
+          ...item,
+          contentId: contentId,
+        };
+      }) || [];
+
   const characterContext = useCharacterContextStore((state) => state.context);
+
+  const allContext = [...characterContext, ...filteredTranscriptions];
   const contentContext = [
     ...new Set(
-      characterContext
+      allContext
         ?.filter((item) =>
           JSON.stringify(item)?.includes(firstLesson?.hanzi || selectedChar),
         )
-        .map((item) => JSON.stringify(item)),
+        .map((item) => item?.input),
     ),
-  ]?.map((item) => JSON.parse(item));
+  ]?.map((item) => {
+    const transcriptionItem = allContext?.find((c) => c.input === item);
+
+    if (transcriptionItem) {
+      const { words, id, pinyin, en, input, start, end, contentId } =
+        transcriptionItem;
+
+      return {
+        id,
+        pinyin,
+        en,
+        input,
+        start,
+        end,
+        contentId,
+      };
+    }
+
+    return transcriptionItem;
+  });
 
   const isSuperAdmin = useIsSuperAdmin();
 

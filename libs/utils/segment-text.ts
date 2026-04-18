@@ -1,6 +1,7 @@
 import { filterNonHanYu } from "@/app/nmm/nmm-utils/filter-non-hanyu";
 import { useQuery } from "@tanstack/react-query";
-import pinyin from "pinyin";
+
+import { pinyin } from "pinyin-pro";
 
 type FilterTypes = "unique";
 
@@ -41,12 +42,7 @@ const pinyinverrides: any = {
 };
 
 export function getPinyin(input: string) {
-  return (
-    pinyinverrides?.[input]?.pinyin ||
-    pinyin(input)
-      .map((item) => item[0])
-      .join("")
-  );
+  return pinyinverrides?.[input]?.pinyin || pinyin(input);
 }
 
 interface SegmentTextInput {

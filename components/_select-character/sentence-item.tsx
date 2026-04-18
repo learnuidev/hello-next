@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import { useSetIfExists } from "@/app/(auth)/convos/[content-id]/hooks/use-character-context-store";
 import { useRecentlyWatchedContent } from "@/app/(auth)/convos/use-recently-watched-content-store";
@@ -25,9 +25,14 @@ import { useGetCharacterAnalytics } from "./use-get-character-analytics";
 import { isRomanLang } from "./utils/is-non-roman-lang";
 import { WithInteractiveTitle } from "./with-interative-title";
 import { useChinglishState } from "../settings-dialog/use-chinglish-state";
+import { getNmmLink } from "@/libs/utils/get-nmm-link";
 
 export const SentenceItem = (props: any) => {
   const { selectedComp, selectedChar, lang, currentPhrase } = props;
+
+  const searchParams = useSearchParams();
+
+  const contentId = searchParams.get("contentId");
 
   const resolvedLang =
     currentPhrase?.lang || lang || selectedComp?.lang || currentPhrase?.lang;
@@ -114,7 +119,16 @@ export const SentenceItem = (props: any) => {
               setIfExists({ ...currentPhrase });
               trackFunction();
             }}
-            href={`/nmm/${chineseConverter(encodeURIComponent(currentPhrase?.hanzi || currentPhrase?.input))}${resolvedLang ? `?lang=${resolvedLang}` : ``}`}
+            href={getNmmLink({
+              id: chineseConverter(
+                encodeURIComponent(
+                  currentPhrase?.hanzi || currentPhrase?.input,
+                ) || "",
+              ),
+              lang: resolvedLang,
+              contentId: currentPhrase?.contentId || contentId,
+              context: currentPhrase?.hanzi || currentPhrase?.input,
+            })}
             className={`text-xs bg-white dark:bg-black p-2 w-6 h-6 ring-1 ${`dark:text-white ring-slate-900/5 dark:ring-gray-800`} shadow-lg rounded-full flex items-center justify-center transition`}
           >
             <Icons.magnifyingGlass />
@@ -205,9 +219,12 @@ export const SentenceItem = (props: any) => {
                     setIfExists({ ...currentPhrase });
 
                     router.push(
-                      resolvedLang
-                        ? `/nmm/${cleanedVal}?lang=${resolvedLang}&context=${currentPhrase?.hanzi || currentPhrase?.input}`
-                        : `/nmm/${cleanedVal}&context=${currentPhrase?.hanzi || currentPhrase?.input}`,
+                      getNmmLink({
+                        id: cleanedVal,
+                        lang: resolvedLang,
+                        contentId: currentPhrase?.contentId || contentId,
+                        context: currentPhrase?.hanzi || currentPhrase?.input,
+                      }),
                     );
                   }}
                 >

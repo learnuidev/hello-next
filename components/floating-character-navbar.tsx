@@ -137,26 +137,28 @@ export const FloatingCharacterNavbar = ({
         )
         .map((item) => item?.input),
     ),
-  ]?.map((item) => {
-    const transcriptionItem = allContext?.find((c) => c.input === item);
+  ]
+    ?.map((item) => {
+      const transcriptionItem = allContext?.find((c) => c.input === item);
 
-    if (transcriptionItem) {
-      const { words, id, pinyin, en, input, start, end, contentId } =
-        transcriptionItem;
+      if (transcriptionItem) {
+        const { words, id, pinyin, en, input, start, end, contentId } =
+          transcriptionItem;
 
-      return {
-        id,
-        pinyin,
-        en,
-        input,
-        start,
-        end,
-        contentId,
-      };
-    }
+        return {
+          id,
+          pinyin,
+          en,
+          input,
+          start,
+          end,
+          contentId,
+        };
+      }
 
-    return transcriptionItem;
-  });
+      return transcriptionItem;
+    })
+    .filter(Boolean);
 
   const isSuperAdmin = useIsSuperAdmin();
 

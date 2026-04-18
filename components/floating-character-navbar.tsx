@@ -142,7 +142,7 @@ export const FloatingCharacterNavbar = ({
       const transcriptionItem = allContext?.find((c) => c.input === item);
 
       if (transcriptionItem) {
-        const { words, id, pinyin, en, input, start, end, contentId } =
+        const { words, id, pinyin, en, input, start, end, lang, contentId } =
           transcriptionItem;
 
         return {
@@ -153,6 +153,7 @@ export const FloatingCharacterNavbar = ({
           start,
           end,
           contentId,
+          lang,
         };
       }
 

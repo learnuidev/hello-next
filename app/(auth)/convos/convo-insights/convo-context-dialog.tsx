@@ -12,6 +12,7 @@ import { ChinglishButton } from "@/components/chinglish-button";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useMemo } from "react";
+import { getNmmLink } from "@/libs/utils/get-nmm-link";
 
 export const ConvoContextDialog = ({
   isOpen,
@@ -55,7 +56,11 @@ export const ConvoContextDialog = ({
           <Link
             target="_blank"
             className="text-gray-500"
-            href={`/nmm/${selected?.input || selected?.hanzi}?lang=${data?.lang}`}
+            href={getNmmLink({
+              id: selected?.input || selected?.hanzi,
+              lang: data?.lang,
+              contentId,
+            })}
           >
             Selected: {selected?.input || selected?.hanzi}
           </Link>

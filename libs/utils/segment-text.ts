@@ -5,6 +5,9 @@ import pinyin from "pinyin";
 type FilterTypes = "unique";
 
 const pinyinverrides: any = {
+  那么: {
+    pinyin: "nàme",
+  },
   还有: {
     pinyin: "háiyǒu",
   },

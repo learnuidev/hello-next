@@ -48,10 +48,10 @@ export function MiniDictionary({
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState<{ x: number; y: number } | null>(
-    null
+    null,
   );
   const [dragOffset, setDragOffset] = useState<{ x: number; y: number } | null>(
-    null
+    null,
   );
   const isDragging = useRef(false);
 
@@ -70,7 +70,7 @@ export function MiniDictionary({
       }
       e.preventDefault();
     },
-    [position]
+    [position],
   );
 
   const onTouchStart = useCallback(
@@ -88,7 +88,7 @@ export function MiniDictionary({
         setPosition({ x: rect.left, y: rect.top });
       }
     },
-    [position]
+    [position],
   );
 
   useEffect(() => {
@@ -133,8 +133,6 @@ export function MiniDictionary({
     };
   }, [dragOffset]);
 
-
-
   const addContentUnknownMutation = useAddContentUnknownMutation();
   const removeContentUnknownMutation = useRemoveContentUnknownMutation();
 
@@ -149,7 +147,7 @@ export function MiniDictionary({
   const frequency = getFrequency({ content: content, input: selected });
 
   const timesMentioned = contentInsights?.filteredHskWords?.find(
-    (word: any) => word?.hanzi === selected
+    (word: any) => word?.hanzi === selected,
   );
 
   const mentionedTranscriptions = content?.transcriptions?.filter(
@@ -161,11 +159,11 @@ export function MiniDictionary({
         transcription.roman,
       ].filter(Boolean);
       return searchableFields.some((field) => field?.includes(selected));
-    }
+    },
   );
 
   const containsUnknown = contentUnknowns?.items?.find(
-    (item) => item.input === selected
+    (item) => item.input === selected,
   );
 
   const deleteHistoryMutation = useDeleteHistoryMutation();
@@ -184,10 +182,10 @@ export function MiniDictionary({
   });
 
   const currentSearchItem = searchHistory?.find(
-    (item: any) => item?.input === selected
+    (item: any) => item?.input === selected,
   );
   const currentIndex = searchHistory?.findIndex(
-    (item: any) => item?.input === selected
+    (item: any) => item?.input === selected,
   );
 
   const isFirstIndex = currentIndex === 0;
@@ -198,7 +196,7 @@ export function MiniDictionary({
       return;
     }
     const currentIndex = searchHistory?.findIndex(
-      (item: any) => item?.input === selected
+      (item: any) => item?.input === selected,
     );
 
     if (currentIndex === 0 || currentIndex === -1) {
@@ -219,7 +217,7 @@ export function MiniDictionary({
       return;
     }
     const currentIndex = searchHistory?.findIndex(
-      (item: any) => item?.input === selected
+      (item: any) => item?.input === selected,
     );
 
     if (currentIndex === -1) {
@@ -247,14 +245,17 @@ export function MiniDictionary({
         position
           ? "fixed z-50 w-[600px]"
           : className || "w-full sm:max-w-[600px] mt-0 sticky top-0",
-        position && (dragOffset ? "cursor-grabbing" : "cursor-grab")
+        position && (dragOffset ? "cursor-grabbing" : "cursor-grab"),
       )}
       style={position ? { left: position.x, top: position.y } : undefined}
     >
       <div className="flex justify-between items-center">
         <div className="flex gap-4">
           <h4 className="text-2xl font-bold">
-            <Link target="_blank" href={getNmmLink({ id: selected, lang })}>
+            <Link
+              target="_blank"
+              href={getNmmLink({ id: selected, lang, contentId })}
+            >
               {selected}
             </Link>
           </h4>
@@ -392,7 +393,7 @@ export function MiniDictionary({
                           </div>
                         </div>
                       );
-                    }
+                    },
                   )}
                   {mentionedTranscriptions.length > 3 && (
                     <button
@@ -498,7 +499,7 @@ export function MiniDictionary({
           <button
             className={cn(
               { "text-gray-500": isLastIndex },
-              "hover:text-red-500"
+              "hover:text-red-500",
             )}
             onDoubleClick={() => {
               deleteHistoryMutation.mutateAsync(currentSearchItem).then(() => {

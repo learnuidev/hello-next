@@ -153,7 +153,7 @@ export const FloatingCharacterNavbar = ({
           start,
           end,
           contentId,
-          lang,
+          lang: lang || content?.lang || "zh",
         };
       }
 

@@ -29,7 +29,7 @@ export function InputView({
             currentTranscription?.input,
             val?.input,
             item,
-            idx
+            idx,
           );
         });
 
@@ -52,7 +52,7 @@ export function InputView({
               character={item}
               className={
                 containsInUnknown &&
-                "font-light dark:!text-pink-300 !text-pink-500 text-2xl"
+                "font-light underline underline-offset-8 text-2xl"
               }
             />
           </span>

@@ -143,7 +143,7 @@ export const ReaderViewParent = ({
                                       ? "   !dark:text-white"
                                       : "dark:text-gray-500",
                                     containsInUnknown &&
-                                      "font-light dark:!text-pink-300 !text-pink-500",
+                                      "font-light underline underline-offset-8",
                                   )}
                                   character={item}
                                 />

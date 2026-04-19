@@ -110,7 +110,7 @@ export function ReaderViewChinese({
                             : "",
                           !isSelected &&
                             containsInUnknown &&
-                            "font-light dark:!text-pink-300 !text-pink-500",
+                            "font-light underline underline-offset-8",
 
                           currentTime > item?.start &&
                             currentTime < item?.end &&

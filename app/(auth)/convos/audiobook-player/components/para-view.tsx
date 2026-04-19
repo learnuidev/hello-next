@@ -145,7 +145,7 @@ export const ParaView = ({
                                   className={cn(
                                     "text-xl",
                                     containsInUnknown &&
-                                      "font-light dark:!text-pink-300 !text-pink-500",
+                                      "font-light underline underline-offset-8",
                                     currentTime
                                       ? isActiveTranscription
                                         ? "dark:text-white text-black dark:bg-[rgb(11,12,13)]"

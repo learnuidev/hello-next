@@ -3,7 +3,7 @@
 import "@/libs/cognito/init";
 
 import { useToast } from "@/hooks/use-toast";
-import { useState, useMemo } from "react";
+import { useMemo, useState } from "react";
 
 import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
 import { Nothing } from "@/app/nmm/nothing";
@@ -14,6 +14,7 @@ import { useListContentsQuery } from "@/domain/content/content.queries";
 import { motion } from "framer-motion";
 
 import { useLearningMode } from "@/components/settings-dialog/learning-mode.store";
+import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 import Link from "next/link";
 import { useListFavouriteContentsQuery } from "./[content-id]/hooks/use-list-favourited-contents-query";
@@ -22,9 +23,7 @@ import { useToggleFavouriteContentMutation } from "./[content-id]/hooks/use-togg
 import { contentTypes } from "./constants/content-types";
 import { useContentViewType } from "./hooks/use-content-view-type";
 import { useRecentlyWatchedContent } from "./use-recently-watched-content-store";
-import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 
-import { mandoEventIds } from "@/libs/adaptive/mando-event-ids";
 import {
   Select,
   SelectContent,

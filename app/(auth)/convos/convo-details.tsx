@@ -55,61 +55,60 @@ export const ConvoDetails = ({ contentId }: { contentId: string }) => {
 
   if (viewType === "listen" && content?.type === "tweet") {
     return (
-      <WithContentLoading>
-        <div>
-          <TweetPage contentId={contentId} />
+      // <WithContentLoading>
+      <div>
+        <TweetPage contentId={contentId} />
 
-          <FloatingNavbar />
-        </div>
-      </WithContentLoading>
+        <FloatingNavbar />
+      </div>
+      // </WithContentLoading>
     );
   }
 
   if (viewType === "ai") {
     return (
-      <WithContentLoading>
-        <AI contentId={contentId} />
-      </WithContentLoading>
+      // <WithContentLoading>
+      <AI contentId={contentId} />
+      // </WithContentLoading>
     );
   }
 
   if (viewType === "listen") {
     return (
-      <WithContentLoading>
-        <AudiobookPlayer contentId={contentId} />
-      </WithContentLoading>
+      // <WithContentLoading>
+      <AudiobookPlayer contentId={contentId} />
+      // </WithContentLoading>
     );
   }
 
   if (viewType === "write") {
     if (content?.lang !== "zh") {
       return (
-        <WithContentLoading>
-          <Nothing message="Wordle is enabled only for Chinese" />
-        </WithContentLoading>
+        // <WithContentLoading>
+        <Nothing message="Wordle is enabled only for Chinese" />
+        // </WithContentLoading>
       );
     }
     return (
-      <WithContentLoading>
-        {/* Write */}
-        <Wordle contentId={contentId} />
-      </WithContentLoading>
+      // <WithContentLoading>
+      <Wordle contentId={contentId} />
+      // </WithContentLoading>
     );
   }
 
   if (viewType === "dynacloze") {
     return (
-      <WithContentLoading>
-        <DynaSelector contentId={contentId} />
-      </WithContentLoading>
+      // <WithContentLoading>
+      <DynaSelector contentId={contentId} />
+      // </WithContentLoading>
     );
   }
 
   if (viewType === "speak") {
     return (
-      <WithContentLoading>
-        <Speak contentId={contentId} />
-      </WithContentLoading>
+      // <WithContentLoading>
+      <Speak contentId={contentId} />
+      // </WithContentLoading>
     );
   }
   if (viewType === "learn") {
@@ -127,19 +126,18 @@ export const ConvoDetails = ({ contentId }: { contentId: string }) => {
 
     return (
       <>
-        <WithContentLoading>
-          <ConvoInsights contentId={contentId} />
-          <FloatingNavbar />
-        </WithContentLoading>
+        {/* <WithContentLoading> */}
+        <ConvoInsights contentId={contentId} />
+        <FloatingNavbar />
+        {/* </WithContentLoading> */}
       </>
     );
   }
 
   return (
-    <WithContentLoading>
-      <YouTubePlayer contentId={contentId} />
+    // <WithContentLoading>
+    <YouTubePlayer contentId={contentId} />
 
-      {/* <FloatingNavbar /> */}
-    </WithContentLoading>
+    // </WithContentLoading>
   );
 };

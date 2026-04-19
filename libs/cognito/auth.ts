@@ -73,7 +73,7 @@ export async function confirmSignInPasswordless({
   try {
     const challengeResult = await Auth.sendCustomChallengeAnswer(
       authUser,
-      code
+      code,
     );
 
     return challengeResult;

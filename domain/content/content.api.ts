@@ -81,6 +81,11 @@ export interface IContent {
   userId: string;
   chapters: ContentChapter[];
   transcriptions: ContentTranscription[];
+
+  backgroundImageId?: string;
+  backgroundImageUrl?: string;
+  coverPhotoId?: string;
+  coverPhotoUrl?: string;
 }
 
 export const getContent = async (

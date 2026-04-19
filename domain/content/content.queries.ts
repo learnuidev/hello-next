@@ -22,6 +22,10 @@ export interface Content {
   id: string;
   sourceUrl?: string;
   uploadBucketKey?: string;
+  backgroundImageId?: string;
+  backgroundImageUrl?: string;
+  coverPhotoId?: string;
+  coverPhotoUrl?: string;
   title: string;
   userId: string;
 
@@ -51,7 +55,7 @@ type ListContentsResponse = {
 const listContentsRecursive = async (
   jwt: string,
   key?: string,
-  res = []
+  res = [],
 ): Promise<ListContentsResponse> => {
   const resp = await listContents({ key }, { Authorization: jwt });
 
@@ -59,7 +63,7 @@ const listContentsRecursive = async (
     return listContentsRecursive(
       jwt,
       resp?.lastEvaulatedKey,
-      res.concat(resp?.items)
+      res.concat(resp?.items),
     );
   }
 
@@ -88,7 +92,7 @@ export function useListContentsQuery(options = {} as any) {
       const finalResponse = {
         ...response,
         items: response?.items?.sort(
-          (a: any, b: any) => b?.createdAt - a?.createdAt
+          (a: any, b: any) => b?.createdAt - a?.createdAt,
         ),
       };
 
@@ -113,7 +117,7 @@ export function useListContentsQuery(options = {} as any) {
 export const getContentQueryId = "get-content";
 export function useGetContentQuery(
   params: { contentId: string },
-  opts = {} as any
+  opts = {} as any,
 ) {
   const { data: authUser } = useCurrentAuthUser({});
 
@@ -142,7 +146,7 @@ export function useGetContentQuery(
             }
 
             return transcriptionItem;
-          }
+          },
         ),
       };
 

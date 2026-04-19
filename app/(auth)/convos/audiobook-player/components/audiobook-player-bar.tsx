@@ -32,7 +32,10 @@ export const AudiobookPlayerBar = ({
     <div
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="flex items-center gap-4 sm:px-8 px-4 pb-4"
+      onClick={() => {
+        if (hoverTime) handleSeekChange([hoverTime]);
+      }}
+      className="flex items-center gap-4 sm:px-8 px-4 sm:pt-4"
     >
       <div ref={trackRef} className="w-full relative group">
         <Slider
@@ -43,12 +46,13 @@ export const AudiobookPlayerBar = ({
           value={[currentTime]}
           defaultValue={[currentTime]}
           onValueChange={handleSeekChange}
+          trackClassName="h-1"
         />
 
         {hoverRatio !== null && (
           <>
             <div
-              className="absolute top-1/2 -translate-y-1/2 left-0 h-1.5 rounded-full bg-primary/60 pointer-events-none"
+              className="absolute top-1/2 -translate-y-1/2 left-0 h-1 rounded-full bg-primary/60 pointer-events-none"
               style={{ width: `${hoverPercent}%` }}
             />
             <div
@@ -60,9 +64,9 @@ export const AudiobookPlayerBar = ({
           </>
         )}
       </div>
-      <span className="text-sm sm:text-lg sm:w-24 w-14 font-extralight">
+      {/* <span className="text-sm sm:text-lg sm:w-24 w-14 font-extralight">
         {formatTime(currentTime)}
-      </span>
+      </span> */}
     </div>
   );
 };

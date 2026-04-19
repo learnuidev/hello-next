@@ -129,17 +129,19 @@ export function AudioBookSettingsPopover({
                 />
               </div>
             </div>
-            {isYoutubeOrVideo && (
-              <div className="flex items-center space-x-2 justify-between">
-                <Label htmlFor="video-visible">Show Video</Label>
-                <Switch
-                  checked={!isVideoHidden}
-                  onCheckedChange={() => {
-                    setIsVideoHidden((isHidden: any) => !isHidden);
-                  }}
-                />
-              </div>
-            )}
+            {/* {isYoutubeOrVideo && ( */}
+            <div className="flex items-center space-x-2 justify-between">
+              <Label htmlFor="video-visible">
+                Show {isYoutubeOrVideo ? "Video" : "Image"}
+              </Label>
+              <Switch
+                checked={!isVideoHidden}
+                onCheckedChange={() => {
+                  setIsVideoHidden((isHidden: any) => !isHidden);
+                }}
+              />
+            </div>
+            {/* )} */}
 
             <div className="flex items-center space-x-2 justify-between">
               <Label htmlFor="video-visible">FSM</Label>

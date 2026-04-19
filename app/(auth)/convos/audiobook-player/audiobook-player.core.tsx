@@ -141,16 +141,16 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
               isFSM ? "px-0" : "sm:gap-8 sm:px-8 scroll-px-80",
             )}
           >
-            {isYoutubeOrVideo && (
-              <div
-                className={cn(
-                  isFSM
-                    ? "md:col-span-8 col-span-12"
-                    : "md:col-span-6 col-span-12",
+            <div
+              className={cn(
+                isFSM && isYoutubeOrVideo
+                  ? "md:col-span-8 col-span-12"
+                  : "md:col-span-6 col-span-12",
 
-                  `${isVideoHidden || !isYoutubeOrVideo ? "hidden" : ""}`,
-                )}
-              >
+                `${isVideoHidden ? "hidden" : ""}`,
+              )}
+            >
+              {isYoutubeOrVideo ? (
                 <ReactPlayer
                   key={content?.audio}
                   playbackRate={playbackRate}
@@ -172,32 +172,36 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
                     setCurrentTime(value.playedSeconds);
                   }}
                 />
-              </div>
-            )}
+              ) : (
+                <div className="flex justify-center items-center sm:mt-24 mt-4">
+                  <img
+                    className="rounded-2xl aspect-video sm:aspect-square w-full sm:w-[24rem] px-4"
+                    src={content?.backgroundImageUrl}
+                  />{" "}
+                </div>
+              )}
+            </div>
+
             <div
               className={cn(
-                !isYoutubeOrVideo
+                isVideoHidden
                   ? "col-span-12"
-                  : isVideoHidden
-                    ? "col-span-12"
-                    : isYoutubeOrVideo
-                      ? isFSM
-                        ? "md:col-span-4 col-span-12"
-                        : "md:col-span-6 col-span-12"
-                      : "md:col-span-8 col-span-12",
+                  : isFSM
+                    ? "md:col-span-4 col-span-12"
+                    : "md:col-span-6 col-span-12",
               )}
             >
               {viewMode === "karaoke" ? (
                 <div
                   className={
-                    isVideoHidden || !isYoutubeOrVideo
+                    isVideoHidden
                       ? "col-span-12 mx-auto max-w-4xl sm:mt-32 mt-24"
                       : "col-span-12 md:col-span-5"
                   }
                 >
                   <div
                     className={
-                      isVideoHidden || !isYoutubeOrVideo
+                      isVideoHidden
                         ? "col-span-12"
                         : "col-span-12 md:col-span-5"
                     }
@@ -232,7 +236,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
               ) : viewMode === "reader" ? (
                 <div
                   className={
-                    isVideoHidden || !isYoutubeOrVideo
+                    isVideoHidden
                       ? "col-span-12 mx-auto max-w-4xl sm:mt-32 mt-16"
                       : ""
                   }
@@ -250,7 +254,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
               ) : (
                 <div
                   className={
-                    isVideoHidden || !isYoutubeOrVideo
+                    isVideoHidden
                       ? "col-span-12 mx-auto max-w-4xl sm:mt-32 mt-8"
                       : ""
                   }
@@ -269,7 +273,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
           </div>
         )}
 
-        <div className="fixed bottom-2 w-full">
+        <div className="fixed bottom-0 sm:bottom-2 w-full">
           <div className="w-full max-w-4xl mx-auto sm:p-4 sm:py-2 p-2">
             {isYoutubeOrVideo ? null : (
               <ReactPlayer
@@ -295,8 +299,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
               />
             )}
 
-            {/* {!editMode && ( */}
-            <div className="p-0">
+            <div className=" dark:bg-auto p-4">
               <AudioBookPlayerControls
                 loop={loop}
                 setLoop={setLoop}
@@ -317,6 +320,8 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
                 duration={duration}
               />
             </div>
+
+            {/* {!editMode && ( */}
           </div>
         </div>
       </div>

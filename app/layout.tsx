@@ -24,7 +24,6 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { PostHogPageView } from "@/libs/posthog/posthog.page-view";
 import { PostHogProvider } from "@/libs/posthog/posthog.provider";
 import { Suspense } from "react";
-import { MandoAdaptiveProvider } from "@/libs/adaptive/mando-datafast-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -66,11 +65,7 @@ export default function RootLayout({
                 >
                   <div className="flex-1">
                     <QueryClientProvider>
-                      <Authenticated>
-                        <MandoAdaptiveProvider>
-                          {children}
-                        </MandoAdaptiveProvider>
-                      </Authenticated>
+                      <Authenticated>{children}</Authenticated>
                       <SettingsDialog />
                       <SearchDialog />
                     </QueryClientProvider>

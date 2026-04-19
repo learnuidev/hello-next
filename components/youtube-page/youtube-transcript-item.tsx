@@ -20,8 +20,6 @@ import { Icons } from "../ui/icons.v2";
 import { useWordsClickedHistoryStore } from "./hooks/use-words-clicked-history-state";
 import { useContentEditStore } from "./use-content-edit-store";
 import { smartSplit } from "./utils/smart-split";
-import { useAdaptive } from "@/libs/adaptive/adaptive-provider";
-import { mandoEventIds } from "@/libs/adaptive/mando-event-ids";
 
 export const TranscriptItem = ({
   example,
@@ -36,8 +34,6 @@ export const TranscriptItem = ({
   // components,
 }: any) => {
   const params = useParams<{ "content-id": string }>();
-
-  const { adaptive } = useAdaptive();
 
   const setWords = useWordsClickedHistoryStore((state) => state.setHistory);
 
@@ -62,7 +58,7 @@ export const TranscriptItem = ({
 
   const setTimer = (
     type: "start" | "end" | "pinyin" | "hanzi" | "roman" | "en" | "input",
-    newValue?: string
+    newValue?: string,
   ) => {
     const offset = newValue || playerRef?.current?.getCurrentTime();
 
@@ -95,7 +91,7 @@ export const TranscriptItem = ({
         const nextIndex = currIndex + 1;
         const nextExample = finalTranscriptions?.[nextIndex];
         const nextExists = prev?.find(
-          (item: any) => item?.id === nextExample?.id
+          (item: any) => item?.id === nextExample?.id,
         );
 
         if (nextExists) {
@@ -147,12 +143,12 @@ export const TranscriptItem = ({
     contents?.find(
       (contentItem: any) =>
         (contentItem?.input || contentItem?.hanzi) ===
-        (example?.input || example?.hanzi)
+        (example?.input || example?.hanzi),
     ) ||
     learnedCharacters?.find(
       (contentItem: any) =>
         (contentItem?.input || contentItem?.hanzi) ===
-        (example?.input || example?.hanzi)
+        (example?.input || example?.hanzi),
     );
 
   const setRepeatHistories = useRepeatHistoryStore((state) => state.setHistory);
@@ -167,7 +163,7 @@ export const TranscriptItem = ({
             history?.input === (example?.input || example?.hanzi)
           );
         })
-        .map((x: any) => parseInt(`${x.createdAt}`.slice(0, -3)))
+        .map((x: any) => parseInt(`${x.createdAt}`.slice(0, -3))),
     ),
   ].map((x) => x);
 
@@ -182,7 +178,7 @@ export const TranscriptItem = ({
                   ?.sort((a: any, b: any) => a?.end - b?.end)
                   ?.map((x: any) => x?.hanzi || x?.input)
                   ?.join("")
-              : example?.input || example?.hanzi
+              : example?.input || example?.hanzi,
           )}&op=translate`}
           className="text-gray-500 hover:text-red-500 dark:hover:text-white"
         >
@@ -197,7 +193,7 @@ export const TranscriptItem = ({
                     ?.sort((a: any, b: any) => a?.end - b?.end)
                     ?.map((x: any) => x?.hanzi || x?.input)
                     ?.join("")
-                : example?.input || example?.hanzi
+                : example?.input || example?.hanzi,
             )}`}
             className="text-gray-500 hover:text-red-500 dark:hover:text-white"
             target="_blank"
@@ -217,7 +213,7 @@ export const TranscriptItem = ({
             //       ?.map((x: any) => x?.hanzi || x?.input)
             //       ?.join("")
             // :
-            example?.input || example?.hanzi
+            example?.input || example?.hanzi,
           )}${example?.lang ? `?lang=${resolveLangCode(example?.lang)}` : ""}`}
           className="text-gray-500 hover:text-red-500 dark:hover:text-white"
           target="_blank"
@@ -228,7 +224,7 @@ export const TranscriptItem = ({
           onClick={() => {
             setToggleLoops((val: any) => {
               const exist = val?.find(
-                (item: any) => item?.end === example?.end
+                (item: any) => item?.end === example?.end,
               );
               if (exist) {
                 return val?.filter((item: any) => {
@@ -298,11 +294,6 @@ export const TranscriptItem = ({
           } w-full ${focusMode || isVideoHidden ? "" : ""}`}
           role="button"
           onClick={() => {
-            adaptive(mandoEventIds.clickedOnTranscript.id, {
-              contentId,
-              transcriptId: example?.id,
-              input: example?.input || example?.hanzi,
-            });
             // setNewContextId();
             setRepeatHistories({
               contentId: contentId,
@@ -356,7 +347,7 @@ export const TranscriptItem = ({
                   currentTime;
 
               const isLearned = learnedCharacters?.find(
-                (char: any) => char?.hanzi === item
+                (char: any) => char?.hanzi === item,
               );
 
               return (

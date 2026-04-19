@@ -23,7 +23,7 @@ import { contentTypes } from "./constants/content-types";
 import { useContentViewType } from "./hooks/use-content-view-type";
 import { useRecentlyWatchedContent } from "./use-recently-watched-content-store";
 import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
-import { useAdaptive } from "@/libs/adaptive/adaptive-provider";
+
 import { mandoEventIds } from "@/libs/adaptive/mando-event-ids";
 import {
   Select,
@@ -47,7 +47,7 @@ type SortByType = "newest" | "oldest";
 export function ContentsList({ contentViewType }: { contentViewType: string }) {
   const { data: myContent, isLoading } = useListContentsQuery();
   const { data, isLoading: isPublishedLoading } = useListPublishedContentsQuery(
-    {}
+    {},
   );
   const { data: favouriteContents, isLoading: isFavouriteContentLoading } =
     useListFavouriteContentsQuery({});
@@ -58,7 +58,6 @@ export function ContentsList({ contentViewType }: { contentViewType: string }) {
   const toggleFavouritContentMutation = useToggleFavouriteContentMutation();
 
   const { recentlyWatched, setRecentlyWatched } = useRecentlyWatchedContent();
-  const { adaptive } = useAdaptive();
 
   const { mode, setMode } = useLearningMode();
 
@@ -155,13 +154,13 @@ export function ContentsList({ contentViewType }: { contentViewType: string }) {
       return sorted.sort(
         (a, b) =>
           new Date(b.createdAt || 0).getTime() -
-          new Date(a.createdAt || 0).getTime()
+          new Date(a.createdAt || 0).getTime(),
       );
     } else {
       return sorted.sort(
         (a, b) =>
           new Date(a.createdAt || 0).getTime() -
-          new Date(b.createdAt || 0).getTime()
+          new Date(b.createdAt || 0).getTime(),
       );
     }
   }, [filteredProjects, sortBy]);
@@ -175,7 +174,7 @@ export function ContentsList({ contentViewType }: { contentViewType: string }) {
   }
 
   const selectedContent = contentTypes?.find(
-    (content) => content.id === contentType
+    (content) => content.id === contentType,
   );
 
   const defaultPic = `https://nomadmethod-api-dev-assetsbucket-2u2iqsv5nizc.s3.amazonaws.com/01K3WRT0WY9NFBA55Y1DWYJ4MG.png`;
@@ -240,7 +239,7 @@ export function ContentsList({ contentViewType }: { contentViewType: string }) {
           <div className="grid grid-cols-[repeat(auto-fit,minmax(32rem,1fr))] sm:grid-cols-[repeat(2,minmax(20rem,1fr))] gap-8">
             {sortedProjects?.map((item: any, index: number) => {
               const isFavourited = favouriteContents?.items?.find(
-                (content: any) => content?.id === item.id
+                (content: any) => content?.id === item.id,
               );
 
               return (
@@ -255,10 +254,6 @@ export function ContentsList({ contentViewType }: { contentViewType: string }) {
                     href={`/convos/${item?.id}`}
                     className="flex flex-col sm:flex-row w-full"
                     onClick={(event) => {
-                      adaptive?.(mandoEventIds.contentViewed.id, {
-                        contentId: item?.id,
-                        email: authUser?.email || "",
-                      });
                       if (!event.defaultPrevented) {
                         setRecentlyWatched(item);
                         setMode(item.id);

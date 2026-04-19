@@ -7,6 +7,7 @@ import { TranscriptionsInput } from "../components/transcriptions-input";
 import { UserAssetSelector } from "../components/user-asset-selector";
 
 import { ContentTitleInput } from "../components/content-title-input";
+import { BackgroundImageSelector } from "../components/background-image-selector";
 import { useListYoutubeTranscriptionsQuery } from "@/domain/youtube/list-youtube-transcriptions";
 
 export const YoutubeFlow = () => {
@@ -38,6 +39,8 @@ export const YoutubeFlow = () => {
           {youtubeVideoDetails && <ReactPlayer url={normalizedUrl} />}
         </div> */}
       </div>
+
+      <BackgroundImageSelector />
 
       <TranscriptionsInput />
     </div>

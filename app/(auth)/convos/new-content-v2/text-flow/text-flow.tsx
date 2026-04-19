@@ -1,6 +1,7 @@
 import { NewConvoInput } from "../../new-convo/new-convo-input";
 import { ContentTitleInput } from "../components/content-title-input";
 import { LangAndContentTypeSelector } from "../components/lang-content-type-selector";
+import { BackgroundImageSelector } from "../components/background-image-selector";
 
 export const TextFlow = () => {
   return (
@@ -9,6 +10,8 @@ export const TextFlow = () => {
       <div className="w-full">
         <LangAndContentTypeSelector />
       </div>
+
+      <BackgroundImageSelector />
 
       <NewConvoInput />
     </div>

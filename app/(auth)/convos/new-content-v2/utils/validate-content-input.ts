@@ -89,6 +89,8 @@ export function validateContentInput(data: any) {
     title,
     input,
     author,
+    backgroundImageId: data.backgroundImageId,
+    backgroundImageUrl: data.backgroundImageUrl,
   };
 
   if (type === "youtube") {

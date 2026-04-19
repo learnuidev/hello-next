@@ -6,6 +6,7 @@ import { LangAndContentTypeSelector } from "../components/lang-content-type-sele
 import { ContentTitleInput } from "../components/content-title-input";
 import { VideoPreview } from "./components/video-preview";
 import { TranscriptionsInput } from "../components/transcriptions-input";
+import { BackgroundImageSelector } from "../components/background-image-selector";
 
 export const VideoFlow = () => {
   const setConvo = useNewConvoStore((state) => state.setConvo);
@@ -30,6 +31,8 @@ export const VideoFlow = () => {
       </UploadFileButton>
 
       {newConvo?.videoId && <VideoPreview userAssetId={newConvo.videoId} />}
+
+      <BackgroundImageSelector />
 
       <TranscriptionsInput />
     </div>

@@ -7,6 +7,7 @@ import { ContentTitleInput } from "../components/content-title-input";
 import { AudioPreview } from "./components/audio-preview";
 import { TranscriptionsInput } from "../components/transcriptions-input";
 import { UserAssetSelector } from "../components/user-asset-selector";
+import { BackgroundImageSelector } from "../components/background-image-selector";
 
 export const AudioFlow = () => {
   const setConvo = useNewConvoStore((state) => state.setConvo);
@@ -31,6 +32,8 @@ export const AudioFlow = () => {
       />
 
       {newConvo?.audioId && <AudioPreview userAssetId={newConvo.audioId} />}
+
+      <BackgroundImageSelector />
 
       <TranscriptionsInput />
     </div>

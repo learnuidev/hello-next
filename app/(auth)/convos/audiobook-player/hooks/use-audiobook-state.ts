@@ -117,7 +117,7 @@ export const useAudioBookState = (content: IContent) => {
     if (currentTranscription) {
       const currentTranscriptionIndex = Math.max(
         transcriptions?.findIndex(
-          (trans: any) => trans?.start === currentTranscription?.start,
+          (trans: any) => trans?.id === currentTranscription?.id,
         ),
         0,
       );
@@ -146,7 +146,7 @@ export const useAudioBookState = (content: IContent) => {
   const seekAfter = useCallback(() => {
     const currentTranscriptionIndex = Math.max(
       transcriptions?.findIndex(
-        (trans: any) => trans?.start === currentTranscription?.start,
+        (trans: any) => trans?.id === currentTranscription?.id,
       ),
       0,
     );

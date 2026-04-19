@@ -11,7 +11,7 @@ export const getMulti = (val: string) => {
 
 export const isMulti = (val: string) => {
   if (val?.length < 24) {
-    return false;
+    return true;
   }
   return getMulti(val)?.length > 1;
 };

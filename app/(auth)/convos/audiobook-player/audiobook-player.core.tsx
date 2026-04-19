@@ -21,11 +21,13 @@ import { ReaderViewParent } from "./components/reader-view-parent";
 import { useAudioBookState } from "./hooks/use-audiobook-state";
 import { ParaView } from "./components/para-view";
 import { AudiobookPlayerBar } from "./components/audiobook-player-bar";
+import { Icons } from "@/components/ui/icons.v2";
 
 export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
   const {
     seekAndPlay,
     setLoop,
+    play,
     loop,
     setIsReady,
     setDuration,
@@ -192,7 +194,21 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
                 "sm:px-12",
               )}
             >
-              {viewMode === "karaoke" ? (
+              {currentTime === 0 && !playing ? (
+                <div className="flex justify-center flex-col items-center sm:mt-48 mt-16">
+                  <button
+                    onClick={() => {
+                      play();
+                    }}
+                  >
+                    <Icons.play className="text-4xl" />
+                  </button>
+
+                  <p className="text-gray-500 text-sm mt-4 font-extralight">
+                    Click here to play
+                  </p>
+                </div>
+              ) : viewMode === "karaoke" ? (
                 <div
                   className={
                     isVideoHidden

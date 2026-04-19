@@ -358,5 +358,7 @@ export const useAudioBookState = (content: IContent) => {
     finalUrl,
     transcriptions,
     isVideo,
+    play,
+    pause,
   };
 };

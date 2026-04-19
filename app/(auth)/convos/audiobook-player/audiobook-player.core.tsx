@@ -20,6 +20,7 @@ import { CharacterMenuBar } from "./components/character-menu-bar";
 import { ReaderViewParent } from "./components/reader-view-parent";
 import { useAudioBookState } from "./hooks/use-audiobook-state";
 import { ParaView } from "./components/para-view";
+import { AudiobookPlayerBar } from "./components/audiobook-player-bar";
 
 export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
   const {
@@ -310,23 +311,12 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
                 isReaderView={viewMode === "reader"}
               />
 
-              <div className="flex items-center gap-4 sm:px-8 px-4 pb-4">
-                <Slider
-                  min={0}
-                  max={duration}
-                  step={1}
-                  value={[currentTime]}
-                  defaultValue={[currentTime]}
-                  onValueChange={handleSeekChange}
-                  className="w-full"
-                  hidden
-                />
-                <span className="text-sm sm:text-lg sm:w-24 w-14 font-extralight">
-                  {formatTime(currentTime)}
-                </span>
-              </div>
+              <AudiobookPlayerBar
+                currentTime={currentTime}
+                handleSeekChange={handleSeekChange}
+                duration={duration}
+              />
             </div>
-            {/* )} */}
           </div>
         </div>
       </div>

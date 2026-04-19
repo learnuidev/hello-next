@@ -52,7 +52,7 @@ export const ReaderViewParent = ({
     <div className={cn("px-4 pb-24", "max-w-4xl")}>
       <EnglishTopView currentTranscription={currentTranscription} />
 
-      <div className="pb-32 sm:mt-16 mt-8">
+      <div className="pb-32 sm:mt-16 mt-4">
         <div>
           <div>
             <div className="">

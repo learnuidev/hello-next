@@ -175,7 +175,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
               ) : (
                 <div className="flex justify-center items-center sm:mt-24 mt-4">
                   <img
-                    className="rounded-2xl aspect-video sm:aspect-square w-full sm:w-[24rem] px-4"
+                    className="rounded-2xl aspect-video sm:aspect-square w-full sm:w-[24rem] px-4 sm:px-0"
                     src={content?.backgroundImageUrl}
                   />{" "}
                 </div>
@@ -186,9 +186,10 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
               className={cn(
                 isVideoHidden
                   ? "col-span-12"
-                  : isFSM
+                  : isFSM && isYoutubeOrVideo
                     ? "md:col-span-4 col-span-12"
                     : "md:col-span-6 col-span-12",
+                "sm:px-12",
               )}
             >
               {viewMode === "karaoke" ? (
@@ -235,11 +236,12 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
                 </div>
               ) : viewMode === "reader" ? (
                 <div
-                  className={
+                  className={cn(
+                    "sm:mt-32",
                     isVideoHidden
                       ? "col-span-12 mx-auto max-w-4xl sm:mt-32 mt-16"
-                      : ""
-                  }
+                      : "",
+                  )}
                 >
                   <div className={isVideoHidden ? "mx-auto max-w-4xl" : ""}>
                     <ReaderViewParent

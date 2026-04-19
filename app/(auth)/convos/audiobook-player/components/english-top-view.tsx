@@ -26,7 +26,7 @@ export const EnglishTopView = ({
       : currentTranscription?.en) || "";
 
   return (
-    <div className={cn("sticky top-0 z-30 ", className)}>
+    <div className={cn("sticky top-0 z-30 dark:text-gray-300", className)}>
       <div className="pb-4 mt-8">
         <div
           className={cn(

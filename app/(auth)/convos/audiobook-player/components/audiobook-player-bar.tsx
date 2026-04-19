@@ -46,7 +46,7 @@ export const AudiobookPlayerBar = ({
           value={[currentTime]}
           defaultValue={[currentTime]}
           onValueChange={handleSeekChange}
-          trackClassName="h-1"
+          trackClassName="h-1.5"
         />
 
         {hoverRatio !== null && (

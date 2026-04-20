@@ -77,6 +77,9 @@ function ReviewMode() {
 
   const { clozeContentMode } = useClozeContentMode();
 
+  console.log("REVIVE MODE", reviewMode);
+  console.log("CLOZE CONTENT MODE", clozeContentMode);
+
   if (reviewMode === "cloze") {
     if (clozeContentMode === "content") {
       return (

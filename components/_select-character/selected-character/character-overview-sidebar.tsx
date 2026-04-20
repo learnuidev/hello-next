@@ -117,37 +117,6 @@ export const CharacterOverviewViewSidebar = ({
           </TabsList>
 
           <TabsContent value="sentences">
-            {uniqueContentTitles?.length > 1 && (
-              <div className="mb-4">
-                <Select
-                  value={selectedContent}
-                  onValueChange={(value) => {
-                    setSelectedContent(value);
-                  }}
-                >
-                  <SelectTrigger className="w-[320px] text-xs dark:border-gray-800">
-                    <SelectValue placeholder="Select content" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-black dark:border-gray-900 w-[300px] text-xs">
-                    <SelectGroup>
-                      <SelectLabel>Content</SelectLabel>
-                      {uniqueContentTitles?.map((topic: any) => {
-                        return (
-                          <SelectItem
-                            value={topic?.title}
-                            key={topic?.title}
-                            className="text-xs dark:hover:text-white data-[state=unchecked]:dark:text-gray-500 transition data-[state=checked]:text-white"
-                          >
-                            {topic?.title}
-                          </SelectItem>
-                        );
-                      })}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </div>
-            )}
-
             <div className="shadows-sm shadow-2 shadow-black px-2 bg-gray-100 dark:bg-[rgb(11,12,13)] rounded-2xl overflow-hidden">
               <div className="">
                 {" "}

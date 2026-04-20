@@ -112,8 +112,6 @@ export const useGetCurrentReviewCharacter = () => {
     isLoading: isUnreviewedCharactersLoading,
   } = useUnreviwedCharacters();
 
-  console.log("UN REV", unReviewedCharacters);
-
   const isContent = useIsContent(hskMode);
   const isEntry = useIsEntry(entryId);
 
@@ -191,8 +189,6 @@ export const useGetCurrentReviewCharacter = () => {
       }
     }
   };
-
-  console.log("unReviewedCharacters", unReviewedCharacters);
 
   const remainingItems = useMemo(
     () =>

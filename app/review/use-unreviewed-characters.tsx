@@ -108,9 +108,6 @@ export function useUnreviwedCharacters() {
       })
 
       ?.filter((character: any) => {
-        if (reviewMode === "all") {
-          return true;
-        }
         return character?.next_review_date
           ? isBefore(new Date(character?.next_review_date), new Date())
           : true;
@@ -192,6 +189,11 @@ export function useUnreviwedCharacters() {
   return {
     data: unReviewedCharacters
       ?.filter((char: any) => char?.status !== "forgotten")
+      ?.filter((character: any) => {
+        return character?.next_review_date
+          ? isBefore(new Date(character?.next_review_date), new Date())
+          : true;
+      })
       ?.sort(
         (a: any, b: any) =>
           (a.next_review_date || 0) - (b?.next_review_date || 0),

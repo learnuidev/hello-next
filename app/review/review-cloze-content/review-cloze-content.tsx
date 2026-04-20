@@ -514,7 +514,13 @@ export function ReviewClozeContent({
               {showEn ? "Hide En" : "Show En"}
             </button>
 
-            {isMultiSent ? (
+            {initSentence?.contentId ? (
+              <YoutubeButton
+                sentenceInput={sentence?.input || sentence?.hanzi}
+                contentId={initSentence?.contentId}
+                transcriptId={sentence?.id}
+              />
+            ) : isMultiSent ? (
               <PlayButtonV2
                 customRef={customRef}
                 text={sentence?.input || sentence?.hanzi}

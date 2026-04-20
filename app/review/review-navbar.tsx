@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/tooltip";
 import { useClozeReviewTimer } from "./cloze-review-timer-store";
 import { useGetCurrentReviewCharacter } from "./use-get-current-review-character";
+import { NMMSettings } from "../nmm/nmm-settings";
 
 export const ReviewNavbar = () => {
   const { setReviewMode, reviewMode: _reviewMode } = useReviewModeView();
@@ -25,7 +26,7 @@ export const ReviewNavbar = () => {
   } = useGetCurrentReviewCharacter();
 
   const { setStartTime, setEndTime } = useClozeReviewTimer(
-    currentCharacter?.hanzi || currentCharacter?.input
+    currentCharacter?.hanzi || currentCharacter?.input,
   );
 
   return (
@@ -65,6 +66,8 @@ export const ReviewNavbar = () => {
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
+
+          <NMMSettings />
         </div>
 
         <span className="absolute -bottom-0 left-[1.125rem] h-px w-[calc(100%-2.25rem)] bg-gradient-to-r from-emerald-400/0 via-emerald-400/90 to-emerald-400/0 transition-opacity duration-500 group-hover:opacity-40" />

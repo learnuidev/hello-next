@@ -1,4 +1,5 @@
 import { formatPercentage } from "@/app/insights-overview/utils/format-percentage";
+import { secondsToTimestampV2 } from "@/app/insights-overview/utils/seconds-to-timestamp";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -178,11 +179,21 @@ export function calculateCharacterStats(val: any) {
     (totalCorrect || 0) / (totalAttempts || 1),
   );
 
+  const totalTimeSpent = (val?.reviewHistory || [])?.reduce(
+    (acc: any, curr: any) =>
+      acc + ((curr?.ponderTime || 0) + (curr?.timeTaken || 0)),
+    0,
+  );
+
+  const totalTimeSpentFormatted = secondsToTimestampV2(totalTimeSpent);
+
   return {
     totalAttempts: val?.reviewHistory?.length,
     totalIncorrect,
     totalCorrect,
     failureRate,
     accuracyRate,
+    totalTimeSpent,
+    totalTimeSpentFormatted,
   };
 }

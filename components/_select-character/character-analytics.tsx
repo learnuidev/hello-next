@@ -209,7 +209,11 @@ export function CharacterAnalytics({
     if (learnStatus !== "all") {
       filtered = filtered?.filter((char: any) => {
         if (learnStatus === "learned") {
-          return char?.status === "learned" || char?.status === "DISCOVERED";
+          return (
+            char?.status === "learned" ||
+            char?.status === "DISCOVERED" ||
+            char?.status === "needs_review"
+          );
         }
 
         if (learnStatus === "forgotten") {
@@ -265,7 +269,7 @@ export function CharacterAnalytics({
     <SelectedCharacterContainer characterId={selectedChar} />
   ) : (
     <div className="w-full px-4 my-4 md:my-8">
-      {totalPlays > 0 && (
+      {/* {totalPlays > 0 && (
         <ConvoInsightOverview
           contentId={characterId}
           data={[
@@ -278,7 +282,7 @@ export function CharacterAnalytics({
             { id: "total-plays-ca", stat: totalPlays, title: "Total Plays" },
           ]}
         />
-      )}
+      )} */}
       <div>
         <div className="flex flex-row justify-between w-full">
           <div className="flex justify-start space-x-4 sm:space-x-16">

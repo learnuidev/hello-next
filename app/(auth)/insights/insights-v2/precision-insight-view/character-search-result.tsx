@@ -9,7 +9,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { cn } from "@/lib/utils";
+import { calculateCharacterStats, cn } from "@/lib/utils";
 import { getStatusIcon } from "./status-icons";
 import { NoResultView } from "./no-result-view";
 import { formatPercentage } from "@/app/insights-overview/utils/format-percentage";
@@ -36,6 +36,8 @@ export function CharacterSearchResult({
         if (comp?.hanzi?.length > 16) {
           return null;
         }
+
+        const stats = calculateCharacterStats(comp);
 
         return (
           <Link
@@ -99,6 +101,8 @@ export function CharacterSearchResult({
                   {Number.isFinite(comp?.accuracy) && (
                     <span>{formatPercentage(comp?.accuracy || 0)}</span>
                   )}
+
+                  <span> {stats?.totalTimeSpentFormatted}</span>
                 </div>
               )}
             </div>

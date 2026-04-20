@@ -4,20 +4,20 @@ import { Icons } from "@/components/ui/icons.v2";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 
+import { ChinglishButton } from "@/components/chinglish-button";
+import { EnButton } from "@/components/en-button";
+import { PinyinButton } from "@/components/pinyin-button";
+import { ReadModeButton } from "@/components/read-mode-button";
+import { PreviewButton } from "@/components/settings-dialog/preview-button";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Switch } from "@/components/ui/switch";
+import { ContentEditButton } from "@/components/youtube-page/content-edit-button";
 import { usePlayerViewModeStore } from "@/components/youtube-page/player-view-mode-store";
 import { ActiveButtons } from "./active-buttons";
-import { PinyinButton } from "@/components/pinyin-button";
-import { EnButton } from "@/components/en-button";
-import { ReadModeButton } from "@/components/read-mode-button";
-import { ChinglishButton } from "@/components/chinglish-button";
-import { ContentEditButton } from "@/components/youtube-page/content-edit-button";
-import { PreviewButton } from "@/components/settings-dialog/preview-button";
 import { FontSizeControls } from "./font-size-controls";
 
 function ViewTypeButton({
@@ -88,9 +88,7 @@ export function AudioBookSettingsPopover({
                 <PinyinButton className="text-2xl" />
                 <EnButton className="text-2xl" />
                 <ReadModeButton className="text-2xl" />
-                {containsChinglish && (
-                  <ChinglishButton disabled={!showEn} className={"text-2xl"} />
-                )}
+                <ChinglishButton disabled={!showEn} className={"text-2xl"} />
               </div>
             </div>
 

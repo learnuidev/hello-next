@@ -21,12 +21,10 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
+import { NMMSettings } from "@/app/nmm/nmm-settings";
 import { DynaClozeHeader } from "@/components/dyno-cloze-core/dyna-cloze-header";
 import { DynoClozeLoader } from "@/components/dyno-cloze-core/dyno-cloze-loader";
 import { DynaClozeNavbar } from "@/components/dyno-cloze-core/dyno-cloze-navbar";
-import { EnButton } from "@/components/en-button";
-import { PinyinButton } from "@/components/pinyin-button";
-import { PreviewButton } from "@/components/settings-dialog/preview-button";
 import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
 import { SpeakSentence } from "../speak/speak-sentence";
 import {
@@ -113,7 +111,7 @@ const WithMultiSentence = ({
 
   const sentenceItem = useMemo(
     () => multiSentences?.[sentenceIndex],
-    [sentenceIndex, multiSentences]
+    [sentenceIndex, multiSentences],
   );
 
   if (multiSentences?.length === 1) {
@@ -189,31 +187,31 @@ const DynaSentence = ({
       grammar?.grammarAnalysis?.filter(
         (analysis) =>
           analysis?.input?.toLowerCase() !==
-          (sentence?.input || sentence?.hanzi)?.toLowerCase()
-      )
+          (sentence?.input || sentence?.hanzi)?.toLowerCase(),
+      ),
     );
   }, [grammar, sentence?.hanzi, sentence?.input]);
 
   const selectedGrammar = useMemo(
     () => shuffledGrammar?.[wordIndex],
-    [shuffledGrammar, wordIndex]
+    [shuffledGrammar, wordIndex],
   );
 
   const sentenceHanzi = useMemo(
     () => sentence?.input || sentence?.hanzi,
-    [sentence?.hanzi, sentence?.input]
+    [sentence?.hanzi, sentence?.input],
   );
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const replaceSelectedGrammar = (sentenceHanzi: string) => {
     return sentenceHanzi?.replaceAll(
       selectedGrammar?.input || selectedGrammar?.hanzi,
-      `  ${"__".repeat((selectedGrammar?.input || selectedGrammar?.hanzi)?.length)}  `
+      `  ${"__".repeat((selectedGrammar?.input || selectedGrammar?.hanzi)?.length)}  `,
     );
   };
 
   const multiSentence = getMulti(
-    parentSentence?.input || parentSentence?.hanzi
+    parentSentence?.input || parentSentence?.hanzi,
   );
 
   const sentenceHanziHidden = useMemo(() => {
@@ -227,18 +225,18 @@ const DynaSentence = ({
       getRandomWords(
         [
           ...new Set(
-            shuffledGrammar?.filter((item: any) => item.en !== relevantHanzi)
+            shuffledGrammar?.filter((item: any) => item.en !== relevantHanzi),
             // ?.map((item: any) => item?.en)
           ),
         ],
-        3
+        3,
       ),
-    [relevantHanzi, shuffledGrammar]
+    [relevantHanzi, shuffledGrammar],
   );
 
   const shuffledOptions = useMemo(
     () => shuffleArray([...randomThreeOptions, selectedGrammar]),
-    [randomThreeOptions, selectedGrammar]
+    [randomThreeOptions, selectedGrammar],
   );
 
   const checkAnswer = (answer: any) => {
@@ -289,7 +287,7 @@ const DynaSentence = ({
                   "transition",
                   response
                     ? ""
-                    : "hover:bg-orange-500 hover:text-white hover:scale-110"
+                    : "hover:bg-orange-500 hover:text-white hover:scale-110",
                 )}
                 key={`dynacloze-${idx}-${option?.en}`}
               >
@@ -319,7 +317,7 @@ const DynaSentence = ({
                   "transition",
                   response
                     ? ""
-                    : "hover:bg-orange-500 hover:text-white hover:scale-110"
+                    : "hover:bg-orange-500 hover:text-white hover:scale-110",
                 )}
                 key={`dynacloze-${idx}-${option?.en}`}
               >
@@ -357,7 +355,7 @@ const DynaSentence = ({
             setWordIndex(
               shuffledGrammar?.length === wordIndex + 1
                 ? 0
-                : Math.min(wordIndex + 1, shuffledGrammar?.length - 1)
+                : Math.min(wordIndex + 1, shuffledGrammar?.length - 1),
             );
             setResponse(null);
           }}
@@ -371,7 +369,7 @@ const DynaSentence = ({
             if (maxIndex) {
               if (maxIndex === sentenceIndex) {
                 setParentSentenceIndex(
-                  Math.min(parentSentenceIndex + 1, maxIndex)
+                  Math.min(parentSentenceIndex + 1, maxIndex),
                 );
 
                 setSentenceIndex(0);
@@ -525,9 +523,8 @@ export const DynaClozeSentence = ({
         <div className="flex items-center w-full justify-center">
           <div className="px-8  py-2 bg-gray-100 dark:bg-black no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6  text-white inline-block">
             <div className="space-x-8 flex justify-center items-center w-full">
-              <PinyinButton />
-              <EnButton />
-              <PreviewButton />
+              <NMMSettings />
+
               <button
                 className={
                   viewMode === "dynocloze"

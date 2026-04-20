@@ -1,14 +1,6 @@
 import { Icons } from "@/components/ui/icons.v2";
 
-import { ChinglishButton } from "@/components/chinglish-button";
-import { EnButton } from "@/components/en-button";
-import { PinyinButton } from "@/components/pinyin-button";
-import { ReadModeButton } from "@/components/read-mode-button";
-
-import { PreviewButton } from "@/components/settings-dialog/preview-button";
-import { ContentEditButton } from "@/components/youtube-page/content-edit-button";
 import { cn } from "@/lib/utils";
-import { FontSizeControls } from "./font-size-controls";
 import { AudioBookSettingsPopover } from "./audiobook-settings-popover";
 
 // Improve player controls

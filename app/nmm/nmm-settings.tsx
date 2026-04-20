@@ -2,18 +2,17 @@
 
 import { Icons } from "@/components/ui/icons.v2";
 import { Label } from "@/components/ui/label";
-import { cn } from "@/lib/utils";
 
+import { ChinglishButton } from "@/components/chinglish-button";
+import { EnButton } from "@/components/en-button";
+import { PinyinButton } from "@/components/pinyin-button";
+import { ReadModeButton } from "@/components/read-mode-button";
+import { PreviewButton } from "@/components/settings-dialog/preview-button";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { PinyinButton } from "@/components/pinyin-button";
-import { EnButton } from "@/components/en-button";
-import { ReadModeButton } from "@/components/read-mode-button";
-import { ChinglishButton } from "@/components/chinglish-button";
-import { PreviewButton } from "@/components/settings-dialog/preview-button";
 
 export function NMMSettings({ children }: { children?: React.ReactNode }) {
   return (

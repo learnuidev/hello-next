@@ -2,17 +2,14 @@
 
 import { useGetContentQuery } from "@/domain/content/content.queries";
 
-import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 
+import { NMMSettings } from "@/app/nmm/nmm-settings";
 import { SentenceItem } from "@/components/_select-character/sentence-item";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { PinyinButton } from "@/components/pinyin-button";
-import { EnButton } from "@/components/en-button";
-import { ChinglishButton } from "@/components/chinglish-button";
-import Link from "next/link";
-import { cn } from "@/lib/utils";
-import { useMemo } from "react";
 import { getNmmLink } from "@/libs/utils/get-nmm-link";
+import Link from "next/link";
+import { useMemo } from "react";
 
 export const ConvoContextDialog = ({
   isOpen,
@@ -65,11 +62,7 @@ export const ConvoContextDialog = ({
             Selected: {selected?.input || selected?.hanzi}
           </Link>
 
-          <div className="flex gap-2">
-            <PinyinButton />
-            <EnButton />
-            <ChinglishButton disabled={!containsChinglish} />
-          </div>
+          <NMMSettings />
         </div>
 
         <ScrollArea className="space-y-6 w-full h-[400px] rounded-md">

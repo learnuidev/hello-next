@@ -42,13 +42,12 @@ import { useIsSmall } from "./utils/use-is-small";
 import { useGo } from "@/app/(auth)/convos/[content-id]/hooks/use-go";
 import { formatTime } from "@/app/(auth)/convos/_play/utils";
 import { MiniDictionary } from "@/app/(auth)/convos/audiobook-player/components/mini-dictionary";
+import { isYoutube } from "@/app/(auth)/convos/utils/is-youtube";
 import { MandoContextMenu } from "@/app/review/review-cloze-content/mando-context-menu";
 import { useGetUserPreferenceQuery } from "@/domain/user/use-get-user-preference-query";
 import { useCountdown } from "@/hooks/use-countdown/use-countdown";
 import { useShowAutomaticallyTheDock } from "@/hooks/use-show-automatically-the-dock";
 import { useQueryClient } from "@tanstack/react-query";
-import { create } from "zustand";
-import { createJSONStorage, persist } from "zustand/middleware";
 import { ChinglishButton } from "../chinglish-button";
 import { PinyinButton } from "../pinyin-button";
 import { PreviewButton } from "../settings-dialog/preview-button";
@@ -61,10 +60,9 @@ import {
   usePlayHistoryStore,
 } from "./hooks/use-play-history-state";
 import { useWordsClickedHistoryStore } from "./hooks/use-words-clicked-history-state";
+import { usePlayerViewModeStore } from "./player-view-mode-store";
 import { useSelectedItem } from "./use-selected-item";
 import { smartSplit } from "./utils/smart-split";
-import { isYoutube } from "@/app/(auth)/convos/utils/is-youtube";
-import { usePlayerViewModeStore } from "./player-view-mode-store";
 
 interface ViewModeState {
   viewMode: string;
@@ -110,15 +108,15 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
   const setToggleLoop = usePlayerViewModeStore((state) => state.setToggleLoop);
 
   const _toggleLoops: any = usePlayerViewModeStore(
-    (state) => state.toggleLoops
+    (state) => state.toggleLoops,
   );
 
   const toggleLoops = useMemo(
     () => _toggleLoops?.filter((loop: any) => loop?.contentId === contentId),
-    [_toggleLoops, contentId]
+    [_toggleLoops, contentId],
   );
   const setToggleLoops = usePlayerViewModeStore(
-    (state) => state.setToggleLoops
+    (state) => state.setToggleLoops,
   );
 
   const qaMode = usePlayerViewModeStore((state) => state.qaMode);
@@ -131,7 +129,7 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
 
   const isVideoHidden = usePlayerViewModeStore((state) => state.isVideoHidden);
   const setIsVideoHidden = usePlayerViewModeStore(
-    (state) => state.setIsVideoHidden
+    (state) => state.setIsVideoHidden,
   );
 
   const focusMode = usePlayerViewModeStore((state) => state.focusMode);
@@ -145,7 +143,7 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
 
   const playerRef = useRef(null) as any;
   const setRepeatHistories = useRepeatHistoryStore(
-    (state: any) => state.setHistory
+    (state: any) => state.setHistory,
   );
 
   const { data: learnedCharacters } = useListComponents();
@@ -257,15 +255,15 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
 
   const seekBefore = useCallback(() => {
     const currentTranscription = transcriptions?.find(
-      (trans: any) => trans?.start <= currentTime && trans?.end >= currentTime
+      (trans: any) => trans?.start <= currentTime && trans?.end >= currentTime,
     );
 
     if (currentTranscription) {
       const currentTranscriptionIndex = Math.max(
         transcriptions?.findIndex(
-          (trans: any) => trans?.start === currentTranscription?.start
+          (trans: any) => trans?.start === currentTranscription?.start,
         ),
-        0
+        0,
       );
 
       const prevIndex = Math.max(currentTranscriptionIndex - 1, 0);
@@ -284,19 +282,19 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
 
   const seekAfter = useCallback(() => {
     const currentTranscription = transcriptions?.find(
-      (trans: any) => trans?.start <= currentTime && trans?.end >= currentTime
+      (trans: any) => trans?.start <= currentTime && trans?.end >= currentTime,
     );
 
     const currentTranscriptionIndex = Math.max(
       transcriptions?.findIndex(
-        (trans: any) => trans?.start === currentTranscription?.start
+        (trans: any) => trans?.start === currentTranscription?.start,
       ),
-      0
+      0,
     );
 
     const nextIndex = Math.min(
       currentTranscriptionIndex + 1,
-      transcriptions?.length - 1
+      transcriptions?.length - 1,
     );
     const nextTranscription = transcriptions?.[nextIndex];
 
@@ -310,7 +308,7 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
   }, [currentTime, transcriptions]);
 
   const currentTranscription = transcriptions?.find(
-    (trans: any) => trans?.start <= currentTime && trans?.end >= currentTime
+    (trans: any) => trans?.start <= currentTime && trans?.end >= currentTime,
   );
 
   const toggleLoopHandler = useCallback(() => {
@@ -326,7 +324,7 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
   const toggleKaraokeMode = () => {
     setViewMode((prev: any) => (prev === "karaoke" ? null : "karaoke"));
     setIsVideoHidden((isHidden: any) =>
-      viewMode !== "karaoke" ? true : false
+      viewMode !== "karaoke" ? true : false,
     );
   };
 
@@ -402,9 +400,9 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
 
   const currentTranscriptionIndex = Math.max(
     transcriptions?.findIndex(
-      (trans: any) => trans?.start === currentTranscription?.start
+      (trans: any) => trans?.start === currentTranscription?.start,
     ),
-    0
+    0,
   );
 
   const debounceSeek = useDebouncedCallback((firstStart: any) => {
@@ -454,7 +452,8 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
   }, []);
 
   const currentChapter = content?.chapters?.find(
-    (chapter: any) => chapter?.start < currentTime && chapter?.end > currentTime
+    (chapter: any) =>
+      chapter?.start < currentTime && chapter?.end > currentTime,
   );
 
   const finishedChapters = content?.chapters?.filter((chapter: any) => {
@@ -478,10 +477,10 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
   const setTimes = useContentEditStore((state) => state.setTimes);
   const times = useContentEditStore((state) => state.times);
   const activeTimeLimit = usePlayerViewModeStore(
-    (state) => state.activeTimeLimit
+    (state) => state.activeTimeLimit,
   );
   const activeLengthLimit = usePlayerViewModeStore(
-    (state) => state.activeLengthLimit
+    (state) => state.activeLengthLimit,
   );
 
   const group = useMemo(() => {
@@ -507,7 +506,7 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
         lang: content.lang,
         start: 0,
         end: 0,
-      })
+      }),
     );
   };
 
@@ -581,7 +580,7 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
   const { selected, setSelected } = useSelectedItem();
 
   const newTranscriptions = times.filter(
-    (time: any) => time.contentId === content.id
+    (time: any) => time.contentId === content.id,
   );
   const transcriptionsView =
     active !== MAX_LIMIT ? group : transcriptions || [];
@@ -662,13 +661,13 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
                   const updatedTranscriptions = content?.transcriptions?.map(
                     (transcription: any) => {
                       const time = times?.find(
-                        (t: any) => t?.id === transcription?.id
+                        (t: any) => t?.id === transcription?.id,
                       ) as any;
                       return {
                         ...transcription,
                         ...time,
                       };
-                    }
+                    },
                   );
 
                   const newTranscriptions =
@@ -849,7 +848,7 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
                   isVideoHidden
                     ? "col-span-12 mx-0 sm:mx-12 md:mx-32"
                     : "col-span-12 md:col-span-5",
-                  "pb-12"
+                  "pb-12",
                 )}
               >
                 {isVideoHidden && (
@@ -901,7 +900,7 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
                         ? "md:col-span-7 col-span-12"
                         : "md:col-span-5 col-span-12"
                     } w-full`,
-                    qaMode && content?.questions?.length > 0 ? "mt-8" : ""
+                    qaMode && content?.questions?.length > 0 ? "mt-8" : "",
                   )}
                 >
                   <MandoContextMenu lang={content?.lang || ""}>
@@ -918,7 +917,7 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
                           `space-y-4 rounded-md shadow-lg dark:shadow-gray-800 p-2 dark:border-gray-900 w-full pb-8`,
                           qaMode && content?.questions?.length > 0
                             ? "h-[350px]"
-                            : "h-[400px] sm:h-[640px]"
+                            : "h-[400px] sm:h-[640px]",
                         )}
                       >
                         <div className="space-y-8">
@@ -973,7 +972,7 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
 
                                           playerRef.current.seekTo(
                                             transcription?.start,
-                                            "seconds"
+                                            "seconds",
                                           );
 
                                           try {
@@ -1026,7 +1025,7 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
                                   <Link
                                     target="_blank"
                                     href={`https://translate.google.com/?hl=zh-CN&sl=zh-CN&tl=en&text=${encodeURIComponent(
-                                      hanzis
+                                      hanzis,
                                     )}&op=translate`}
                                     className="text-gray-500 hover:text-black dark:hover:text-white"
                                   >
@@ -1055,11 +1054,11 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
                                         "hover:text-black dark:hover:text-white",
                                         toggleLoops?.find((item: any) =>
                                           transcriptions?.find(
-                                            (x: any) => x.end === item?.end
-                                          )
+                                            (x: any) => x.end === item?.end,
+                                          ),
                                         )
                                           ? "dark:text-white text-red-400"
-                                          : "text-gray-500"
+                                          : "text-gray-500",
                                       )}
                                       icon={faRepeat}
                                     />
@@ -1155,7 +1154,7 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
         <div
           className={cn(
             "transition",
-            "flex items-center w-full justify-center"
+            "flex items-center w-full justify-center",
           )}
         >
           <div className="overflow-y-auto px-8 py-2 bg-gray-50 dark:bg-black no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6  text-white inline-block">
@@ -1168,7 +1167,7 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
                   `text-xl`,
                   toggleLoops?.length > 0
                     ? "dark:text-white text-black"
-                    : "dark:text-gray-500 text-gray-300"
+                    : "dark:text-gray-500 text-gray-300",
                 )}
               >
                 <Icons.loop className="transition" />
@@ -1185,7 +1184,7 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
                   goToBefore();
                 }}
                 className={cn(
-                  `text-xl dark:hover:text-white hover:text-black text-gray-500`
+                  `text-xl dark:hover:text-white hover:text-black text-gray-500`,
                 )}
               >
                 <Icons.backward className="transition" />
@@ -1196,7 +1195,7 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
                   goToNext();
                 }}
                 className={cn(
-                  `text-xl dark:hover:text-white hover:text-black text-gray-500`
+                  `text-xl dark:hover:text-white hover:text-black text-gray-500`,
                 )}
               >
                 <Icons.forward className="transition" />
@@ -1220,7 +1219,7 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
                   seekBefore();
                 }}
                 className={cn(
-                  `text-xl dark:hover:text-white hover:text-black text-gray-500`
+                  `text-xl dark:hover:text-white hover:text-black text-gray-500`,
                 )}
               >
                 <Icons.rotateLeft className="transition" />
@@ -1230,7 +1229,7 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
                   seekAfter();
                 }}
                 className={cn(
-                  `text-xl dark:hover:text-white hover:text-black text-gray-500`
+                  `text-xl dark:hover:text-white hover:text-black text-gray-500`,
                 )}
               >
                 <Icons.rotateRight className="transition" />

@@ -50,10 +50,17 @@ export const CharacterOverviewView = ({
           <article>
             <div>
               <div className="">
-                <Tabs defaultValue="overview">
+                <Tabs defaultValue="grammar-analysis">
                   <div className="mt-4 overflow-y-auto">
                     {true && (
                       <TabsList className="space-x-8 overflow-y-auto">
+                        <TabsTrigger
+                          value="grammar-analysis"
+                          className="px-0 data-[state=active]:text-black data-[state=active]:dark:text-white text-gray-500 data-[state=active]:font-bold"
+                        >
+                          Grammar
+                        </TabsTrigger>
+
                         <TabsTrigger
                           value="overview"
                           className="px-0 data-[state=active]:text-black data-[state=active]:dark:text-white text-gray-500 data-[state=active]:font-bold"
@@ -67,13 +74,6 @@ export const CharacterOverviewView = ({
                           Learning Context
                         </TabsTrigger>
                         {/* )} */}
-
-                        <TabsTrigger
-                          value="grammar-analysis"
-                          className="px-0 data-[state=active]:text-black data-[state=active]:dark:text-white text-gray-500 data-[state=active]:font-bold"
-                        >
-                          Grammar
-                        </TabsTrigger>
 
                         {characterId?.length <= 4 && (
                           <TabsTrigger

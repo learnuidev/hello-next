@@ -35,6 +35,7 @@ import { useCharacterEditStore } from "./use-character-edit-store";
 import { useYoutubeRefState } from "./use-youtube-ref-state";
 import { isNonRomanLang } from "./utils/is-non-roman-lang";
 import { WithInteractiveTitle } from "./with-interative-title";
+import { useViewTypeStore } from "../use-selected-character";
 
 export const CharacterTitle = (props: any) => {
   const {
@@ -63,6 +64,12 @@ export const CharacterTitle = (props: any) => {
 
   const pinyins = data?.map((val) => val?.pinyin) || [];
   const englishMeanings = data?.map((val) => val?.en) || [];
+
+  const setViews = useViewTypeStore((state) => state.setViews);
+
+  const setView = (view: any) => {
+    return setViews(characterId, view);
+  };
 
   const searchParams = useSearchParams();
 
@@ -461,6 +468,9 @@ export const CharacterTitle = (props: any) => {
         <div className="space-x-4 flex items-center">
           {!edit && (
             <PlayButtonV2
+              onClick={() => {
+                setView("full-screen");
+              }}
               customRef={customRef}
               text={selectedCompInput}
               lang={lang}

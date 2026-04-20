@@ -19,6 +19,7 @@ import {
   usePlayHistoryStore,
 } from "../youtube-page/hooks/use-play-history-state";
 import { useAudioProviderState } from "../settings-dialog/hooks/use-audio-provider-state";
+import { on } from "events";
 
 function PlayBtnInner({
   defaultPlaybackRef,
@@ -159,12 +160,14 @@ export function PlayButtonV2({
   lang,
   className,
   customRef,
+  onClick,
 }: {
   text: string;
   lang: string;
   className?: string;
   customRef?: any;
   defaultPlaybackRef?: boolean;
+  onClick?: () => void;
 }) {
   const getAudioMutation = useGetAudioMutation();
 

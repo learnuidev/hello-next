@@ -51,7 +51,7 @@ export const useGetHskWordHandler = () => {
 
   return (item: any) => {
     const hskLevel = hskWords?.find(
-      (hskWord: any) => hskWord?.hanzi === (item?.input || item?.hanzi)
+      (hskWord: any) => hskWord?.hanzi === (item?.input || item?.hanzi),
     );
 
     return hskLevel;
@@ -86,7 +86,7 @@ export function GrammarAnalysis({
       refetchOnFocus: false,
       refetchOnMount: false,
       refetchOnReconnect: false,
-    }
+    },
   );
 
   const router = useRouter();
@@ -114,14 +114,14 @@ export function GrammarAnalysis({
           return char
             ?.split("")
             ?.some(
-              (val) => val === hanziOrInput && item.status === "forgotten"
+              (val) => val === hanziOrInput && item.status === "forgotten",
             );
         }) || [];
       const isEveryCharacterLearned =
         isEveryCharacterLearnedArr?.length === char?.length;
 
       return isLearned?.length === 0 && !isEveryCharacterLearned;
-    }
+    },
   );
 
   const GrammarAnalysisList = () => {
@@ -134,10 +134,10 @@ export function GrammarAnalysis({
 
     if (isGrammarAnalysisLoading) {
       return (
-        <div className="my-4">
+        <div className="my-4 flex">
           <AnimatedLoadingText
-            className="text-xl font-bold"
-            message="Generating grammar analysis..."
+            className="text-xl font-bold text-center"
+            message="Generating grammar..."
           />
         </div>
       );
@@ -164,7 +164,7 @@ export function GrammarAnalysis({
         className={cn(
           "rounded-2xl",
           "shadows-sm shadow-2 shadow-black p-2 sm:px-8 py-4 bg-gray-50 dark:bg-[rgb(11,12,13)] rounded-2xl overflow-hidden mt-4 sm:mt-0",
-          "dark:bg-[rgb(14,15,16)] bg-gray-50 p-4 sm:p-8 rounded-2xl mt-2"
+          "dark:bg-[rgb(14,15,16)] bg-gray-50 p-4 sm:p-8 rounded-2xl mt-2",
         )}
       >
         <h4 className="font-bold text-xl">Grammar Analysis</h4>

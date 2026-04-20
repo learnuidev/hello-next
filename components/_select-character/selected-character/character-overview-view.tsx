@@ -7,8 +7,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { useSelectedCharacterData } from "@/components/use-selected-character";
 import { cn } from "@/lib/utils";
-import { useEffect } from "react";
-import { CharacterSentences } from "../character-sentences";
 import { CharacterLearningContext } from "./character-learning-context";
 import { CharacterOverviewViewSidebar } from "./character-overview-sidebar";
 import { CharacterVariantSummary } from "./character-variant-summary";
@@ -16,11 +14,14 @@ import { SelectedCharacterHeader } from "./selected-character-header";
 
 import { useGetSelectedCharacterParams } from "./use-get-selected-character-params";
 
-import { AdvancedSearchView } from "./advanced-search-view/advanced-search-view";
-import { CharacterSentenceTransformations } from "../character-sentence-transformations";
+import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
 import { isSentence } from "@/libs/utils/is-sentence";
-import { SynonymsView } from "./synonyms-view";
+import { CharacterSentenceTransformations } from "../character-sentence-transformations";
+import { SentenceItem } from "../sentence-item";
+import { AdvancedSearchView } from "./advanced-search-view/advanced-search-view";
 import { AntonymsView } from "./antonyms-view";
+import { SynonymsView } from "./synonyms-view";
+import { useGetCharacterLearningContext } from "./use-get-character-learning-context";
 
 export const CharacterOverviewView = ({
   characterId,
@@ -34,6 +35,13 @@ export const CharacterOverviewView = ({
   const { variant } = useGetSelectedCharacterParams();
 
   const _isSentence = isSentence(characterId);
+
+  const items = useGetCharacterLearningContext({ lang, characterId });
+
+  const { data: sentences } = useListSentencesQuery({
+    component: characterId,
+    lang,
+  });
 
   return (
     <div
@@ -149,7 +157,19 @@ export const CharacterOverviewView = ({
                     />
                   </TabsContent>
                   <TabsContent value="sentences">
-                    <CharacterSentences characterId={characterId} />
+                    <div>
+                      {sentences?.map((item: any) => {
+                        return (
+                          <SentenceItem
+                            key={JSON.stringify(item)}
+                            currentPhrase={item}
+                            selectedComp={selectedComp}
+                            selectedChar={characterId}
+                            lang={item?.lang}
+                          />
+                        );
+                      })}
+                    </div>
                   </TabsContent>
                   {_isSentence && (
                     <TabsContent value="sentence-transformations">

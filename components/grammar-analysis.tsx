@@ -93,36 +93,9 @@ export function GrammarAnalysis({
 
   const { data: learnedCharacters } = useListCharactersQuery();
 
-  const grammarAnalysisFinal = (grammarAnalysis?.grammarAnalysis || [])?.filter(
-    (item) => {
-      if (contentId?.length < 80) {
-        return true;
-      }
+  const grammarAnalysisFinal = grammarAnalysis?.grammarAnalysis || [];
 
-      const char = item?.hanzi || item?.input;
-
-      const isLearned =
-        learnedCharacters?.filter((item: any) => {
-          const hanziOrInput = item?.hanzi || item?.input;
-          return hanziOrInput === char;
-        }) || [];
-
-      const isEveryCharacterLearnedArr =
-        learnedCharacters?.filter((item: any) => {
-          const hanziOrInput = item?.hanzi || item?.input;
-          // return hanziOrInput === char;
-          return char
-            ?.split("")
-            ?.some(
-              (val) => val === hanziOrInput && item.status === "forgotten",
-            );
-        }) || [];
-      const isEveryCharacterLearned =
-        isEveryCharacterLearnedArr?.length === char?.length;
-
-      return isLearned?.length === 0 && !isEveryCharacterLearned;
-    },
-  );
+  console.log("grammarAnalysisFinal", grammarAnalysisFinal);
 
   const GrammarAnalysisList = () => {
     const divStyles =
@@ -170,20 +143,19 @@ export function GrammarAnalysis({
         <h4 className="font-bold text-xl">Grammar Analysis</h4>
         <div className={cn(divStyles, className)}>
           {grammarAnalysisFinal?.map((analysis) => {
-            if (!analysis?.pinyin && lang === "zh") {
-              return null;
-            }
+            const hanziOrInput = analysis?.hanzi || analysis?.input;
+
             const resolvedLang = lang || analysis?.lang;
-            if (analysis?.hanzi) {
+            if (hanziOrInput) {
               const hskWord = getHskWordHandler(analysis);
-              const cleanHanzi = cleanString(analysis?.hanzi);
+              const cleanHanzi = cleanString(hanziOrInput);
               return (
                 <div
                   key={cleanHanzi}
                   className="flex items-start flex-col font-light"
                 >
                   <div className="flex items-start flex-row space-x-2">
-                    {analysis?.hanzi?.length < 4 ? (
+                    {hanziOrInput?.length < 4 ? (
                       <div className="flex space-x-2">
                         <Link
                           className="text-gray-900 dark:text-gray-300"

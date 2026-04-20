@@ -24,7 +24,6 @@ export const ReviewItemHanzi = ({
             <Link
               href={`/nmm/${item}${lang ? `?lang=${lang}` : ""}`}
               key={`review-cloze-${idx}-${item}`}
-              target="_blank"
             >
               <CharacterItem
                 character={item}

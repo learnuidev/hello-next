@@ -73,15 +73,7 @@ export default function RootLayout({
 
                   <LanguageSelector />
 
-                  <footer className="font-light text-xs my-4 flex justify-center items-center space-x-2 text-gray-300 dark:text-gray-700">
-                    {/* <FontAwesomeIcon icon={faScrewdriverWrench} />
-                  <Link
-                    target="_blank"
-                    href="https://www.linkedin.com/in/vishalgautamm/"
-                  >
-                    Vishal Gautam
-                  </Link> */}
-                  </footer>
+                  <footer className="font-light text-xs my-4 flex justify-center items-center space-x-2 text-gray-300 dark:text-gray-700"></footer>
                 </div>
               </InitialLoadingBanner>
             </ThemeProvider>

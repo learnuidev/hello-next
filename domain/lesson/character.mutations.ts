@@ -47,6 +47,21 @@ export function useAddCharacterMutation(options = {} as any) {
         queryKey: [getCharacterQueryId, params.hanzi],
       });
 
+      queryClient.setQueryData([listCharactersQueryId], (data: any) => {
+        return data.map((item: any) => {
+          if (item.id === response.id) {
+            return response;
+          }
+          return item;
+        });
+      });
+      queryClient.setQueryData([listCharactersQueryMapId], (data: any) => {
+        return {
+          ...data,
+          [response.hanzi]: response,
+        };
+      });
+
       return response;
     },
     ...options,

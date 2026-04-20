@@ -26,7 +26,6 @@ export const TotalReviews = ({
               href={
                 `/nmm/${item?.hanzi}` + item?.lang ? `?lang=${item?.lang}` : ""
               }
-              target="_blank"
               key={item?.id}
             >
               {item?.hanzi}

@@ -316,7 +316,6 @@ export function ReviewCloze({
         <div className="mt-24 lg:mt-32">
           {response ? (
             <Link
-              target="_blank"
               href={`/nmm/${sentence?.hanzi || sentence?.input}?lang=${lang || sentence?.lang}`}
               className="block text-center mb-4"
             >
@@ -336,7 +335,6 @@ export function ReviewCloze({
           />
 
           <Link
-            target="_blank"
             href={`/convos/${sentence?.contentId}${sentence?.start ? `?start=${sentence?.start}` : ""}`}
             className="block"
           >
@@ -376,20 +374,14 @@ export function ReviewCloze({
               {response?.type === "incorrect" ? (
                 <p className="my-8 text-center">
                   Oops, your answer is incorrect. Correct answer is:{" "}
-                  <Link
-                    href={`/nmm/${relevantHanzi}?lang=${lang}`}
-                    target="_blank"
-                  >
+                  <Link href={`/nmm/${relevantHanzi}?lang=${lang}`}>
                     {relevantHanzi}
                   </Link>
                 </p>
               ) : (
                 <p className="my-8 text-center text-gray-500">
                   Learn more:{" "}
-                  <Link
-                    href={`/nmm/${relevantHanzi}?lang=${lang}`}
-                    target="_blank"
-                  >
+                  <Link href={`/nmm/${relevantHanzi}?lang=${lang}`}>
                     {relevantHanzi}
                   </Link>
                 </p>

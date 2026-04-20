@@ -271,11 +271,7 @@ export function ReviewModeClassic(props: any) {
             </div>
           ) : null}
           {isContentLessThanFive ? (
-            <Link
-              href={characterLink}
-              className={cn("text-8xl md:text-9xl")}
-              target="_blank"
-            >
+            <Link href={characterLink} className={cn("text-8xl md:text-9xl")}>
               {currentCharacter?.hanzi || currentCharacter?.input}
             </Link>
           ) : (

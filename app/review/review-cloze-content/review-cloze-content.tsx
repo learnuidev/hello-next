@@ -346,7 +346,6 @@ export function ReviewClozeContent({
         <div className="mt-24 lg:mt-32">
           {response ? (
             <Link
-              target="_blank"
               href={`/nmm/${sentence?.input || sentence?.hanzi}?lang=${lang || sentence?.lang}`}
               className="block text-center mb-4"
             >
@@ -366,7 +365,6 @@ export function ReviewClozeContent({
           />
 
           <Link
-            target="_blank"
             href={`/convos/${initSentence?.contentId}${initSentence?.start ? `?start=${initSentence?.start}` : ""}`}
             className="block"
           >
@@ -378,7 +376,6 @@ export function ReviewClozeContent({
               if (response) {
                 return (
                   <Link
-                    target="_blank"
                     href={`/nmm/${option?.input || option?.hanzi}?lang=${sentence?.lang}`}
                     className={cn(
                       "border-orange-400 text-black  border-[2px] p-2 dark:text-white text-lg block text-center",
@@ -443,20 +440,14 @@ export function ReviewClozeContent({
               {response?.type === "incorrect" ? (
                 <p className="my-8 text-center">
                   Oops, your answer is incorrect. Correct answer is:{" "}
-                  <Link
-                    href={`/nmm/${relevantHanzi}?lang=${lang}`}
-                    target="_blank"
-                  >
+                  <Link href={`/nmm/${relevantHanzi}?lang=${lang}`}>
                     {relevantHanzi}
                   </Link>
                 </p>
               ) : (
                 <p className="my-8 text-center text-gray-500">
                   Learn more:{" "}
-                  <Link
-                    href={`/nmm/${relevantHanzi}?lang=${lang}`}
-                    target="_blank"
-                  >
+                  <Link href={`/nmm/${relevantHanzi}?lang=${lang}`}>
                     {relevantHanzi}
                   </Link>
                 </p>

@@ -273,7 +273,6 @@ const DynaSentence = ({
           if (response) {
             return (
               <Link
-                target="_blank"
                 href={`/nmm/${option?.hanzi || option?.input}?lang=${sentence?.lang}`}
                 className={cn(
                   "border-orange-400 text-black  border-[2px] p-2 dark:text-white text-lg block text-center",

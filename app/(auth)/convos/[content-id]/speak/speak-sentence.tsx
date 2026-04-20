@@ -48,7 +48,7 @@ export const SpeakSentence = ({ sentence }: { sentence: any }) => {
         ?.split("")
         ?.filter((item) => item !== " ")
         ?.join(""),
-    [transcript]
+    [transcript],
   );
 
   useEffect(() => {
@@ -99,7 +99,7 @@ export const SpeakSentence = ({ sentence }: { sentence: any }) => {
 
     if (
       iwantToWatchOrListen?.filter((item) =>
-        lowerCasedTranscript?.includes(item)
+        lowerCasedTranscript?.includes(item),
       )?.length > 0
     ) {
       stopListening();
@@ -133,7 +133,6 @@ export const SpeakSentence = ({ sentence }: { sentence: any }) => {
           <p className="mb-4">{sentence?.en}</p>
           <p className="text-4xl">
             <Link
-              target="_blank"
               href={`/nmm/${sentence?.hanzi || sentence?.input}?lang=${sentence?.lang}`}
             >
               {sentence?.hanzi || sentence?.input}
@@ -149,7 +148,6 @@ export const SpeakSentence = ({ sentence }: { sentence: any }) => {
                     ? "text-green-500"
                     : ""
                 }
-                target="_blank"
                 href={`/nmm/${transcript}?lang=${sentence?.lang}`}
               >
                 {spacedRemovedTranscript?.split("").map((item, idx: number) => {

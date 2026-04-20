@@ -152,36 +152,36 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
                 `${isVideoHidden ? "hidden" : ""}`,
               )}
             >
-              {isYoutubeOrVideo ? (
-                <ReactPlayer
-                  key={content?.audio}
-                  playbackRate={playbackRate}
-                  progressInterval={progressInterval}
-                  url={content?.audio}
-                  onPlay={() => {
-                    setNewContextId();
+              <div className="flex justify-center items-center sm:mt-24 mt-4">
+                {isYoutubeOrVideo ? (
+                  <ReactPlayer
+                    key={content?.audio}
+                    playbackRate={playbackRate}
+                    progressInterval={progressInterval}
+                    url={content?.audio}
+                    onPlay={() => {
+                      setNewContextId();
 
-                    setPlaying(true);
-                  }}
-                  onPause={() => setPlaying(false)}
-                  width="100%"
-                  height={isSmall ? "200px" : isFSM ? "600px" : "450px"}
-                  onReady={onReady}
-                  // playing={false}
-                  controls={false}
-                  ref={playerRef}
-                  onProgress={(value) => {
-                    setCurrentTime(value.playedSeconds);
-                  }}
-                />
-              ) : (
-                <div className="flex justify-center items-center sm:mt-24 mt-4">
+                      setPlaying(true);
+                    }}
+                    onPause={() => setPlaying(false)}
+                    width="100%"
+                    height={isSmall ? "200px" : isFSM ? "600px" : "450px"}
+                    onReady={onReady}
+                    // playing={false}
+                    controls={false}
+                    ref={playerRef}
+                    onProgress={(value) => {
+                      setCurrentTime(value.playedSeconds);
+                    }}
+                  />
+                ) : (
                   <img
                     className="rounded-2xl aspect-video sm:aspect-square w-full sm:w-[24rem] px-4 sm:px-0"
                     src={content?.backgroundImageUrl}
-                  />{" "}
-                </div>
-              )}
+                  />
+                )}
+              </div>
             </div>
 
             <div

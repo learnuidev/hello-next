@@ -120,7 +120,7 @@ export const useGetCurrentReviewCharacter = () => {
   const currentCharacter = useMemo(
     () =>
       input
-        ? uniqueComponentWords?.[reviewCount]
+        ? unReviewedCharacters?.[reviewCount]
         : isEntry
           ? reviewMode === "all"
             ? unReviewedCharacters?.[reviewCount]
@@ -147,7 +147,6 @@ export const useGetCurrentReviewCharacter = () => {
       reviewCount,
       reviewMode,
       unReviewedCharacters,
-      uniqueComponentWords,
     ],
   );
 
@@ -192,6 +191,8 @@ export const useGetCurrentReviewCharacter = () => {
       }
     }
   };
+
+  console.log("unReviewedCharacters", unReviewedCharacters);
 
   const remainingItems = useMemo(
     () =>

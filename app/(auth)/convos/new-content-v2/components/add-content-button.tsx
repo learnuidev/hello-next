@@ -15,6 +15,8 @@ export const AddContentButton = () => {
       onClick={() => {
         const contentInput = validateContentInput(newConvo);
 
+        console.log("CONTENT INPUT", contentInput);
+
         if (contentInput?.error?.issues) {
           alert(`yooo: ${JSON.stringify(contentInput?.error?.issues)}`);
         } else {

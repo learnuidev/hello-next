@@ -9,4 +9,5 @@ export type AddContentParams = {
   lang?: string;
   contentUrl?: string;
   websiteUrl?: string;
+  backgroundImageId: string;
 } & any;

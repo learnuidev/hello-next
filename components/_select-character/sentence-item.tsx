@@ -77,10 +77,10 @@ export const SentenceItem = (props: any) => {
             <p className="text-[16px] font-light flex space-x-2">
               <span>
                 {" "}
-                <Icons.bullsEyeArrowDT />
+                <Icons.lightBulbDuotone />
               </span>
 
-              <span> {characterAnalytics?.precisionRate}</span>
+              <span> {characterAnalytics?.understandingRate}</span>
             </p>
           )}
           <p className="text-[16px] font-light flex space-x-2">

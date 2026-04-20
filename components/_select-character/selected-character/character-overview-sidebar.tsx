@@ -46,8 +46,6 @@ export const CharacterOverviewViewSidebar = ({
     (state) => state.setSelectedContent,
   );
 
-  const _isSentence = isSentence(characterId);
-
   const items = useGetCharacterLearningContext({ lang, characterId });
 
   const { data: contentItems } = useListContentsQuery({});
@@ -94,12 +92,14 @@ export const CharacterOverviewViewSidebar = ({
       <MandoContextMenu lang={lang}>
         <Tabs value={sideBarView} onValueChange={setSideBarView}>
           <TabsList className="space-x-4 mb-4">
-            <TabsTrigger
-              value="content-sentences"
-              className="text-sm transition data-[state=active]:dark:text-white data-[state=active]:text-black data-[state=inactive]:text-gray-500"
-            >
-              Content Examples
-            </TabsTrigger>
+            {filteredItems?.length > 0 && (
+              <TabsTrigger
+                value="content-sentences"
+                className="text-sm transition data-[state=active]:dark:text-white data-[state=active]:text-black data-[state=inactive]:text-gray-500"
+              >
+                Content Examples
+              </TabsTrigger>
+            )}
 
             <TabsTrigger
               value="sentences"

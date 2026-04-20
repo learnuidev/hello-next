@@ -7,7 +7,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { useSelectedCharacterData } from "@/components/use-selected-character";
 import { cn } from "@/lib/utils";
-import { CharacterLearningContext } from "./character-learning-context";
+import {
+  CharacterLearningContext,
+  useCharacterLearningContext,
+} from "./character-learning-context";
 import { CharacterOverviewViewSidebar } from "./character-overview-sidebar";
 import { CharacterVariantSummary } from "./character-variant-summary";
 import { SelectedCharacterHeader } from "./selected-character-header";
@@ -43,6 +46,8 @@ export const CharacterOverviewView = ({
     lang,
   });
 
+  const characterLearningContext = useCharacterLearningContext({ characterId });
+
   return (
     <div
       className={
@@ -75,13 +80,14 @@ export const CharacterOverviewView = ({
                         >
                           Overview
                         </TabsTrigger>
-                        <TabsTrigger
-                          value="learning-context"
-                          className="px-0 data-[state=active]:text-black data-[state=active]:dark:text-white text-gray-500 data-[state=active]:font-bold"
-                        >
-                          Learning Context
-                        </TabsTrigger>
-                        {/* )} */}
+                        {characterLearningContext?.length > 0 && (
+                          <TabsTrigger
+                            value="learning-context"
+                            className="px-0 data-[state=active]:text-black data-[state=active]:dark:text-white text-gray-500 data-[state=active]:font-bold"
+                          >
+                            Learning Context
+                          </TabsTrigger>
+                        )}
 
                         {characterId?.length <= 4 && (
                           <TabsTrigger

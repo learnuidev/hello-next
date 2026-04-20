@@ -10,6 +10,8 @@ export interface ICharacter {
     reviewDate: string;
     outcome: string;
   }[];
+
+  contentContext: any;
   location: string;
   component: string;
   sub_components: { hanzi: string; en: string }[];

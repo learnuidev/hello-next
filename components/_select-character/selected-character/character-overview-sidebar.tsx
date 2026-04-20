@@ -92,295 +92,240 @@ export const CharacterOverviewViewSidebar = ({
   return (
     <div className={"col-span-5 md:col-span-3 hidden sm:block"}>
       <MandoContextMenu lang={lang}>
-        {_isSentence ? (
-          <Tabs value={sideBarView} onValueChange={setSideBarView}>
-            <TabsList className="space-x-4 mb-4">
-              <TabsTrigger
-                value="sentences"
-                className="text-sm transition data-[state=active]:dark:text-white data-[state=active]:text-black data-[state=inactive]:text-gray-500"
-              >
-                Sentences
-              </TabsTrigger>
-              <TabsTrigger
-                value="content-sentences"
-                className="text-sm transition data-[state=active]:dark:text-white data-[state=active]:text-black data-[state=inactive]:text-gray-500"
-              >
-                Content Examples
-              </TabsTrigger>
-              <TabsTrigger
-                value="sentence-transformations"
-                className="text-sm transition data-[state=active]:dark:text-white data-[state=active]:text-black data-[state=inactive]:text-gray-500"
-              >
-                句子变换
-              </TabsTrigger>
-            </TabsList>
+        <Tabs value={sideBarView} onValueChange={setSideBarView}>
+          <TabsList className="space-x-4 mb-4">
+            <TabsTrigger
+              value="content-sentences"
+              className="text-sm transition data-[state=active]:dark:text-white data-[state=active]:text-black data-[state=inactive]:text-gray-500"
+            >
+              Content Examples
+            </TabsTrigger>
 
-            <TabsContent value="sentences">
-              {uniqueContentTitles?.length > 1 && (
-                <div className="mb-4">
-                  <Select
-                    value={selectedContent}
-                    onValueChange={(value) => {
-                      setSelectedContent(value);
-                    }}
-                  >
-                    <SelectTrigger className="w-[320px] text-xs dark:border-gray-800">
-                      <SelectValue placeholder="Select content" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-black dark:border-gray-900 w-[300px] text-xs">
-                      <SelectGroup>
-                        <SelectLabel>Content</SelectLabel>
-                        {uniqueContentTitles?.map((topic: any) => {
-                          return (
-                            <SelectItem
-                              value={topic?.title}
-                              key={topic?.title}
-                              className="text-xs dark:hover:text-white data-[state=unchecked]:dark:text-gray-500 transition data-[state=checked]:text-white"
-                            >
-                              {topic?.title}
-                            </SelectItem>
-                          );
-                        })}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </div>
-              )}
+            <TabsTrigger
+              value="sentences"
+              className="text-sm transition data-[state=active]:dark:text-white data-[state=active]:text-black data-[state=inactive]:text-gray-500"
+            >
+              Sentences
+            </TabsTrigger>
 
-              <div className="shadows-sm shadow-2 shadow-black px-2 bg-gray-100 dark:bg-[rgb(11,12,13)] rounded-2xl overflow-hidden">
-                <div className="">
-                  {" "}
-                  {sentences?.length > 7 ? (
-                    <ScrollArea className="hidden md:block space-y-2 h-[700px] rounded-md">
-                      <div>
-                        {sentences?.map((item: any) => {
-                          return (
-                            <SentenceItem
-                              key={JSON.stringify(item)}
-                              currentPhrase={item}
-                              selectedComp={selectedComp}
-                              selectedChar={characterId}
-                              lang={item?.lang}
-                            />
-                          );
-                        })}
-                      </div>
-                    </ScrollArea>
-                  ) : (
-                    <ScrollArea className="hidden md:block space-y-2 h-[700px] rounded-md">
-                      <div>
-                        {sentences?.map((item: any) => {
-                          return (
-                            <SentenceItem
-                              key={JSON.stringify(item)}
-                              currentPhrase={item}
-                              selectedComp={selectedComp}
-                              selectedChar={characterId}
-                              lang={item?.lang}
-                            />
-                          );
-                        })}
-                      </div>
-                    </ScrollArea>
-                  )}
-                </div>
+            <TabsTrigger
+              value="sentence-transformations"
+              className="text-sm transition data-[state=active]:dark:text-white data-[state=active]:text-black data-[state=inactive]:text-gray-500"
+            >
+              句子变换
+            </TabsTrigger>
+          </TabsList>
 
-                <div className="md:hidden block">
-                  <div>
-                    {sentences?.map((item: any) => {
-                      return (
-                        <SentenceItem
-                          key={JSON.stringify(item)}
-                          currentPhrase={item}
-                          selectedComp={selectedComp}
-                          selectedChar={characterId}
-                          lang={item?.lang}
-                        />
-                      );
-                    })}
-                  </div>
-                </div>
+          <TabsContent value="sentences">
+            {uniqueContentTitles?.length > 1 && (
+              <div className="mb-4">
+                <Select
+                  value={selectedContent}
+                  onValueChange={(value) => {
+                    setSelectedContent(value);
+                  }}
+                >
+                  <SelectTrigger className="w-[320px] text-xs dark:border-gray-800">
+                    <SelectValue placeholder="Select content" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-black dark:border-gray-900 w-[300px] text-xs">
+                    <SelectGroup>
+                      <SelectLabel>Content</SelectLabel>
+                      {uniqueContentTitles?.map((topic: any) => {
+                        return (
+                          <SelectItem
+                            value={topic?.title}
+                            key={topic?.title}
+                            className="text-xs dark:hover:text-white data-[state=unchecked]:dark:text-gray-500 transition data-[state=checked]:text-white"
+                          >
+                            {topic?.title}
+                          </SelectItem>
+                        );
+                      })}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
               </div>
-            </TabsContent>
+            )}
 
-            <TabsContent value="content-sentences">
-              {uniqueContentTitles?.length > 1 && (
-                <div className="mb-4">
-                  <Select
-                    value={selectedContent}
-                    onValueChange={(value) => {
-                      setSelectedContent(value);
-                    }}
-                  >
-                    <SelectTrigger className="w-[320px] text-xs dark:border-gray-800">
-                      <SelectValue placeholder="Select content" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-black dark:border-gray-900 w-[300px] text-xs">
-                      <SelectGroup>
-                        <SelectLabel>Content</SelectLabel>
-                        {uniqueContentTitles?.map((topic: any) => {
-                          return (
-                            <SelectItem
-                              value={topic?.title}
-                              key={topic?.title}
-                              className="text-xs dark:hover:text-white data-[state=unchecked]:dark:text-gray-500 transition data-[state=checked]:text-white"
-                            >
-                              {topic?.title}
-                            </SelectItem>
-                          );
-                        })}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </div>
-              )}
-
-              <div className="shadows-sm shadow-2 shadow-black px-2 bg-gray-100 dark:bg-[rgb(11,12,13)] rounded-2xl overflow-hidden">
-                <div className="">
-                  {" "}
-                  {filteredItems?.length > 7 ? (
-                    <ScrollArea className="hidden md:block space-y-2 h-[700px] rounded-md">
-                      <div>
-                        {/* <h1>TODO: {characterId}</h1> */}
-
-                        {filteredItems?.map((item: any) => {
-                          return (
-                            <SentenceItem
-                              key={JSON.stringify(item)}
-                              currentPhrase={item}
-                              selectedComp={selectedComp}
-                              selectedChar={characterId}
-                              lang={item?.lang}
-                            />
-                          );
-                        })}
-                      </div>
-                    </ScrollArea>
-                  ) : (
-                    <ScrollArea className="hidden md:block space-y-2 h-[700px] rounded-md">
-                      <div>
-                        {/* <h1>TODO: {characterId}</h1> */}
-
-                        {filteredItems?.map((item: any) => {
-                          return (
-                            <SentenceItem
-                              key={JSON.stringify(item)}
-                              currentPhrase={item}
-                              selectedComp={selectedComp}
-                              selectedChar={characterId}
-                              lang={item?.lang}
-                            />
-                          );
-                        })}
-                      </div>
-                    </ScrollArea>
-                  )}
-                </div>
-
-                <div className="md:hidden block">
-                  <div>
-                    {filteredItems?.map((item: any) => {
-                      return (
-                        <SentenceItem
-                          key={JSON.stringify(item)}
-                          currentPhrase={item}
-                          selectedComp={selectedComp}
-                          selectedChar={characterId}
-                          lang={item?.lang}
-                        />
-                      );
-                    })}
-                  </div>
-                </div>
+            <div className="shadows-sm shadow-2 shadow-black px-2 bg-gray-100 dark:bg-[rgb(11,12,13)] rounded-2xl overflow-hidden">
+              <div className="">
+                {" "}
+                {sentences?.length > 7 ? (
+                  <ScrollArea className="hidden md:block space-y-2 h-[700px] rounded-md">
+                    <div>
+                      {sentences?.map((item: any) => {
+                        return (
+                          <SentenceItem
+                            key={JSON.stringify(item)}
+                            currentPhrase={item}
+                            selectedComp={selectedComp}
+                            selectedChar={characterId}
+                            lang={item?.lang}
+                          />
+                        );
+                      })}
+                    </div>
+                  </ScrollArea>
+                ) : (
+                  <ScrollArea className="hidden md:block space-y-2 h-[700px] rounded-md">
+                    <div>
+                      {sentences?.map((item: any) => {
+                        return (
+                          <SentenceItem
+                            key={JSON.stringify(item)}
+                            currentPhrase={item}
+                            selectedComp={selectedComp}
+                            selectedChar={characterId}
+                            lang={item?.lang}
+                          />
+                        );
+                      })}
+                    </div>
+                  </ScrollArea>
+                )}
               </div>
-            </TabsContent>
 
-            <TabsContent value="sentence-transformations">
-              <div className="shadows-sm shadow-2 shadow-black px-2 bg-gray-100 dark:bg-[rgb(11,12,13)] rounded-2xl overflow-hidden">
-                <div className="">
-                  {" "}
-                  {sentences?.length > 7 ? (
-                    <ScrollArea className="hidden md:block space-y-2 h-[700px] rounded-md">
-                      <CharacterSentenceTransformations
-                        lang={lang}
-                        characterId={characterId}
+              <div className="md:hidden block">
+                <div>
+                  {sentences?.map((item: any) => {
+                    return (
+                      <SentenceItem
+                        key={JSON.stringify(item)}
+                        currentPhrase={item}
+                        selectedComp={selectedComp}
+                        selectedChar={characterId}
+                        lang={item?.lang}
                       />
-                    </ScrollArea>
-                  ) : (
-                    <ScrollArea className="hidden md:block space-y-2 h-[700px] rounded-md">
-                      <CharacterSentenceTransformations
-                        lang={lang}
-                        characterId={characterId}
-                      />
-                    </ScrollArea>
-                  )}
-                </div>
-
-                <div className="md:hidden block">
-                  <CharacterSentenceTransformations
-                    lang={lang}
-                    characterId={characterId}
-                  />
+                    );
+                  })}
                 </div>
               </div>
-            </TabsContent>
-          </Tabs>
-        ) : (
-          <div className="shadows-sm shadow-2 shadow-black px-2 bg-gray-100 dark:bg-[rgb(11,12,13)] rounded-2xl overflow-hidden">
-            <div className="">
-              {" "}
-              {sentences?.length > 7 ? (
-                <ScrollArea className="hidden md:block space-y-2 h-[700px] rounded-md">
-                  <div>
-                    {sentences?.map((item: any) => {
-                      return (
-                        <SentenceItem
-                          key={JSON.stringify(item)}
-                          currentPhrase={item}
-                          selectedComp={selectedComp}
-                          selectedChar={characterId}
-                          lang={item?.lang}
-                        />
-                      );
-                    })}
-                  </div>
-                </ScrollArea>
-              ) : (
-                <ScrollArea className="hidden md:block space-y-2 h-[700px] rounded-md">
-                  <div>
-                    {sentences?.map((item: any) => {
-                      return (
-                        <SentenceItem
-                          key={JSON.stringify(item)}
-                          currentPhrase={item}
-                          selectedComp={selectedComp}
-                          selectedChar={characterId}
-                          lang={item?.lang}
-                        />
-                      );
-                    })}
-                  </div>
-                </ScrollArea>
-              )}
             </div>
+          </TabsContent>
 
-            <div className="md:hidden block">
-              <div>
-                {sentences?.map((item: any) => {
-                  return (
-                    <SentenceItem
-                      key={JSON.stringify(item)}
-                      currentPhrase={item}
-                      selectedComp={selectedComp}
-                      selectedChar={characterId}
-                      lang={item?.lang}
+          <TabsContent value="content-sentences">
+            {uniqueContentTitles?.length > 1 && (
+              <div className="mb-4">
+                <Select
+                  value={selectedContent}
+                  onValueChange={(value) => {
+                    setSelectedContent(value);
+                  }}
+                >
+                  <SelectTrigger className="w-[320px] text-xs dark:border-gray-800">
+                    <SelectValue placeholder="Select content" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-black dark:border-gray-900 w-[300px] text-xs">
+                    <SelectGroup>
+                      <SelectLabel>Content</SelectLabel>
+                      {uniqueContentTitles?.map((topic: any) => {
+                        return (
+                          <SelectItem
+                            value={topic?.title}
+                            key={topic?.title}
+                            className="text-xs dark:hover:text-white data-[state=unchecked]:dark:text-gray-500 transition data-[state=checked]:text-white"
+                          >
+                            {topic?.title}
+                          </SelectItem>
+                        );
+                      })}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
+
+            <div className="shadows-sm shadow-2 shadow-black px-2 bg-gray-100 dark:bg-[rgb(11,12,13)] rounded-2xl overflow-hidden">
+              <div className="">
+                {" "}
+                {filteredItems?.length > 7 ? (
+                  <ScrollArea className="hidden md:block space-y-2 h-[700px] rounded-md">
+                    <div>
+                      {/* <h1>TODO: {characterId}</h1> */}
+
+                      {filteredItems?.map((item: any) => {
+                        return (
+                          <SentenceItem
+                            key={JSON.stringify(item)}
+                            currentPhrase={item}
+                            selectedComp={selectedComp}
+                            selectedChar={characterId}
+                            lang={item?.lang}
+                          />
+                        );
+                      })}
+                    </div>
+                  </ScrollArea>
+                ) : (
+                  <ScrollArea className="hidden md:block space-y-2 h-[700px] rounded-md">
+                    <div>
+                      {/* <h1>TODO: {characterId}</h1> */}
+
+                      {filteredItems?.map((item: any) => {
+                        return (
+                          <SentenceItem
+                            key={JSON.stringify(item)}
+                            currentPhrase={item}
+                            selectedComp={selectedComp}
+                            selectedChar={characterId}
+                            lang={item?.lang}
+                          />
+                        );
+                      })}
+                    </div>
+                  </ScrollArea>
+                )}
+              </div>
+
+              <div className="md:hidden block">
+                <div>
+                  {filteredItems?.map((item: any) => {
+                    return (
+                      <SentenceItem
+                        key={JSON.stringify(item)}
+                        currentPhrase={item}
+                        selectedComp={selectedComp}
+                        selectedChar={characterId}
+                        lang={item?.lang}
+                      />
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="sentence-transformations">
+            <div className="shadows-sm shadow-2 shadow-black px-2 bg-gray-100 dark:bg-[rgb(11,12,13)] rounded-2xl overflow-hidden">
+              <div className="">
+                {" "}
+                {sentences?.length > 7 ? (
+                  <ScrollArea className="hidden md:block space-y-2 h-[700px] rounded-md">
+                    <CharacterSentenceTransformations
+                      lang={lang}
+                      characterId={characterId}
                     />
-                  );
-                })}
+                  </ScrollArea>
+                ) : (
+                  <ScrollArea className="hidden md:block space-y-2 h-[700px] rounded-md">
+                    <CharacterSentenceTransformations
+                      lang={lang}
+                      characterId={characterId}
+                    />
+                  </ScrollArea>
+                )}
+              </div>
+
+              <div className="md:hidden block">
+                <CharacterSentenceTransformations
+                  lang={lang}
+                  characterId={characterId}
+                />
               </div>
             </div>
-          </div>
-        )}
+          </TabsContent>
+        </Tabs>
       </MandoContextMenu>
     </div>
   );

@@ -6,6 +6,7 @@ export const DynaClozeHeader = ({
   sentence,
   response,
 }: {
+  hideDynaClozeR?: boolean;
   response: any;
   sentence: {
     hanziHidden: string;

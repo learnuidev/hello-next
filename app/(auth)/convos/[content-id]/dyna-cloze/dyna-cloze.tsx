@@ -108,7 +108,7 @@ const WithMultiSentence = ({
 
   const sentenceItem = useMemo(
     () => multiSentences?.[sentenceIndex],
-    [sentenceIndex, multiSentences]
+    [sentenceIndex, multiSentences],
   );
 
   if (multiSentences?.length === 1) {
@@ -184,8 +184,8 @@ const DynaSentence = ({
         : grammar?.grammarAnalysis?.filter(
             (analysis) =>
               analysis?.input?.toLowerCase() !==
-              (sentence?.input || sentence?.hanzi)?.toLowerCase()
-          )
+              (sentence?.input || sentence?.hanzi)?.toLowerCase(),
+          ),
     );
 
     // return shuffleArray(grammar?.grammarAnalysis);
@@ -193,12 +193,12 @@ const DynaSentence = ({
 
   const selectedGrammar = useMemo(
     () => shuffledGrammar?.[wordIndex],
-    [shuffledGrammar, wordIndex]
+    [shuffledGrammar, wordIndex],
   );
 
   const sentenceHanzi = useMemo(
     () => sentence?.input || sentence?.hanzi,
-    [sentence?.hanzi, sentence?.input]
+    [sentence?.hanzi, sentence?.input],
   );
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -207,12 +207,12 @@ const DynaSentence = ({
       ?.toLowerCase()
       .replaceAll(
         (selectedGrammar?.input || selectedGrammar?.hanzi)?.toLowerCase(),
-        `  ${"__".repeat((selectedGrammar?.input || selectedGrammar?.hanzi)?.length)}  `
+        `  ${"__".repeat((selectedGrammar?.input || selectedGrammar?.hanzi)?.length)}  `,
       );
   };
 
   const multiSentence = getMulti(
-    parentSentence?.input || parentSentence?.hanzi
+    parentSentence?.input || parentSentence?.hanzi,
   );
 
   const sentenceHanziHidden = useMemo(() => {
@@ -226,20 +226,20 @@ const DynaSentence = ({
       getRandomWords(
         [
           ...new Set(
-            shuffledGrammar?.filter((item: any) => item.en !== relevantHanzi)
+            shuffledGrammar?.filter((item: any) => item.en !== relevantHanzi),
             // ?.map((item: any) => item?.en)
           ),
         ],
-        3
+        3,
       ),
-    [relevantHanzi, shuffledGrammar]
+    [relevantHanzi, shuffledGrammar],
   );
 
   const lang = useGetCurrentLang();
 
   const shuffledOptions = useMemo(
     () => shuffleArray([...randomThreeOptions, selectedGrammar]),
-    [randomThreeOptions, selectedGrammar]
+    [randomThreeOptions, selectedGrammar],
   );
 
   const checkAnswer = (answer: any) => {
@@ -287,7 +287,7 @@ const DynaSentence = ({
                   "transition",
                   response
                     ? ""
-                    : "hover:bg-orange-500 hover:text-white hover:scale-110"
+                    : "hover:bg-orange-500 hover:text-white hover:scale-110",
                 )}
                 key={`dynacloze-${idx}-${option?.en}`}
               >
@@ -316,7 +316,7 @@ const DynaSentence = ({
                   "transition",
                   response
                     ? ""
-                    : "hover:bg-orange-500 hover:text-white hover:scale-110"
+                    : "hover:bg-orange-500 hover:text-white hover:scale-110",
                 )}
                 key={`dynacloze-${idx}-${option?.en}`}
               >
@@ -354,7 +354,7 @@ const DynaSentence = ({
             setWordIndex(
               shuffledGrammar?.length === wordIndex + 1
                 ? 0
-                : Math.min(wordIndex + 1, shuffledGrammar?.length - 1)
+                : Math.min(wordIndex + 1, shuffledGrammar?.length - 1),
             );
             setResponse(null);
           }}
@@ -370,8 +370,8 @@ const DynaSentence = ({
                 setParentSentenceIndex(
                   Math.min(
                     parentSentenceIndex + 1,
-                    content?.transcriptions?.length - 1
-                  )
+                    content?.transcriptions?.length - 1,
+                  ),
                 );
 
                 setSentenceIndex(0);
@@ -383,7 +383,7 @@ const DynaSentence = ({
               }
             }
             setSentenceIndex(
-              Math.min(sentenceIndex + 1, content?.transcriptions?.length - 1)
+              Math.min(sentenceIndex + 1, content?.transcriptions?.length - 1),
             );
 
             setWordIndex(0);
@@ -489,15 +489,15 @@ export const DynaCloze = ({ contentId }: { contentId: string }) => {
 
   const { currentTime, setCurrentTime: setTime } = useCurrentTime(
     contentId,
-    true
+    true,
   );
 
   const currentTranscription = content?.transcriptions?.find(
-    (trans: any) => trans?.start <= currentTime && trans?.end >= currentTime
+    (trans: any) => trans?.start <= currentTime && trans?.end >= currentTime,
   );
 
   const transcriptionIndex = content?.transcriptions?.findIndex(
-    (trans: any) => trans.start === currentTranscription?.start
+    (trans: any) => trans.start === currentTranscription?.start,
   );
 
   useEffect(() => {
@@ -522,7 +522,7 @@ export const DynaCloze = ({ contentId }: { contentId: string }) => {
 
   const sentence = useMemo(
     () => shuffledTranscriptions?.[sentenceIndex],
-    [sentenceIndex, shuffledTranscriptions]
+    [sentenceIndex, shuffledTranscriptions],
   );
 
   return (

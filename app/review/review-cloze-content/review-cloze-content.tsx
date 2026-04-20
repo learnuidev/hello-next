@@ -38,6 +38,7 @@ const ClozeNavbar = ({
 
   return (
     <DynaClozeNavbar
+      hideDynaClozeR
       input={currentCharacter}
       onClose={() => {
         if (onClose) {

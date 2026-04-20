@@ -7,9 +7,11 @@ import Link from "next/link";
 export const DynaClozeNavbar = ({
   onClose,
   input,
+  hideDynaClozeR = false,
 }: {
   onClose: () => void;
   input: string;
+  hideDynaClozeR?: boolean;
 }) => {
   return (
     <nav className="flex w-screen fixed top-4 left-0 items-center">
@@ -26,7 +28,9 @@ export const DynaClozeNavbar = ({
         <h1 className="text-center text-2xl font-mono">dynacloze</h1>
       </div>
       <div className="flex-1 flex justify-end px-4">
-        <Link href={`/review?input=${input}`}> DynaClozeR</Link>
+        {hideDynaClozeR ? null : (
+          <Link href={`/review?input=${input}`}> DynaClozeR</Link>
+        )}
       </div>
     </nav>
   );

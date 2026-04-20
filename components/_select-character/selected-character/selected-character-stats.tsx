@@ -1,27 +1,22 @@
 "use client";
 
 import { Icons } from "../../ui/icons.v2";
-import { SelectedCharacterProps } from "../select-character.types";
 
 import { useListRelatedHSKWords } from "@/hooks/use-list-related-hsk-words";
 
-import { useRelatedHskWordsByCharacter } from "../use-filter-related-hsk-words-by-character";
-import { GoogleTranslateLink } from "./google-translate-link";
-import { YablaLink } from "./yabla-link";
-import { HanbookLink } from "./hanbook-link";
-import { useListChineseCharactersQuery } from "@/domain/hsk/list-chinese-characters-query";
+import { calculateTotalDaysLearnedDate } from "@/app/overview/utils/calculate-total-mastery-date";
 import { useSelectedCharacterData } from "@/components/use-selected-character";
-import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
-import { YoutubeLink } from "./youtube-link";
+import { useListChineseCharactersQuery } from "@/domain/hsk/list-chinese-characters-query";
 import { useGetCharacter } from "@/hooks/use-get-character";
-import {
-  calculateTotalDaysLearnedDate,
-  calculateTotalMasteryDate,
-} from "@/app/overview/utils/calculate-total-mastery-date";
-import { useMemo } from "react";
-import { BibilliLink } from "./billibilli-link/billibilli-link";
-import { formatPercentage } from "@/app/insights-overview/utils/format-percentage";
+import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 import { calculateCharacterStats } from "@/lib/utils";
+import { useMemo } from "react";
+import { useRelatedHskWordsByCharacter } from "../use-filter-related-hsk-words-by-character";
+
+import { BilibiliLink } from "./billibilli-link/billibilli-link";
+import { HanbookLink } from "./hanbook-link";
+import { YablaLink } from "./yabla-link";
+import { YoutubeLink } from "./youtube-link";
 
 export const SelectedCharacterStats = ({
   characterId,
@@ -85,7 +80,7 @@ export const SelectedCharacterStats = ({
                 </p>
               </div>
             )}
-            {stats && (
+            {stats?.totalIncorrect > 0 && (
               <div className="text-slate-500  text-extralight flex space-x-2 items-center">
                 <Icons.xMark />
                 <p className="text-black dark:text-white">
@@ -113,7 +108,7 @@ export const SelectedCharacterStats = ({
           {lang === "zh" && <HanbookLink hanzi={characterId} />}
           {lang !== "zh" && <YoutubeLink characterId={characterId} />}
           {lang === "zh" && (
-            <BibilliLink className="text-2xl" hanzi={characterId} />
+            <BilibiliLink className="text-2xl" hanzi={characterId} />
           )}
         </div>
       </div>

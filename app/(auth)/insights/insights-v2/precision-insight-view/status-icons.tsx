@@ -15,6 +15,10 @@ export const StatusIcons = {
     title: "Learned",
     Icon: GreenLightbulbDuoTone,
   },
+  DISCOVERED: {
+    title: "Learned",
+    Icon: GreenLightbulbDuoTone,
+  },
   forgotten: {
     title: "Mastered",
     Icon: RedFireDuoTone,
@@ -26,7 +30,8 @@ export const StatusIcons = {
 } as any;
 
 export const getStatusIcon = (status = "") => {
-  const StatusIcon = StatusIcons?.[status] || StatusIcons["not_started"];
+  console.log("status", status);
+  const StatusIcon = StatusIcons?.[status] || StatusIcons["needs_review"];
 
   return StatusIcon;
 };

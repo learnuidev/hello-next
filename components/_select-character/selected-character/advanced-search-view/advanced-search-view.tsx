@@ -1,5 +1,5 @@
 import { BingLink } from "../../bing-link";
-import { BibilliLink } from "../billibilli-link/billibilli-link";
+import { BilibiliLink } from "../billibilli-link/billibilli-link";
 import { GoogleLink } from "../google-link";
 import { GoogleTranslateLink } from "../google-translate-link";
 import { HanbookLink } from "../hanbook-link";
@@ -26,7 +26,7 @@ export const AdvancedSearchView = ({
         {lang === "zh" && <HanbookLink hanzi={characterId} />}
 
         <YoutubeLink className="text-2xl" characterId={characterId} />
-        <BibilliLink className="text-2xl" hanzi={characterId} />
+        <BilibiliLink className="text-2xl" hanzi={characterId} />
 
         {lang === "es" && (
           <SpanishDictLink className="text-2xl" text={characterId} />

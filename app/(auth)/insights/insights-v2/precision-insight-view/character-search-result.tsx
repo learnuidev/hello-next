@@ -13,6 +13,7 @@ import { calculateCharacterStats, cn } from "@/lib/utils";
 import { getStatusIcon } from "./status-icons";
 import { NoResultView } from "./no-result-view";
 import { formatPercentage } from "@/app/insights-overview/utils/format-percentage";
+import { CharacterItem } from "@/components/_select-character/character-item";
 
 export function CharacterSearchResult({
   searchResults,
@@ -63,7 +64,15 @@ export function CharacterSearchResult({
                         : "text-2xl sm:text-4xl",
                     )}
                   >
-                    {comp?.hanzi}{" "}
+                    <CharacterItem
+                      className={cn(
+                        "truncate",
+                        comp?.hanzi?.length > 8
+                          ? "text-lg"
+                          : "!text-2xl sm:!text-4xl",
+                      )}
+                      character={comp?.hanzi}
+                    />
                   </span>
                   {comp?.pinyin?.length < 8 && (
                     <span className="text-xl text-gray-400 truncate font-extralight">

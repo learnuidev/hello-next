@@ -48,6 +48,8 @@ export const CharacterOverviewView = ({
 
   const characterLearningContext = useCharacterLearningContext({ characterId });
 
+  console.log("characterLearningContext", characterLearningContext);
+
   return (
     <div
       className={

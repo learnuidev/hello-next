@@ -134,7 +134,9 @@ export const FloatingCharacterNavbar = ({
     ...new Set(
       allContext
         ?.filter((item) =>
-          JSON.stringify(item)?.includes(firstLesson?.hanzi || selectedChar),
+          JSON.stringify(item?.hanzi || item?.input)?.includes(
+            firstLesson?.hanzi || selectedChar,
+          ),
         )
         .map((item) => item?.input),
     ),
@@ -260,8 +262,8 @@ export const FloatingCharacterNavbar = ({
                 onDoubleClick={() => {
                   deleteCharacterMutation
                     .mutateAsync({
-                      hanzi: currentCharacter?.hanzi,
-                      id: currentCharacter?.id,
+                      hanzi: learnedChar?.hanzi,
+                      id: learnedChar?.id,
                     } as any)
                     .then((resp: any) => {
                       toast(`Component: ${selectedComp?.hanzi || characterId} Successfully deleted

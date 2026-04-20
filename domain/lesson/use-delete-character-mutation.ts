@@ -8,12 +8,13 @@ import {
   listCharactersQueryId,
   listCharactersQueryMapId,
 } from "./character.queries";
+import { getCharacterQueryId } from "../character/use-get-character-query";
 
 const deleteCharacter = async (
-  props: { id: string },
+  props: { id: string; hanzi: string },
   opts: {
     Authorization: string;
-  }
+  },
 ) => {
   const res = await fetch(`${siteConfig.apiUrl}/v1/delete-character`, {
     method: "POST",
@@ -27,7 +28,10 @@ const deleteCharacter = async (
     throw new Error("yoo");
   }
   const resp = (await res.json()) as any;
-  return resp;
+  return {
+    ...resp,
+    hanzi: props?.hanzi,
+  };
 };
 
 export function useDeleteCharacterMutation(options = {} as any) {
@@ -39,6 +43,10 @@ export function useDeleteCharacterMutation(options = {} as any) {
       // if (options.query) {
       const response = await deleteCharacter(params, {
         Authorization: authUser?.jwt,
+      });
+
+      queryClient.refetchQueries({
+        queryKey: [getCharacterQueryId, response?.hanzi],
       });
 
       queryClient.setQueryData([listCharactersQueryId], (data: any) => {

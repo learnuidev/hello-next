@@ -95,8 +95,6 @@ export function GrammarAnalysis({
 
   const grammarAnalysisFinal = grammarAnalysis?.grammarAnalysis || [];
 
-  console.log("grammarAnalysisFinal", grammarAnalysisFinal);
-
   const GrammarAnalysisList = () => {
     const divStyles =
       grammarAnalysisFinal?.length > 4

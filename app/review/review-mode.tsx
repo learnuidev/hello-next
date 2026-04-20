@@ -23,6 +23,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { BackButton } from "./back-button";
 import { useClozeReviewTimer } from "./cloze-review-timer-store";
 import { useGetCurrentReviewCharacter } from "./use-get-current-review-character";
+import { getNmmLink } from "@/libs/utils/get-nmm-link";
 
 const getEndTimeAndDiff = (startTime: number, endTime: number) => {
   const diff = endTime - startTime;
@@ -135,7 +136,9 @@ export function ReviewModeClassic(props: any) {
   const ReviewHeader = () => {
     return (
       <div className="flex items-center justify-between mt-8 mb-16 px-4 md:px-16">
-        <BackButton href={"/"} />
+        <BackButton
+          href={input ? getNmmLink({ id: input, lang: "zh" }) : "/"}
+        />
 
         {/* <h1 className="text-2xl"></h1> */}
         <p className="text-gray-700 text-xl md:text-3xl">

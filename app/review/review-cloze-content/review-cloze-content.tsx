@@ -27,6 +27,7 @@ import { shuffleArray } from "./utils/shuffle-array";
 
 const ClozeNavbar = ({
   onClose,
+  currentCharacter,
 }: {
   onClose?: () => void;
   currentCharacter: string;
@@ -37,6 +38,7 @@ const ClozeNavbar = ({
 
   return (
     <DynaClozeNavbar
+      input={currentCharacter}
       onClose={() => {
         if (onClose) {
           onClose();
@@ -97,7 +99,7 @@ export function ReviewClozeContent({
         ? content?.transcriptions
             ?.filter((transcription: any) => {
               return (transcription?.input || transcription?.hanzi)?.includes(
-                currentCharacter
+                currentCharacter,
               );
             })
             ?.map((item: any) => {
@@ -107,7 +109,7 @@ export function ReviewClozeContent({
               };
             })
         : [],
-    [isContent, content]
+    [isContent, content],
   );
 
   const relevantContextSentences = useMemo(
@@ -119,18 +121,18 @@ export function ReviewClozeContent({
           sentence?.input?.length > 2
         );
       }),
-    [contextSentences, currentCharacter]
+    [contextSentences, currentCharacter],
   );
 
   const sentences = useMemo(
     () => [
       ...(contentSentences || [])?.filter((sent: any) =>
-        (sent?.input || sent?.hanzi)?.includes(currentCharacter)
+        (sent?.input || sent?.hanzi)?.includes(currentCharacter),
       ),
       ...getRandomWords(
         [...(relevantContextSentences || [])]?.filter((sent: any) =>
-          (sent?.input || sent?.hanzi)?.includes(currentCharacter)
-        )
+          (sent?.input || sent?.hanzi)?.includes(currentCharacter),
+        ),
       ),
       ...aiSentences,
     ],
@@ -139,20 +141,20 @@ export function ReviewClozeContent({
       currentCharacter,
       contentSentences,
       aiSentences,
-    ]
+    ],
   );
 
   const { setClozeContentMode } = useClozeContentMode();
 
   const _sentence = useMemo(
     () => sentences?.[questionIndex],
-    [sentences, questionIndex]
+    [sentences, questionIndex],
   );
 
   const isMultiSent = isMulti(_sentence?.input || _sentence?.hanzi);
 
   const multiSent = getMulti(_sentence?.input || _sentence?.hanzi)?.filter(
-    (sent) => sent?.includes(currentCharacter)
+    (sent) => sent?.includes(currentCharacter),
   );
 
   const initSentence = useMemo(
@@ -164,7 +166,7 @@ export function ReviewClozeContent({
             input: multiSent?.[0],
           }
         : { ..._sentence, hanzi: multiSent?.[0], input: multiSent?.[0] },
-    [isMultiSent, _aiSentences, multiSent]
+    [isMultiSent, _aiSentences, multiSent],
   );
 
   const { data: sentence, isLoading: isSentenceLoading } =
@@ -175,7 +177,7 @@ export function ReviewClozeContent({
 
   const futureSentence = useMemo(
     () => sentences?.[questionIndex + 1],
-    [sentences, questionIndex]
+    [sentences, questionIndex],
   );
 
   const { data: grammar, isLoading: isGrammarLoading } = useListGrammarsQuery({
@@ -193,19 +195,19 @@ export function ReviewClozeContent({
       grammar?.grammarAnalysis?.filter(
         (analysis) =>
           analysis?.input?.toLowerCase() !==
-          (sentence?.input || sentence?.hanzi)?.toLowerCase()
-      )
+          (sentence?.input || sentence?.hanzi)?.toLowerCase(),
+      ),
     );
   }, [grammar, sentence?.hanzi, sentence?.input]);
 
   const selectedGrammar = useMemo(
     () => shuffledGrammar?.[wordIndex],
-    [shuffledGrammar, wordIndex]
+    [shuffledGrammar, wordIndex],
   );
 
   const relevantHanzi = useMemo(
     () => selectedGrammar?.input || selectedGrammar?.hanzi,
-    [selectedGrammar?.hanzi]
+    [selectedGrammar?.hanzi],
   );
 
   const toggleEn = () => {
@@ -218,23 +220,23 @@ export function ReviewClozeContent({
         [
           ...new Set(
             shuffledGrammar?.filter(
-              (item: any) => (item?.input || item.hanzi) !== relevantHanzi
-            )
+              (item: any) => (item?.input || item.hanzi) !== relevantHanzi,
+            ),
           ),
         ],
-        3
+        3,
       ),
-    [relevantHanzi, shuffledGrammar]
+    [relevantHanzi, shuffledGrammar],
   );
   const shuffledOptions = useMemo(
     () => shuffleArray([...randomThreeOptions, selectedGrammar]),
-    [randomThreeOptions, relevantHanzi, questionIndex, sentence]
+    [randomThreeOptions, relevantHanzi, questionIndex, sentence],
   );
 
   const sentenceHanzi = useMemo(
     () =>
       (sentence?.input || sentence?.hanzi)?.replaceAll(relevantHanzi, " ____ "),
-    [relevantHanzi, sentence?.hanzi, sentence?.input]
+    [relevantHanzi, sentence?.hanzi, sentence?.input],
   );
 
   const checkAnswer = (answer: string) => {
@@ -389,7 +391,7 @@ export function ReviewClozeContent({
                       "transition",
                       response
                         ? ""
-                        : "hover:bg-orange-500 hover:text-white hover:scale-110"
+                        : "hover:bg-orange-500 hover:text-white hover:scale-110",
                     )}
                     key={`dynacloze-${idx}-${option?.en}-${option?.hanzi}`}
                   >
@@ -421,7 +423,7 @@ export function ReviewClozeContent({
                       "transition",
                       response
                         ? ""
-                        : "hover:bg-orange-500 hover:text-white hover:scale-110"
+                        : "hover:bg-orange-500 hover:text-white hover:scale-110",
                     )}
                     key={`dynacloze-${idx}-${option?.en}`}
                   >
@@ -474,7 +476,7 @@ export function ReviewClozeContent({
                     setWordIndex(
                       shuffledGrammar?.length === wordIndex + 1
                         ? 0
-                        : Math.min(wordIndex + 1, shuffledGrammar?.length - 1)
+                        : Math.min(wordIndex + 1, shuffledGrammar?.length - 1),
                     );
                     setResponse(null);
                   }}

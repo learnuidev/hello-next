@@ -32,6 +32,7 @@ const ClozeNavbar = ({
   const { setReviewMode } = useReviewModeView();
   return (
     <DynaClozeNavbar
+      input={currentCharacter}
       onClose={() => {
         if (onClose) {
           onClose();
@@ -81,7 +82,7 @@ export function ReviewCloze({
         ? content?.transcriptions
             ?.filter((transcription: any) => {
               return (transcription?.hanzi || transcription?.input)?.includes(
-                currentCharacter
+                currentCharacter,
               );
             })
             .map((item: any) => {
@@ -91,7 +92,7 @@ export function ReviewCloze({
               };
             })
         : [],
-    [isContent, content]
+    [isContent, content],
   );
 
   const { data: hskWords } = useListHSKWordsQuery();
@@ -103,7 +104,7 @@ export function ReviewCloze({
       shuffleArray(
         (
           hskWords?.filter((word: any) =>
-            JSON.stringify(word)?.includes(currentCharacter)
+            JSON.stringify(word)?.includes(currentCharacter),
           ) || []
         ).filter((word: any) => {
           if (hskLevel == "0") {
@@ -111,23 +112,23 @@ export function ReviewCloze({
           }
 
           return word.hskLevel <= hskLevel;
-        })
+        }),
       ),
-    [currentCharacter, hskLevel, hskWords]
+    [currentCharacter, hskLevel, hskWords],
   );
   const irrelevantHskWords = useMemo(
     () =>
       shuffleArray(
         hskWords?.filter(
-          (word: any) => !JSON.stringify(word)?.includes(currentCharacter)
-        ) || []
+          (word: any) => !JSON.stringify(word)?.includes(currentCharacter),
+        ) || [],
       ),
-    [currentCharacter, hskWords]
+    [currentCharacter, hskWords],
   );
 
   const relevantHskWord = useMemo(
     () => relevantHskWords?.[clozeIndex],
-    [clozeIndex, relevantHskWords]
+    [clozeIndex, relevantHskWords],
   );
 
   const _relevantHanzi = relevantHskWord?.hanzi;
@@ -148,29 +149,29 @@ export function ReviewCloze({
           sent?.input?.length < 20
         );
       }),
-    [contextSentences, _relevantHanzi]
+    [contextSentences, _relevantHanzi],
   );
 
   const sentences = useMemo(
     () => [
       ...(contentSentences || [])?.filter((sent: any) =>
-        (sent?.input || sent?.hanzi)?.includes(_relevantHanzi)
+        (sent?.input || sent?.hanzi)?.includes(_relevantHanzi),
       ),
       ...getRandomWords(
         [
           ...(relevantContextSentences || []),
           ...(sentencesInitial || []),
         ]?.filter((sent: any) =>
-          (sent?.input || sent?.hanzi)?.includes(_relevantHanzi)
-        )
+          (sent?.input || sent?.hanzi)?.includes(_relevantHanzi),
+        ),
       ),
     ],
-    [_relevantHanzi, sentencesInitial, contentSentences]
+    [_relevantHanzi, sentencesInitial, contentSentences],
   );
 
   const sentence = useMemo(
     () => sentences?.[questionIndex],
-    [sentences, questionIndex]
+    [sentences, questionIndex],
   );
 
   const { data: grammar, isLoading: isGrammarLoading } = useListGrammarsQuery({
@@ -188,24 +189,24 @@ export function ReviewCloze({
       grammar?.grammarAnalysis?.filter(
         (analysis) =>
           analysis?.input?.toLowerCase() !==
-          (sentence?.input || sentence?.hanzi)?.toLowerCase()
-      )
+          (sentence?.input || sentence?.hanzi)?.toLowerCase(),
+      ),
     );
   }, [grammar, sentence?.hanzi, sentence?.input]);
 
   const selectedGrammar = useMemo(
     () => shuffledGrammar?.[wordIndex],
-    [shuffledGrammar, wordIndex]
+    [shuffledGrammar, wordIndex],
   );
 
   const relevantHanzi = useMemo(
     () => selectedGrammar?.input || selectedGrammar?.hanzi,
-    [selectedGrammar?.hanzi]
+    [selectedGrammar?.hanzi],
   );
 
   const futureSentence = useMemo(
     () => sentences?.[questionIndex + 1],
-    [sentences, questionIndex]
+    [sentences, questionIndex],
   );
 
   const randomThreeOptions = useMemo(
@@ -216,23 +217,23 @@ export function ReviewCloze({
             shuffledGrammar?.filter(
               (item: any) =>
                 (item?.input || item.hanzi) !==
-                (selectedGrammar?.input || selectedGrammar?.hanzi)
-            )
+                (selectedGrammar?.input || selectedGrammar?.hanzi),
+            ),
           ),
         ],
-        3
+        3,
       ),
-    [relevantHanzi, shuffledGrammar]
+    [relevantHanzi, shuffledGrammar],
   );
   const shuffledOptions = useMemo(
     () => shuffleArray([...randomThreeOptions, selectedGrammar]),
-    [randomThreeOptions, _relevantHanzi, questionIndex, sentence]
+    [randomThreeOptions, _relevantHanzi, questionIndex, sentence],
   );
 
   const sentenceHanzi = useMemo(
     () =>
       (sentence?.hanzi || sentence?.input)?.replace(relevantHanzi, " ____ "),
-    [relevantHanzi, sentence?.hanzi, sentence?.input]
+    [relevantHanzi, sentence?.hanzi, sentence?.input],
   );
 
   const checkAnswer = (answer: string) => {
@@ -361,7 +362,7 @@ export function ReviewCloze({
                   "transition rounded-none",
                   response
                     ? ""
-                    : "hover:bg-orange-500 hover:text-white hover:scale-110"
+                    : "hover:bg-orange-500 hover:text-white hover:scale-110",
                 )}
                 key={`review-cloze-${option?.input || option?.hanzi}-${idx}-review-cloze`}
               >
@@ -409,7 +410,10 @@ export function ReviewCloze({
                       setWordIndex(
                         shuffledGrammar?.length === wordIndex + 1
                           ? 0
-                          : Math.min(wordIndex + 1, shuffledGrammar?.length - 1)
+                          : Math.min(
+                              wordIndex + 1,
+                              shuffledGrammar?.length - 1,
+                            ),
                       );
                       setResponse(null);
                     }}

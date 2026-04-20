@@ -500,7 +500,10 @@ export const DynaClozeSentence = ({
 
   return (
     <div className="mb-32">
-      <DynaClozeNavbar onClose={setView} />
+      <DynaClozeNavbar
+        onClose={setView}
+        input={_sentence?.input || _sentence?.hanzi || ""}
+      />
 
       {viewMode === "dynocloze" ? (
         <WithMultiSentence sentence={sentence}>

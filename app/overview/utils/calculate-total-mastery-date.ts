@@ -25,3 +25,22 @@ export function calculateTotalMasteryDate(character: ICharacter) {
 
   return totalDays;
 }
+
+export function calculateTotalDaysLearnedDate(character: ICharacter) {
+  const createdAt = character?.createdAt;
+
+  const startDate = new Date(createdAt);
+
+  const today = new Date(Date.now());
+  let totalDays = differenceInDays(today, startDate);
+
+  if (isNaN(totalDays)) {
+    return 0;
+  }
+
+  if (totalDays === 0) {
+    totalDays = differenceInDays(today, startDate);
+  }
+
+  return totalDays;
+}

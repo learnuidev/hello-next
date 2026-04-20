@@ -163,6 +163,7 @@ import {
   faMessageQuote,
   faSeedling as faSeedlingDuotone,
   faTree as faTreeDuotone,
+  faBookOpen as faBookOpenDuotone,
   faMicrophone as faMicrophoneSolid,
 } from "@fortawesome/pro-duotone-svg-icons";
 
@@ -380,6 +381,7 @@ export const Icons = {
   youtube: createFAIcon(faYoutube),
   clipboard: createFAIcon(faClipboard),
   bookOpen: createFAIcon(faBookOpen),
+  bookOpenDuotone: createFAIcon(faBookOpenDuotone),
   cat: createFAIcon(faCatSpace),
   spaceStation: createFAIcon(faSpaceStationMoon),
   listView: createFAIcon(faList12),

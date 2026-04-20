@@ -4,11 +4,11 @@ import { Icons } from "../ui/icons.v2";
 
 function RenderIcon({ currentMode }: any) {
   if (currentMode.current === "focus") {
-    return <Icons.magnifyingGlass />;
+    return <Icons.lightBulbDuotone className="fill-sky-600" />;
   }
 
   if (currentMode.current === "normal") {
-    return <Icons.bookOpen />;
+    return <Icons.bookOpenDuotone />;
   }
 
   if (currentMode.current === "melanin") {
@@ -21,7 +21,7 @@ export const PreviewButton = ({ className }: { className?: string }) => {
 
   return (
     <button
-      className={cn("text-xl", "dark:text-white text-black", className)}
+      className={cn("text-2xl w-5", "dark:text-white text-black", className)}
       onClick={() => {
         setNextMode();
       }}

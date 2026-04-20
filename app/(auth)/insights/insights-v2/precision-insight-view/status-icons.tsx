@@ -9,7 +9,7 @@ import {
 export const StatusIcons = {
   needs_review: {
     title: "Needs Review",
-    Icon: Icons.glassesRound,
+    Icon: Icons.bookOpenDuotone,
   },
   learned: {
     title: "Learned",

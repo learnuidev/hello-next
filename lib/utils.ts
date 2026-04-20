@@ -1,3 +1,4 @@
+import { formatPercentage } from "@/app/insights-overview/utils/format-percentage";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -20,13 +21,13 @@ export function groupBy(timestamps: any, res = { 0: [] } as any, idx = 0) {
         return groupBy(
           timestamps?.slice(1),
           { ...res, [idx]: (res?.[idx] || [])?.concat(firstTimeStamp) },
-          idx + 1
+          idx + 1,
         );
       } else {
         return groupBy(
           timestamps?.slice(1),
           { ...res, [idx]: (res?.[idx] || [])?.concat(firstTimeStamp) },
-          idx
+          idx,
         );
       }
     }
@@ -142,7 +143,7 @@ export function removeNull(obj: any) {
         return true;
       }
       return Boolean(v);
-    })
+    }),
   );
 }
 
@@ -156,6 +157,32 @@ export function isTwitterUrl(url: string) {
 
 export const splitEvery = (arr: any, size: any) => {
   return Array.from({ length: Math.ceil(arr.length / size) }, (_, i) =>
-    arr.slice(i * size, i * size + size)
+    arr.slice(i * size, i * size + size),
   );
 };
+
+export function calculateCharacterStats(val: any) {
+  const totalIncorrect = val?.reviewHistory?.filter(
+    (hist: any) => hist?.outcome === "incorrect",
+  )?.length;
+  const totalCorrect = val?.reviewHistory?.filter(
+    (hist: any) => hist.outcome === "correct",
+  )?.length;
+
+  const totalAttempts = val?.reviewHistory?.length || 0;
+
+  const failureRate = formatPercentage(
+    (totalIncorrect || 0) / (totalAttempts || 1),
+  );
+  const accuracyRate = formatPercentage(
+    (totalCorrect || 0) / (totalAttempts || 1),
+  );
+
+  return {
+    totalAttempts: val?.reviewHistory?.length,
+    totalIncorrect,
+    totalCorrect,
+    failureRate,
+    accuracyRate,
+  };
+}

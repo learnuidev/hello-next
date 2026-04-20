@@ -14,9 +14,14 @@ import { useSelectedCharacterData } from "@/components/use-selected-character";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 import { YoutubeLink } from "./youtube-link";
 import { useGetCharacter } from "@/hooks/use-get-character";
-import { calculateTotalMasteryDate } from "@/app/overview/utils/calculate-total-mastery-date";
+import {
+  calculateTotalDaysLearnedDate,
+  calculateTotalMasteryDate,
+} from "@/app/overview/utils/calculate-total-mastery-date";
 import { useMemo } from "react";
 import { BibilliLink } from "./billibilli-link/billibilli-link";
+import { formatPercentage } from "@/app/insights-overview/utils/format-percentage";
+import { calculateCharacterStats } from "@/lib/utils";
 
 export const SelectedCharacterStats = ({
   characterId,
@@ -27,22 +32,21 @@ export const SelectedCharacterStats = ({
 
   const selectedCharacter = useGetCharacter({ characterId });
 
-  const totalMasteryDays = useMemo(
+  const totalDaysLearned = useMemo(
     () =>
-      selectedCharacter ? calculateTotalMasteryDate(selectedCharacter) : 0,
-    [selectedCharacter]
+      selectedCharacter ? calculateTotalDaysLearnedDate(selectedCharacter) : 0,
+    [selectedCharacter],
   );
 
   const { selectedComp, selectedComp2 } = data;
 
   const level = selectedComp?.mandarinoIndex || selectedComp2?.mandarinoIndex;
-  // const level = selectedComp?.level || selectedComp2?.level;
   const { data: chineseCharacters } = useListChineseCharactersQuery();
 
   const lang = useGetCurrentLang();
 
   const offlineCharacter = chineseCharacters?.find(
-    (char: any) => char?.hanzi === characterId || char?.input === characterId
+    (char: any) => char?.hanzi === characterId || char?.input === characterId,
   );
 
   const pinyinOrRoman =
@@ -66,50 +70,37 @@ export const SelectedCharacterStats = ({
     pinyinOrRoman?.split(".")?.length > 1 ||
     pinyinOrRoman?.split("?")?.length > 1;
 
-  // const
+  const stats = calculateCharacterStats(selectedCharacter);
 
   return (
     <div className="text-gray-500 flex space-x-4 my-4 overflow-y-auto pb-4">
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between w-full items-center">
         {multiSentence ? null : (
           <div className="flex items-center space-x-4">
-            {level && (
+            {stats && (
               <div className="text-slate-500  text-extralight flex space-x-2 items-center">
-                <Icons.earthAsia />
-                <p className="text-black dark:text-white">{level}</p>
-              </div>
-            )}
-
-            {relatedHskWords?.length > 0 && (
-              <div className="text-slate-500  text-extralight flex space-x-2 items-center">
-                <Icons.word />
+                <Icons.bullsEye />
                 <p className="text-black dark:text-white">
-                  {relatedHskWords?.length}
+                  {stats?.accuracyRate}
                 </p>
               </div>
             )}
-            {selectedCharacter && (
+            {stats && (
               <div className="text-slate-500  text-extralight flex space-x-2 items-center">
-                <Icons.play />
+                <Icons.xMark />
                 <p className="text-black dark:text-white">
-                  {selectedCharacter?.reviewHistory?.length || 0}
+                  {stats?.totalIncorrect}
                 </p>
               </div>
             )}
-            {/* {totalRelatedSentences > 0 && (
-            <div className="text-slate-500  text-extralight flex space-x-2 items-center">
-              <Icons.sentence />
-              <p className="text-black dark:text-white">
-                {totalRelatedSentences}
-              </p>
-            </div>
-          )} */}
 
-            {totalMasteryDays === 0 ? null : (
-              <div className="text-slate-500  text-extralight flex space-x-2 items-center">
-                <Icons.fireDuoTone />
+            {totalDaysLearned === 0 ? null : (
+              <div className="text-slate-500  text-extralight flex space-x-2 items-center w-16">
+                <span>
+                  <Icons.lightBulb />
+                </span>
                 <p className="text-black dark:text-white">
-                  {totalMasteryDays}d
+                  {totalDaysLearned}d
                 </p>
               </div>
             )}
@@ -117,7 +108,7 @@ export const SelectedCharacterStats = ({
         )}
 
         <div className="space-x-4 flex items-center px-2">
-          <GoogleTranslateLink hanzi={characterId} />
+          {/* <GoogleTranslateLink hanzi={characterId} /> */}
           {lang === "zh" && <YablaLink hanzi={characterId} />}
           {lang === "zh" && <HanbookLink hanzi={characterId} />}
           {lang !== "zh" && <YoutubeLink characterId={characterId} />}

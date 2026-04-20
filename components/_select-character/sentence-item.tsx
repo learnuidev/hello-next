@@ -120,11 +120,7 @@ export const SentenceItem = (props: any) => {
               trackFunction();
             }}
             href={getNmmLink({
-              id: chineseConverter(
-                encodeURIComponent(
-                  currentPhrase?.hanzi || currentPhrase?.input,
-                ) || "",
-              ),
+              id: currentPhrase?.hanzi || currentPhrase?.input,
               lang: resolvedLang,
               contentId: currentPhrase?.contentId || contentId,
               context: currentPhrase?.hanzi || currentPhrase?.input,

@@ -524,16 +524,6 @@ export const CharacterTitle = (props: any) => {
             </button>
           )}
         </div>
-        <div className="space-x-4 flex items-center">
-          {isNonRomanLang(lang) && <PinyinButton />}
-
-          <EnButton />
-
-          <ReadModeButton />
-          {showEn && meaningDiscovery?.chinglish && (
-            <ChinglishButton disabled={!showEn} />
-          )}
-        </div>
       </div>
     </div>
   );

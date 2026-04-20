@@ -2,8 +2,10 @@ import { Icons } from "./ui/icons.v2";
 
 import { useCharacterContextStore } from "@/app/(auth)/convos/[content-id]/hooks/use-character-context-store";
 import { BookmarkButton } from "@/app/nmm/bookmark-button";
+import { NMMSettings } from "@/app/nmm/nmm-settings";
 import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
 import { useGetCharacterQuery } from "@/domain/character/use-get-character-query";
+import { useGetContentQuery } from "@/domain/content/content.queries";
 import {
   useAddCharacterMutation,
   useUpdateCharacterStatusMutation,
@@ -18,10 +20,9 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { AddToCollectionDialog } from "./_select-character/add-to-collection-dialog";
 import { useCharacterEditStore } from "./_select-character/use-character-edit-store";
-import { PreviewButton } from "./settings-dialog/preview-button";
 import { TheDock } from "./the-dock";
 import { useSelectedCharacterData } from "./use-selected-character";
-import { useGetContentQuery } from "@/domain/content/content.queries";
+import { Label } from "./ui/label";
 
 const DiscoverButton = ({ characterId }: { characterId: string }) => {
   const discoverMutation = useDiscoverMutation();
@@ -186,8 +187,6 @@ export const FloatingCharacterNavbar = ({
               lang={lang}
             />
 
-            <PreviewButton />
-
             <button
               className="text-xl text-black dark:text-white"
               onClick={() => {
@@ -278,37 +277,44 @@ export const FloatingCharacterNavbar = ({
                 )}
               </button>
             )}
-            {isSuperAdmin &&
-              isAlreadyLearned &&
-              currentCharacter?.status === "forgotten" && (
-                <button
-                  className="text-xl text-black dark:text-white"
-                  disabled={updateCharacterStatusMutation.isPending}
-                  onDoubleClick={() => {
-                    updateCharacterStatusMutation.mutateAsync({
-                      characterId: currentCharacter?.id,
-                      status: "DISCOVERED",
-                      next_review_date: Date.now(),
-                      rediscoveredAt: Date.now(),
-                      statusHistory: (
-                        currentCharacter?.statusHistory || []
-                      ).concat({
-                        type: "status-change",
-                        createdAt: Date.now(),
-                        newStatus: "DISCOVERED",
-                        oldStatus: currentCharacter?.status,
-                      }),
-                      rightCount: (currentCharacter?.rightCount || 0) + 1,
-                    } as any);
-                  }}
-                >
-                  {updateCharacterStatusMutation.isPending ? (
-                    <Icons.spinner spinPulse />
-                  ) : (
-                    <Icons.powerOff />
-                  )}
-                </button>
-              )}
+
+            <NMMSettings>
+              {isSuperAdmin &&
+                isAlreadyLearned &&
+                currentCharacter?.status === "forgotten" && (
+                  <div className="flex items-center gap-2 justify-between mb-4">
+                    <Label>Remove From System</Label>
+
+                    <button
+                      className="text-xl text-black dark:text-white"
+                      disabled={updateCharacterStatusMutation.isPending}
+                      onDoubleClick={() => {
+                        updateCharacterStatusMutation.mutateAsync({
+                          characterId: currentCharacter?.id,
+                          status: "DISCOVERED",
+                          next_review_date: Date.now(),
+                          rediscoveredAt: Date.now(),
+                          statusHistory: (
+                            currentCharacter?.statusHistory || []
+                          ).concat({
+                            type: "status-change",
+                            createdAt: Date.now(),
+                            newStatus: "DISCOVERED",
+                            oldStatus: currentCharacter?.status,
+                          }),
+                          rightCount: (currentCharacter?.rightCount || 0) + 1,
+                        } as any);
+                      }}
+                    >
+                      {updateCharacterStatusMutation.isPending ? (
+                        <Icons.spinner spinPulse />
+                      ) : (
+                        <Icons.powerOff />
+                      )}
+                    </button>
+                  </div>
+                )}
+            </NMMSettings>
           </div>
 
           <span className="absolute -bottom-0 left-[1.125rem] h-px w-[calc(100%-2.25rem)] bg-gradient-to-r from-emerald-400/0 via-emerald-400/90 to-emerald-400/0 transition-opacity duration-500 group-hover:opacity-40" />

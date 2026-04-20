@@ -16,6 +16,7 @@ import { useShowAutomaticallyTheDock } from "@/hooks/use-show-automatically-the-
 import { ReviewNavbar } from "@/app/review/review-navbar";
 import { useGetContentQuery } from "@/domain/content/content.queries";
 import { ContentReviewButton } from "./content-review-button/content-review-button";
+import { NMMSettings } from "@/app/nmm/nmm-settings";
 
 const FloatingNavbarComp = () => {
   const routeName = usePathname();
@@ -69,6 +70,8 @@ const FloatingNavbarComp = () => {
           </Link>
 
           <ContentReviewButton />
+
+          <NMMSettings />
 
           <Link
             href="/timeline"

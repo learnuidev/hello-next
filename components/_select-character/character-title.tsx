@@ -81,16 +81,16 @@ export const CharacterTitle = (props: any) => {
     hanzi: componentId,
   });
 
+  const updateMeaningMutation = useUpdateDiscoveryMutation();
+
+  const { videoUrl, setVideoUrl, addVideoUrl, setAddVideoUrl } =
+    useYoutubeVideoUrl();
+
   const { data: meaningDiscovery, isLoading: isMeaningDiscoveryLoading } =
     useListDiscoveryQuery({
       content: componentId,
       lang,
     });
-
-  const updateMeaningMutation = useUpdateDiscoveryMutation();
-
-  const { videoUrl, setVideoUrl, addVideoUrl, setAddVideoUrl } =
-    useYoutubeVideoUrl();
 
   const selectedCompInput =
     lang === "zh" ? meaningDiscovery?.hanzi || characterId : characterId;

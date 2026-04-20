@@ -18,12 +18,15 @@ import { useGetReviewUrl } from "@/components/settings-dialog/use-get-review-url
 import {
   listCharactersQueryId,
   listCharactersQueryMapId,
+  useListCharactersMapQuery,
+  useListCharactersQuery,
 } from "@/domain/lesson/character.queries";
 import { useQueryClient } from "@tanstack/react-query";
 import { BackButton } from "./back-button";
 import { useClozeReviewTimer } from "./cloze-review-timer-store";
 import { useGetCurrentReviewCharacter } from "./use-get-current-review-character";
 import { getNmmLink } from "@/libs/utils/get-nmm-link";
+import { useListDiscoveryQuery } from "@/domain/sentence/use-list-discovery-query";
 
 const getEndTimeAndDiff = (startTime: number, endTime: number) => {
   const diff = endTime - startTime;
@@ -112,6 +115,9 @@ export function ReviewModeClassic(props: any) {
     hasNoChars,
   } = useGetCurrentReviewCharacter();
 
+  const { isLoading: listCharactersLoading } = useListCharactersQuery();
+  const { isLoading: listCharactersMapLoading } = useListCharactersMapQuery();
+
   const { setPreviousPath, previousPath } = usePreviousPathnameStore();
 
   const {
@@ -127,9 +133,18 @@ export function ReviewModeClassic(props: any) {
       ? 0
       : Math.max(0, _clozeTime);
 
+  const { data: meaningDiscovery, isLoading: isMeaningDiscoveryLoading } =
+    useListDiscoveryQuery({
+      content: currentCharacter?.hanzi || currentCharacter?.input,
+      lang,
+    });
+
+  const finalEnVal =
+    meaningDiscovery?.en || currentCharacter?.en || currentComponent?.en;
+
   const diff = endTime - startTime + clozeTime;
 
-  if (isLoading) {
+  if (isLoading || listCharactersLoading || listCharactersMapLoading) {
     return <div className="">...</div>;
   }
 
@@ -281,7 +296,7 @@ export function ReviewModeClassic(props: any) {
 
           {reveal ? (
             <div className="mt-8">
-              <h3> {currentCharacter?.en || currentComponent?.en}</h3>
+              <h3>{finalEnVal}</h3>
             </div>
           ) : null}
         </div>
@@ -380,7 +395,7 @@ export function ReviewModeClassic(props: any) {
           ) : showCorrectOptions ? (
             <>
               {[
-                // { title: "1d", value: "1d" },
+                { title: "1d", value: "1d" },
                 { title: "3d", value: "3d" },
                 { title: "7d", value: "7d" },
                 { title: "1m", value: "30d" },
@@ -508,7 +523,7 @@ export function ReviewModeClassic(props: any) {
                 <Icons.xMark />
               </button>
 
-              {!isLoading && (
+              {isRefetching ? null : (
                 <button
                   disabled={updateCharacterStatusMutation.isPending}
                   onClick={() => {

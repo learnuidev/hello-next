@@ -118,7 +118,7 @@ export const useGetCurrentReviewCharacter = () => {
   const currentCharacter = useMemo(
     () =>
       input
-        ? unReviewedCharacters?.[reviewCount]
+        ? unReviewedCharacters?.[0]
         : isEntry
           ? reviewMode === "all"
             ? unReviewedCharacters?.[reviewCount]
@@ -219,6 +219,8 @@ export const useGetCurrentReviewCharacter = () => {
     [currentCharacter?.lang, currentComponent?.lang],
   );
 
+  console.log("CURR CHAR", currentCharacter);
+
   return {
     currentCharacter,
     hasReviewedAll,
@@ -226,7 +228,7 @@ export const useGetCurrentReviewCharacter = () => {
     goToNextChar,
     isContent,
     isEntry,
-    hasNoChars,
+    hasNoChars: remainingItems === 0,
     lang,
 
     remainingItems,

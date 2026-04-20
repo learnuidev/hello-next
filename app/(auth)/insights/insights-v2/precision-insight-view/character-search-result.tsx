@@ -94,6 +94,7 @@ export function CharacterSearchResult({
               </p>
               {comp?.status === "not_started" ? null : (
                 <div className="flex justify-start text-gray-500 font-light space-x-2">
+                  <span> {stats?.totalTimeSpentFormatted}</span>
                   <div>
                     <span>{comp?.totalAttempts}</span> 尝试
                   </div>
@@ -101,8 +102,6 @@ export function CharacterSearchResult({
                   {Number.isFinite(comp?.accuracy) && (
                     <span>{formatPercentage(comp?.accuracy || 0)}</span>
                   )}
-
-                  <span> {stats?.totalTimeSpentFormatted}</span>
                 </div>
               )}
             </div>

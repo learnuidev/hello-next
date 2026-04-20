@@ -19,7 +19,7 @@ export function NMMSettings({ children }: { children?: React.ReactNode }) {
     <Popover>
       <PopoverTrigger asChild>
         <button className="w-5 justify-self-end">
-          <Icons.gear className="text-2xl" />
+          <Icons.gear className="text-2xl text-black dark:text-white" />
         </button>
       </PopoverTrigger>
       <PopoverContent className="w-80 dark:border-gray-900 border-gray-100 dark:bg-[rgb(21,22,23)] bg-gray-100 rounded-2xl z-50">

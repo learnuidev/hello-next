@@ -71,8 +71,6 @@ const FloatingNavbarComp = () => {
 
           <ContentReviewButton />
 
-          <NMMSettings />
-
           <Link
             href="/timeline"
             className={`transition ${
@@ -94,6 +92,8 @@ const FloatingNavbarComp = () => {
           >
             <Icons.apps className="hover:text-rose-400 dark:hover:text-white transition" />
           </Link>
+
+          <NMMSettings />
         </div>
 
         <span className="absolute -bottom-0 left-[1.125rem] h-px w-[calc(100%-2.25rem)] bg-gradient-to-r from-emerald-400/0 via-emerald-400/90 to-emerald-400/0 transition-opacity duration-500 group-hover:opacity-40" />

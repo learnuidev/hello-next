@@ -53,7 +53,7 @@ export function UserLearningSummary() {
   const { data: profile } = useGetAuthUserProfileQuery();
 
   const userEmailHandle = useMemo(
-    () => (profile?.email || "user")?.split("@")?.[0],
+    () => profile?.email?.split("@")?.[0],
     [profile?.email],
   );
 
@@ -64,10 +64,14 @@ export function UserLearningSummary() {
 
         sm:justify-between sm:items-center flex-col-reverse sm:flex-row gap-4"
       >
-        <p className="font-extralight">
-          Yo <span className="font-bold">{userEmailHandle}</span>, here is your
-          learning summary:{" "}
-        </p>
+        {userEmailHandle ? (
+          <p className="font-extralight">
+            Yo <span className="font-bold">{userEmailHandle}</span>, here is
+            your learning summary:{" "}
+          </p>
+        ) : (
+          <div></div>
+        )}
 
         <PlansBanner />
       </div>

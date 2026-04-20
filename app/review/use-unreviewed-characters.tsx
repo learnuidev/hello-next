@@ -30,7 +30,8 @@ export function useUnreviwedCharacters() {
   const router = useRouter();
 
   const { mode, level, reviewMode, entryId } = useGetReviewParams();
-  const { data: hskWords } = useListHSKWordsQuery();
+  const { data: hskWords, isLoading: isHskWordsLoading } =
+    useListHSKWordsQuery();
 
   const { data: hskCharacters, isLoading: isHskCharactersLoading } =
     useGetHskCharacters({ getAll: true });
@@ -60,7 +61,7 @@ export function useUnreviwedCharacters() {
 
   const groupItems = group?.items
     ?.filter(
-      (character: any) => (character?.hanzi || character?.input)?.length <= 3
+      (character: any) => (character?.hanzi || character?.input)?.length <= 3,
     )
     ?.sort((a: any, b: any) => {
       return (a?.reviewHistory?.length || 0) - (b?.reviewHistory?.length || 0);
@@ -93,7 +94,7 @@ export function useUnreviwedCharacters() {
         ? getReviewCharacters(groupItems)
         : groupItems
       : learnedCharacters?.filter(
-          (character: any) => character?.hanzi?.length === 1
+          (character: any) => character?.hanzi?.length === 1,
         );
 
   const contentData = useMemo(() => {
@@ -119,7 +120,7 @@ export function useUnreviwedCharacters() {
       ? data
       : data?.sort(
           (a: any, b: any) =>
-            (a.next_review_date || 0) - (b?.next_review_date || 0)
+            (a.next_review_date || 0) - (b?.next_review_date || 0),
         );
   }, [isContent, reviewMode, uniqueCharactersMemo]);
 
@@ -131,13 +132,14 @@ export function useUnreviwedCharacters() {
           })
         : hskCharacters?.filter((item: any) => {
             const unreviewedCharacter = unReviewedCharacters?.find(
-              (char: any) => char?.hanzi === item?.hanzi
+              (char: any) => char?.hanzi === item?.hanzi,
             );
 
             return unreviewedCharacter && item?.hskLevel == level;
           })
     )?.sort(
-      (a: any, b: any) => (a.next_review_date || 0) - (b?.next_review_date || 0)
+      (a: any, b: any) =>
+        (a.next_review_date || 0) - (b?.next_review_date || 0),
     );
 
     return {
@@ -157,7 +159,7 @@ export function useUnreviwedCharacters() {
     const data = uniqueDiaryCharactersMemo
       ?.filter((item: any) => {
         const hskCharacter = hskWords?.find((word: any) =>
-          JSON.stringify(word)?.includes(item?.hanzi)
+          JSON.stringify(word)?.includes(item?.hanzi),
         );
 
         return (
@@ -181,7 +183,7 @@ export function useUnreviwedCharacters() {
           ? data
           : data?.sort(
               (a: any, b: any) =>
-                (a.next_review_date || 0) - (b?.next_review_date || 0)
+                (a.next_review_date || 0) - (b?.next_review_date || 0),
             ),
       isLoading: isLearnedCharactersLoading || isHskCharactersLoading,
     };
@@ -189,15 +191,17 @@ export function useUnreviwedCharacters() {
 
   return {
     data: unReviewedCharacters
+      ?.filter((char: any) => char?.status !== "forgotten")
       ?.sort(
         (a: any, b: any) =>
-          (a.next_review_date || 0) - (b?.next_review_date || 0)
+          (a.next_review_date || 0) - (b?.next_review_date || 0),
       )
       ?.sort((a: any, b: any) => {
         return (
           (b?.reviewHistory?.length || 0) - (a?.reviewHistory?.length || 0)
         );
       }),
-    isLoading: isLearnedCharactersLoading || isHskCharactersLoading,
+    isLoading:
+      isLearnedCharactersLoading || isHskCharactersLoading || isHskWordsLoading,
   };
 }

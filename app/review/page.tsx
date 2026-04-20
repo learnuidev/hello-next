@@ -10,29 +10,11 @@ import { FloatingNavbar } from "@/components/floating-navbar";
 import { useReviewModeView } from "./use-review-mode";
 import { ReviewCloze } from "./review-cloze/review-cloze";
 import { useGetCurrentReviewCharacter } from "./use-get-current-review-character";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useIsContent } from "./use-is-content";
 import { ReviewClozeContent } from "./review-cloze-content/review-cloze-content";
 import { useClozeContentMode } from "./content-cloze-mode-button";
 import { usePreviousPathnameStore } from "@/components/language-selector/use-previous-path-name-store";
-
-function ReviewClassic() {
-  const { view, mode } = useGetReviewParams();
-
-  if (view === "hsk-level") {
-    return <ChangeMode />;
-  }
-
-  if (["hsk", "hsk3"]?.includes(mode)) {
-    return <HskReviewMode />;
-  }
-
-  if (view === "cal") {
-    return <ReviewCalView />;
-  }
-
-  return <ReviewModeClassic />;
-}
 
 function ReviewModeSelectorButton({
   children,
@@ -95,10 +77,6 @@ function ReviewMode() {
 
   const { clozeContentMode } = useClozeContentMode();
 
-  if (!reviewMode) {
-    return <ReviewModeSelector />;
-  }
-
   if (reviewMode === "cloze") {
     if (clozeContentMode === "content") {
       return (
@@ -130,7 +108,7 @@ function ReviewMode() {
     }
   }
 
-  return <ReviewClassic />;
+  return <ReviewModeClassic />;
 }
 
 export default function ReviewPage(props: any) {

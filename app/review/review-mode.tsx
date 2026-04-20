@@ -13,21 +13,16 @@ import { reviewCounterStore } from "./review-counter-store";
 import { useGetReviewParams } from "./use-get-review-params";
 
 import { SpeakComponent } from "@/components/_select-character/speak-component";
-import {
-  getReviewSearchParams,
-  useGetReviewUrl,
-} from "@/components/settings-dialog/use-get-review-url";
-import { useGetCurrentReviewCharacter } from "./use-get-current-review-character";
-import { useReviewModeView } from "./use-review-mode";
-import { useClozeReviewTimer } from "./cloze-review-timer-store";
 import { usePreviousPathnameStore } from "@/components/language-selector/use-previous-path-name-store";
-import { BackButton } from "./back-button";
-import { useListUniqueCharatersByContentId } from "../(auth)/convos/use-get-unique-characters-by-content-id";
-import { useQueryClient } from "@tanstack/react-query";
+import { useGetReviewUrl } from "@/components/settings-dialog/use-get-review-url";
 import {
   listCharactersQueryId,
   listCharactersQueryMapId,
 } from "@/domain/lesson/character.queries";
+import { useQueryClient } from "@tanstack/react-query";
+import { BackButton } from "./back-button";
+import { useClozeReviewTimer } from "./cloze-review-timer-store";
+import { useGetCurrentReviewCharacter } from "./use-get-current-review-character";
 
 const getEndTimeAndDiff = (startTime: number, endTime: number) => {
   const diff = endTime - startTime;
@@ -61,10 +56,6 @@ export function ReviewModeClassic(props: any) {
 
   const { reviewUrl, reviewContentId } = useGetReviewUrl();
 
-  const uniqueCharacters: string[] = useListUniqueCharatersByContentId({
-    contentId: reviewContentId || "",
-  });
-
   const updateCharacterStatusMutation = useUpdateCharacterStatusMutation({
     onSuccess: () => {
       queryClient.refetchQueries({
@@ -75,8 +66,6 @@ export function ReviewModeClassic(props: any) {
       });
     },
   });
-
-  const { setReviewMode } = useReviewModeView();
 
   const {
     data: learnedCharacters,
@@ -102,10 +91,10 @@ export function ReviewModeClassic(props: any) {
 
   const reviewCounts = reviewCounterStore((state: any) => state?.reviewCounts);
   const setReviewCount = reviewCounterStore(
-    (state: any) => state?.setReviewCount
+    (state: any) => state?.setReviewCount,
   )(date);
   const resetReviewCount = reviewCounterStore(
-    (state: any) => state?.resetReviewCount
+    (state: any) => state?.resetReviewCount,
   )(date);
 
   const reviewCount = reviewCounts?.[date] || 0;
@@ -146,13 +135,7 @@ export function ReviewModeClassic(props: any) {
   const ReviewHeader = () => {
     return (
       <div className="flex items-center justify-between mt-8 mb-16 px-4 md:px-16">
-        <BackButton
-          href={
-            entryId
-              ? `/diary/${entryId}?view=insights`
-              : `/nmm${level ? `?level=${level}` : ""}`
-          }
-        />
+        <BackButton href={"/"} />
 
         {/* <h1 className="text-2xl"></h1> */}
         <p className="text-gray-700 text-xl md:text-3xl">
@@ -160,26 +143,7 @@ export function ReviewModeClassic(props: any) {
         </p>
 
         <div className="flex space-x-4 items-center">
-          <Link
-            href={`/review?view=cal`}
-            className="flex items-center flex-col hover:text-white text-gray-400"
-          >
-            <Icons.cal className="text-xl" />
-          </Link>
-
-          {isEntry || isContent ? null : (
-            <button
-              className="flex items-center flex-col hover:text-white text-gray-500"
-              onClick={() => {
-                resetReviewCount();
-                router.push(`/review?view=hsk-level&mode=${hskMode}`);
-              }}
-            >
-              <p className="text-xl font-light uppercase">
-                {hskMode?.includes("hsk") ? hskMode : "HSK"}
-              </p>
-            </button>
-          )}
+          <div></div>
         </div>
       </div>
     );
@@ -198,81 +162,6 @@ export function ReviewModeClassic(props: any) {
           <p className="my-4 text-gray-400 px-12">
             You have finished all your reviews for this level
           </p>
-        </div>
-
-        <div className="space-x-12 flex justify-center items-center">
-          {hskMode?.includes("hsk") ? (
-            <button
-              className="flex items-center flex-col hover:text-white text-gray-400"
-              onClick={() => {
-                resetReviewCount();
-                router.push(`/review?view=hsk-level&mode=${hskMode}`);
-              }}
-            >
-              <h4 className="text-xl text-gray-500">HSK</h4>
-
-              <span className="text-[14px] font-light uppercase">
-                Change level
-              </span>
-            </button>
-          ) : (
-            <button
-              className="flex items-center flex-col hover:text-white text-gray-400"
-              onClick={() => {
-                resetReviewCount();
-                router.push(`/review?view=cal`);
-              }}
-            >
-              <Icons.cal className="text-xl" />
-
-              <span className="text-[14px] font-light mt-2 uppercase">
-                Change date
-              </span>
-            </button>
-          )}
-
-          {(reviewMode === "all" && hasNoChars) || isContent || isEntry ? (
-            <button
-              className="flex items-center flex-col hover:text-white text-gray-400 "
-              onClick={() => {
-                resetReviewCount();
-
-                if (isEntry) {
-                  router.push(`/diary/${entryId}?view=insights`);
-                } else {
-                  router.push(`/nmm?mode=${hskMode}`);
-                }
-              }}
-            >
-              <Icons.mandarin className="text-xl" />
-
-              <span className="text-[14px] font-light mt-2 uppercase">
-                Back to Home
-              </span>
-            </button>
-          ) : (
-            <button
-              className="flex items-center flex-col hover:text-white text-gray-400 "
-              onClick={() => {
-                resetReviewCount();
-                if (hskMode?.includes("hsk") || isContent || isEntry) {
-                  const reviewSearchParams = getReviewSearchParams({
-                    entryId,
-                    mode: hskMode,
-                    level,
-                    reviewMode: "all",
-                  });
-                  router.push(`/review?${reviewSearchParams}`);
-                }
-              }}
-            >
-              <Icons.repeat className="text-xl" />
-
-              <span className="text-[14px] font-light mt-2 uppercase">
-                Restart
-              </span>
-            </button>
-          )}
         </div>
       </div>
     );
@@ -326,6 +215,11 @@ export function ReviewModeClassic(props: any) {
       });
   };
 
+  const isLoadingOrRefetching =
+    updateCharacterStatusMutation.isPending ||
+    isRefetching ||
+    !characterHanziOrInput;
+
   return (
     <div className="grow text-center">
       <ReviewHeader />
@@ -341,9 +235,7 @@ export function ReviewModeClassic(props: any) {
         </div>
       )}
 
-      {updateCharacterStatusMutation.isPending ||
-      isRefetching ||
-      !characterHanziOrInput ? (
+      {isLoadingOrRefetching ? (
         <div className="my-32">
           <h2 className="text-8xl md:text-9xl">...</h2>
         </div>
@@ -434,7 +326,7 @@ export function ReviewModeClassic(props: any) {
                     onClick={() => {
                       const { timeTaken } = getEndTimeAndDiff(
                         startTime,
-                        endTime
+                        endTime,
                       );
 
                       const ponderTime = getPonderTime(endTime);
@@ -499,7 +391,7 @@ export function ReviewModeClassic(props: any) {
                     onClick={() => {
                       const { timeTaken } = getEndTimeAndDiff(
                         startTime,
-                        endTime
+                        endTime,
                       );
 
                       const ponderTime = getPonderTime(endTime);
@@ -613,26 +505,28 @@ export function ReviewModeClassic(props: any) {
                 <Icons.xMark />
               </button>
 
-              <button
-                disabled={updateCharacterStatusMutation.isPending}
-                onClick={() => {
-                  if (currentCharacter?.reviewHistory === undefined) {
-                    setOverConfidenceWarning(
-                      "You have not reviewed this character at all, are you sure you want to forget it"
-                    );
-                    return null;
-                  } else if (currentCharacter?.reviewHistory?.length < 8) {
-                    setOverConfidenceWarning(
-                      "You have not reviewed this less than 8 times. This might indicate you have recency bias.. are you sure you want to forget it"
-                    );
-                    return null;
-                  } else {
-                    handleMastery();
-                  }
-                }}
-              >
-                <Icons.fire />
-              </button>
+              {!isLoading && (
+                <button
+                  disabled={updateCharacterStatusMutation.isPending}
+                  onClick={() => {
+                    if (currentCharacter?.reviewHistory === undefined) {
+                      setOverConfidenceWarning(
+                        "You have not reviewed this character at all, are you sure you want to forget it",
+                      );
+                      return null;
+                    } else if (currentCharacter?.reviewHistory?.length < 8) {
+                      setOverConfidenceWarning(
+                        "You have reviewed this less than 8 times. This might indicate you have recency bias.. are you sure you want to forget it",
+                      );
+                      return null;
+                    } else {
+                      handleMastery();
+                    }
+                  }}
+                >
+                  <Icons.fire />
+                </button>
+              )}
             </>
           ) : isRefetching ? null : (
             <>
@@ -647,107 +541,6 @@ export function ReviewModeClassic(props: any) {
               </button>
             </>
           )}
-        </div>
-      )}
-      {updateCharacterStatusMutation.isPending ? null : (
-        <div className="space-x-12 mt-12 text-3xl">
-          {
-            // showOptions ? (
-            //   <>
-            //     {[
-            //       {
-            //         title: "Cry",
-            //         value: "cry",
-            //         Icon: Icons.cry,
-            //         IconActive: Icons.crySolid,
-            //       },
-            //       {
-            //         title: "Angry",
-            //         value: "angry",
-            //         Icon: Icons.angry,
-            //         IconActive: Icons.angrySolid,
-            //       },
-            //       {
-            //         title: "Spiral Eyes",
-            //         value: "spiral-eyes",
-            //         Icon: Icons.spiralEyes,
-            //         IconActive: Icons.spiralEyesSolid,
-            //       },
-            //     ].map((option) => {
-            //       return (
-            //         <button
-            //           key={JSON.stringify(option)}
-            //           disabled={updateCharacterStatusMutation.isPending}
-            //           className="hover:text-rose-400 font-extralight"
-            //           onClick={() => {
-            //             setEmotion(option.value);
-            //           }}
-            //         >
-            //           {emotion === option?.value ? (
-            //             <option.IconActive />
-            //           ) : (
-            //             <option.Icon />
-            //           )}
-            //         </button>
-            //       );
-            //     })}
-            //   </>
-            // )
-            // :
-            showCorrectOptions ? (
-              <>
-                {[
-                  {
-                    title: "Sweat",
-                    value: "grin-sweat",
-                    Icon: Icons.grinSweat,
-                    IconActive: Icons.grinSweatSolid,
-                  },
-                  {
-                    title: "Smile",
-                    value: "smile",
-                    Icon: Icons.smile,
-                    IconActive: Icons.smileSolid,
-                  },
-                  // {
-                  //   title: "Smirk",
-                  //   value: "smirk",
-                  //   Icon: Icons.smirk,
-                  //   IconActive: Icons.smirkSolid,
-                  // },
-                  {
-                    title: "Grin",
-                    value: "grin",
-                    Icon: Icons.grin,
-                    IconActive: Icons.grinSolid,
-                  },
-                  {
-                    title: "Party",
-                    value: "Party",
-                    Icon: Icons.party,
-                    IconActive: Icons.partySolid,
-                  },
-                ].map((option) => {
-                  return (
-                    <button
-                      key={JSON.stringify(option)}
-                      disabled={updateCharacterStatusMutation.isPending}
-                      className={cn("hover:text-rose-400 font-extralight")}
-                      onClick={() => {
-                        setEmotion(option.value);
-                      }}
-                    >
-                      {emotion === option?.value ? (
-                        <option.IconActive />
-                      ) : (
-                        <option.Icon />
-                      )}
-                    </button>
-                  );
-                })}
-              </>
-            ) : null
-          }
         </div>
       )}
 

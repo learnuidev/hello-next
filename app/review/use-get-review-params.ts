@@ -17,6 +17,8 @@ export const useGetReviewParams = () => {
   const input = searchParams.get("input") || "";
   const reviewSpeed = searchParams.get("review-speed") || "";
 
+  const sentence = searchParams.get("sentence") || "";
+
   return {
     date,
     lang: langParams,
@@ -27,7 +29,7 @@ export const useGetReviewParams = () => {
     character,
     view,
     studyMode,
-    input,
+    input: input || sentence,
     reviewSpeed,
   };
 };

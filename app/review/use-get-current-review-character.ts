@@ -80,7 +80,7 @@ export const useGetCurrentReviewCharacter = () => {
 
           return true;
         }),
-    [group?.items, langParams]
+    [group?.items, langParams],
   );
 
   const { data: components, isLoading: isComponentsLoading } =
@@ -91,8 +91,6 @@ export const useGetCurrentReviewCharacter = () => {
     lang: "zh",
   });
 
-  const { speak } = useSpeak();
-
   const hasReviewedAll = useMemo(
     () =>
       input
@@ -100,13 +98,21 @@ export const useGetCurrentReviewCharacter = () => {
         : date
           ? groupItems?.length <= reviewCount
           : false,
-    [date, groupItems?.length, input, reviewCount, uniqueComponentWords?.length]
+    [
+      date,
+      groupItems?.length,
+      input,
+      reviewCount,
+      uniqueComponentWords?.length,
+    ],
   );
 
   const {
     data: unReviewedCharacters,
     isLoading: isUnreviewedCharactersLoading,
   } = useUnreviwedCharacters();
+
+  console.log("UN REV", unReviewedCharacters);
 
   const isContent = useIsContent(hskMode);
   const isEntry = useIsEntry(entryId);
@@ -128,7 +134,7 @@ export const useGetCurrentReviewCharacter = () => {
               : reviewMode === "all"
                 ? unReviewedCharacters?.[reviewCount]
                 : unReviewedCharacters?.find(
-                    (char: any) => char?.hanzi === nextCharacter
+                    (char: any) => char?.hanzi === nextCharacter,
                   ) ||
                   // allCharacters?.find((char: any) => char?.hanzi === nextCharacter) ||
                   unReviewedCharacters?.[0],
@@ -142,11 +148,11 @@ export const useGetCurrentReviewCharacter = () => {
       reviewMode,
       unReviewedCharacters,
       uniqueComponentWords,
-    ]
+    ],
   );
 
   const currentComponent = components?.find(
-    (component: any) => component?.hanzi === currentCharacter?.hanzi
+    (component: any) => component?.hanzi === currentCharacter?.hanzi,
   );
 
   const getUrl = () => {
@@ -169,7 +175,7 @@ export const useGetCurrentReviewCharacter = () => {
 
   const goToNextChar = () => {
     const currentCharacterIndex = unReviewedCharacters?.findIndex(
-      (char: any) => char?.hanzi === character
+      (char: any) => char?.hanzi === character,
     );
 
     const nextChar = unReviewedCharacters?.[currentCharacterIndex + 1];
@@ -190,7 +196,7 @@ export const useGetCurrentReviewCharacter = () => {
   const remainingItems = useMemo(
     () =>
       input
-        ? uniqueComponentWords?.length - reviewCount
+        ? unReviewedCharacters?.length
         : date
           ? groupItems?.length - reviewCount
           : reviewMode === "all"
@@ -203,18 +209,17 @@ export const useGetCurrentReviewCharacter = () => {
       reviewCount,
       reviewMode,
       unReviewedCharacters?.length,
-      uniqueComponentWords?.length,
-    ]
+    ],
   );
 
   const hasNoChars = useMemo(
     () => !currentCharacter || hasReviewedAll,
-    [currentCharacter, hasReviewedAll]
+    [currentCharacter, hasReviewedAll],
   );
 
   const lang = useMemo(
     () => currentCharacter?.lang || currentComponent?.lang,
-    [currentCharacter?.lang, currentComponent?.lang]
+    [currentCharacter?.lang, currentComponent?.lang],
   );
 
   return {
@@ -228,6 +233,9 @@ export const useGetCurrentReviewCharacter = () => {
     lang,
 
     remainingItems,
-    isLoading: isLearnedCharactersLoading || isComponentsLoading,
+    isLoading:
+      isLearnedCharactersLoading ||
+      isComponentsLoading ||
+      isUnreviewedCharactersLoading,
   };
 };

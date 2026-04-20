@@ -144,17 +144,26 @@ export const useAudioBookState = (content: IContent) => {
   );
 
   const seekAfter = useCallback(() => {
-    const currentTranscriptionIndex = Math.max(
-      transcriptions?.findIndex(
-        (trans: any) => trans?.id === currentTranscription?.id,
-      ),
-      0,
-    );
+    const firstTranscription = transcriptions?.[0];
 
-    const nextIndex = Math.min(
-      currentTranscriptionIndex + 1,
-      transcriptions?.length - 1,
-    );
+    let nextIndex = 0;
+
+    if (currentTime < firstTranscription?.start) {
+      nextIndex = 0;
+    } else {
+      const currentTranscriptionIndex = Math.max(
+        transcriptions?.findIndex(
+          (trans: any) => trans?.id === currentTranscription?.id,
+        ),
+        0,
+      );
+
+      nextIndex = Math.min(
+        currentTranscriptionIndex + 1,
+        transcriptions?.length - 1,
+      );
+    }
+
     const nextTranscription = transcriptions?.[nextIndex];
 
     playerRef.current.seekTo(

@@ -105,7 +105,7 @@ export function ReaderViewChinese({
                       <CharacterItem
                         character={charItem}
                         className={cn(
-                          "sm:!text-3xl text-3xl font-light",
+                          "sm:!text-3xl text-2xl font-light",
                           isSelected
                             ? "dark:bg-emerald-600 bg-emerald-300"
                             : "",

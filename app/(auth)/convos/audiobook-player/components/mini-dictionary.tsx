@@ -249,9 +249,17 @@ export function MiniDictionary({
           : position
             ? "fixed z-50 w-[600px]"
             : className || "w-full sm:max-w-[600px] mt-0 sticky top-0",
-        !isMobile && position && (dragOffset ? "cursor-grabbing" : "cursor-grab"),
+        !isMobile &&
+          position &&
+          (dragOffset ? "cursor-grabbing" : "cursor-grab"),
       )}
-      style={isMobile ? undefined : (position ? { left: position.x, top: position.y } : undefined)}
+      style={
+        isMobile
+          ? undefined
+          : position
+            ? { left: position.x, top: position.y }
+            : undefined
+      }
     >
       <div className="flex justify-between items-center">
         <div className="flex gap-4">
@@ -306,14 +314,16 @@ export function MiniDictionary({
           )}
         </div>
 
-        <button
-          onClick={() => {
-            setSelected(null);
-            hideMenuBar();
-          }}
-        >
-          <Icons.xMark className="text-2xl" />
-        </button>
+        {!isMobile && (
+          <button
+            onClick={() => {
+              setSelected(null);
+              hideMenuBar();
+            }}
+          >
+            <Icons.xMark className="text-2xl" />
+          </button>
+        )}
       </div>
 
       {isNonRomanLang(lang) && (

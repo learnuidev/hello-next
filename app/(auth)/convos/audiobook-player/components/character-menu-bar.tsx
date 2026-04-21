@@ -23,7 +23,9 @@ export function CharacterMenuBar({
   const { show, text, position, startTime, hideMenuBar } =
     useCharacterMenuBarStore();
   const menuRef = useRef<HTMLDivElement>(null);
-  const [dragOffset, setDragOffset] = useState<{ x: number; y: number } | null>(null);
+  const [dragOffset, setDragOffset] = useState<{ x: number; y: number } | null>(
+    null,
+  );
   const isDragging = useRef(false);
   const isSmall = useIsSmall();
 
@@ -37,7 +39,7 @@ export function CharacterMenuBar({
       });
       e.preventDefault();
     },
-    [position]
+    [position],
   );
 
   const onTouchStart = useCallback(
@@ -50,7 +52,7 @@ export function CharacterMenuBar({
         y: touch.clientY - position.y,
       });
     },
-    [position]
+    [position],
   );
 
   useEffect(() => {
@@ -103,20 +105,6 @@ export function CharacterMenuBar({
 
   const dictionaryContent = (
     <>
-      {startTime !== null && seekAndPlay && (
-        <div className="border-b dark:border-gray-700 border-gray-200">
-          <button
-            className="flex items-center gap-3 w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-800 text-sm"
-            onClick={() => {
-              seekAndPlay(startTime);
-            }}
-          >
-            <Icons.play />
-            <span>Play from here</span>
-          </button>
-        </div>
-      )}
-
       <MiniDictionary
         contentId={contentId}
         selected={text}
@@ -130,10 +118,27 @@ export function CharacterMenuBar({
   if (isSmall) {
     return (
       <Drawer open={show} onOpenChange={(open) => !open && hideMenuBar()}>
-        <DrawerContent className="max-h-[85vh]">
+        <DrawerContent className="max-h-[100vh] h-[100vh]">
           <DrawerHeader className="border-b dark:border-gray-700 pb-4">
             <div className="flex items-center justify-between">
-              <DrawerTitle>{text}</DrawerTitle>
+              <div className="flex gap-2 items-center">
+                <DrawerTitle>{text}</DrawerTitle>
+
+                {startTime !== null && seekAndPlay && (
+                  <div className=" ">
+                    <button
+                      className="flex items-center gap-3 w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-800 text-sm"
+                      onClick={() => {
+                        seekAndPlay(startTime);
+                      }}
+                    >
+                      <Icons.play />
+                      <span>Play from here</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+
               <button
                 onClick={hideMenuBar}
                 className="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
@@ -157,13 +162,26 @@ export function CharacterMenuBar({
       onTouchStart={onTouchStart}
       className={cn(
         "fixed z-50 bg-white dark:bg-gray-900 border dark:border-gray-700 border-gray-200 rounded-lg shadow-lg max-w-[500px] max-h-[80vh] overflow-y-auto",
-        dragOffset ? "cursor-grabbing" : "cursor-grab"
+        dragOffset ? "cursor-grabbing" : "cursor-grab",
       )}
       style={{
         left: position.x,
         top: position.y,
       }}
     >
+      {startTime !== null && seekAndPlay && (
+        <div className=" ">
+          <button
+            className="flex items-center gap-3 w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-800 text-sm"
+            onClick={() => {
+              seekAndPlay(startTime);
+            }}
+          >
+            <Icons.play />
+            <span>Play from here</span>
+          </button>
+        </div>
+      )}
       {dictionaryContent}
     </div>
   );

@@ -137,7 +137,7 @@ export const ReaderViewParent = ({
                               >
                                 <CharacterItem
                                   className={cn(
-                                    "sm:!text-3xl text-3xl",
+                                    "sm:!text-3xl text-2xl",
                                     transcription.start < currentTime &&
                                       transcription.end > currentTime
                                       ? "   !dark:text-white"

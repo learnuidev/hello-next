@@ -6,12 +6,18 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useSetIfExists } from "@/app/(auth)/convos/[content-id]/hooks/use-character-context-store";
 import { useRecentlyWatchedContent } from "@/app/(auth)/convos/use-recently-watched-content-store";
 import { useGetComponentId } from "@/app/nmm/[component-id]/use-get-component-id";
+import { getSelectedText } from "@/app/review/review-cloze-content/utils/get-selected-text";
 import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
 import { useDeleteSentenceMutation } from "@/domain/sentence/use-delete-sentence-mutation";
+import { formatRoman } from "@/lib/format-roman";
 import { cn } from "@/lib/utils";
+import { getNmmLink } from "@/libs/utils/get-nmm-link";
+import { useSegmentTextQuery } from "@/libs/utils/segment-text";
 import { chineseConverter } from "mandarino/src/utils/chinese-converter";
 import { useRef } from "react";
+import { useReadModeState } from "../read-mode-button";
 import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
+import { useChinglishState } from "../settings-dialog/use-chinglish-state";
 import { Icons } from "../ui/icons.v2";
 import { useCanTrackFunction } from "../use-can-track-function";
 import { useCanTrackNavigationFunction } from "../use-can-track-navigation-function";
@@ -22,10 +28,8 @@ import { CharacterItem } from "./character-item";
 import { PlayButtonV2 } from "./play-button-v2";
 import { GoogleTranslateLink } from "./selected-character/google-translate-link";
 import { useGetCharacterAnalytics } from "./use-get-character-analytics";
-import { isRomanLang } from "./utils/is-non-roman-lang";
+import { isNonRomanLang, isRomanLang } from "./utils/is-non-roman-lang";
 import { WithInteractiveTitle } from "./with-interative-title";
-import { useChinglishState } from "../settings-dialog/use-chinglish-state";
-import { getNmmLink } from "@/libs/utils/get-nmm-link";
 
 export const SentenceItem = (props: any) => {
   const { selectedComp, selectedChar, lang, currentPhrase } = props;
@@ -36,6 +40,8 @@ export const SentenceItem = (props: any) => {
 
   const resolvedLang =
     currentPhrase?.lang || lang || selectedComp?.lang || currentPhrase?.lang;
+
+  const { readMode, setReadMode } = useReadModeState();
 
   const showEn = useBrightModeStore((state) => state.showEn);
   const { showChinglish, setShowChinglish } = useChinglishState();
@@ -68,6 +74,11 @@ export const SentenceItem = (props: any) => {
 
   const customRef: any = useRef(null) as any;
 
+  const { data: segmentedData } = useSegmentTextQuery({
+    text: currentPhrase?.input || currentPhrase?.hanzi,
+    lang,
+  });
+
   const Links = ({ customRef }: { customRef?: string }) => {
     const hanziOrInput = encodeURIComponent(unEncoded);
     return (
@@ -76,7 +87,6 @@ export const SentenceItem = (props: any) => {
           {characterAnalytics?.precisionRate !== "0.0%" && (
             <p className="text-[16px] font-light flex space-x-2">
               <span>
-                {" "}
                 <Icons.lightBulbDuotone />
               </span>
 
@@ -85,7 +95,6 @@ export const SentenceItem = (props: any) => {
           )}
           <p className="text-[16px] font-light flex space-x-2">
             <span>
-              {" "}
               <Icons.fireDuoTone />
             </span>
 
@@ -162,82 +171,207 @@ export const SentenceItem = (props: any) => {
     );
   };
 
+  const selectedCompInput = currentPhrase?.input || currentPhrase?.hanzi;
+
   return (
     <div className="flex flex-col items-center justify-between p-4 w-full bg-gray-50 dark:bg-[rgb(4,5,6)] my-2 rounded-2xl">
       <div role="button" className="flex flex-col w-full">
-        {" "}
-        <Link
-          target="_blank"
-          href={getYablaLink(currentPhrase?.hanzi)}
-          onClick={() => {
-            setIfExists({ ...currentPhrase });
-          }}
-        >
-          {currentPhrase?.lang === "en" || isRomanLang(currentPhrase?.lang)
-            ? null
-            : showPinyin &&
-              lang !== "en" && (
-                <span className="text-[16px] text-gray-600 dark:text-gray-400">
-                  {currentPhrase?.roman || currentPhrase?.pinyin}
-                </span>
+        {readMode ? (
+          <>
+            <div>
+              {segmentedData ? (
+                segmentedData.map((item, idx) => {
+                  return (
+                    <span
+                      className={cn(
+                        "inline-flex flex-col items-center justify-center",
+
+                        ["，", "。"]?.includes(item?.input)
+                          ? ""
+                          : idx === 0
+                            ? "pr-[2px] sm:pr-[4px]"
+                            : "px-[2px] py-[0px] sm:px-[4px]",
+
+                        "leading-none",
+                        "py-[0px]",
+                      )}
+                      key={`${JSON.stringify(item)}-${idx}-${idx}`}
+                    >
+                      {item?.pinyin
+                        ? isNonRomanLang(lang) &&
+                          showPinyin && (
+                            <span className="text-sm dark:text-gray-400 text-gray-800 lowercase">
+                              {formatRoman(item)}
+                            </span>
+                          )
+                        : null}
+
+                      <span
+                        onClick={() => {
+                          const selectedText = getSelectedText();
+
+                          if (selectedText && selectedText?.length < 36) {
+                            router.push(getNmmLink({ id: selectedText, lang }));
+                            // setSelected(selectedText);
+                          } else {
+                            router.push(
+                              getNmmLink({
+                                id: item?.input,
+                                lang,
+                              }),
+                            );
+                            // setSelected(item);
+                          }
+                        }}
+                      >
+                        {smartSplit({
+                          input: item?.input,
+                          lang: lang,
+                        })?.map((character: any, idx: any) => {
+                          return (
+                            <span key={`${character}-pinin-view-${idx}`}>
+                              <CharacterItem
+                                hanzis={smartSplit({
+                                  input: item?.input,
+                                  lang: lang,
+                                })}
+                                className={"text-2xl"}
+                                character={character}
+                                onClick={() => {}}
+                              />
+                            </span>
+                          );
+                        })}
+                      </span>
+                    </span>
+                  );
+                })
+              ) : (
+                <div className="flex justify-between items-center w-full">
+                  <WithInteractiveTitle
+                    customRef={customRef}
+                    text={selectedCompInput}
+                    lang={lang}
+                    className={
+                      selectedCompInput?.length < 8
+                        ? "lg:text-4xl text-4xl"
+                        : "text-2xl"
+                    }
+                  >
+                    <div>
+                      {smartSplit({ input: selectedCompInput, lang })?.map(
+                        (item: string, idx: number) => {
+                          return (
+                            <Link
+                              className={
+                                selectedCompInput?.length < 4
+                                  ? "text-5xl"
+                                  : "text-2xl"
+                              }
+                              key={`character-title-${item}-${idx}-${idx}`}
+                              href={`/nmm/${item}?lang=${lang || "zh"}`}
+                            >
+                              <CharacterItem
+                                hanzis={smartSplit({
+                                  input: selectedCompInput,
+                                  lang,
+                                })}
+                                className={
+                                  selectedCompInput?.length < 8
+                                    ? "lg:text-4xl text-4xl"
+                                    : "text-2xl"
+                                }
+                                character={item}
+                              />
+                            </Link>
+                          );
+                        },
+                      )}
+                    </div>
+                  </WithInteractiveTitle>
+                </div>
               )}
-        </Link>
-        <WithInteractiveTitle
-          customRef={customRef}
-          text={chineseConverter(currentPhrase?.input || currentPhrase?.hanzi)}
-          lang={currentPhrase?.lang}
-          className={"text-xl"}
-        >
-          <span>
-            {smartSplit({
-              input: chineseConverter(
+            </div>
+          </>
+        ) : (
+          <>
+            <Link
+              target="_blank"
+              href={getYablaLink(currentPhrase?.hanzi)}
+              onClick={() => {
+                setIfExists({ ...currentPhrase });
+              }}
+            >
+              {currentPhrase?.lang === "en" || isRomanLang(currentPhrase?.lang)
+                ? null
+                : showPinyin &&
+                  lang !== "en" && (
+                    <span className="text-[16px] text-gray-600 dark:text-gray-400">
+                      {currentPhrase?.roman || currentPhrase?.pinyin}
+                    </span>
+                  )}
+            </Link>
+            <WithInteractiveTitle
+              customRef={customRef}
+              text={chineseConverter(
                 currentPhrase?.input || currentPhrase?.hanzi,
-              ),
-              lang: currentPhrase?.lang,
-            })?.map((val: string, idy: number) => {
-              return (
-                <span
-                  key={`sentence-item-${val}-${idy}`}
-                  onClick={() => {
-                    const cleanedVal = chineseConverter(
-                      val
-                        .replaceAll("!", "")
-                        ?.replaceAll(".", "")
-                        ?.replaceAll(",", ""),
-                    );
+              )}
+              lang={currentPhrase?.lang}
+              className={"text-xl"}
+            >
+              <span>
+                {smartSplit({
+                  input: chineseConverter(
+                    currentPhrase?.input || currentPhrase?.hanzi,
+                  ),
+                  lang: currentPhrase?.lang,
+                })?.map((val: string, idy: number) => {
+                  return (
+                    <span
+                      key={`sentence-item-${val}-${idy}`}
+                      onClick={() => {
+                        const cleanedVal = chineseConverter(
+                          val
+                            .replaceAll("!", "")
+                            ?.replaceAll(".", "")
+                            ?.replaceAll(",", ""),
+                        );
 
-                    trackNavigationFunction({
-                      hanzi: cleanedVal,
-                      input: cleanedVal,
-                      lang: lang || currentPhrase?.lang,
-                    } as any);
+                        trackNavigationFunction({
+                          hanzi: cleanedVal,
+                          input: cleanedVal,
+                          lang: lang || currentPhrase?.lang,
+                        } as any);
 
-                    setIfExists({ ...currentPhrase });
+                        setIfExists({ ...currentPhrase });
 
-                    router.push(
-                      getNmmLink({
-                        id: cleanedVal,
-                        lang: resolvedLang,
-                        contentId: currentPhrase?.contentId || contentId,
-                        context: currentPhrase?.hanzi || currentPhrase?.input,
-                      }),
-                    );
-                  }}
-                >
-                  <CharacterItem
-                    character={val}
-                    hanzis={smartSplit({
-                      input: chineseConverter(
-                        currentPhrase?.input || currentPhrase?.hanzi,
-                      ),
-                      lang: currentPhrase?.lang,
-                    })}
-                  />
-                </span>
-              );
-            })}
-          </span>
-        </WithInteractiveTitle>
+                        router.push(
+                          getNmmLink({
+                            id: cleanedVal,
+                            lang: resolvedLang,
+                            contentId: currentPhrase?.contentId || contentId,
+                            context:
+                              currentPhrase?.hanzi || currentPhrase?.input,
+                          }),
+                        );
+                      }}
+                    >
+                      <CharacterItem
+                        character={val}
+                        hanzis={smartSplit({
+                          input: chineseConverter(
+                            currentPhrase?.input || currentPhrase?.hanzi,
+                          ),
+                          lang: currentPhrase?.lang,
+                        })}
+                      />
+                    </span>
+                  );
+                })}
+              </span>
+            </WithInteractiveTitle>
+          </>
+        )}
         {showEn
           ? currentPhrase?.lang === "en"
             ? null

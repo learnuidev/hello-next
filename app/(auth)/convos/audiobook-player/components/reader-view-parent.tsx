@@ -83,12 +83,7 @@ export const ReaderViewParent = ({
                     return (
                       <div key={JSON.stringify(transcription)}>
                         {showPinyin && (
-                          <p
-                            style={{
-                              fontSize: `${Math.max(Math.min(20, fontSize * 0.75), 12)}px`,
-                            }}
-                            className="font-extralight text-gray-500"
-                          >
+                          <p className="text-sm font-extralight text-gray-500">
                             {transcription.pinyin || transcription?.roman}
                           </p>
                         )}

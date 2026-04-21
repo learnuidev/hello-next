@@ -7,6 +7,7 @@ import { CurrentTranscriptionProps } from "../audiobook-player.types";
 import { useCharacterMenuBarStore } from "../hooks/use-character-menu-bar";
 import { useFontSizeStore } from "../hooks/use-font-size";
 import { isCharacterPartOfWordMatch } from "@/lib/content-bookmark";
+import { containsUnknownStyles } from "../utils/contains-unknown-styles";
 
 export function InputView({
   currentTranscription,
@@ -50,10 +51,10 @@ export function InputView({
           >
             <CharacterItem
               character={item}
-              className={
-                containsInUnknown &&
-                "font-light underline underline-offset-8 text-2xl"
-              }
+              className={cn(
+                containsUnknownStyles(!!containsInUnknown),
+                containsInUnknown && "font-light text-3xl",
+              )}
             />
           </span>
         );

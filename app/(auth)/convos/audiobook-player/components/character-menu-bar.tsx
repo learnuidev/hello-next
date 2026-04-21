@@ -1,4 +1,11 @@
 import { Icons } from "@/components/ui/icons.v2";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+} from "@/components/ui/drawer";
+import { useIsSmall } from "@/components/youtube-page/utils/use-is-small";
 import { cn } from "@/lib/utils";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useCharacterMenuBarStore } from "../hooks/use-character-menu-bar";
@@ -18,6 +25,7 @@ export function CharacterMenuBar({
   const menuRef = useRef<HTMLDivElement>(null);
   const [dragOffset, setDragOffset] = useState<{ x: number; y: number } | null>(null);
   const isDragging = useRef(false);
+  const isSmall = useIsSmall();
 
   const onMouseDown = useCallback(
     (e: React.MouseEvent) => {
@@ -93,20 +101,8 @@ export function CharacterMenuBar({
 
   if (!show || !text || !lang) return null;
 
-  return (
-    <div
-      ref={menuRef}
-      onMouseDown={onMouseDown}
-      onTouchStart={onTouchStart}
-      className={cn(
-        "fixed z-50 bg-white dark:bg-gray-900 border dark:border-gray-700 border-gray-200 rounded-lg shadow-lg max-w-[500px] max-h-[80vh] overflow-y-auto",
-        dragOffset ? "cursor-grabbing" : "cursor-grab"
-      )}
-      style={{
-        left: position.x,
-        top: position.y,
-      }}
-    >
+  const dictionaryContent = (
+    <>
       {startTime !== null && seekAndPlay && (
         <div className="border-b dark:border-gray-700 border-gray-200">
           <button
@@ -126,7 +122,49 @@ export function CharacterMenuBar({
         selected={text}
         lang={lang}
         seekAndPlay={seekAndPlay}
+        isMobile={isSmall}
       />
+    </>
+  );
+
+  if (isSmall) {
+    return (
+      <Drawer open={show} onOpenChange={(open) => !open && hideMenuBar()}>
+        <DrawerContent className="max-h-[85vh]">
+          <DrawerHeader className="border-b dark:border-gray-700 pb-4">
+            <div className="flex items-center justify-between">
+              <DrawerTitle>{text}</DrawerTitle>
+              <button
+                onClick={hideMenuBar}
+                className="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+              >
+                <Icons.xMark className="text-2xl" />
+              </button>
+            </div>
+          </DrawerHeader>
+          <div className="p-4 overflow-y-auto max-h-[70vh]">
+            {dictionaryContent}
+          </div>
+        </DrawerContent>
+      </Drawer>
+    );
+  }
+
+  return (
+    <div
+      ref={menuRef}
+      onMouseDown={onMouseDown}
+      onTouchStart={onTouchStart}
+      className={cn(
+        "fixed z-50 bg-white dark:bg-gray-900 border dark:border-gray-700 border-gray-200 rounded-lg shadow-lg max-w-[500px] max-h-[80vh] overflow-y-auto",
+        dragOffset ? "cursor-grabbing" : "cursor-grab"
+      )}
+      style={{
+        left: position.x,
+        top: position.y,
+      }}
+    >
+      {dictionaryContent}
     </div>
   );
 }

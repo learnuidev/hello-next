@@ -41,6 +41,12 @@ import { useIsSmall } from "./utils/use-is-small";
 
 import { useGo } from "@/app/(auth)/convos/[content-id]/hooks/use-go";
 import { formatTime } from "@/app/(auth)/convos/_play/utils";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+} from "@/components/ui/drawer";
 import { MiniDictionary } from "@/app/(auth)/convos/audiobook-player/components/mini-dictionary";
 import { isYoutube } from "@/app/(auth)/convos/utils/is-youtube";
 import { MandoContextMenu } from "@/app/review/review-cloze-content/mando-context-menu";
@@ -905,12 +911,38 @@ export function YouTubePlayer({ contentId }: { contentId: string }) {
                 >
                   <MandoContextMenu lang={content?.lang || ""}>
                     {selected ? (
-                      <MiniDictionary
-                        contentId={content?.id}
-                        className="sm:mt-0 mt-0"
-                        selected={selected}
-                        lang={content?.lang}
-                      />
+                      isSmall ? (
+                        <Drawer open={!!selected} onOpenChange={(open) => !open && setSelected(null)}>
+                          <DrawerContent className="max-h-[85vh]">
+                            <DrawerHeader className="border-b dark:border-gray-700 pb-4">
+                              <div className="flex items-center justify-between">
+                                <DrawerTitle>{selected}</DrawerTitle>
+                                <button
+                                  onClick={() => setSelected(null)}
+                                  className="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+                                >
+                                  <Icons.xMark className="text-2xl" />
+                                </button>
+                              </div>
+                            </DrawerHeader>
+                            <div className="p-4 overflow-y-auto max-h-[70vh]">
+                              <MiniDictionary
+                                contentId={content?.id}
+                                selected={selected}
+                                lang={content?.lang}
+                                isMobile={true}
+                              />
+                            </div>
+                          </DrawerContent>
+                        </Drawer>
+                      ) : (
+                        <MiniDictionary
+                          contentId={content?.id}
+                          className="sm:mt-0 mt-0"
+                          selected={selected}
+                          lang={content?.lang}
+                        />
+                      )
                     ) : (
                       <ScrollArea
                         className={cn(

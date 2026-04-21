@@ -31,12 +31,14 @@ export function MiniDictionary({
   className,
   contentId,
   seekAndPlay,
+  isMobile,
 }: {
   selected: string;
   className?: string;
   contentId?: string;
   lang: string;
   seekAndPlay?: (time: number) => void;
+  isMobile?: boolean;
 }) {
   const { searchHistory, addSearchHistory } = useContentSearchHistory({
     contentId: contentId || "",
@@ -242,12 +244,14 @@ export function MiniDictionary({
       onTouchStart={onTouchStart}
       className={cn(
         "bg-gray-50 dark:bg-[rgb(13,14,15)] rounded p-4 sm:p-8 sm:max-w-xl",
-        position
-          ? "fixed z-50 w-[600px]"
-          : className || "w-full sm:max-w-[600px] mt-0 sticky top-0",
-        position && (dragOffset ? "cursor-grabbing" : "cursor-grab"),
+        isMobile
+          ? "w-full"
+          : position
+            ? "fixed z-50 w-[600px]"
+            : className || "w-full sm:max-w-[600px] mt-0 sticky top-0",
+        !isMobile && position && (dragOffset ? "cursor-grabbing" : "cursor-grab"),
       )}
-      style={position ? { left: position.x, top: position.y } : undefined}
+      style={isMobile ? undefined : (position ? { left: position.x, top: position.y } : undefined)}
     >
       <div className="flex justify-between items-center">
         <div className="flex gap-4">

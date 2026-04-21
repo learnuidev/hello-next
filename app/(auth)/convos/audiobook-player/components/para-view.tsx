@@ -15,6 +15,7 @@ import { CharacterItem } from "@/components/_select-character/character-item";
 import { isCharacterPartOfWordMatch } from "@/lib/content-bookmark";
 import { useFontSizeStore } from "../hooks/use-font-size";
 import { useGetGroupedTranscriptions } from "../hooks/use-get-grouped-transcriptions";
+import { containsUnknownStyles } from "../utils/contains-unknown-styles";
 
 // import { getYablaLink } from "./utils/get-yabla-link";
 
@@ -144,8 +145,8 @@ export const ParaView = ({
                                   character={item}
                                   className={cn(
                                     "text-xl",
-                                    containsInUnknown &&
-                                      "font-light underline underline-offset-8",
+                                    containsUnknownStyles(!!containsInUnknown),
+                                    containsInUnknown && "font-light",
                                     currentTime
                                       ? isActiveTranscription
                                         ? "dark:text-white text-black dark:bg-[rgb(11,12,13)]"

@@ -13,6 +13,7 @@ import { useCharacterMenuBarStore } from "../hooks/use-character-menu-bar";
 import { useFontSizeStore } from "../hooks/use-font-size";
 import { useGetGroupedTranscriptions } from "../hooks/use-get-grouped-transcriptions";
 import { ReaderView } from "./reader-view";
+import { containsUnknownStyles } from "../utils/contains-unknown-styles";
 
 export const ReaderViewParent = ({
   loop,
@@ -136,13 +137,16 @@ export const ReaderViewParent = ({
                               >
                                 <CharacterItem
                                   className={cn(
-                                    "sm:!text-3xl text-xl",
+                                    "sm:!text-3xl text-3xl",
                                     transcription.start < currentTime &&
                                       transcription.end > currentTime
                                       ? "   !dark:text-white"
                                       : "dark:text-gray-500",
                                     containsInUnknown &&
-                                      "font-light underline underline-offset-8",
+                                      containsUnknownStyles(
+                                        !!containsInUnknown,
+                                      ),
+                                    "font-light",
                                   )}
                                   character={item}
                                 />

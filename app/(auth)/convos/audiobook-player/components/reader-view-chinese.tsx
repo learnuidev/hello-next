@@ -11,6 +11,7 @@ import { formatRoman } from "@/lib/format-roman";
 import { cn } from "@/lib/utils";
 import { CurrentTranscriptionProps } from "../audiobook-player.types";
 import { useCharacterMenuBarStore } from "../hooks/use-character-menu-bar";
+import { containsUnknownStyles } from "../utils/contains-unknown-styles";
 
 export function ReaderViewChinese({
   currentTranscription,
@@ -76,7 +77,7 @@ export function ReaderViewChinese({
                 <span
                   className={cn(
                     "dark:text-gray-500 text-gray-800",
-                    "sm:text-sm text-[10px]",
+                    "sm:text-sm text-[14px]",
                   )}
                 >
                   {formatRoman(item)}
@@ -104,14 +105,12 @@ export function ReaderViewChinese({
                       <CharacterItem
                         character={charItem}
                         className={cn(
-                          "sm:!text-3xl text-xl",
+                          "sm:!text-3xl text-3xl font-light",
                           isSelected
                             ? "dark:bg-emerald-600 bg-emerald-300"
                             : "",
                           !isSelected &&
-                            containsInUnknown &&
-                            "font-light underline underline-offset-8",
-
+                            containsUnknownStyles(!!containsInUnknown),
                           currentTime > item?.start &&
                             currentTime < item?.end &&
                             !nonHanYuChars.includes(charItem) &&

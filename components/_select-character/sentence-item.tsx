@@ -210,18 +210,12 @@ export const SentenceItem = (props: any) => {
                         onClick={() => {
                           const selectedText = getSelectedText();
 
-                          if (selectedText && selectedText?.length < 36) {
-                            router.push(getNmmLink({ id: selectedText, lang }));
-                            // setSelected(selectedText);
-                          } else {
-                            router.push(
-                              getNmmLink({
-                                id: item?.input,
-                                lang,
-                              }),
-                            );
-                            // setSelected(item);
-                          }
+                          router.push(
+                            getNmmLink({
+                              id: item?.input,
+                              lang,
+                            }),
+                          );
                         }}
                       >
                         {smartSplit({

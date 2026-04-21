@@ -298,7 +298,7 @@ export function ReviewModeClassic(props: any) {
         </div>
       )}
 
-      {overConfidentWarning && (
+      {overConfidentWarning && !isRefetching && (
         <p className=" text-gray-500">{overConfidentWarning} </p>
       )}
 

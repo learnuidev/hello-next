@@ -83,7 +83,16 @@ export const ReaderViewParent = ({
                     return (
                       <div key={JSON.stringify(transcription)}>
                         {showPinyin && (
-                          <p className="text-sm font-extralight text-gray-500">
+                          <p
+                            className={cn(
+                              "text-sm font-extralight",
+
+                              transcription.start < currentTime &&
+                                transcription.end > currentTime
+                                ? "dark:text-white text-black dark:bg-[rgb(9,10,11)]"
+                                : `opacity-50`,
+                            )}
+                          >
                             {transcription.pinyin || transcription?.roman}
                           </p>
                         )}

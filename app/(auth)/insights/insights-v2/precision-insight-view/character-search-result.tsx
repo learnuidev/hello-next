@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { groupBy } from "ramda";
 
+import { formatPercentage } from "@/app/insights-overview/utils/format-percentage";
+import { CharacterItem } from "@/components/_select-character/character-item";
 import {
   Tooltip,
   TooltipContent,
@@ -10,10 +12,9 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { calculateCharacterStats, cn } from "@/lib/utils";
-import { getStatusIcon } from "./status-icons";
+import { getNmmLink } from "@/libs/utils/get-nmm-link";
 import { NoResultView } from "./no-result-view";
-import { formatPercentage } from "@/app/insights-overview/utils/format-percentage";
-import { CharacterItem } from "@/components/_select-character/character-item";
+import { getStatusIcon } from "./status-icons";
 
 export function CharacterSearchResult({
   searchResults,
@@ -43,8 +44,7 @@ export function CharacterSearchResult({
         return (
           <Link
             key={`${val}-${idx}`}
-            href={`/nmm/${encodeURIComponent(comp?.hanzi)}?lang=${comp?.lang || "zh"}`}
-            target="_blank"
+            href={getNmmLink({ id: comp?.hanzi, lang: comp?.lang || "zh" })}
             className="block"
           >
             <div className="flex items-start w-full justify-between flex-wrap truncate">

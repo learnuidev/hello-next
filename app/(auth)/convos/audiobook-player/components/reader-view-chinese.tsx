@@ -40,9 +40,11 @@ export function ReaderViewChinese({
 
   const { setShowMenuBar } = useCharacterMenuBarStore();
 
+  const isLong = currentTranscription?.input?.length > 60;
+
   return (
     <div className={cn(defautClassName, className)}>
-      <div className={cn(defautClassName, className)}>
+      <div className={cn(defautClassName, className, "text-base/10")}>
         {data?.map((item, idx) => {
           const isSelected =
             selected && selected === (item?.hanzi || item?.input);
@@ -77,7 +79,8 @@ export function ReaderViewChinese({
                 <span
                   className={cn(
                     "dark:text-gray-500 text-gray-800",
-                    "sm:text-sm text-[14px]",
+                    "sm:text-sm",
+                    isLong ? "text-[12px]" : "text-[14px]",
                   )}
                 >
                   {formatRoman(item)}
@@ -105,7 +108,8 @@ export function ReaderViewChinese({
                       <CharacterItem
                         character={charItem}
                         className={cn(
-                          "sm:!text-3xl text-2xl font-light",
+                          "sm:!text-3xl font-light",
+                          isLong ? "text-xl" : "text-2xl",
                           isSelected
                             ? "dark:bg-emerald-600 bg-emerald-300"
                             : "",

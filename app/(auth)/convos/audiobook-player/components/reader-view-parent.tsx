@@ -82,7 +82,10 @@ export const ReaderViewParent = ({
                     }
 
                     return (
-                      <div key={JSON.stringify(transcription)}>
+                      <div
+                        key={JSON.stringify(transcription)}
+                        className="text-base/10"
+                      >
                         {showPinyin && (
                           <p
                             className={cn(

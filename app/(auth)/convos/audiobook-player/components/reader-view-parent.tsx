@@ -85,12 +85,7 @@ export const ReaderViewParent = ({
                         {showPinyin && (
                           <p
                             className={cn(
-                              "text-md font-extralight",
-
-                              transcription.start < currentTime &&
-                                transcription.end > currentTime
-                                ? "dark:text-white text-black dark:bg-[rgb(9,10,11)]"
-                                : `opacity-50`,
+                              "text-sm font-extralight text-gray-500",
                             )}
                           >
                             {transcription.pinyin || transcription?.roman}

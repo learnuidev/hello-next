@@ -10,7 +10,7 @@ import { create } from "zustand";
 import { CharacterSentenceTransformations } from "../character-sentence-transformations";
 import { useGetCharacterLearningContext } from "./use-get-character-learning-context";
 import { useListContentsQuery } from "@/domain/content/content.queries";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Select,
@@ -22,6 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { SentenceItem } from "../sentence-item";
+import { Icons } from "@/components/ui/icons.v2";
 
 const useSideBarViewType = create((set: any, get: any) => ({
   sideBarView: "sentences",
@@ -44,6 +45,15 @@ export const CharacterOverviewViewSidebar = ({
   const selectedContent = useSideBarViewType((state) => state.selectedContent);
   const setSelectedContent = useSideBarViewType(
     (state) => state.setSelectedContent,
+  );
+
+  const ITEMS_PER_PAGE = 5;
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const totalPages = Math.ceil((sentences?.length || 0) / ITEMS_PER_PAGE);
+  const paginatedSentences = sentences?.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE,
   );
 
   const items = useGetCharacterLearningContext({ lang, characterId });
@@ -87,6 +97,15 @@ export const CharacterOverviewViewSidebar = ({
     );
   }, [items, selectedContent, contentItems?.items]);
 
+  const [contentCurrentPage, setContentCurrentPage] = useState(1);
+  const contentTotalPages = Math.ceil(
+    (filteredItems?.length || 0) / ITEMS_PER_PAGE,
+  );
+  const paginatedContentItems = filteredItems?.slice(
+    (contentCurrentPage - 1) * ITEMS_PER_PAGE,
+    contentCurrentPage * ITEMS_PER_PAGE,
+  );
+
   return (
     <div className={"col-span-5 md:col-span-3 hidden sm:block"}>
       <MandoContextMenu lang={lang}>
@@ -119,55 +138,75 @@ export const CharacterOverviewViewSidebar = ({
           <TabsContent value="sentences">
             <div className="shadows-sm shadow-2 shadow-black px-2 bg-gray-100 dark:bg-[rgb(11,12,13)] rounded-2xl overflow-hidden">
               <div className="">
-                {sentences?.length > 7 ? (
-                  <ScrollArea className="hidden md:block space-y-2 h-[700px] rounded-md">
-                    <div>
-                      {sentences?.map((item: any) => {
-                        return (
-                          <SentenceItem
-                            key={JSON.stringify(item)}
-                            currentPhrase={item}
-                            selectedComp={selectedComp}
-                            selectedChar={characterId}
-                            lang={item?.lang}
-                          />
-                        );
-                      })}
-                    </div>
-                  </ScrollArea>
-                ) : (
-                  <ScrollArea className="hidden md:block space-y-2 h-[700px] rounded-md">
-                    <div>
-                      {sentences?.map((item: any) => {
-                        return (
-                          <SentenceItem
-                            key={JSON.stringify(item)}
-                            currentPhrase={item}
-                            selectedComp={selectedComp}
-                            selectedChar={characterId}
-                            lang={item?.lang}
-                          />
-                        );
-                      })}
-                    </div>
-                  </ScrollArea>
-                )}
-              </div>
+                <ScrollArea className="hidden md:block space-y-2 h-[600px] rounded-md">
+                  <div>
+                    {paginatedSentences?.map((item: any) => {
+                      return (
+                        <SentenceItem
+                          key={JSON.stringify(item)}
+                          currentPhrase={item}
+                          selectedComp={selectedComp}
+                          selectedChar={characterId}
+                          lang={item?.lang}
+                        />
+                      );
+                    })}
+                  </div>
+                </ScrollArea>
 
-              <div className="md:hidden block">
-                <div>
-                  {sentences?.map((item: any) => {
-                    return (
-                      <SentenceItem
-                        key={JSON.stringify(item)}
-                        currentPhrase={item}
-                        selectedComp={selectedComp}
-                        selectedChar={characterId}
-                        lang={item?.lang}
-                      />
-                    );
-                  })}
+                <div className="md:hidden block">
+                  <div>
+                    {paginatedSentences?.map((item: any) => {
+                      return (
+                        <SentenceItem
+                          key={JSON.stringify(item)}
+                          currentPhrase={item}
+                          selectedComp={selectedComp}
+                          selectedChar={characterId}
+                          lang={item?.lang}
+                        />
+                      );
+                    })}
+                  </div>
                 </div>
+
+                {totalPages > 1 && (
+                  <div className="flex justify-between items-center p-4 gap-4">
+                    <button
+                      onClick={() =>
+                        setCurrentPage((prev) => Math.max(1, prev - 1))
+                      }
+                      disabled={currentPage === 1}
+                      className={cn(
+                        "px-4 py-2 rounded-lg text-sm font-medium transition",
+                        "bg-white dark:bg-black",
+                        "border border-gray-200 dark:border-gray-800",
+                        "hover:bg-gray-50 dark:hover:bg-gray-900",
+                        "disabled:opacity-50 disabled:cursor-not-allowed",
+                      )}
+                    >
+                      Previous
+                    </button>
+                    <span className="text-sm dark:text-gray-400">
+                      {currentPage} / {totalPages}
+                    </span>
+                    <button
+                      onClick={() =>
+                        setCurrentPage((prev) => Math.min(totalPages, prev + 1))
+                      }
+                      disabled={currentPage === totalPages}
+                      className={cn(
+                        "px-4 py-2 rounded-lg text-sm font-medium transition",
+                        "bg-white dark:bg-black",
+                        "border border-gray-200 dark:border-gray-800",
+                        "hover:bg-gray-50 dark:hover:bg-gray-900",
+                        "disabled:opacity-50 disabled:cursor-not-allowed",
+                      )}
+                    >
+                      Next
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </TabsContent>
@@ -179,6 +218,7 @@ export const CharacterOverviewViewSidebar = ({
                   value={selectedContent}
                   onValueChange={(value) => {
                     setSelectedContent(value);
+                    setContentCurrentPage(1);
                   }}
                 >
                   <SelectTrigger className="w-[320px] text-xs dark:border-gray-800">
@@ -206,60 +246,80 @@ export const CharacterOverviewViewSidebar = ({
 
             <div className="shadows-sm shadow-2 shadow-black px-2 bg-gray-100 dark:bg-[rgb(11,12,13)] rounded-2xl overflow-hidden">
               <div className="">
-                {" "}
-                {filteredItems?.length > 7 ? (
-                  <ScrollArea className="hidden md:block space-y-2 h-[700px] rounded-md">
-                    <div>
-                      {/* <h1>TODO: {characterId}</h1> */}
+                <ScrollArea className="hidden md:block space-y-2 h-[600px] rounded-md">
+                  <div>
+                    {paginatedContentItems?.map((item: any) => {
+                      return (
+                        <SentenceItem
+                          key={JSON.stringify(item)}
+                          currentPhrase={item}
+                          selectedComp={selectedComp}
+                          selectedChar={characterId}
+                          lang={item?.lang}
+                        />
+                      );
+                    })}
+                  </div>
+                </ScrollArea>
 
-                      {filteredItems?.map((item: any) => {
-                        return (
-                          <SentenceItem
-                            key={JSON.stringify(item)}
-                            currentPhrase={item}
-                            selectedComp={selectedComp}
-                            selectedChar={characterId}
-                            lang={item?.lang}
-                          />
-                        );
-                      })}
-                    </div>
-                  </ScrollArea>
-                ) : (
-                  <ScrollArea className="hidden md:block space-y-2 h-[700px] rounded-md">
-                    <div>
-                      {/* <h1>TODO: {characterId}</h1> */}
-
-                      {filteredItems?.map((item: any) => {
-                        return (
-                          <SentenceItem
-                            key={JSON.stringify(item)}
-                            currentPhrase={item}
-                            selectedComp={selectedComp}
-                            selectedChar={characterId}
-                            lang={item?.lang}
-                          />
-                        );
-                      })}
-                    </div>
-                  </ScrollArea>
-                )}
-              </div>
-
-              <div className="md:hidden block">
-                <div>
-                  {filteredItems?.map((item: any) => {
-                    return (
-                      <SentenceItem
-                        key={JSON.stringify(item)}
-                        currentPhrase={item}
-                        selectedComp={selectedComp}
-                        selectedChar={characterId}
-                        lang={item?.lang}
-                      />
-                    );
-                  })}
+                <div className="md:hidden block">
+                  <div>
+                    {paginatedContentItems?.map((item: any) => {
+                      return (
+                        <SentenceItem
+                          key={JSON.stringify(item)}
+                          currentPhrase={item}
+                          selectedComp={selectedComp}
+                          selectedChar={characterId}
+                          lang={item?.lang}
+                        />
+                      );
+                    })}
+                  </div>
                 </div>
+
+                {contentTotalPages > 1 && (
+                  <div
+                    className="flex justify-between items-center p-4 gap-4"
+                    style={{ zIndex: 100000 }}
+                  >
+                    <button
+                      onClick={() =>
+                        setContentCurrentPage((prev) => Math.max(1, prev - 1))
+                      }
+                      disabled={contentCurrentPage === 1}
+                      className={cn(
+                        "px-4 py-2 rounded-lg text-sm font-medium transition",
+                        "bg-white dark:bg-black",
+                        "border border-gray-200 dark:border-gray-800",
+                        "hover:bg-gray-50 dark:hover:bg-gray-900",
+                        "disabled:opacity-50 disabled:cursor-not-allowed",
+                      )}
+                    >
+                      <Icons.arrowLeft />
+                    </button>
+                    <span className="text-sm dark:text-gray-400">
+                      {contentCurrentPage} / {contentTotalPages}
+                    </span>
+                    <button
+                      onClick={() =>
+                        setContentCurrentPage((prev) =>
+                          Math.min(contentTotalPages, prev + 1),
+                        )
+                      }
+                      disabled={contentCurrentPage === contentTotalPages}
+                      className={cn(
+                        "px-4 py-2 rounded-lg text-sm font-medium transition",
+                        "bg-white dark:bg-black",
+                        "border border-gray-200 dark:border-gray-800",
+                        "hover:bg-gray-50 dark:hover:bg-gray-900",
+                        "disabled:opacity-50 disabled:cursor-not-allowed",
+                      )}
+                    >
+                      <Icons.arrowRight />
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </TabsContent>
@@ -269,14 +329,14 @@ export const CharacterOverviewViewSidebar = ({
               <div className="">
                 {" "}
                 {sentences?.length > 7 ? (
-                  <ScrollArea className="hidden md:block space-y-2 h-[700px] rounded-md">
+                  <ScrollArea className="hidden md:block space-y-2 h-[600px] rounded-md">
                     <CharacterSentenceTransformations
                       lang={lang}
                       characterId={characterId}
                     />
                   </ScrollArea>
                 ) : (
-                  <ScrollArea className="hidden md:block space-y-2 h-[700px] rounded-md">
+                  <ScrollArea className="hidden md:block space-y-2 h-[600px] rounded-md">
                     <CharacterSentenceTransformations
                       lang={lang}
                       characterId={characterId}

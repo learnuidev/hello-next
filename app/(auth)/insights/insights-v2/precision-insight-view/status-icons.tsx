@@ -30,7 +30,6 @@ export const StatusIcons = {
 } as any;
 
 export const getStatusIcon = (status = "") => {
-  console.log("status", status);
   const StatusIcon = StatusIcons?.[status] || StatusIcons["needs_review"];
 
   return StatusIcon;

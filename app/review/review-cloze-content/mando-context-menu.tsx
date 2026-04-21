@@ -7,10 +7,11 @@ import {
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
 import { Icons } from "@/components/ui/icons.v2";
-import { openInNewWindow } from "./utils/open-in-new-window";
+
 import { getSelectedText } from "./utils/get-selected-text";
 import { useAddHistoryMutation } from "@/domain/history/history.mutations";
 import { useIsSearchTrackingEnabled } from "@/hooks/use-is-search-tracking-enabled";
+import { useRouter } from "next/navigation";
 
 export function MandoContextMenu({
   children,
@@ -22,6 +23,7 @@ export function MandoContextMenu({
   const addHistoryMutation = useAddHistoryMutation();
   const isSearchTrackingEnabled = useIsSearchTrackingEnabled();
 
+  const router = useRouter();
   return (
     <ContextMenu>
       <ContextMenuTrigger>{children}</ContextMenuTrigger>
@@ -37,7 +39,7 @@ export function MandoContextMenu({
               } as any);
             }
 
-            openInNewWindow(`/nmm/${selectedText}?lang=${lang}`);
+            router.push(`/nmm/${selectedText}?lang=${lang}`);
           }}
         >
           <Icons.magnifyingGlass /> <span className="pl-4">Search</span>

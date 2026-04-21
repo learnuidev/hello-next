@@ -1,15 +1,12 @@
-import { useCurrentTime } from "../youtube-page/use-current-time-store";
-import { TextToSpeechProviders } from "./selected-character.constants";
-import { useCharacterSoundState } from "./use-character-sound-state";
-import { CharacterItem } from "./character-item";
-import Link from "next/link";
-import { smartSplit } from "../youtube-page/utils/smart-split";
 import { cn } from "@/lib/utils";
-import { useIsPlayingState } from "../youtube-page/use-is-playing-state";
-import { useYoutubeRefState } from "./use-youtube-ref-state";
-import { openInNewWindow } from "@/app/review/review-cloze-content/utils/open-in-new-window";
 import { useRouter } from "next/navigation";
 import { useAudioProviderState } from "../settings-dialog/hooks/use-audio-provider-state";
+import { useCurrentTime } from "../youtube-page/use-current-time-store";
+import { useIsPlayingState } from "../youtube-page/use-is-playing-state";
+import { smartSplit } from "../youtube-page/utils/smart-split";
+import { CharacterItem } from "./character-item";
+import { useCharacterSoundState } from "./use-character-sound-state";
+import { useYoutubeRefState } from "./use-youtube-ref-state";
 
 export const WithInteractiveTitle = ({
   text,
@@ -64,15 +61,12 @@ export const WithInteractiveTitle = ({
 
         return (
           <span
-            // href={link}
             key={`smart-character-outer-${JSON.stringify(item)}`}
             onClick={() => {
               if (isPlaying) {
                 seekAndPlay(startTime, playerRef);
-                // setCurrentTime(startTime);
               } else {
                 router.push(link);
-                // openInNewWindow(link);
               }
             }}
           >

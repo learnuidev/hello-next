@@ -28,6 +28,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
     seekAndPlay,
     setLoop,
     play,
+    pause,
     loop,
     setIsReady,
     setDuration,
@@ -144,12 +145,19 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
             )}
           >
             <div
+              onClick={() => {
+                if (playing) {
+                  pause();
+                } else {
+                  play();
+                }
+              }}
               className={cn(
                 isFSM && isYoutubeOrVideo
                   ? "md:col-span-8 col-span-12"
                   : "md:col-span-6 col-span-12",
 
-                `${isVideoHidden ? "hidden" : ""}`,
+                `${isVideoHidden ? "hidden" : ""} cursor-pointer`,
               )}
             >
               <div className="flex justify-center items-center sm:mt-24 mt-4">

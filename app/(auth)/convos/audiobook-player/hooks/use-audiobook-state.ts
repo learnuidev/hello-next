@@ -80,13 +80,27 @@ export const useAudioBookState = (content: IContent) => {
 
       setDuration(data.getDuration());
 
-      if (isYoutubeOrVideo) {
-        if (start) {
-          if (isVideoUrl(finalUrl)) {
-            if (!currentTime && `${currentTime}` !== `${start}`) {
-              seekAndPlay(start);
+      if (!isReady) {
+        if (isYoutubeOrVideo) {
+          if (start) {
+            if (isVideoUrl(finalUrl)) {
+              if (!currentTime && `${currentTime}` !== `${start}`) {
+                seekAndPlay(start);
+              }
+            } else {
+              playerRef.current.seekTo(start, "seconds");
+
+              try {
+                playerRef.current?.player?.player?.play();
+              } catch (err) {
+                console.error(err);
+              }
             }
           } else {
+            seekAndPlay(0);
+          }
+        } else {
+          if (start) {
             playerRef.current.seekTo(start, "seconds");
 
             try {
@@ -95,12 +109,12 @@ export const useAudioBookState = (content: IContent) => {
               console.error(err);
             }
           }
-        } else {
-          seekAndPlay(0);
         }
+
+        setIsReady(true);
       }
     },
-    [isYoutubeOrVideo, start, finalUrl, currentTime, seekAndPlay],
+    [isReady, isYoutubeOrVideo, start, finalUrl, currentTime, seekAndPlay],
   );
 
   const loop = transcriptions?.find((t) => t.id === _loop);

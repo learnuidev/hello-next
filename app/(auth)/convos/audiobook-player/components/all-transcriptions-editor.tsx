@@ -384,6 +384,38 @@ export const AllTranscriptionsEditor = ({
     setLocalTranscriptions(updated);
   };
 
+  const handleAddWordBefore = (transcriptionIndex: number, wordIndex: number) => {
+    const current = localTranscriptions || content.transcriptions || [];
+    const updated = [...current];
+    const transcription = { ...updated[transcriptionIndex] };
+    const words = transcription.words ? [...transcription.words] : [];
+    words.splice(wordIndex, 0, {
+      id: `word-${Date.now()}`,
+      input: "",
+      start: 0,
+      end: 0,
+    });
+    transcription.words = words;
+    updated[transcriptionIndex] = transcription;
+    setLocalTranscriptions(updated);
+  };
+
+  const handleAddWordAfter = (transcriptionIndex: number, wordIndex: number) => {
+    const current = localTranscriptions || content.transcriptions || [];
+    const updated = [...current];
+    const transcription = { ...updated[transcriptionIndex] };
+    const words = transcription.words ? [...transcription.words] : [];
+    words.splice(wordIndex + 1, 0, {
+      id: `word-${Date.now()}`,
+      input: "",
+      start: 0,
+      end: 0,
+    });
+    transcription.words = words;
+    updated[transcriptionIndex] = transcription;
+    setLocalTranscriptions(updated);
+  };
+
   const toggleWordsExpanded = (index: number) => {
     setExpandedWords((prev) => {
       const next = new Set(prev);
@@ -646,6 +678,24 @@ export const AllTranscriptionsEditor = ({
                                   }
                                 />
                               </div>
+                              <button
+                                className="text-xs px-3 py-1.5 border border-blue-200 dark:border-blue-900/50 rounded-lg text-blue-500 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/30 transition-all font-light mt-5"
+                                onClick={() =>
+                                  handleAddWordBefore(index, wordIndex)
+                                }
+                                title="Add word before"
+                              >
+                                + Before
+                              </button>
+                              <button
+                                className="text-xs px-3 py-1.5 border border-blue-200 dark:border-blue-900/50 rounded-lg text-blue-500 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/30 transition-all font-light mt-5"
+                                onClick={() =>
+                                  handleAddWordAfter(index, wordIndex)
+                                }
+                                title="Add word after"
+                              >
+                                + After
+                              </button>
                               <button
                                 className="text-xs px-3 py-1.5 border border-red-200 dark:border-red-900/50 rounded-lg text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition-all font-light mt-5"
                                 onClick={() =>

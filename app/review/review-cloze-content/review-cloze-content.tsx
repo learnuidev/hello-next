@@ -24,6 +24,10 @@ import { useReviewModeView } from "../use-review-mode";
 import { ReviewItemHanzi } from "./review-item-hanzi";
 import { getRandomWords } from "./utils/get-random-words";
 import { shuffleArray } from "./utils/shuffle-array";
+import {
+  useListCharactersMapQuery,
+  useListCharactersQuery,
+} from "@/domain/lesson/character.queries";
 
 const ClozeNavbar = ({
   onClose,
@@ -79,6 +83,9 @@ export function ReviewClozeContent({
     lang,
     characterId: currentCharacter,
   });
+
+  const { isLoading: listCharactersLoading } = useListCharactersQuery();
+  const { isLoading: listCharactersMapLoading } = useListCharactersMapQuery();
 
   const { data: _aiSentences } = useListSentencesQuery({
     component: currentCharacter,
@@ -252,7 +259,7 @@ export function ReviewClozeContent({
     return <DynoClozeLoader message="Loading sentences..." />;
   }
 
-  if (isLoading) {
+  if (isLoading || listCharactersLoading || listCharactersMapLoading) {
     return <DynoClozeLoader message="Loading..." />;
   }
   if (isGrammarLoading) {

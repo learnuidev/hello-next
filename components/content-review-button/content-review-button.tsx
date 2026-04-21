@@ -25,7 +25,6 @@ export const ContentReviewButton = () => {
   return (
     <Link
       href={reviewUrl}
-      target="_blank"
       onClick={() => {
         setPreviousPath(`${pathName}?start=${searchParams.get("start") || 0}`);
       }}

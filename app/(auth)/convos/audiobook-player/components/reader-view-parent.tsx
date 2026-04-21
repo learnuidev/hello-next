@@ -85,7 +85,7 @@ export const ReaderViewParent = ({
                         {showPinyin && (
                           <p
                             className={cn(
-                              "text-sm font-extralight",
+                              "text-md font-extralight",
 
                               transcription.start < currentTime &&
                                 transcription.end > currentTime

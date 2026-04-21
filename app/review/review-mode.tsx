@@ -52,9 +52,6 @@ export function ReviewModeClassic(props: any) {
   const [showCorrectOptions, setShowCorrectOptions] = useState(false);
   const [startTime, setStartTime] = useState(Date.now());
   const [endTime, setEndTime] = useState(Date.now());
-  const [overConfidentWarning, setOverConfidenceWarning] = useState<
-    null | string
-  >(null);
 
   const queryClient = useQueryClient();
 
@@ -229,7 +226,6 @@ export function ReviewModeClassic(props: any) {
         setReviewCount(reviewCount + 1);
         setEmotion("");
         goToNextChar();
-        setOverConfidenceWarning(null);
       });
   };
 
@@ -298,33 +294,9 @@ export function ReviewModeClassic(props: any) {
         </div>
       )}
 
-      {overConfidentWarning && !isRefetching && (
-        <p className=" text-gray-500">{overConfidentWarning} </p>
-      )}
-
       {updateCharacterStatusMutation.isPending ? null : (
         <div className="space-x-12 sm:space-x-16 md:space-x-24 my-8 md:text-5xl sm:text-3xl text-2xl">
-          {overConfidentWarning ? (
-            <>
-              <button
-                className="text-xl"
-                onClick={() => {
-                  handleMastery();
-                }}
-              >
-                Yes I am sure
-              </button>
-
-              <button
-                className="text-xl"
-                onClick={() => {
-                  setOverConfidenceWarning(null);
-                }}
-              >
-                No, I am not sure
-              </button>
-            </>
-          ) : showOptions ? (
+          {showOptions ? (
             <>
               {[
                 { title: "1m", value: "1m" },
@@ -523,19 +495,7 @@ export function ReviewModeClassic(props: any) {
                 <button
                   disabled={updateCharacterStatusMutation.isPending}
                   onClick={() => {
-                    if (currentCharacter?.reviewHistory === undefined) {
-                      setOverConfidenceWarning(
-                        "You have not reviewed this character at all, are you sure you want to forget it",
-                      );
-                      return null;
-                    } else if (currentCharacter?.reviewHistory?.length < 8) {
-                      setOverConfidenceWarning(
-                        "You have reviewed this less than 8 times. This might indicate you have recency bias.. are you sure you want to forget it",
-                      );
-                      return null;
-                    } else {
-                      handleMastery();
-                    }
+                    handleMastery();
                   }}
                 >
                   <Icons.fire />

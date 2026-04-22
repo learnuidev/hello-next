@@ -260,7 +260,7 @@ const DynaSentence = ({
           pinyin: meaning?.pinyin,
           lang: sentence?.lang,
           en: meaning?.en,
-          chinglish: sentence?.chinglish,
+          chinglish: sentence?.chinglish || meaning?.chinglish,
         }}
         response={response}
       />

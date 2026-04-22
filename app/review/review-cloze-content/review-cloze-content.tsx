@@ -28,6 +28,8 @@ import {
   useListCharactersMapQuery,
   useListCharactersQuery,
 } from "@/domain/lesson/character.queries";
+import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
+import { useChinglishState } from "@/components/settings-dialog/use-chinglish-state";
 
 const ClozeNavbar = ({
   onClose,
@@ -164,6 +166,10 @@ export function ReviewClozeContent({
   const multiSent = getMulti(_sentence?.input || _sentence?.hanzi)?.filter(
     (sent) => sent?.includes(currentCharacter),
   );
+
+  const showPinyin = useBrightModeStore((state) => state.showPinyin);
+  const showEnPreview = useBrightModeStore((state) => state.showEn);
+  const { showChinglish } = useChinglishState();
 
   const initSentence = useMemo(
     () =>
@@ -351,7 +357,7 @@ export function ReviewClozeContent({
 
       {sentence && (
         <div className="mt-24 lg:mt-32">
-          {response ? (
+          {showPinyin ? (
             <Link
               href={`/nmm/${sentence?.input || sentence?.hanzi}?lang=${lang || sentence?.lang}`}
               className="block text-center mb-4"
@@ -371,12 +377,18 @@ export function ReviewClozeContent({
             lang={sentence?.lang}
           />
 
-          <Link
-            href={`/convos/${initSentence?.contentId}${initSentence?.start ? `?start=${initSentence?.start}` : ""}`}
-            className="block"
-          >
-            <p className="text-center mt-4">{sentence?.en} </p>
-          </Link>
+          {showEnPreview && (
+            <Link
+              href={`/convos/${initSentence?.contentId}${initSentence?.start ? `?start=${initSentence?.start}` : ""}`}
+              className="block"
+            >
+              <p className="text-center mt-4">
+                {showChinglish
+                  ? sentence?.chinglish || sentence?.en
+                  : sentence?.en}{" "}
+              </p>
+            </Link>
+          )}
 
           <DynoOptionsContainer>
             {shuffledOptions?.map((option: any, idx: number) => {

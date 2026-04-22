@@ -263,6 +263,7 @@ const DynaSentence = ({
           pinyin: sentence?.roman || sentence?.pinyin,
           lang: sentence?.lang,
           en: sentence?.en,
+          chinglish: sentence?.chinglish,
         }}
         response={response}
       />
@@ -526,7 +527,7 @@ export const DynaCloze = ({ contentId }: { contentId: string }) => {
 
   return (
     <div className="mb-32">
-      <h1 className="text-center text-2xl font-mono">dynacloze</h1>{" "}
+      <h1 className="text-center text-2xl font-mono">dynacloze</h1>
       <WithMultiSentence contentId={contentId} sentence={sentence}>
         <DynaSentence
           sentence={sentence}

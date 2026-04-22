@@ -25,7 +25,6 @@ import { NMMSettings } from "@/app/nmm/nmm-settings";
 import { DynaClozeHeader } from "@/components/dyno-cloze-core/dyna-cloze-header";
 import { DynoClozeLoader } from "@/components/dyno-cloze-core/dyno-cloze-loader";
 import { DynaClozeNavbar } from "@/components/dyno-cloze-core/dyno-cloze-navbar";
-import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
 import { SpeakSentence } from "../speak/speak-sentence";
 import {
   useDyanStoreRuntime,
@@ -142,9 +141,6 @@ const DynaSentence = ({
   sentenceIndex,
   parentSentence,
 }: IDynoParams) => {
-  const showPinyin = useBrightModeStore((state) => state.showPinyin);
-  const showEnPreview = useBrightModeStore((state) => state.showEn);
-
   const {
     setResponse,
     response,
@@ -264,6 +260,7 @@ const DynaSentence = ({
           pinyin: meaning?.pinyin,
           lang: sentence?.lang,
           en: meaning?.en,
+          chinglish: sentence?.chinglish,
         }}
         response={response}
       />

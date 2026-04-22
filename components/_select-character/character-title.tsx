@@ -1,5 +1,3 @@
-import { useGetComponentQuery } from "@/domain/lesson/use-get-component-query";
-
 import { getStatusIcon } from "@/app/(auth)/insights/insights-v2/precision-insight-view/status-icons";
 import { useGetComponentId } from "@/app/nmm/[component-id]/use-get-component-id";
 import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
@@ -24,33 +22,25 @@ import { useAudioProviderState } from "../settings-dialog/hooks/use-audio-provid
 import { useChinglishState } from "../settings-dialog/use-chinglish-state";
 import { useYoutubeVideoUrl } from "../summary/with-youtube-video";
 import { Icons } from "../ui/icons.v2";
+import { useViewTypeStore } from "../use-selected-character";
 import { useCurrentTime } from "../youtube-page/use-current-time-store";
 import { useIsPlayingState } from "../youtube-page/use-is-playing-state";
 import { smartSplit } from "../youtube-page/utils/smart-split";
 import { CharacterItem } from "./character-item";
-import { characterStore } from "./character-store";
 import { PlayButtonV2 } from "./play-button-v2";
 import { CharacterTrackButton } from "./selected-character/character-track-button";
 import { useCharacterEditStore } from "./use-character-edit-store";
 import { useYoutubeRefState } from "./use-youtube-ref-state";
 import { isNonRomanLang } from "./utils/is-non-roman-lang";
 import { WithInteractiveTitle } from "./with-interative-title";
-import { useViewTypeStore } from "../use-selected-character";
 
 export const CharacterTitle = (props: any) => {
-  const {
-    lang,
-    multiSentence,
-    characterId,
-    selectedCompInput: selectedCompInput2,
-  } = props;
+  const { lang, characterId } = props;
 
   const isSuperAdmin = useIsSuperAdmin();
 
   const [newPinyin, setNewPinyin] = useState("");
   const [newEn, setNewEn] = useState("");
-
-  const pinyinInput = characterStore((state) => state.pinyin);
 
   const setEdit = useCharacterEditStore((state) => state.setEdit);
   const edit = useCharacterEditStore((state) => state.edit);
@@ -62,9 +52,6 @@ export const CharacterTitle = (props: any) => {
 
   const character = useGetCharacter({ characterId: componentId });
 
-  const pinyins = data?.map((val) => val?.pinyin) || [];
-  const englishMeanings = data?.map((val) => val?.en) || [];
-
   const setViews = useViewTypeStore((state) => state.setViews);
 
   const setView = (view: any) => {
@@ -75,16 +62,11 @@ export const CharacterTitle = (props: any) => {
 
   const context = searchParams?.get("context");
 
-  const { showChinglish, setShowChinglish } = useChinglishState();
-
-  const { data: selectedComp } = useGetComponentQuery({
-    hanzi: componentId,
-  });
+  const { showChinglish } = useChinglishState();
 
   const updateMeaningMutation = useUpdateDiscoveryMutation();
 
-  const { videoUrl, setVideoUrl, addVideoUrl, setAddVideoUrl } =
-    useYoutubeVideoUrl();
+  const { setAddVideoUrl } = useYoutubeVideoUrl();
 
   const { data: meaningDiscovery, isLoading: isMeaningDiscoveryLoading } =
     useListDiscoveryQuery({
@@ -99,29 +81,17 @@ export const CharacterTitle = (props: any) => {
   const showPinyin = useBrightModeStore((state) => state.showPinyin);
   const { readMode } = useReadModeState();
 
-  const finalEnVal =
-    englishMeanings?.length === 1
-      ? meaningDiscovery?.en || englishMeanings?.[0] || selectedComp?.en
-      : meaningDiscovery?.en || selectedComp?.en || englishMeanings?.[0];
-
-  const selectedPinyin = pinyins?.length
-    ? pinyins?.join("/")
-    : pinyins?.[0] ||
-      pinyinInput ||
-      selectedComp?.pinyin ||
-      meaningDiscovery?.pinyin;
-
   const customRef: any = useRef(null) as any;
 
   const { data: relatedHskWords } = useListRelatedHSKWords(characterId);
 
-  const { provider, setProvider } = useAudioProviderState();
+  const { provider } = useAudioProviderState();
   const id = `${selectedCompInput}#${lang}#${provider}`;
-  const { currentTime, setCurrentTime, duration } = useCurrentTime(id);
+  const { currentTime, duration } = useCurrentTime(id);
 
-  const { seekAndPlay, youtubeRef } = useYoutubeRefState();
+  const { seekAndPlay } = useYoutubeRefState();
 
-  const { isPlaying, setIsPlaying } = useIsPlayingState(id);
+  const { isPlaying } = useIsPlayingState(id);
 
   const isHsk = relatedHskWords?.find((word) => word?.hanzi === characterId);
 
@@ -459,7 +429,7 @@ export const CharacterTitle = (props: any) => {
           <h2 className="dark:text-gray-500 text-gray-900 font-light">
             {showChinglish && meaningDiscovery?.chinglish
               ? meaningDiscovery?.chinglish
-              : finalEnVal?.split("/")?.slice(0, 4)?.join("/")}
+              : meaningDiscovery?.en?.split("/")?.slice(0, 4)?.join("/")}
           </h2>
         )
       ) : null}

@@ -38,4 +38,9 @@ export const useSearchQueryStore = create((set: any, get: any) => ({
     typeof f === "function"
       ? set({ dictionary: f(get().dictionary) })
       : set({ dictionary: f }),
+  searchSuggestions: [],
+  setSearchSuggestions: (f: any) =>
+    typeof f === "function"
+      ? set({ searchSuggestions: f(get().searchSuggestions) })
+      : set({ searchSuggestions: f }),
 }));

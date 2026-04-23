@@ -12,9 +12,7 @@ import { BaseTopicsList } from "@/components/ui/base-topics-list";
 import { MandarinoLoadingBanner } from "@/components/ui/mandarino-loading-banner";
 import { motion, AnimatePresence } from "framer-motion";
 import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
-
-const defaultPic =
-  "https://nomadmethod-api-dev-assetsbucket-2u2iqsv5nizc.s3.amazonaws.com/01K3WRT0WY9NFBA55Y1DWYJ4MG.png";
+import { defaultPic } from "@/data/default-image-urls";
 
 export function SeriesManagement() {
   const [activeTopic, setActiveTopic] = useState<TopicType | null>(null);

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Icons } from "@/components/ui/icons.v2";
 import { Input } from "@/components/ui/input";
+import { defaultPic } from "@/data/default-image-urls";
 import { usePortEpisodesMutation } from "@/domain/content-v2/use-port-episodes-mutation";
 import { useUpdateSeriesStatsMutation } from "@/domain/content-v2/use-update-series-stats-mutation";
 import { useListContentsQuery } from "@/domain/content/content.queries";
@@ -12,9 +13,6 @@ import { motion } from "framer-motion";
 import { useParams, useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
-
-const defaultPic =
-  "https://nomadmethod-api-dev-assetsbucket-2u2iqsv5nizc.s3.amazonaws.com/01K3WRT0WY9NFBA55Y1DWYJ4MG.png";
 
 function formatNumber(num = 0): string {
   if (num >= 1000000) {

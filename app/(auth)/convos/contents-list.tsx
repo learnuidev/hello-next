@@ -31,6 +31,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { defaultPic } from "@/data/default-image-urls";
 
 type ContentType = {
   title: string;
@@ -175,8 +176,6 @@ export function ContentsList({ contentViewType }: { contentViewType: string }) {
   const selectedContent = contentTypes?.find(
     (content) => content.id === contentType,
   );
-
-  const defaultPic = `https://nomadmethod-api-dev-assetsbucket-2u2iqsv5nizc.s3.amazonaws.com/01K3WRT0WY9NFBA55Y1DWYJ4MG.png`;
 
   return (
     <div>

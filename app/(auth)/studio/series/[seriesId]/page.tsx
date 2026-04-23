@@ -12,9 +12,7 @@ import { ContentCard } from "@/components/new-home-page/components/content-card/
 import { toast } from "sonner";
 import { SeriesForm } from "../../components/series-form";
 import { BaseTabs } from "@/components/ui/base-tabs";
-
-const defaultPic =
-  "https://nomadmethod-api-dev-assetsbucket-2u2iqsv5nizc.s3.amazonaws.com/01K3WRT0WY9NFBA55Y1DWYJ4MG.png";
+import { defaultPic } from "@/data/default-image-urls";
 
 const tabs = [
   {

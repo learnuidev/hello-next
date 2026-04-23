@@ -24,6 +24,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
 import { useGetContentId } from "./[content-id]/hooks/use-get-content-id";
 import { contentTypes } from "./constants/content-types";
+import { languages } from "@/app/next/features/phrase/languages";
 
 const IMAGE_FORMATS = ["jpg", "jpeg", "png", "gif", "webp"];
 
@@ -31,6 +32,7 @@ export const GeneralContentSettings = () => {
   const [contentType, setContentType] = useState("not-selected");
   const [contentTitle, setContentTitle] = useState("");
   const [contentDescription, setContentDescription] = useState("");
+  const [contentLang, setContentLang] = useState("");
   const [backgroundImageId, setBackgroundImageId] = useState("");
   const [backgroundImageUrl, setBackgroundImageUrl] = useState("");
   const [selectedAssetId, setSelectedAssetId] = useState("");
@@ -71,6 +73,9 @@ export const GeneralContentSettings = () => {
     if (content?.description) {
       setContentDescription(content?.description);
     }
+    if (content?.lang) {
+      setContentLang(content?.lang);
+    }
     if (content?.contentType) {
       setContentType(content?.contentType);
     }
@@ -84,6 +89,7 @@ export const GeneralContentSettings = () => {
     content?.contentType,
     content?.title,
     content?.description,
+    content?.lang,
     content?.backgroundImageId,
     content?.backgroundImageUrl,
   ]);
@@ -154,6 +160,29 @@ export const GeneralContentSettings = () => {
           }}
           placeholder="Content description"
         />
+      </div>
+
+      <div className="my-4 mb-8">
+        <Label className="text-[16px] text-gray-500 mb-4 block">Language</Label>
+        <Select
+          value={contentLang}
+          onValueChange={(value) => {
+            setContentLang(value);
+          }}
+        >
+          <SelectTrigger className="sm:w-1/2 w-full h-12 text-lg bg-transparent dark:text-white dark:border-gray-800 px-2">
+            <SelectValue placeholder="Select language" />
+          </SelectTrigger>
+          <SelectContent className="mx-0">
+            {languages.map((language) => {
+              return (
+                <SelectItem key={language.shortId} value={language.shortId}>
+                  {language.title}
+                </SelectItem>
+              );
+            })}
+          </SelectContent>
+        </Select>
       </div>
 
       <div className="my-4">
@@ -337,6 +366,7 @@ export const GeneralContentSettings = () => {
               contentType,
               title: contentTitle,
               description: contentDescription,
+              lang: contentLang,
               backgroundImageId,
               updatedAt: Date.now(),
             } as any);

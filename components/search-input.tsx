@@ -1,31 +1,15 @@
 "use client";
 
-import { defaultPic } from "@/data/default-image-urls";
 import { useHandleSearch } from "@/hooks/use-handle-search";
-import { useSearchSuggestions } from "@/hooks/use-search-suggestions";
 import { cn } from "@/lib/utils";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { useSearchQueryStore } from "./search/state";
-import { Icons } from "./ui/icons.v2";
 
 export const SearchInput = ({ autoFocus }: { autoFocus?: boolean }) => {
   // 1. State
   const querySync = useSearchQueryStore((state) => state.querySync);
-  const searchSuggestions = useSearchQueryStore(
-    (state) => state.searchSuggestions,
-  );
-  const { isLoading } = useSearchSuggestions();
-  const [showSuggestions, setShowSuggestions] = useState(false);
-  const router = useRouter();
 
   // 2. Handlers
   const { handleOnChange, handleOnKeyDown } = useHandleSearch();
-
-  const handleSuggestionClick = (contentId: string) => {
-    setShowSuggestions(false);
-    router.push(`/convos/${contentId}`);
-  };
 
   return (
     <div className="relative w-full">
@@ -39,64 +23,7 @@ export const SearchInput = ({ autoFocus }: { autoFocus?: boolean }) => {
         onChange={handleOnChange}
         value={querySync}
         onKeyDown={handleOnKeyDown}
-        onFocus={() => setShowSuggestions(true)}
-        onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
       />
-
-      {showSuggestions && searchSuggestions.length > 0 && (
-        <div
-          style={{ zIndex: 10000000 }}
-          className="sm:w-96 absolute top-full left-0 right-0 mt-2 bg-white dark:bg-[rgb(14,15,16)] rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden z-50"
-        >
-          <div className="max-h-96 overflow-y-auto ">
-            {searchSuggestions.map((item: any) => (
-              <div
-                key={item.id}
-                className="flex items-center p-3 hover:bg-gray-100 dark:hover:bg-[rgb(21,22,23)] cursor-pointer transition-colors"
-                onClick={() => handleSuggestionClick(item.id)}
-              >
-                <div className="flex-shrink-0 w-12 h-12 rounded-md overflow-hidden mr-3 relative">
-                  <img
-                    src={
-                      item.backgroundImageUrl ||
-                      item.backgroundImage ||
-                      item.backgroundImageAssetId ||
-                      item?.thumbnails?.standard?.url ||
-                      item?.thumbnails?.high?.url ||
-                      item?.thumbnails?.medium?.url ||
-                      item?.thumbnails?.default?.url ||
-                      item?.thumbnails?.maxres?.url ||
-                      item?.thumbnails?.[0]?.url ||
-                      defaultPic
-                    }
-                    alt={item.title}
-                    className="aspect-square"
-                  />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
-                    {item.title}
-                  </h4>
-                  {item.description && (
-                    <p className="text-xs text-gray-500 dark:text-gray-400 truncate mt-0.5">
-                      {item.description}
-                    </p>
-                  )}
-                </div>
-                <Icons.front className="w-4 h-4 text-gray-400 ml-2 flex-shrink-0" />
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {showSuggestions && isLoading && querySync.length >= 2 && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-gray-900 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-4 z-50">
-          <div className="flex items-center justify-center">
-            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-gray-400"></div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

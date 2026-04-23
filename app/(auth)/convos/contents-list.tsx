@@ -32,6 +32,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { defaultPic } from "@/data/default-image-urls";
+import { useSearchSuggestions } from "@/hooks/use-search-suggestions";
 
 type ContentType = {
   title: string;
@@ -69,6 +70,13 @@ export function ContentsList({ contentViewType }: { contentViewType: string }) {
 
   const [sortBy, setSortBy] = useState<SortByType>("newest");
   const [authorFilter, setAuthorFilter] = useState<string>("all");
+
+  const {
+    isLoading: isSearchLoading,
+    data: suggeestions,
+    querySync,
+    debouncedQuery,
+  } = useSearchSuggestions();
 
   const contents =
     contentViewType === "history"
@@ -165,7 +173,14 @@ export function ContentsList({ contentViewType }: { contentViewType: string }) {
     }
   }, [filteredProjects, sortBy]);
 
-  if (isLoading || isFavouriteContentLoading || isPublishedLoading) {
+  const contentsList = querySync ? suggeestions : sortedProjects;
+
+  if (
+    isLoading ||
+    isFavouriteContentLoading ||
+    isPublishedLoading ||
+    isSearchLoading
+  ) {
     return <LottieLoadingAnimation />;
   }
 
@@ -235,7 +250,7 @@ export function ContentsList({ contentViewType }: { contentViewType: string }) {
       ) : (
         <section>
           <div className="grid grid-cols-[repeat(auto-fit,minmax(32rem,1fr))] sm:grid-cols-[repeat(2,minmax(20rem,1fr))] gap-8">
-            {sortedProjects?.map((item: any, index: number) => {
+            {contentsList?.map((item: any, index: number) => {
               const isFavourited = favouriteContents?.items?.find(
                 (content: any) => content?.id === item.id,
               );

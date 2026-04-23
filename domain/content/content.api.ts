@@ -4,6 +4,7 @@ import { siteConfig } from "@/lib/config";
 import { AddContentParams } from "./content.types";
 import { TranscriptionWord } from "@/components/_select-character/selected-character/tweet-page/tweet-page";
 import { getPinyin, segmentText } from "@/libs/utils/segment-text";
+import { fetchWithToken } from "@/libs/cognito/fetch-with-token";
 
 const addContentApi = `${siteConfig.apiUrl}/v1/add-content`;
 
@@ -26,18 +27,19 @@ export const addContent = async (
 
 const listContentsApi = `${siteConfig.apiUrl}/v1/list-contents`;
 
-export const listContents = async (
-  { key, contentIds }: { key?: string; contentIds?: string[] },
-  opts: { Authorization: string },
-) => {
-  const res = await fetch(listContentsApi, {
+export const listContents = async ({
+  key,
+  contentIds,
+}: {
+  key?: string;
+  contentIds?: string[];
+}) => {
+  const res = await fetchWithToken(listContentsApi, {
     method: "POST",
-    headers: {
-      Authorization: `Bearer ${opts?.Authorization}`,
-    },
     body: JSON.stringify({
       key,
       contentIds,
+      limit: 10,
     }),
   });
   const resp = (await res.json()) as any;

@@ -58,5 +58,5 @@ export const useSearchSuggestions = () => {
     setSearchSuggestions(data || []);
   }, [data, setSearchSuggestions]);
 
-  return { isLoading };
+  return { isLoading, data, debouncedQuery, querySync };
 };

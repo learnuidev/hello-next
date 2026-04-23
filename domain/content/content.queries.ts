@@ -52,26 +52,6 @@ type ListContentsResponse = {
   items: Content[];
 };
 
-const listContentsRecursive = async (
-  jwt: string,
-  key?: string,
-  res = [],
-): Promise<ListContentsResponse> => {
-  const resp = await listContents({ key }, { Authorization: jwt });
-
-  if (resp?.lastEvaulatedKey) {
-    return listContentsRecursive(
-      jwt,
-      resp?.lastEvaulatedKey,
-      res.concat(resp?.items),
-    );
-  }
-
-  return {
-    items: res.concat(resp?.items),
-  };
-};
-
 export const listContentsQueryKey = "list-my-contents";
 
 export const useGetListContentsQueryKey = () => {
@@ -87,7 +67,7 @@ export function useListContentsQuery(options = {} as any) {
   return useQuery<ListContentsResponse, Error>({
     queryKey: queryKey,
     queryFn: async () => {
-      const response = await listContentsRecursive(authUser?.jwt);
+      const response = await listContents({});
 
       const finalResponse = {
         ...response,

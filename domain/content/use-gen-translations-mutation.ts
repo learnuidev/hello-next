@@ -14,7 +14,7 @@ const genTranslations = async (params: GenTranslationsParams) => {
   const res = await fetch(`${siteConfig.apiUrl}/v1/gen-translations`, {
     method: "POST",
     headers: {
-      Authorization: `${opts?.Authorization}`,
+      Authorization: `${opts?.jwt}`,
     },
     body: JSON.stringify(params),
   });

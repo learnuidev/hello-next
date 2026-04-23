@@ -37,7 +37,7 @@ export const useSearchSuggestions = () => {
 
   const debouncedSetQuery = useDebouncedCallback((value: string) => {
     setDebouncedQuery(value);
-  }, 300);
+  }, 1000);
 
   useEffect(() => {
     if (querySync) {

@@ -8,7 +8,7 @@ import { siteConfig } from "@/lib/config";
 import { fetchWithToken } from "@/libs/cognito/fetch-with-token";
 
 const fetchSearchSuggestions = async (query: string) => {
-  if (!query || query.trim().length < 2) {
+  if (!query) {
     return [];
   }
 

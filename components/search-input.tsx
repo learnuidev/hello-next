@@ -44,12 +44,15 @@ export const SearchInput = ({ autoFocus }: { autoFocus?: boolean }) => {
       />
 
       {showSuggestions && searchSuggestions.length > 0 && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-gray-900 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden z-50">
-          <div className="max-h-96 overflow-y-auto">
+        <div
+          style={{ zIndex: 10000000 }}
+          className="sm:w-96 absolute top-full left-0 right-0 mt-2 bg-white dark:bg-[rgb(14,15,16)] rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden z-50"
+        >
+          <div className="max-h-96 overflow-y-auto ">
             {searchSuggestions.map((item: any) => (
               <div
                 key={item.id}
-                className="flex items-center p-3 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors"
+                className="flex items-center p-3 hover:bg-gray-100 dark:hover:bg-[rgb(21,22,23)] cursor-pointer transition-colors"
                 onClick={() => handleSuggestionClick(item.id)}
               >
                 <div className="flex-shrink-0 w-12 h-12 rounded-md overflow-hidden mr-3 relative">
@@ -58,11 +61,16 @@ export const SearchInput = ({ autoFocus }: { autoFocus?: boolean }) => {
                       item.backgroundImageUrl ||
                       item.backgroundImage ||
                       item.backgroundImageAssetId ||
+                      item?.thumbnails?.standard?.url ||
+                      item?.thumbnails?.high?.url ||
+                      item?.thumbnails?.medium?.url ||
+                      item?.thumbnails?.default?.url ||
+                      item?.thumbnails?.maxres?.url ||
+                      item?.thumbnails?.[0]?.url ||
                       defaultPic
                     }
                     alt={item.title}
-                    className="object-cover"
-                    sizes="48px"
+                    className="aspect-square"
                   />
                 </div>
                 <div className="flex-1 min-w-0">

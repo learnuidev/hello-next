@@ -10,7 +10,7 @@ export const SearchBar = ({ autoFocus }: { autoFocus?: boolean }) => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 1 }}
-      className="cursor-pointer text-lg py-2 flex flex-row justify-center items-center"
+      className="w-full cursor-pointer text-lg py-2 flex flex-row justify-center items-center"
     >
       <Icons.magnifyingGlass />
 

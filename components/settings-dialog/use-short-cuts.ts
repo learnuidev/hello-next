@@ -123,19 +123,8 @@ export function useShortCuts() {
 
     window.addEventListener("keydown", onKeyDown);
 
-    const onCopy = (event: any) => {
-      const selection: any = document.getSelection()?.toString();
-      setQuerySync(selection);
-      setQuery(selection);
-      setQuery2(selection);
-      event.clipboardData.setData("text/plain", selection.toString());
-      event.preventDefault();
-    };
-
-    window.addEventListener("copy", onCopy);
     return () => {
       window.removeEventListener("keydown", onKeyDown);
-      window.removeEventListener("copy", onCopy);
     };
   }, [
     mode,

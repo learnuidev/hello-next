@@ -10,6 +10,7 @@ import { formatTime } from "../../_play/utils";
 import { useAutoScroll } from "@/components/settings-dialog/use-auto-scroll";
 import { useSmartSet } from "@/components/settings-dialog/use-smart-set";
 import { useTranscriptionEditorStore } from "../stores/use-transcription-editor-store";
+import { WebVTTParser } from "webvtt-parser";
 
 type LocalTranscription = ContentTranscription & { _isNew?: boolean };
 
@@ -45,6 +46,51 @@ const TextField = React.memo(
 
 TextField.displayName = "TextField";
 
+const parseVTT = (vttString: string, lang: string) => {
+  const parser = new WebVTTParser();
+  const tree = parser.parse(vttString, "metadata");
+
+  const cues = tree.cues.map((rawSub: any) => {
+    const { id, startTime, endTime, text } = rawSub;
+    const tags = /<(v|c).*?>|<\/c>/g;
+
+    return {
+      id: id || crypto.randomUUID(),
+      start: startTime,
+      end: endTime,
+      input: text?.replace(tags, ""),
+      lang: lang,
+    };
+  });
+
+  return cues;
+};
+
+const transcriptionsToVTT = (transcriptions: LocalTranscription[]) => {
+  let vtt = "WEBVTT\n\n";
+
+  transcriptions.forEach((transcription, index) => {
+    const startTime = formatTimeVTT(transcription.start);
+    const endTime = formatTimeVTT(transcription.end);
+    const text = transcription.input || "";
+
+    vtt += `${index + 1}\n`;
+    vtt += `${startTime} --> ${endTime}\n`;
+    vtt += `${text}\n\n`;
+  });
+
+  return vtt;
+};
+
+const formatTimeVTT = (seconds: number) => {
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const secs = Math.floor(seconds % 60);
+  const ms = Math.floor((seconds % 1) * 1000);
+
+  return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(secs).padStart(2, "0")}.${String(ms).padStart(3, "0")}`;
+};
+
 export const AllTranscriptionsEditor = ({
   contentId,
   currentTime,
@@ -74,6 +120,7 @@ export const AllTranscriptionsEditor = ({
     new Set(),
   );
   const [searchQuery, setSearchQuery] = React.useState("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const transcriptionRefs = useRef<{ [key: string]: HTMLDivElement | null }>(
     {},
@@ -384,7 +431,10 @@ export const AllTranscriptionsEditor = ({
     setLocalTranscriptions(updated);
   };
 
-  const handleAddWordBefore = (transcriptionIndex: number, wordIndex: number) => {
+  const handleAddWordBefore = (
+    transcriptionIndex: number,
+    wordIndex: number,
+  ) => {
     const current = localTranscriptions || content.transcriptions || [];
     const updated = [...current];
     const transcription = { ...updated[transcriptionIndex] };
@@ -400,7 +450,10 @@ export const AllTranscriptionsEditor = ({
     setLocalTranscriptions(updated);
   };
 
-  const handleAddWordAfter = (transcriptionIndex: number, wordIndex: number) => {
+  const handleAddWordAfter = (
+    transcriptionIndex: number,
+    wordIndex: number,
+  ) => {
     const current = localTranscriptions || content.transcriptions || [];
     const updated = [...current];
     const transcription = { ...updated[transcriptionIndex] };
@@ -428,6 +481,42 @@ export const AllTranscriptionsEditor = ({
     });
   };
 
+  const handleUploadSubtitles = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const fileReader = new FileReader();
+    fileReader.readAsText(file, "UTF-8");
+
+    fileReader.onload = (event) => {
+      const result = event.target?.result as string;
+
+      try {
+        const parsedTranscriptions = parseVTT(result, content?.lang || "zh");
+        setLocalTranscriptions(parsedTranscriptions);
+      } catch (error) {
+        console.error("Error parsing VTT file:", error);
+      }
+
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    };
+  };
+
+  const handleDownloadSubtitles = () => {
+    const vttContent = transcriptionsToVTT(transcriptions);
+    const blob = new Blob([vttContent], { type: "text/vtt" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${content?.title || "subtitles"}.vtt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
   const problemTranscriptions = transcriptions.filter(
     (transcription) => transcription.start === 0 || transcription.end === 0,
   );
@@ -441,6 +530,23 @@ export const AllTranscriptionsEditor = ({
         >
           Cancel
         </button>
+        <button
+          className="px-6 py-2.5 border border-gray-200 dark:border-[rgb(30,31,35)] rounded-xl hover:bg-gray-50 dark:hover:bg-[rgb(15,16,18)] transition-all font-light text-sm"
+          onClick={handleDownloadSubtitles}
+        >
+          Download
+        </button>
+        <label className="px-6 py-2.5 border border-gray-200 dark:border-[rgb(30,31,35)] rounded-xl hover:bg-gray-50 dark:hover:bg-[rgb(15,16,18)] transition-all font-light text-sm cursor-pointer">
+          Upload
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".vtt"
+            className="hidden"
+            onChange={handleUploadSubtitles}
+          />
+        </label>
+        <div className="flex-1"></div>
         <button
           className="px-6 py-2.5 border border-blue-500 bg-blue-500 text-white rounded-xl hover:bg-blue-600 hover:border-blue-600 transition-all font-light text-sm disabled:opacity-50 disabled:cursor-not-allowed"
           onClick={handleSave}

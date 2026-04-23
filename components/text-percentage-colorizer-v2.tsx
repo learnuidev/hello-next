@@ -17,7 +17,7 @@ interface TextPercentageColorizerV2Props {
 }
 
 export function TextPercentageColorizerV2({
-  text,
+  text = "",
   startTime,
   endTime,
   currentTime,
@@ -37,8 +37,6 @@ export function TextPercentageColorizerV2({
   const finalColor = color ?? defaultColor;
   const finalUncoloredColor = uncoloredColor ?? defaultUncoloredColor;
 
-  console.log("WORDS", words);
-
   if (words && words.length > 0 && Number.isFinite(words?.[0]?.start)) {
     let charIndex = 0;
 
@@ -57,7 +55,7 @@ export function TextPercentageColorizerV2({
             1,
           );
 
-          const exactCharPosition = wordText.length * wordPercentage;
+          const exactCharPosition = wordText?.length * wordPercentage;
           const colorizedCount = Math.floor(exactCharPosition);
           const partialPercentage = (exactCharPosition - colorizedCount) * 100;
 
@@ -110,7 +108,7 @@ export function TextPercentageColorizerV2({
     1,
   );
 
-  const exactCharPosition = text.length * percentage;
+  const exactCharPosition = (text?.length || 0) * percentage;
   const colorizedCount = Math.floor(exactCharPosition);
   const partialPercentage = (exactCharPosition - colorizedCount) * 100;
 

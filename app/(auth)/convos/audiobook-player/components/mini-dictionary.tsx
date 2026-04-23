@@ -264,10 +264,7 @@ export function MiniDictionary({
       <div className="flex justify-between items-center">
         <div className="flex gap-4">
           <h4 className="text-2xl font-bold">
-            <Link
-              target="_blank"
-              href={getNmmLink({ id: selected, lang, contentId })}
-            >
+            <Link href={getNmmLink({ id: selected, lang, contentId })}>
               {selected}
             </Link>
           </h4>

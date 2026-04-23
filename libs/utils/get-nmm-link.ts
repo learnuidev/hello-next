@@ -3,11 +3,13 @@ export const getNmmLink = ({
   lang,
   contentId,
   context,
+  view,
 }: {
   id: string;
   lang: string;
   contentId?: string;
   context?: string;
+  view?: string;
 }) => {
   let baseLink = `/nmm/${encodeURIComponent(id)}?lang=${lang}`;
   if (contentId) {
@@ -16,6 +18,10 @@ export const getNmmLink = ({
 
   if (context) {
     baseLink += `&context=${encodeURIComponent(context)}`;
+  }
+
+  if (view) {
+    baseLink += `&view=${encodeURIComponent(view)}`;
   }
   return baseLink;
 };

@@ -19,6 +19,7 @@ import { ReviewClozeContent } from "@/app/review/review-cloze-content/review-clo
 import { ReviewCloze } from "@/app/review/review-cloze/review-cloze";
 import { CharacterBookmark } from "./character-bookmark";
 import { CharacterSearch } from "./character-search";
+import { useSearchParams } from "next/navigation";
 
 export const SelectedCharacter = ({ characterId }: { characterId: string }) => {
   const { data: characters } = useListCharactersQuery(
@@ -45,6 +46,8 @@ export const SelectedCharacter = ({ characterId }: { characterId: string }) => {
 
   const views = useViewTypeStore((state: any) => state.views) as any;
   const view = views?.[characterId] || "home";
+  const searchParams = useSearchParams();
+  const searchParamView = searchParams.get("view");
 
   const setViews = useViewTypeStore((state) => state.setViews);
   const { clozeContentMode } = useClozeContentMode();
@@ -52,6 +55,29 @@ export const SelectedCharacter = ({ characterId }: { characterId: string }) => {
   const setView = (view: any) => {
     return setViews(characterId, view);
   };
+
+  if (searchParamView === "review") {
+    return (
+      <ReviewCloze
+        backButton={() => {
+          return (
+            <button
+              onClick={() => {
+                setView("overview");
+              }}
+            >
+              Back to overview
+            </button>
+          );
+        }}
+        currentCharacter={characterId}
+        lang={lang}
+        onClose={() => {
+          setView("overview");
+        }}
+      />
+    );
+  }
 
   switch (view) {
     case "review": {

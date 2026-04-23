@@ -19,6 +19,7 @@ import { useIsContent } from "../use-is-content";
 import { useHskLevel, useReviewModeView } from "../use-review-mode";
 import { getRandomWords } from "./utils/get-random-words";
 import { shuffleArray } from "./utils/shuffle-array";
+import { getNmmLink } from "@/libs/utils/get-nmm-link";
 
 const ClozeNavbar = ({
   onClose,
@@ -342,36 +343,72 @@ export function ReviewCloze({
           </Link>
 
           <DynoOptionsContainer>
-            {shuffledOptions?.map((option: any, idx: number) => (
-              <button
-                onClick={() => {
-                  checkAnswer(option?.input || option?.hanzi);
-                }}
-                disabled={response?.type}
-                className={cn(
-                  "border-orange-400 text-black  border-[2px] p-2 dark:text-white text-lg",
-                  response
-                    ? response?.answer === (option?.input || option?.hanzi)
-                      ? response?.type === "correct"
-                        ? "bg-green-500 border-green-600 hover:bg-green-600"
-                        : "bg-red-500 hover:bg-red-600"
-                      : "bg-gray-800 opacity-10 text-gray-200"
-                    : "",
-                  "transition rounded-none",
-                  response
-                    ? ""
-                    : "hover:bg-orange-500 hover:text-white hover:scale-110",
-                )}
-                key={`review-cloze-${option?.input || option?.hanzi}-${idx}-review-cloze`}
-              >
-                {showEn ? option?.en : option?.input || option?.hanzi}
-              </button>
-            ))}
+            {shuffledOptions?.map((option: any, idx: number) => {
+              if (response) {
+                return (
+                  <Link
+                    href={getNmmLink({
+                      id: option?.hanzi || option?.input,
+                      lang: sentence?.lang,
+                      view: "review",
+                    })}
+                    className={cn(
+                      "border-orange-400 text-black  border-[2px] p-2 dark:text-white text-lg block text-center",
+                      response
+                        ? response?.answer?.en === option?.en
+                          ? response?.type === "correct"
+                            ? "bg-green-500 border-green-600 hover:bg-green-600"
+                            : "bg-red-500 hover:bg-red-600 border-red-500"
+                          : "bg-gray-800 opacity-10 text-gray-200 border-gray-500"
+                        : "",
+                      "transition",
+                      response
+                        ? ""
+                        : "hover:bg-orange-500 hover:text-white hover:scale-110",
+                    )}
+                    key={`dynacloze-${idx}-${option?.en}`}
+                  >
+                    <span className="block">
+                      {showEn ? option?.en : option?.hanzi || option?.input}{" "}
+                      {/* {response && <span>({showEn ? option?.hanzi : option?.en})</span>} */}
+                    </span>
+                  </Link>
+                );
+              } else {
+                return (
+                  <button
+                    onClick={() => {
+                      checkAnswer(option);
+                    }}
+                    disabled={response?.type}
+                    className={cn(
+                      "border-orange-400 text-black  border-[2px] p-2 dark:text-white text-lg",
+                      response
+                        ? response?.answer?.en === option?.en
+                          ? response?.type === "correct"
+                            ? "bg-green-500 border-green-600 hover:bg-green-600"
+                            : "bg-red-500 hover:bg-red-600 border-red-500"
+                          : "bg-gray-800 opacity-10 text-gray-200 border-gray-500"
+                        : "",
+                      "transition",
+                      response
+                        ? ""
+                        : "hover:bg-orange-500 hover:text-white hover:scale-110",
+                    )}
+                    key={`dynacloze-${idx}-${option?.en}`}
+                  >
+                    <span className="block">
+                      {showEn ? option?.en : option?.hanzi || option?.input}{" "}
+                    </span>
+                  </button>
+                );
+              }
+            })}
           </DynoOptionsContainer>
 
           {response && (
             <div>
-              {response?.type === "incorrect" ? (
+              {/* {response?.type === "incorrect" ? (
                 <p className="my-8 text-center">
                   Oops, your answer is incorrect. Correct answer is:{" "}
                   <Link href={`/nmm/${relevantHanzi}?lang=${lang}`}>
@@ -385,7 +422,7 @@ export function ReviewCloze({
                     {relevantHanzi}
                   </Link>
                 </p>
-              )}
+              )} */}
 
               <div className="flex justify-center items-center gap-8 mt-8">
                 <button

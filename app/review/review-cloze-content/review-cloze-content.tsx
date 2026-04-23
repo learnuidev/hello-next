@@ -30,6 +30,7 @@ import {
 } from "@/domain/lesson/character.queries";
 import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
 import { useChinglishState } from "@/components/settings-dialog/use-chinglish-state";
+import { getNmmLink } from "@/libs/utils/get-nmm-link";
 
 const ClozeNavbar = ({
   onClose,
@@ -395,7 +396,12 @@ export function ReviewClozeContent({
               if (response) {
                 return (
                   <Link
-                    href={`/nmm/${option?.input || option?.hanzi}?lang=${sentence?.lang}`}
+                    href={getNmmLink({
+                      id: option?.hanzi || option?.input,
+                      lang: sentence?.lang,
+                      view: "review",
+                    })}
+                    // href={`/nmm/${option?.input || option?.hanzi}?lang=${sentence?.lang}`}
                     className={cn(
                       "border-orange-400 text-black  border-[2px] p-2 dark:text-white text-lg block text-center",
                       response

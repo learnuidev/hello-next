@@ -24,6 +24,7 @@ import { getMulti } from "../dyna-cloze-sentence/utils/get-multi";
 
 import { DynaClozeHeader } from "@/components/dyno-cloze-core/dyna-cloze-header";
 import { DynoClozeLoader } from "@/components/dyno-cloze-core/dyno-cloze-loader";
+import { getNmmLink } from "@/libs/utils/get-nmm-link";
 
 interface IDynoParams {
   parentSentence?: any;
@@ -273,8 +274,11 @@ const DynaSentence = ({
           if (response) {
             return (
               <Link
-                href={`/nmm/${option?.input || option?.hanzi}?lang=${sentence?.lang}`}
-                // disabled={response?.type}
+                href={getNmmLink({
+                  id: option?.hanzi || option?.input,
+                  lang: sentence?.lang,
+                  view: "review",
+                })}
                 className={cn(
                   "border-orange-400 text-black  border-[2px] p-2 dark:text-white text-lg block text-center",
                   response

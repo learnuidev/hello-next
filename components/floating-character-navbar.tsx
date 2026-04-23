@@ -15,7 +15,7 @@ import { useDeleteCharacterMutation } from "@/domain/lesson/use-delete-character
 import { useGetComponentQuery } from "@/domain/lesson/use-get-component-query";
 import { useDiscoverMutation } from "@/domain/nmm/discover.mutations";
 import { useShowAutomaticallyTheDock } from "@/hooks/use-show-automatically-the-dock";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 import { AddToCollectionDialog } from "./_select-character/add-to-collection-dialog";
@@ -106,6 +106,7 @@ export const FloatingCharacterNavbar = ({
   const currentCharacter = selectedComp;
 
   const updateCharacterStatusMutation = useUpdateCharacterStatusMutation();
+  const router = useRouter();
 
   const { data } = useListCharactersQuery();
 
@@ -193,6 +194,7 @@ export const FloatingCharacterNavbar = ({
               className="text-xl text-black dark:text-white"
               onClick={() => {
                 setView("review");
+                router.push(`/nmm/${characterId}?lang=${lang}&view=review`);
               }}
             >
               <Icons.graduationCap className="text-2xl" />

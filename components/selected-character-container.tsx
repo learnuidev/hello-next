@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import { CharacterNavbar } from "./_select-character/character-navbar";
 import { useViewTypeStore } from "./use-selected-character";
@@ -21,6 +21,8 @@ export function SelectedCharacterContainer({
 
   const views = useViewTypeStore((state: any) => state.views) as any;
   const view = views?.[characterId] || "home";
+  const searchParams = useSearchParams();
+  const searchParamView = searchParams.get("view");
 
   const router = useRouter();
 
@@ -42,12 +44,14 @@ export function SelectedCharacterContainer({
       }}
     >
       <div className="px-4 md:px-12">
-        {view !== "review" && <CharacterNavbar characterId={characterId} />}
+        {searchParamView !== "review" && (
+          <CharacterNavbar characterId={characterId} />
+        )}
 
         <ShowView />
       </div>
 
-      {view !== "review" && (
+      {searchParamView !== "review" && (
         <FloatingCharacterNavbar characterId={characterId} />
       )}
     </div>

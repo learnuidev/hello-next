@@ -50,7 +50,7 @@ export const useSearchSuggestions = () => {
   const { data, isLoading } = useQuery({
     queryKey: ["search-suggestions", debouncedQuery],
     queryFn: () => fetchSearchSuggestions(debouncedQuery),
-    enabled: !!debouncedQuery && debouncedQuery.length >= 2,
+    enabled: !!debouncedQuery,
     staleTime: 300000,
   });
 

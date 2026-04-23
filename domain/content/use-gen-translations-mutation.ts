@@ -1,7 +1,7 @@
 "use client";
 
 import { siteConfig } from "@/lib/config";
-import { currentAuthUser } from "@/libs/cognito/auth";
+import { fetchWithToken } from "@/libs/cognito/fetch-with-token";
 import { useMutation } from "@tanstack/react-query";
 
 type GenTranslationsParams = {
@@ -9,13 +9,8 @@ type GenTranslationsParams = {
 };
 
 const genTranslations = async (params: GenTranslationsParams) => {
-  const opts = await currentAuthUser();
-
-  const res = await fetch(`${siteConfig.apiUrl}/v1/gen-translations`, {
+  const res = await fetchWithToken(`${siteConfig.apiUrl}/v1/gen-translations`, {
     method: "POST",
-    headers: {
-      Authorization: `${opts?.jwt}`,
-    },
     body: JSON.stringify(params),
   });
   const resp = await res.json();

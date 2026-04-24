@@ -7,6 +7,7 @@ const deepSeekApiKey = process.env.DEEPSEEK_API_KEY;
 const mandarinoDeepseek = mandarinoApi({
   apiKey: deepSeekApiKey,
   variant: "deepseek",
+  modelName: "deepseek-v4-flash",
 });
 
 export async function POST(req: Request) {

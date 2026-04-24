@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { CSS } from "@dnd-kit/utilities";
 import {
   DndContext,
@@ -145,17 +146,20 @@ function SortableEpisodeItem({ episode, index, disabled = false }: SortableEpiso
 
 interface DraggableEpisodeListProps {
   episodes: ContentEpisode[];
-  onReorder: (episodes: ContentEpisode[]) => void;
+  onSave: (episodes: ContentEpisode[]) => Promise<void>;
   isLoading?: boolean;
   disabled?: boolean;
 }
 
 export function DraggableEpisodeList({
   episodes,
-  onReorder,
+  onSave,
   isLoading = false,
   disabled = false,
 }: DraggableEpisodeListProps) {
+  const [localEpisodes, setLocalEpisodes] = useState<ContentEpisode[]>(episodes);
+  const [hasChanges, setHasChanges] = useState(false);
+
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -170,14 +174,20 @@ export function DraggableEpisodeList({
     if (!active || !over) return;
     
     if (active.id !== over.id) {
-      const oldIndex = episodes.findIndex((item) => item.id === active.id);
-      const newIndex = episodes.findIndex((item) => item.id === over.id);
+      const oldIndex = localEpisodes.findIndex((item) => item.id === active.id);
+      const newIndex = localEpisodes.findIndex((item) => item.id === over.id);
 
       if (oldIndex === -1 || newIndex === -1) return;
 
-      const newEpisodes = arrayMove(episodes, oldIndex, newIndex);
-      onReorder(newEpisodes);
+      const newEpisodes = arrayMove(localEpisodes, oldIndex, newIndex);
+      setLocalEpisodes(newEpisodes);
+      setHasChanges(true);
     }
+  };
+
+  const handleSave = async () => {
+    await onSave(localEpisodes);
+    setHasChanges(false);
   };
 
   if (isLoading) {
@@ -189,26 +199,48 @@ export function DraggableEpisodeList({
   }
 
   return (
-    <DndContext
-      sensors={sensors}
-      collisionDetection={closestCenter}
-      onDragEnd={handleDragEnd}
-    >
-      <SortableContext
-        items={episodes.map((e) => e.id)}
-        strategy={verticalListSortingStrategy}
-      >
-        <div className="space-y-3">
-          {episodes.map((episode, index) => (
-            <SortableEpisodeItem
-              key={episode.id}
-              episode={episode}
-              index={index}
-              disabled={disabled}
-            />
-          ))}
+    <div className="space-y-4">
+      {hasChanges && (
+        <div className="flex items-center justify-end gap-2">
+          <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400 text-sm font-medium">
+            <Icons.circleInfo className="h-4 w-4" />
+            未保存的更改
+          </div>
+          <Button
+            onClick={handleSave}
+            disabled={isLoading}
+            className="gap-2 bg-green-500 hover:bg-green-600"
+          >
+            {isLoading ? (
+              <Icons.spinner className="h-4 w-4 animate-spin" />
+            ) : (
+              <Icons.check className="h-4 w-4" />
+            )}
+            保存排序
+          </Button>
         </div>
-      </SortableContext>
-    </DndContext>
+      )}
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragEnd={handleDragEnd}
+      >
+        <SortableContext
+          items={localEpisodes.map((e) => e.id)}
+          strategy={verticalListSortingStrategy}
+        >
+          <div className="space-y-3">
+            {localEpisodes.map((episode, index) => (
+              <SortableEpisodeItem
+                key={episode.id}
+                episode={episode}
+                index={index}
+                disabled={disabled}
+              />
+            ))}
+          </div>
+        </SortableContext>
+      </DndContext>
+    </div>
   );
 }

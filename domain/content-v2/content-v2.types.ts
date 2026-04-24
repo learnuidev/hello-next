@@ -51,6 +51,7 @@ export type ContentEpisode = {
   updatedAt: number;
   audioId: string;
   mediaTranscriptionsId: string;
+  thumbnailUrl?: string;
   stats: ContentStats;
 };
 

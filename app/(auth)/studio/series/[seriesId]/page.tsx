@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -45,23 +45,9 @@ export default function SeriesDetailsPage() {
   const updateEpisodeOrderMutation = useUpdateEpisodeOrderMutation();
   const [activeTab, setActiveTab] = useState<"info" | "episodes">("episodes");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
-  const [episodesOrder, setEpisodesOrder] = useState<ContentEpisode[]>([]);
-  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
-  useEffect(() => {
-    if (sortedEpisodes.length > 0) {
-      setEpisodesOrder(sortedEpisodes);
-      setHasUnsavedChanges(false);
-    }
-  }, [sortedEpisodes]);
-
-  const handleReorder = (newEpisodes: ContentEpisode[]) => {
-    setEpisodesOrder(newEpisodes);
-    setHasUnsavedChanges(true);
-  };
-
-  const handleSaveOrder = async () => {
-    const episodeOrders = episodesOrder.map((episode, index) => ({
+  const handleSaveOrder = async (newEpisodes: ContentEpisode[]) => {
+    const episodeOrders = newEpisodes.map((episode, index) => ({
       episodeId: episode.id,
       sortOrder: index,
     }));
@@ -72,11 +58,9 @@ export default function SeriesDetailsPage() {
         episodeOrders,
       });
       toast.success("排序已更新");
-      setHasUnsavedChanges(false);
     } catch (error: any) {
       toast.error(error?.message || "更新排序失败");
-      setEpisodesOrder(sortedEpisodes);
-      setHasUnsavedChanges(false);
+      throw error;
     }
   };
 
@@ -238,7 +222,7 @@ export default function SeriesDetailsPage() {
         </div>
       </div>
 
-              <div className="p-0">
+                <div className="p-0">
                 <div className="flex justify-between items-center">
                   <BaseTabs
                     tabs={tabs}
@@ -246,12 +230,6 @@ export default function SeriesDetailsPage() {
                     onTabChange={setActiveTab}
                     layoutId="activeTab"
                   />
-                  {hasUnsavedChanges && activeTab === "episodes" && (
-                    <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400 text-sm font-medium">
-                      <Icons.circleInfo className="h-4 w-4" />
-                      未保存的更改
-                    </div>
-                  )}
                 </div>
 
         <AnimatePresence mode="wait">
@@ -300,7 +278,7 @@ export default function SeriesDetailsPage() {
               transition={{ duration: 0.3, delay: 0.1 }}
               className="mt-8"
             >
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
                 <div>
                   <h2 className="text-2xl font-bold">内容</h2>
                   <p className="text-muted-foreground">
@@ -331,20 +309,6 @@ export default function SeriesDetailsPage() {
                         <Icons.list className="h-4 w-4" />
                       </button>
                     </div>
-                  )}
-                  {viewMode === "list" && hasUnsavedChanges && (
-                    <Button
-                      onClick={handleSaveOrder}
-                      disabled={updateEpisodeOrderMutation.isPending}
-                      className="gap-2 bg-green-500 hover:bg-green-600"
-                    >
-                      {updateEpisodeOrderMutation.isPending ? (
-                        <Icons.spinner className="h-4 w-4 animate-spin" />
-                      ) : (
-                        <Icons.check className="h-4 w-4" />
-                      )}
-                      保存排序
-                    </Button>
                   )}
                   <Button
                     onClick={() =>
@@ -385,8 +349,8 @@ export default function SeriesDetailsPage() {
                 </div>
               ) : viewMode === "list" ? (
                 <DraggableEpisodeList
-                  episodes={episodesOrder}
-                  onReorder={handleReorder}
+                  episodes={sortedEpisodes}
+                  onSave={handleSaveOrder}
                   isLoading={updateEpisodeOrderMutation.isPending}
                   disabled={updateEpisodeOrderMutation.isPending}
                 />

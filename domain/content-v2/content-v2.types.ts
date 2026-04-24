@@ -43,17 +43,13 @@ export type ContentEpisode = {
   id: string;
   seriesId: string;
   title: string;
-
-  topicType: TopicType;
-  format: ContentFormat;
+  type: ContentFormat;
   status: ContentStatus;
-
   lang: string;
-
   sortOrder: number;
   createdAt: number; // Unix timestamp or milliseconds since epoch
   updatedAt: number;
-  mediaId: string;
+  audioId: string;
   mediaTranscriptionsId: string;
   stats: ContentStats;
 };

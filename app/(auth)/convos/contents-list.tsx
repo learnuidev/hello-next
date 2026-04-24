@@ -71,12 +71,14 @@ export function ContentsList({ contentViewType }: { contentViewType: string }) {
   const [sortBy, setSortBy] = useState<SortByType>("newest");
   const [authorFilter, setAuthorFilter] = useState<string>("all");
 
+  const querySync = useSearchQueryStore((state) => state.querySync);
+
   const {
     isLoading: isSearchLoading,
     data: suggeestions,
-    querySync,
+
     debouncedQuery,
-  } = useSearchSuggestions();
+  } = useSearchSuggestions(querySync);
 
   const contents =
     contentViewType === "history"

@@ -94,7 +94,7 @@ export function SeriesDetailsTabs({
                         {episode.title}
                       </h3>
                       <div className="flex items-center gap-3 text-sm">
-                        {getFormatIcon(episode.format)}
+                        {getFormatIcon(episode.type)}
                         <span className="text-gray-500 dark:text-gray-400">
                           {episode.lang}
                         </span>

@@ -28,8 +28,7 @@ const fetchSearchSuggestions = async (query: string) => {
   return data.items || [];
 };
 
-export const useSearchSuggestions = () => {
-  const querySync = useSearchQueryStore((state) => state.querySync);
+export const useSearchSuggestions = (querySync: string) => {
   const setSearchSuggestions = useSearchQueryStore(
     (state) => state.setSearchSuggestions,
   );

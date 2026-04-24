@@ -9,6 +9,7 @@ import { defaultPic } from "@/data/default-image-urls";
 import { usePortEpisodesMutation } from "@/domain/content-v2/use-port-episodes-mutation";
 import { useUpdateSeriesStatsMutation } from "@/domain/content-v2/use-update-series-stats-mutation";
 import { useListContentsQuery } from "@/domain/content/content.queries";
+import { useSearchSuggestions } from "@/hooks/use-search-suggestions";
 import { motion } from "framer-motion";
 import { useParams, useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
@@ -39,7 +40,7 @@ function SelectableContentCard({
   isSelected: boolean;
   onToggleSelect: (id: string) => void;
 }) {
-  const isLongTitle = title.length > 20;
+  const isLongTitle = (title || "todo").length > 20;
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -130,18 +131,25 @@ export default function PortDataPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [visibleCount, setVisibleCount] = useState(16);
 
+  const {
+    isLoading: isSearchLoading,
+    data: suggeestions,
+
+    debouncedQuery,
+  } = useSearchSuggestions(searchQuery);
+
   const filteredContents = useMemo(() => {
     const contents = contentsData?.items || [];
     if (!searchQuery.trim()) {
       return contents;
     }
     const query = searchQuery.toLowerCase();
-    return contents.filter((item: any) =>
-      item.title?.toLowerCase().includes(query),
-    );
+    return suggeestions || [];
   }, [contentsData, searchQuery]);
 
   const displayedContents = filteredContents.slice(0, visibleCount);
+
+  console.log("FILTERED CONTENTS", filteredContents);
 
   const handleToggleSelect = (contentId: string) => {
     setSelectedContentIds((prev) =>

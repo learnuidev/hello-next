@@ -2,7 +2,7 @@ import { CoreStats } from "@/domain/content-v2/series.types";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 
-function formatNumber(num: number): string {
+function formatNumber(num = 0): string {
   if (num >= 1000000) {
     return (num / 1000000).toFixed(1) + "M";
   }
@@ -24,7 +24,7 @@ export function StatsList(props: Props) {
     <div
       className={cn(
         "flex items-center gap-4 mt-2 text-sm text-gray-600",
-        props?.className
+        props?.className,
       )}
     >
       <span className="hidden sm:flex items-center gap-1">

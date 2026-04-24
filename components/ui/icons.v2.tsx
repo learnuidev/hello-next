@@ -3,6 +3,7 @@ import {
   faMicrosoft,
   faYoutube,
 } from "@fortawesome/free-brands-svg-icons";
+
 import {
   FontAwesomeIcon,
   FontAwesomeIconProps,
@@ -15,6 +16,7 @@ import {
 } from "@fortawesome/sharp-solid-svg-icons";
 
 import {
+  faGripVertical,
   faArrowUpRightFromSquare,
   faBoltLightning as faBoltLightningSolid,
   faBookmark as faBookmarkSolid,
@@ -406,6 +408,7 @@ export const Icons = {
   fastForward: createFAIcon(faForward),
   exlamationCircle: createFAIcon(faExclamationCircle),
   checkCircleSolid: createFAIcon(faCheckCircleSolid),
+  gripVertical: createFAIcon(faGripVertical),
 };
 
 export const RedFireDuoTone = ({ className }: { className?: string }) => {

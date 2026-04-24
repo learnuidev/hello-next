@@ -1,14 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/ui/icons.v2";
 import { useGetSeriesDetailsQuery } from "@/domain/content-v2/use-get-series-details-query";
 import { useUpdateSeriesMutation } from "@/domain/content-v2/use-update-series-mutation";
+import { useUpdateEpisodeOrderMutation } from "@/domain/content-v2/use-update-episode-order-mutation";
+import { ContentEpisode } from "@/domain/content-v2/content-v2.types";
 import { ContentListGrid } from "@/components/new-home-page/components/content-list-grid/content-list-grid";
 import { ContentCard } from "@/components/new-home-page/components/content-card/content-card";
+import { DraggableEpisodeList } from "./components/draggable-episode-list";
 import { toast } from "sonner";
 import { SeriesForm } from "../../components/series-form";
 import { BaseTabs } from "@/components/ui/base-tabs";
@@ -34,8 +37,48 @@ export default function SeriesDetailsPage() {
     seriesId: params.seriesId,
   });
 
+  const sortedEpisodes = [...(data?.episodes || [])].sort(
+    (a, b) => a.sortOrder - b.sortOrder,
+  );
+
   const updateSeriesMutation = useUpdateSeriesMutation();
+  const updateEpisodeOrderMutation = useUpdateEpisodeOrderMutation();
   const [activeTab, setActiveTab] = useState<"info" | "episodes">("episodes");
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [episodesOrder, setEpisodesOrder] = useState<ContentEpisode[]>([]);
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+
+  useEffect(() => {
+    if (sortedEpisodes.length > 0) {
+      setEpisodesOrder(sortedEpisodes);
+      setHasUnsavedChanges(false);
+    }
+  }, [sortedEpisodes]);
+
+  const handleReorder = (newEpisodes: ContentEpisode[]) => {
+    setEpisodesOrder(newEpisodes);
+    setHasUnsavedChanges(true);
+  };
+
+  const handleSaveOrder = async () => {
+    const episodeOrders = episodesOrder.map((episode, index) => ({
+      episodeId: episode.id,
+      sortOrder: index,
+    }));
+
+    try {
+      await updateEpisodeOrderMutation.mutateAsync({
+        seriesId: params.seriesId,
+        episodeOrders,
+      });
+      toast.success("排序已更新");
+      setHasUnsavedChanges(false);
+    } catch (error: any) {
+      toast.error(error?.message || "更新排序失败");
+      setEpisodesOrder(sortedEpisodes);
+      setHasUnsavedChanges(false);
+    }
+  };
 
   const getErrorMessage = (error: any) => {
     if (error?.message) {
@@ -195,15 +238,30 @@ export default function SeriesDetailsPage() {
         </div>
       </div>
 
-      <div className="p-0">
-        <div className="flex justify-between items-center">
-          <BaseTabs
-            tabs={tabs}
-            activeTab={activeTab}
-            onTabChange={setActiveTab}
-            layoutId="activeTab"
-          />
-        </div>
+              <div className="p-0">
+                <div className="flex justify-between items-center">
+                  <BaseTabs
+                    tabs={tabs}
+                    activeTab={activeTab}
+                    onTabChange={(tab) => {
+                      if (hasUnsavedChanges && tab !== "episodes") {
+                        if (confirm("您有未保存的排序更改。确定要离开吗？")) {
+                          setHasUnsavedChanges(false);
+                          setActiveTab(tab);
+                        }
+                      } else {
+                        setActiveTab(tab);
+                      }
+                    }}
+                    layoutId="activeTab"
+                  />
+                  {hasUnsavedChanges && (
+                    <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400 text-sm font-medium">
+                      <Icons.circleInfo className="h-4 w-4" />
+                      未保存的更改
+                    </div>
+                  )}
+                </div>
 
         <AnimatePresence mode="wait">
           {activeTab === "info" && (
@@ -259,6 +317,44 @@ export default function SeriesDetailsPage() {
                   </p>
                 </div>
                 <div className="flex gap-3">
+                  {episodesList.length > 0 && (
+                    <div className="flex items-center gap-1 bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
+                      <button
+                        onClick={() => setViewMode("grid")}
+                        className={`p-2 rounded-md transition-all ${
+                          viewMode === "grid"
+                            ? "bg-white dark:bg-gray-700 shadow-sm text-rose-500"
+                            : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                        }`}
+                      >
+                        <Icons.apps className="h-4 w-4" />
+                      </button>
+                      <button
+                        onClick={() => setViewMode("list")}
+                        className={`p-2 rounded-md transition-all ${
+                          viewMode === "list"
+                            ? "bg-white dark:bg-gray-700 shadow-sm text-rose-500"
+                            : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                        }`}
+                      >
+                        <Icons.list className="h-4 w-4" />
+                      </button>
+                    </div>
+                  )}
+                  {viewMode === "list" && hasUnsavedChanges && (
+                    <Button
+                      onClick={handleSaveOrder}
+                      disabled={updateEpisodeOrderMutation.isPending}
+                      className="gap-2 bg-green-500 hover:bg-green-600"
+                    >
+                      {updateEpisodeOrderMutation.isPending ? (
+                        <Icons.spinner className="h-4 w-4 animate-spin" />
+                      ) : (
+                        <Icons.check className="h-4 w-4" />
+                      )}
+                      保存排序
+                    </Button>
+                  )}
                   <Button
                     onClick={() =>
                       router.push(`/studio/series/${seriesId}/port-data`)
@@ -296,6 +392,13 @@ export default function SeriesDetailsPage() {
                     </Button>
                   </div>
                 </div>
+              ) : viewMode === "list" ? (
+                <DraggableEpisodeList
+                  episodes={episodesOrder}
+                  onReorder={handleReorder}
+                  isLoading={updateEpisodeOrderMutation.isPending}
+                  disabled={updateEpisodeOrderMutation.isPending}
+                />
               ) : (
                 <ContentListGrid>
                   {episodesList.map((item: any, index: number) => (

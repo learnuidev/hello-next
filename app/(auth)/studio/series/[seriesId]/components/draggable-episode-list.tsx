@@ -22,7 +22,6 @@ import { Icons } from "@/components/ui/icons.v2";
 import { ContentEpisode } from "@/domain/content-v2/content-v2.types";
 import { defaultPic } from "@/data/default-image-urls";
 import { cn } from "@/lib/utils";
-// import { formatNumber } from "@/app/(auth)/studio/series/[seriesId]/port-data/page";
 
 function formatNumber(num = 0): string {
   if (num >= 1000000) {
@@ -48,7 +47,7 @@ function SortableEpisodeItem({ episode, index, disabled = false }: SortableEpiso
     transform,
     transition,
     isDragging,
-  } = useSortable({ id: episode.id, disabled });
+  } = useSortable({ id: episode.id });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -82,23 +81,23 @@ function SortableEpisodeItem({ episode, index, disabled = false }: SortableEpiso
     >
       <div className="p-4">
         <div className="flex items-center gap-4">
-          <button
+          <div
             {...attributes}
             {...listeners}
-            disabled={disabled}
+            style={{ touchAction: 'none' }}
             className={cn(
-              "flex-shrink-0 transition-colors",
+              "flex-shrink-0 transition-colors select-none",
               disabled 
-                ? "cursor-not-allowed text-gray-300 dark:text-gray-600" 
+                ? "cursor-not-allowed text-gray-300 dark:text-gray-600 pointer-events-none" 
                 : "cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
             )}
           >
-            <Icons.gripVertical className="h-5 w-5" />
-          </button>
+            <Icons.gripVertical className="h-5 w-5 pointer-events-none" />
+          </div>
 
           <div className="flex-shrink-0 w-12 h-12 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800">
             <img
-              src={defaultPic}
+              src={episode.thumbnailUrl || defaultPic}
               alt={episode.title}
               className="w-full h-full object-cover"
             />
@@ -159,19 +158,22 @@ export function DraggableEpisodeList({
 }: DraggableEpisodeListProps) {
   const sensors = useSensors(
     useSensor(PointerSensor, {
-      activationConstraint: disabled ? { distance: 99999 } : undefined,
-    }),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
+      activationConstraint: {
+        distance: 5,
+      },
     }),
   );
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
-
-    if (over && active.id !== over.id && !disabled) {
+    
+    if (!active || !over) return;
+    
+    if (active.id !== over.id) {
       const oldIndex = episodes.findIndex((item) => item.id === active.id);
       const newIndex = episodes.findIndex((item) => item.id === over.id);
+
+      if (oldIndex === -1 || newIndex === -1) return;
 
       const newEpisodes = arrayMove(episodes, oldIndex, newIndex);
       onReorder(newEpisodes);

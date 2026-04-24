@@ -243,19 +243,10 @@ export default function SeriesDetailsPage() {
                   <BaseTabs
                     tabs={tabs}
                     activeTab={activeTab}
-                    onTabChange={(tab) => {
-                      if (hasUnsavedChanges && tab !== "episodes") {
-                        if (confirm("您有未保存的排序更改。确定要离开吗？")) {
-                          setHasUnsavedChanges(false);
-                          setActiveTab(tab);
-                        }
-                      } else {
-                        setActiveTab(tab);
-                      }
-                    }}
+                    onTabChange={setActiveTab}
                     layoutId="activeTab"
                   />
-                  {hasUnsavedChanges && (
+                  {hasUnsavedChanges && activeTab === "episodes" && (
                     <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400 text-sm font-medium">
                       <Icons.circleInfo className="h-4 w-4" />
                       未保存的更改

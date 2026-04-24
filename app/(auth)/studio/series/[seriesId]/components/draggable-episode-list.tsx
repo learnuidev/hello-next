@@ -160,6 +160,11 @@ export function DraggableEpisodeList({
   const [localEpisodes, setLocalEpisodes] = useState<ContentEpisode[]>(episodes);
   const [hasChanges, setHasChanges] = useState(false);
 
+  useEffect(() => {
+    setLocalEpisodes(episodes);
+    setHasChanges(false);
+  }, [episodes]);
+
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {

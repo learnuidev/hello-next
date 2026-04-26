@@ -1,5 +1,6 @@
 "use client";
 
+import { StatsList } from "@/components/new-home-page/components/content-card/stats-list";
 import { PageContainer } from "@/components/page-container";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/ui/icons.v2";
@@ -8,6 +9,7 @@ import { useGetSeriesDetailsQuery } from "@/domain/content-v2/use-get-series-det
 import { useIsEnrolled } from "@/domain/enrollments";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export function SeriesDetailsTabs({
   seriesId,
@@ -19,6 +21,10 @@ export function SeriesDetailsTabs({
   const { data } = useGetSeriesDetailsQuery({
     seriesId,
   });
+
+  console.log("EPISODES", data);
+
+  const router = useRouter();
 
   const { isEnrolled, isLoading: isEnrollmentLoading } =
     useIsEnrolled(seriesId);
@@ -65,11 +71,14 @@ export function SeriesDetailsTabs({
               <div
                 key={episode.id}
                 className={cn(
-                  "bg-white dark:bg-[rgb(20,21,22)] rounded-xl shadow-sm border border-gray-100 dark:border-[rgb(31,33,35)] transition-all duration-200 hover:shadow-md",
+                  "p-2 bg-white dark:bg-[rgb(20,21,22)] rounded-xl shadow-sm border border-gray-100 dark:border-[rgb(31,33,35)] transition-all duration-200 hover:shadow-md",
                   !isEnrolled && "opacity-60",
                 )}
               >
-                <Link href={`/convos/${episode.id}`} className="p-2 block">
+                <Link
+                  href={!isEnrolled ? "" : `/convos/${episode.id}`}
+                  className="block w-full"
+                >
                   <div className="flex items-center gap-4">
                     <button
                       disabled={!isEnrolled}
@@ -87,11 +96,17 @@ export function SeriesDetailsTabs({
                       <h3 className="text-base font-semibold text-gray-900 dark:text-gray-50 mb-1 truncate">
                         {episode.title}
                       </h3>
+
+                      <div className=""></div>
+
                       <div className="flex items-center gap-3 text-sm">
-                        {getFormatIcon(episode.type)}
+                        {/* {getFormatIcon(episode.type)}
+
                         <span className="text-gray-500 dark:text-gray-400">
                           {episode.lang}
-                        </span>
+                        </span> */}
+
+                        <StatsList {...episode.stats} />
                       </div>
                     </div>
 

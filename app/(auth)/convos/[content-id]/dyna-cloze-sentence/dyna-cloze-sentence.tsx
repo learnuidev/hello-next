@@ -10,7 +10,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useViewTypeStore } from "@/components/use-selected-character";
 import { WordleSentence } from "@/components/wordle/wordle-sentence";
 import { useListGrammarsQuery } from "@/domain/sentence/grammar.queries";
 import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
@@ -32,6 +31,7 @@ import {
 } from "./use-dyna-cloze-sentence";
 import { getMulti } from "./utils/get-multi";
 import { getNmmLink } from "@/libs/utils/get-nmm-link";
+import { useRouter } from "next/navigation";
 
 interface IDynoParams {
   parentSentence?: any;
@@ -488,21 +488,23 @@ export const DynaClozeSentence = ({
 
   const sentence = sentencesShuffled?.[sentenceIndex];
 
-  const setViews = useViewTypeStore((state) => state.setViews);
-
-  // const { selectedChar, setView, view } = data;
-  const setView = () => {
-    return setViews(_sentence?.input || _sentence?.hanzi || "", "");
-  };
-
   const isAutomatic = useShowAutomaticallyTheDock();
+  const router = useRouter();
 
   const maxIndex = sentencesShuffled?.length - 1;
 
   return (
     <div className="mb-32">
       <DynaClozeNavbar
-        onClose={setView}
+        onClose={() => {
+          router.push(
+            getNmmLink({
+              id: _sentence?.input || _sentence?.hanzi || "",
+              lang: sentence?.lang,
+              view: "overview",
+            }),
+          );
+        }}
         input={_sentence?.input || _sentence?.hanzi || ""}
       />
 

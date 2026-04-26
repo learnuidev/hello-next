@@ -22,7 +22,7 @@ import { useAudioProviderState } from "../settings-dialog/hooks/use-audio-provid
 import { useChinglishState } from "../settings-dialog/use-chinglish-state";
 import { useYoutubeVideoUrl } from "../summary/with-youtube-video";
 import { Icons } from "../ui/icons.v2";
-import { useViewTypeStore } from "../use-selected-character";
+
 import { useCurrentTime } from "../youtube-page/use-current-time-store";
 import { useIsPlayingState } from "../youtube-page/use-is-playing-state";
 import { smartSplit } from "../youtube-page/utils/smart-split";
@@ -51,12 +51,6 @@ export const CharacterTitle = (props: any) => {
   const { data } = useListComponentVariantsQuery({ hanzi: characterId });
 
   const character = useGetCharacter({ characterId: componentId });
-
-  const setViews = useViewTypeStore((state) => state.setViews);
-
-  const setView = (view: any) => {
-    return setViews(characterId, view);
-  };
 
   const searchParams = useSearchParams();
 
@@ -438,9 +432,7 @@ export const CharacterTitle = (props: any) => {
         <div className="space-x-4 flex items-center">
           {!edit && (
             <PlayButtonV2
-              onClick={() => {
-                setView("full-screen");
-              }}
+              onClick={() => {}}
               customRef={customRef}
               text={selectedCompInput}
               lang={lang}

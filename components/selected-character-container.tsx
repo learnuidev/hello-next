@@ -3,7 +3,6 @@
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { CharacterNavbar } from "./_select-character/character-navbar";
-import { useViewTypeStore } from "./use-selected-character";
 
 import { FloatingCharacterNavbar } from "./floating-character-navbar";
 
@@ -16,11 +15,8 @@ export function SelectedCharacterContainer({
 }: {
   characterId: string;
 }) {
-  const setViews = useViewTypeStore((state) => state.setViews);
   const lang = useGetCurrentLang();
 
-  const views = useViewTypeStore((state: any) => state.views) as any;
-  const view = views?.[characterId] || "home";
   const searchParams = useSearchParams();
   const searchParamView = searchParams.get("view");
 

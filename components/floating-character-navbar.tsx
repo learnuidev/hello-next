@@ -21,8 +21,8 @@ import { toast } from "sonner";
 import { AddToCollectionDialog } from "./_select-character/add-to-collection-dialog";
 import { useCharacterEditStore } from "./_select-character/use-character-edit-store";
 import { TheDock } from "./the-dock";
-import { useSelectedCharacterData } from "./use-selected-character";
 import { Label } from "./ui/label";
+import { useSelectedCharacterData } from "./use-selected-character";
 
 const DiscoverButton = ({ characterId }: { characterId: string }) => {
   const discoverMutation = useDiscoverMutation();
@@ -194,7 +194,6 @@ export const FloatingCharacterNavbar = ({
               className="text-xl text-black dark:text-white"
               onClick={() => {
                 setView("review");
-                router.push(`/nmm/${characterId}?lang=${lang}&view=review`);
               }}
             >
               <Icons.graduationCap className="text-2xl" />

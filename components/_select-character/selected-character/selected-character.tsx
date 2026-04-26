@@ -3,7 +3,6 @@
 import { RelatedHskWords } from "./related-hsk-words";
 
 import { CharacterAnalytics } from "@/components/_select-character/character-analytics";
-import { useViewTypeStore } from "@/components/use-selected-character";
 import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 import { useMemo } from "react";
@@ -19,7 +18,8 @@ import { ReviewClozeContent } from "@/app/review/review-cloze-content/review-clo
 import { ReviewCloze } from "@/app/review/review-cloze/review-cloze";
 import { CharacterBookmark } from "./character-bookmark";
 import { CharacterSearch } from "./character-search";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { getNmmLink } from "@/libs/utils/get-nmm-link";
 
 export const SelectedCharacter = ({ characterId }: { characterId: string }) => {
   const { data: characters } = useListCharactersQuery(
@@ -44,17 +44,16 @@ export const SelectedCharacter = ({ characterId }: { characterId: string }) => {
 
   const lang = useGetCurrentLang();
 
-  const views = useViewTypeStore((state: any) => state.views) as any;
-  const view = views?.[characterId] || "home";
   const searchParams = useSearchParams();
   const searchParamView = searchParams.get("view");
 
-  const setViews = useViewTypeStore((state) => state.setViews);
-  const { clozeContentMode } = useClozeContentMode();
+  const router = useRouter();
 
-  const setView = (view: any) => {
-    return setViews(characterId, view);
+  const setView = (view: string) => {
+    router.push(getNmmLink({ id: characterId, lang, view }));
   };
+
+  const { clozeContentMode } = useClozeContentMode();
 
   if (searchParamView === "review") {
     return (
@@ -79,7 +78,7 @@ export const SelectedCharacter = ({ characterId }: { characterId: string }) => {
     );
   }
 
-  switch (view) {
+  switch (searchParamView) {
     case "review": {
       const isChinese = lang === "zh" && characterId?.length > 4;
       if (isChinese || characterId?.length > 12) {

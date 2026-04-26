@@ -5,7 +5,7 @@ import { useMemo } from "react";
 
 import * as R from "ramda";
 
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { useGetComponentQuery } from "@/domain/lesson/use-get-component-query";
 
@@ -23,38 +23,25 @@ import { useListPublishedContentsQuery } from "@/app/(auth)/convos/[content-id]/
 import { listUniqueCharaters } from "@/app/(auth)/convos/use-get-unique-characters-by-content-id";
 import { calculateColor } from "@/app/nmm/nmm-utils/calculate-color";
 import { useGetLangParams } from "@/hooks/use-get-lang-params";
+import { getNmmLink } from "@/libs/utils/get-nmm-link";
 import { useReadModeStore } from "@/stores/use-readmode-store";
-import { create } from "zustand";
-import { createJSONStorage, persist } from "zustand/middleware";
-
-export const useViewTypeStore = create(
-  persist(
-    (set: any, get: any) => ({
-      view: "home",
-      views: {},
-      setViews: (charId: string, view: any) =>
-        set({ views: { ...get().views, [charId]: view } }),
-      setView: (view: any) => set({ view }),
-    }),
-    {
-      name: "component-tabs-store", // name of the item in the storage (must be unique)
-      storage: createJSONStorage(() => localStorage), // (optional) by default, 'localStorage' is used
-    },
-  ),
-);
 
 export function useSelectedCharacterData({
   characterId,
 }: {
   characterId: string;
 }) {
-  // const view = useViewTypeStore((state) => state.view);
-  const views = useViewTypeStore((state: any) => state.views) as any;
-  const view = views?.[characterId] || "home";
-  const setViews = useViewTypeStore((state) => state.setViews);
-  const setView = (view: any) => {
-    return setViews(characterId, view);
+  const searchParams = useSearchParams();
+
+  const view = searchParams.get("view") || "overview";
+  const contentId = searchParams.get("contentId") || "";
+
+  const router = useRouter();
+
+  const setView = (view: string) => {
+    router.push(getNmmLink({ id: characterId, lang, view, contentId }));
   };
+
   // const [view, setView] = useState("home");
   const routeName = usePathname();
 
@@ -156,8 +143,6 @@ export function useSelectedCharacterData({
   const readMode = useReadModeStore((state) => state.readMode);
   const setReadMode = useReadModeStore((state) => state.setReadMode);
 
-  // const [readMode, setReadMode] = useState(false);
-  const searchParams = useSearchParams();
   const lang = (useGetLangParams() || selectedComp?.lang)?.split("-")?.[0];
   const contentLang = searchParams.get("content") || "";
 

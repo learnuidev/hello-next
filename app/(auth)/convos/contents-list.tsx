@@ -65,20 +65,20 @@ export function ContentsList({ contentViewType }: { contentViewType: string }) {
   const { contentViewType: contentType, setContentViewType } =
     useContentViewType();
 
-  const query = useSearchQueryStore((state) => state.query2);
+  // const query = useSearchQueryStore((state) => state.query2);
   const lang = useGetCurrentLang();
 
   const [sortBy, setSortBy] = useState<SortByType>("newest");
   const [authorFilter, setAuthorFilter] = useState<string>("all");
 
-  const querySync = useSearchQueryStore((state) => state.querySync);
+  const _querySync = useSearchQueryStore((state) => state.querySync);
 
   const {
     isLoading: isSearchLoading,
-    data: suggeestions,
+    data: suggestions,
 
     debouncedQuery,
-  } = useSearchSuggestions(querySync);
+  } = useSearchSuggestions(_querySync);
 
   const contents =
     contentViewType === "history"
@@ -117,7 +117,7 @@ export function ContentsList({ contentViewType }: { contentViewType: string }) {
 
   const filteredProjects = filteredByLang
     ?.filter((content: any) => {
-      if (!query) {
+      if (!debouncedQuery) {
         if (contentType) {
           if (contentType === "all") {
             return true;
@@ -134,12 +134,7 @@ export function ContentsList({ contentViewType }: { contentViewType: string }) {
 
       return JSON.stringify(content)
         ?.toLowerCase()
-        ?.includes(query?.toLowerCase());
-
-      return (
-        content?.title?.toLowerCase()?.includes(query?.toLowerCase()) &&
-        searchTransacription(content, query)
-      );
+        ?.includes(debouncedQuery?.toLowerCase());
     })
     ?.filter((content: any) => {
       if (authorFilter === "all") return true;
@@ -157,7 +152,7 @@ export function ContentsList({ contentViewType }: { contentViewType: string }) {
       };
     });
 
-  const sortedProjects = useMemo(() => {
+  const sortedContents = useMemo(() => {
     if (!filteredProjects) return [];
     const sorted = [...filteredProjects];
     if (sortBy === "newest") {
@@ -175,7 +170,7 @@ export function ContentsList({ contentViewType }: { contentViewType: string }) {
     }
   }, [filteredProjects, sortBy]);
 
-  const contentsList = querySync ? suggeestions : sortedProjects;
+  const contentsList = _querySync ? suggestions : sortedContents;
 
   if (
     isLoading ||
@@ -186,7 +181,7 @@ export function ContentsList({ contentViewType }: { contentViewType: string }) {
     return <LottieLoadingAnimation />;
   }
 
-  if (contentViewType === "favourites" && sortedProjects?.length === 0) {
+  if (contentViewType === "favourites" && contentsList?.length === 0) {
     return <Nothing message={`Nothing favourited`} icon={Icons.content} />;
   }
 
@@ -244,9 +239,9 @@ export function ContentsList({ contentViewType }: { contentViewType: string }) {
         )}
       </div>
 
-      {!sortedProjects?.length ? (
+      {!contentsList?.length ? (
         <Nothing
-          message={`Nothing found for: ${query || selectedContent?.title || contentType}`}
+          message={`Nothing found for: ${debouncedQuery || selectedContent?.title || contentType}`}
           icon={Icons.content}
         />
       ) : (

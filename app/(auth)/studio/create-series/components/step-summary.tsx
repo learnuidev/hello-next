@@ -1,25 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Icons } from "@/components/ui/icons.v2";
+import { baseTopics, topicsList } from "@/domain/topic/topic.constants";
 import { TopicType } from "@/domain/topic/topic.types";
-
-const TOPIC_LABELS: Record<TopicType, string> = {
-  recommendation: "推荐",
-  storytelling: "故事",
-  news: "新闻",
-  "chinese-classics": "经典",
-  history: "历史",
-  technology: "科技",
-  science: "科学",
-  lifestyle: "生活",
-  travel: "旅行",
-  music: "音乐",
-  "personal-growth": "成长",
-  business: "商业",
-  politics: "政治",
-  innovation: "创新",
-  kids: "儿童",
-  sports: "运动",
-};
 
 interface StepSummaryProps {
   seriesData: {
@@ -33,6 +15,9 @@ interface StepSummaryProps {
 }
 
 export function StepSummary({ seriesData }: StepSummaryProps) {
+  const topicLabel = topicsList?.find(
+    (topic) => topic.type === seriesData.topicType,
+  );
   return (
     <div className="space-y-6">
       <div className="bg-gray-50 rounded-lg p-4 border border-gray-200 dark:bg-[rgb(11,12,13)] dark:border-gray-800">
@@ -87,8 +72,7 @@ export function StepSummary({ seriesData }: StepSummaryProps) {
                   variant="secondary"
                   className="text-sm bg-rose-50 text-rose-700 hover:bg-rose-100 dark:bg-rose-950/30 dark:text-rose-400"
                 >
-                  {TOPIC_LABELS[seriesData.topicType as TopicType] ||
-                    seriesData.topicType}
+                  {topicLabel?.title || seriesData.topicType}
                 </Badge>
               </div>
             </div>

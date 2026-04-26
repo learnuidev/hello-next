@@ -2,6 +2,7 @@ export type TopicType =
   | "recommendation"
   | "kids"
   | "storytelling"
+  | "novel"
   | "news"
   | "music"
   | "sports"

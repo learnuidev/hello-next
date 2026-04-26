@@ -3,58 +3,7 @@ import { Icons } from "@/components/ui/icons.v2";
 import { TopicType } from "@/domain/topic/topic.types";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-
-const TOPIC_TYPES: { value: TopicType; label: string; description: string }[] =
-  [
-    {
-      value: "recommendation",
-      label: "推荐",
-      description: "Recommendations and curated content",
-    },
-    {
-      value: "storytelling",
-      label: "故事",
-      description: "Stories and narratives",
-    },
-    { value: "news", label: "新闻", description: "News and current events" },
-    {
-      value: "chinese-classics",
-      label: "经典",
-      description: "Classical literature and texts",
-    },
-    { value: "history", label: "历史", description: "Historical content" },
-    {
-      value: "technology",
-      label: "科技",
-      description: "Technology and innovation",
-    },
-    { value: "science", label: "科学", description: "Science and nature" },
-    {
-      value: "lifestyle",
-      label: "生活",
-      description: "Lifestyle and daily life",
-    },
-    { value: "travel", label: "旅行", description: "Travel and exploration" },
-    { value: "music", label: "音乐", description: "Music and arts" },
-    {
-      value: "personal-growth",
-      label: "成长",
-      description: "Personal development",
-    },
-    {
-      value: "business",
-      label: "商业",
-      description: "Business and entrepreneurship",
-    },
-    { value: "politics", label: "政治", description: "Politics and society" },
-    {
-      value: "innovation",
-      label: "创新",
-      description: "Innovation and creativity",
-    },
-    { value: "kids", label: "儿童", description: "Content for children" },
-    { value: "sports", label: "运动", description: "Sports and fitness" },
-  ];
+import { baseTopics, topicsList } from "@/domain/topic/topic.constants";
 
 interface StepTopicTypeProps {
   value: string;
@@ -71,16 +20,16 @@ export function StepTopicType({ value, onChange, error }: StepTopicTypeProps) {
           <span className="text-rose-500 ml-1">*</span>
         </Label>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-          {TOPIC_TYPES.map((topic) => {
-            const isSelected = value === topic.value;
+          {topicsList.map((topic) => {
+            const isSelected = value === topic.type;
             return (
               <motion.button
-                key={topic.value}
+                key={topic.type}
                 onClick={() => {
                   if (isSelected) {
                     onChange("");
                   } else {
-                    onChange(topic.value);
+                    onChange(topic.type);
                   }
                 }}
                 whileHover={{ scale: 1.02 }}
@@ -89,10 +38,10 @@ export function StepTopicType({ value, onChange, error }: StepTopicTypeProps) {
                   "flex flex-col items-center justify-center p-4 rounded-lg border-2 cursor-pointer transition-all",
                   isSelected
                     ? "border-rose-500 bg-rose-50 text-rose-700 dark:bg-rose-950/20 dark:text-rose-400"
-                    : "border-gray-200 hover:border-rose-500 hover:bg-rose-50/50 dark:border-gray-800 dark:hover:border-rose-500 dark:hover:bg-rose-950/10"
+                    : "border-gray-200 hover:border-rose-500 hover:bg-rose-50/50 dark:border-gray-800 dark:hover:border-rose-500 dark:hover:bg-rose-950/10",
                 )}
               >
-                <span className="font-semibold text-lg">{topic.label}</span>
+                <span className="font-semibold text-lg">{topic.title}</span>
               </motion.button>
             );
           })}

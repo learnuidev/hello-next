@@ -28,7 +28,7 @@ export function MandarinoLoadingBanner({
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.6 }}
-        className="fixed inset-0 flex flex-col items-center justify-center  z-50"
+        className="fixed inset-0 flex flex-col items-center mt-48 sm:mt-0 sm:justify-center justify-start  z-50"
       >
         <motion.h1
           initial={{

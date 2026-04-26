@@ -31,7 +31,7 @@ export const listContents = async ({
   key,
   contentIds,
 }: {
-  key?: string;
+  key?: any;
   contentIds?: string[];
 }) => {
   const res = await fetchWithToken(listContentsApi, {

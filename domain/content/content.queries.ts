@@ -1,6 +1,6 @@
 "use client";
 
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { useCurrentAuthUser } from "../auth/auth.queries";
 import { getContent, IContent, listContents } from "./content.api";
@@ -50,6 +50,14 @@ export interface Content {
 }
 type ListContentsResponse = {
   items: Content[];
+  lastEvaulatedKey?: {
+    id: string;
+    userId: string;
+  };
+  lastEvaluatedKey?: {
+    id: string;
+    userId: string;
+  };
 };
 
 export const listContentsQueryKey = "list-my-contents";
@@ -87,6 +95,37 @@ export function useListContentsQuery(options = {} as any) {
     enabled: Boolean(authUser?.jwt),
     // enabled: Boolean(journeyId),
     cacheTime: 1000 * 60 * 300, // 30 minutes,
+    refetchOnWindowFocus: false,
+    refetchOnFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+  });
+}
+
+export function useInfiniteListContentsQuery(options = {} as any) {
+  const { data: authUser } = useCurrentAuthUser({});
+
+  return useInfiniteQuery<ListContentsResponse, Error>({
+    queryKey: [listContentsQueryKey, authUser?.jwt, "infinite"],
+    queryFn: async ({ pageParam }) => {
+      const response = await listContents({ key: pageParam });
+
+      const finalResponse = {
+        ...response,
+        items: response?.items?.sort(
+          (a: any, b: any) => b?.createdAt - a?.createdAt,
+        ),
+      };
+
+      return finalResponse;
+    },
+    initialPageParam: undefined,
+    getNextPageParam: (lastPage) => {
+      return lastPage?.lastEvaulatedKey || lastPage?.lastEvaluatedKey || undefined;
+    },
+    ...options,
+    enabled: Boolean(authUser?.jwt),
+    cacheTime: 1000 * 60 * 300,
     refetchOnWindowFocus: false,
     refetchOnFocus: false,
     refetchOnMount: false,

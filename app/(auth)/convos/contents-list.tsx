@@ -10,7 +10,10 @@ import { Nothing } from "@/app/nmm/nothing";
 
 import { useSearchQueryStore } from "@/components/search/state";
 import { Icons } from "@/components/ui/icons.v2";
-import { useListContentsQuery } from "@/domain/content/content.queries";
+import {
+  useListContentsQuery,
+  useInfiniteListContentsQuery,
+} from "@/domain/content/content.queries";
 import { motion } from "framer-motion";
 
 import { useLearningMode } from "@/components/settings-dialog/learning-mode.store";
@@ -33,6 +36,7 @@ import {
 } from "@/components/ui/select";
 import { defaultPic } from "@/data/default-image-urls";
 import { useSearchSuggestions } from "@/hooks/use-search-suggestions";
+import { Button } from "@/components/ui/button";
 
 type ContentType = {
   title: string;
@@ -47,13 +51,17 @@ type SortByType = "newest" | "oldest";
 
 export function ContentsList({ contentViewType }: { contentViewType: string }) {
   const { data: myContent, isLoading } = useListContentsQuery();
+  const {
+    data: myInfiniteContent,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteListContentsQuery();
   const { data, isLoading: isPublishedLoading } = useListPublishedContentsQuery(
     {},
   );
   const { data: favouriteContents, isLoading: isFavouriteContentLoading } =
     useListFavouriteContentsQuery({});
-
-  const { data: authUser } = useCurrentAuthUser();
 
   const { toast } = useToast();
   const toggleFavouritContentMutation = useToggleFavouriteContentMutation();
@@ -65,7 +73,6 @@ export function ContentsList({ contentViewType }: { contentViewType: string }) {
   const { contentViewType: contentType, setContentViewType } =
     useContentViewType();
 
-  // const query = useSearchQueryStore((state) => state.query2);
   const lang = useGetCurrentLang();
 
   const [sortBy, setSortBy] = useState<SortByType>("newest");
@@ -80,6 +87,11 @@ export function ContentsList({ contentViewType }: { contentViewType: string }) {
     debouncedQuery,
   } = useSearchSuggestions(_querySync);
 
+  const myContentItems = useMemo(() => {
+    if (!myInfiniteContent?.pages) return [];
+    return myInfiniteContent.pages.flatMap((page) => page.items || []);
+  }, [myInfiniteContent]);
+
   const contents =
     contentViewType === "history"
       ? recentlyWatched
@@ -87,7 +99,7 @@ export function ContentsList({ contentViewType }: { contentViewType: string }) {
         ? data?.items
         : contentViewType === "favourites"
           ? favouriteContents?.items
-          : myContent?.items;
+          : myContentItems;
 
   const searchTransacription = (content: ContentType, query: string) => {
     if (!content?.transcriptions?.length) {
@@ -172,12 +184,14 @@ export function ContentsList({ contentViewType }: { contentViewType: string }) {
 
   const contentsList = _querySync ? suggestions : sortedContents;
 
-  if (
+  const showLoading =
     isLoading ||
     isFavouriteContentLoading ||
     isPublishedLoading ||
-    isSearchLoading
-  ) {
+    isSearchLoading ||
+    (contentViewType === "me" && !myContentItems.length && !isFetchingNextPage);
+
+  if (showLoading) {
     return <LottieLoadingAnimation />;
   }
 
@@ -253,11 +267,8 @@ export function ContentsList({ contentViewType }: { contentViewType: string }) {
               );
 
               return (
-                <motion.div
-                  key={item.id || index}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.05 }}
+                <div
+                  key={item.id}
                   className="dark:hover:bg-[rgb(14,15,16)] dark:bg-[rgb(11,12,13)] hover:bg-gray-100 bg-gray-50 flex flex-col sm:flex-row shadow rounded-lg overflow-hidden"
                 >
                   <Link
@@ -346,10 +357,26 @@ export function ContentsList({ contentViewType }: { contentViewType: string }) {
                       </button>
                     </div>
                   </Link>
-                </motion.div>
+                </div>
               );
             })}
           </div>
+          {contentViewType === "me" && hasNextPage && (
+            <div className="flex justify-center py-4">
+              {isFetchingNextPage ? (
+                <LottieLoadingAnimation />
+              ) : (
+                <Button
+                  variant={"ghost"}
+                  onClick={() => fetchNextPage()}
+                  className="px-6 py-2   text-white rounded-lg transition-colors"
+                  disabled={isFetchingNextPage}
+                >
+                  Load More
+                </Button>
+              )}
+            </div>
+          )}
         </section>
       )}
     </div>

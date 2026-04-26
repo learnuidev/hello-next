@@ -55,29 +55,6 @@ export const SelectedCharacter = ({ characterId }: { characterId: string }) => {
 
   const { clozeContentMode } = useClozeContentMode();
 
-  if (searchParamView === "review") {
-    return (
-      <ReviewCloze
-        backButton={() => {
-          return (
-            <button
-              onClick={() => {
-                setView("overview");
-              }}
-            >
-              Back to overview
-            </button>
-          );
-        }}
-        currentCharacter={characterId}
-        lang={lang}
-        onClose={() => {
-          setView("overview");
-        }}
-      />
-    );
-  }
-
   switch (searchParamView) {
     case "review": {
       const isChinese = lang === "zh" && characterId?.length > 4;

@@ -15,7 +15,7 @@ export const baseTopics: Pick<
   { isVisible: true, type: "news", title: "新闻" },
   { isVisible: true, type: "music", title: "音乐" },
   { isVisible: false, type: "sports", title: "体育" },
-  { isVisible: true, type: "chinese-classics", title: "人文国学" },
+  { isVisible: false, type: "chinese-classics", title: "人文国学" },
   { isVisible: true, type: "history", title: "历史" },
   { isVisible: false, type: "technology", title: "科技" },
   { isVisible: false, type: "science", title: "科学" },
@@ -23,8 +23,8 @@ export const baseTopics: Pick<
   { isVisible: true, type: "travel", title: "旅行" },
   { isVisible: false, type: "business", title: "商业" },
   { isVisible: true, type: "innovation", title: "创新" },
-  { isVisible: true, type: "politics", title: "政治" },
-  { isVisible: true, type: "lifestyle", title: "情感生活" },
+  { isVisible: false, type: "politics", title: "政治" },
+  { isVisible: false, type: "lifestyle", title: "情感生活" },
 ];
 
 export const topicsList: TopicWithVisibility[] = baseTopics

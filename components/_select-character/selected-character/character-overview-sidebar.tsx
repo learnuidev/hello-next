@@ -70,7 +70,8 @@ export const CharacterOverviewViewSidebar = ({
   });
 
   const uniqueContentTitles = useMemo(() => {
-    const contentTitles = contentItems?.items.map((content) => content.title);
+    const contentTitles =
+      contentItems?.items.map((content) => content.title) || [];
 
     return [
       { title: "all" },

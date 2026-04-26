@@ -39,7 +39,7 @@ export const listContents = async ({
     body: JSON.stringify({
       key,
       contentIds,
-      limit: 10,
+      limit: 100,
     }),
   });
   const resp = (await res.json()) as any;

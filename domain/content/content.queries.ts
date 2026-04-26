@@ -1,6 +1,10 @@
 "use client";
 
-import { useInfiniteQuery, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 
 import { useCurrentAuthUser } from "../auth/auth.queries";
 import { getContent, IContent, listContents } from "./content.api";
@@ -62,20 +66,26 @@ type ListContentsResponse = {
 
 export const listContentsQueryKey = "list-my-contents";
 
-export const useGetListContentsQueryKey = () => {
+export const useGetListContentsQueryKey = (contentIds?: string[]) => {
   const { data: authUser } = useCurrentAuthUser({});
 
-  return [listContentsQueryKey, authUser?.jwt];
+  return [
+    listContentsQueryKey,
+    authUser?.jwt,
+    contentIds ? JSON.stringify(contentIds) : null,
+  ].filter(Boolean);
 };
 export function useListContentsQuery(options = {} as any) {
   const { data: authUser } = useCurrentAuthUser({});
 
-  const queryKey = useGetListContentsQueryKey();
+  const queryKey = useGetListContentsQueryKey(options?.contentIds);
 
   return useQuery<ListContentsResponse, Error>({
     queryKey: queryKey,
     queryFn: async () => {
-      const response = await listContents({});
+      const response = await listContents({
+        contentIds: options?.contentIds,
+      });
 
       const finalResponse = {
         ...response,
@@ -121,7 +131,9 @@ export function useInfiniteListContentsQuery(options = {} as any) {
     },
     initialPageParam: undefined,
     getNextPageParam: (lastPage) => {
-      return lastPage?.lastEvaulatedKey || lastPage?.lastEvaluatedKey || undefined;
+      return (
+        lastPage?.lastEvaulatedKey || lastPage?.lastEvaluatedKey || undefined
+      );
     },
     ...options,
     enabled: Boolean(authUser?.jwt),

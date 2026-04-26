@@ -58,20 +58,19 @@ export const CharacterOverviewViewSidebar = ({
 
   const items = useGetCharacterLearningContext({ lang, characterId });
 
-  const { data: contentItems } = useListContentsQuery({});
-
-  const uniqueContentTitles = useMemo(() => {
+  const uniqueIds = useMemo(() => {
     const contentIds = items
       ?.map((item: any) => item?.contentId)
       .filter(Boolean);
-    const uniqueIds = [...new Set(contentIds)] as string[];
+    return [...new Set(contentIds)] as string[];
+  }, [items]);
 
-    const contentTitles = uniqueIds.map((contentId) => {
-      const content = contentItems?.items?.find(
-        (c: any) => c?.id === contentId,
-      );
-      return content?.title || contentId;
-    });
+  const { data: contentItems } = useListContentsQuery({
+    contentIds: uniqueIds,
+  });
+
+  const uniqueContentTitles = useMemo(() => {
+    const contentTitles = contentItems?.items.map((content) => content.title);
 
     return [
       { title: "all" },

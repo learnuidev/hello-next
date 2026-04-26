@@ -7,15 +7,14 @@ import { ContentEpisode } from "@/domain/content-v2/content-v2.types";
 import { useGetSeriesDetailsQuery } from "@/domain/content-v2/use-get-series-details-query";
 import { useIsEnrolled } from "@/domain/enrollments";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 export function SeriesDetailsTabs({
   seriesId,
   className,
-  onEpisodeClick,
 }: {
   seriesId: string;
   className?: string;
-  onEpisodeClick?: (episodeId: string) => void;
 }) {
   const { data } = useGetSeriesDetailsQuery({
     seriesId,
@@ -70,14 +69,9 @@ export function SeriesDetailsTabs({
                   !isEnrolled && "opacity-60",
                 )}
               >
-                <div className="p-2">
+                <Link href={`/convos/${episode.id}`} className="p-2 block">
                   <div className="flex items-center gap-4">
                     <button
-                      onClick={() => {
-                        if (isEnrolled && onEpisodeClick) {
-                          onEpisodeClick(episode.id);
-                        }
-                      }}
                       disabled={!isEnrolled}
                       className={cn(
                         "flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200",
@@ -102,17 +96,10 @@ export function SeriesDetailsTabs({
                     </div>
 
                     {isEnrolled ? (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => {
-                          window.location.href = `/contents/${episode.id}`;
-                        }}
-                        className="flex items-center gap-1.5 text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-50 hover:bg-gray-100 dark:hover:bg-[rgb(31,33,35)] h-9 px-3"
-                      >
+                      <div className="flex items-center gap-1.5 text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-50 hover:bg-gray-100 dark:hover:bg-[rgb(31,33,35)] h-9 px-3">
                         <span>查看</span>
                         <Icons.front className="h-3.5 w-3.5" />
-                      </Button>
+                      </div>
                     ) : (
                       <div className="flex items-center gap-1.5 text-xs text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-[rgb(31,33,35)] px-3 py-2 rounded-md">
                         <Icons.lock className="h-3.5 w-3.5" />
@@ -120,7 +107,7 @@ export function SeriesDetailsTabs({
                       </div>
                     )}
                   </div>
-                </div>
+                </Link>
               </div>
             ))}
           </div>

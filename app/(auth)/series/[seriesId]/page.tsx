@@ -12,7 +12,7 @@ import {
   useDeleteEnrollmentMutation,
   useIsEnrolled,
 } from "@/domain/enrollments";
-import { SeriesPlayer } from "@/components/series-player";
+
 import Link from "next/link";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { SeriesDetailsTabs } from "./components/series-details-tabs";
@@ -38,7 +38,7 @@ export default function SeriesDetailsPage() {
 
   const { data: contentDetails } = useGetSeriesContentDetailsQuery(
     { contentId: contentId || "" },
-    { enabled: !!contentId }
+    { enabled: !!contentId },
   );
 
   const handleEnroll = async () => {
@@ -75,18 +75,6 @@ export default function SeriesDetailsPage() {
         variant: "destructive",
       });
     }
-  };
-
-  const handleEpisodeClick = (episodeId: string) => {
-    const newParams = new URLSearchParams(searchParams.toString());
-    newParams.set("contentId", episodeId);
-    router.push(`/series/${seriesId}?${newParams.toString()}`);
-  };
-
-  const handleClosePlayer = () => {
-    const newParams = new URLSearchParams(searchParams.toString());
-    newParams.delete("contentId");
-    router.push(`/series/${seriesId}?${newParams.toString()}`);
   };
 
   if (!data) {
@@ -157,16 +145,7 @@ export default function SeriesDetailsPage() {
         </div>
       </header>
 
-      <SeriesDetailsTabs
-        seriesId={seriesId}
-        onEpisodeClick={handleEpisodeClick}
-      />
-      {contentDetails && (
-        <SeriesPlayer
-          content={contentDetails.content}
-          onClose={handleClosePlayer}
-        />
-      )}
+      <SeriesDetailsTabs seriesId={seriesId} />
     </PageContainer>
   );
 }

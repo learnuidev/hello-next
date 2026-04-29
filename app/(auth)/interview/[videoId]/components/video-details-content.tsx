@@ -1,10 +1,11 @@
 "use client";
 
-import { useFormState, useFormStatus } from "react-dom";
-import { GridBankMediaContent } from "../../modules/media/media.types";
 import { Icons } from "@/components/ui/icons.v2";
-import { toggleBookmark } from "../../modules/media/media.actions";
+import { useActionState } from "react";
+import { useFormStatus } from "react-dom";
 import ReactPlayer from "react-player";
+import { toggleBookmark } from "../../modules/media/media.actions";
+import { GridBankMediaContent } from "../../modules/media/media.types";
 
 function BookmarkButton({ isBookmarked }: { isBookmarked: boolean }) {
   const { pending } = useFormStatus();
@@ -33,7 +34,7 @@ export function VideoDetailsContent({
 }: {
   content: GridBankMediaContent;
 }) {
-  const [state, formAction] = useFormState(toggleBookmark, null);
+  const [state, formAction] = useActionState(toggleBookmark, null);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 p-4 lg:p-8">

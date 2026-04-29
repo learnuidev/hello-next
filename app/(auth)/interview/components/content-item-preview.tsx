@@ -1,8 +1,8 @@
 import Image from "next/image";
 import { Icons } from "@/components/ui/icons.v2";
 import { GridBankMediaContent } from "../modules/media/media.types";
-import { useState, useRef, useEffect } from "react";
-import { useFormState } from "react-dom";
+import { useState, useRef, useEffect, useActionState } from "react";
+
 import { toggleBookmark } from "../modules/media/media.actions";
 import Link from "next/link";
 
@@ -13,7 +13,7 @@ interface ContentItemPreviewProps {
 export function ContentItemPreview({ content }: ContentItemPreviewProps) {
   const [isHovered, setIsHovered] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [state, formAction] = useFormState(toggleBookmark, null);
+  const [state, formAction] = useActionState(toggleBookmark, null);
 
   useEffect(() => {
     if (isHovered && videoRef.current) {

@@ -4,14 +4,14 @@ import { Authenticated } from "@/components/Authenticated";
 import { FloatingNavbar } from "@/components/floating-navbar";
 import { OverviewPage } from "./overview/overview-page";
 import { NewHomePage } from "@/components/new-home-page/new-home-page";
-import { useIsHomePageEnabled } from "@/libs/posthog/hooks/is-new-home-page-enabled";
+// import { useIsHomePageEnabled } from "@/libs/posthog/hooks/is-new-home-page-enabled";
 
 export default function Home() {
-  const isEnabled = useIsHomePageEnabled();
+  const isEnabled = true;
 
-  if (isEnabled === undefined) {
-    return;
-  }
+  // if (isEnabled === undefined) {
+  //   return;
+  // }
 
   return (
     <Authenticated>

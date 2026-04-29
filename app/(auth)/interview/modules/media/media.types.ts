@@ -4,12 +4,18 @@ export interface Creator {
   url_image: string | null;
   bio: string | null;
 }
+
+export enum GridBankMediaStatuses {
+  approved = "APPROVED",
+  pending = "PENDING",
+  rejected = "REJECTED",
+}
 export interface GridBankMediaContent {
   video_id: string;
   url_video_watermark: string;
   url_image_watermark: string;
   create_timestamp: number;
-  status: "APPROVED" | "PENDING" | "REJECTED"; // assuming common video statuses
+  status: GridBankMediaStatuses;
   is_featured: boolean;
   content_tier: number;
   title: string;

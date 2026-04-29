@@ -60,10 +60,7 @@ export function VideoDetailsContent({
                 <div className="relative">
                   <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full blur opacity-75 animate-pulse" />
                   <img
-                    src={
-                      content.creator.url_image ||
-                      "https://via.placeholder.com/80"
-                    }
+                    src={content.creator.url_image || ""}
                     alt={content.creator.username}
                     className="relative w-20 h-20 rounded-full object-cover border-4 border-white dark:border-gray-700 shadow-lg"
                   />
@@ -80,21 +77,23 @@ export function VideoDetailsContent({
                 </div>
               </div>
 
-              <div className="mb-6">
-                <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
-                  Location
-                </h3>
-                <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-                  <Icons.compass className="w-4 h-4" />
-                  <span className="font-medium">
-                    {[content.Municipality, content.Region]
-                      .filter(Boolean)
-                      .join(", ") || "Not specified"}
-                  </span>
+              {content.Municipality && (
+                <div>
+                  <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
+                    Location
+                  </h3>
+                  <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
+                    <Icons.compass className="w-4 h-4" />
+                    <span className="font-medium">
+                      {[content.Municipality, content.Region]
+                        .filter(Boolean)
+                        .join(", ") || "Not specified"}
+                    </span>
+                  </div>
                 </div>
-              </div>
+              )}
 
-              <div className="mb-6">
+              <div className="my-6">
                 <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
                   Tags
                 </h3>
@@ -124,9 +123,6 @@ export function VideoDetailsContent({
                     isBookmarked={!!(state?.bookmarked ?? content.bookmarked)}
                   />
                 </form>
-                <button className="flex-1 px-6 py-4 bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-600 text-gray-700 dark:text-white rounded-xl font-semibold hover:from-gray-200 hover:to-gray-300 dark:hover:from-gray-600 dark:hover:to-gray-500 transition-all duration-300 shadow-lg">
-                  Share
-                </button>
               </div>
 
               <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">

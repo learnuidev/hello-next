@@ -1,6 +1,10 @@
 import { z } from "zod";
 
-export const GridBankMediaStatuses = z.enum(["APPROVED", "PENDING", "REJECTED"]);
+export const GridBankMediaStatuses = z.enum([
+  "APPROVED",
+  "PENDING",
+  "REJECTED",
+]);
 
 export const CreatorSchema = z.object({
   creator_id: z.string(),

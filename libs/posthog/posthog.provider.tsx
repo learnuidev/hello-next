@@ -10,7 +10,7 @@ if (typeof window !== "undefined") {
   //   api_host: "https://app.posthog.com",
   // });
 
-  const resp = posthog.init(posthogConfig.apiKey, {
+  posthog.init(posthogConfig.apiKey, {
     api_host: posthogConfig.apiHost,
     capture_pageview: false, // Disable automatic pageview capture, as we capture manually
     autocapture: {

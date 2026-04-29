@@ -11,7 +11,7 @@ import { siteConfig } from "@/lib/config";
 
 async function parse(
   params: { content: string },
-  opts: { Authorization: string }
+  opts: { Authorization: string },
 ) {
   const res = await fetch(`${siteConfig.apiUrl}/v1/parse`, {
     method: "POST",
@@ -29,7 +29,7 @@ async function parse(
 
 export function useListParseQuery(
   params = {} as { content: string },
-  options = {} as any
+  options = {} as any,
 ) {
   const startTime = Date.now();
   const { data: authUser } = useCurrentAuthUser({});
@@ -45,12 +45,12 @@ export function useListParseQuery(
       const endTime = Date.now();
       const latency = endTime - startTime;
 
-      posthog.capture("search/latency", {
-        query: params?.content,
-        start_time: startTime,
-        end_time: endTime,
-        latency: latency,
-      });
+      // posthog.capture("search/latency", {
+      //   query: params?.content,
+      //   start_time: startTime,
+      //   end_time: endTime,
+      //   latency: latency,
+      // });
       return response;
     },
 

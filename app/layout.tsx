@@ -21,7 +21,7 @@ import { LanguageSelector } from "@/components/language-selector/language-select
 import { SearchDialog } from "@/components/search-dialog/search-dialog";
 import { SettingsDialog } from "@/components/settings-dialog/settings-dialog";
 import { ThemeProvider } from "@/components/theme-provider";
-import { PostHogPageView } from "@/libs/posthog/posthog.page-view";
+// import { PostHogPageView } from "@/libs/posthog/posthog.page-view";
 import { PostHogProvider } from "@/libs/posthog/posthog.provider";
 import { Suspense } from "react";
 
@@ -38,7 +38,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html>
+    <html suppressHydrationWarning>
       <head>
         {/* <Script
           src="https://datafa.st/js/script.js"
@@ -52,7 +52,7 @@ export default function RootLayout({
       <body className="dark:bg-[rgb(9,10,11)] bg-white text-black dark:text-white">
         <Suspense>
           <PostHogProvider>
-            <PostHogPageView />
+            {/* <PostHogPageView /> */}
             <ThemeProvider
               attribute="class"
               defaultTheme="system"

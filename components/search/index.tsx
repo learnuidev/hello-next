@@ -59,10 +59,10 @@ export function SearchPage() {
   // const queryResult = useSearchQueryStore((state) => state.queryResult) as any;
   // const setQueryResult = useSearchQueryStore((state) => state.setQueryResult);
   const nepaliQueryResult = useSearchQueryStore(
-    (state) => state.nepaliQueryResult
+    (state) => state.nepaliQueryResult,
   ) as any;
   const setNepaliQueryResult = useSearchQueryStore(
-    (state) => state.setNepaliQueryResult
+    (state) => state.setNepaliQueryResult,
   );
 
   const getTimeOfDay = (() => {
@@ -112,21 +112,13 @@ export function SearchPage() {
 
   const searchQuery = searchParams.get("query");
 
-  useEffect(() => {
-    if (searchQuery) {
-      posthog.capture("search/query", {
-        query: searchQuery,
-      });
-    }
-  }, [searchQuery]);
-
   const { data: queryResult } = useListParseQuery(
     {
       content: searchQuery || "",
     },
     {
       enabled: Boolean(searchQuery),
-    }
+    },
   ) as any;
 
   return (
@@ -241,7 +233,7 @@ export function SearchPage() {
                               <p>{example?.en}</p>
                             </div>
                           );
-                        }
+                        },
                       )}
                     </div>
                   </div>

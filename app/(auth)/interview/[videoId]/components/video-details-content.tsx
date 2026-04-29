@@ -1,11 +1,39 @@
-import { GridBankMediaContent } from "../modules/media/media.types";
+"use client";
+
+import { useFormState, useFormStatus } from "react-dom";
+import { GridBankMediaContent } from "../../modules/media/media.types";
 import { Icons } from "@/components/ui/icons.v2";
+import { toggleBookmark } from "../../modules/media/media.actions";
+
+function BookmarkButton({ isBookmarked }: { isBookmarked: boolean }) {
+  const { pending } = useFormStatus();
+
+  return (
+    <button
+      disabled={pending}
+      className={`flex-1 flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-semibold transition-all duration-300 shadow-lg ${
+        isBookmarked
+          ? "bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-pink-500/30 hover:scale-105"
+          : "bg-gray-900 dark:bg-white text-white dark:text-gray-900 hover:bg-gray-800 dark:hover:bg-gray-100"
+      } ${pending ? "opacity-50 cursor-not-allowed" : ""}`}
+    >
+      {isBookmarked ? (
+        <Icons.bookmarkSolid className="text-xl" />
+      ) : (
+        <Icons.bookmark className="text-xl" />
+      )}
+      <span>{isBookmarked ? "Bookmarked" : "Bookmark"}</span>
+    </button>
+  );
+}
 
 export function VideoDetailsContent({
   content,
 }: {
   content: GridBankMediaContent;
 }) {
+  const [state, formAction] = useFormState(toggleBookmark, null);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 p-4 lg:p-8">
       <div className="max-w-5xl mx-auto">
@@ -19,6 +47,9 @@ export function VideoDetailsContent({
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </div>
+            <h1 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-400 leading-tight">
+              {content.title}
+            </h1>
           </div>
 
           <div className="space-y-6 lg:sticky lg:top-8">
@@ -81,20 +112,16 @@ export function VideoDetailsContent({
               </div>
 
               <div className="flex gap-3">
-                <button
-                  className={`flex-1 flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-semibold transition-all duration-300 shadow-lg ${
-                    content.bookmarked
-                      ? "bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-pink-500/30 hover:scale-105"
-                      : "bg-gray-900 dark:bg-white text-white dark:text-gray-900 hover:bg-gray-800 dark:hover:bg-gray-100"
-                  }`}
-                >
-                  {content.bookmarked ? (
-                    <Icons.bookmarkSolid className="text-xl" />
-                  ) : (
-                    <Icons.bookmark className="text-xl" />
-                  )}
-                  <span>{content.bookmarked ? "Bookmarked" : "Bookmark"}</span>
-                </button>
+                <form action={formAction}>
+                  <input
+                    type="hidden"
+                    name="videoId"
+                    value={content.video_id}
+                  />
+                  <BookmarkButton
+                    isBookmarked={!!(state?.bookmarked ?? content.bookmarked)}
+                  />
+                </form>
                 <button className="flex-1 px-6 py-4 bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-600 text-gray-700 dark:text-white rounded-xl font-semibold hover:from-gray-200 hover:to-gray-300 dark:hover:from-gray-600 dark:hover:to-gray-500 transition-all duration-300 shadow-lg">
                   Share
                 </button>

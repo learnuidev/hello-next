@@ -1,5 +1,5 @@
 import { GridBankMediaContent } from "../modules/media/media.types";
-import { VideoDetailsContent } from "./VideoDetailsContent";
+import { VideoDetailsContent } from "./components/video-details-content";
 
 async function fetchContentDetails(
   videoId: string,

@@ -25,8 +25,7 @@ import { useEffect, useState, useRef } from "react";
 import { useGetContentId } from "./[content-id]/hooks/use-get-content-id";
 import { contentTypes } from "./constants/content-types";
 import { languages } from "@/app/next/features/phrase/languages";
-
-const IMAGE_FORMATS = ["jpg", "jpeg", "png", "gif", "webp"];
+import { IMAGE_FORMATS } from "@/components/_select-character/selected-character/character-content/image-formats";
 
 export const GeneralContentSettings = () => {
   const [contentType, setContentType] = useState("not-selected");

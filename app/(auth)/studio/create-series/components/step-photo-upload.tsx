@@ -10,6 +10,7 @@ import {
 } from "@/domain/file-upload/use-upload-file-v2";
 import { useListUserAssets } from "@/domain/asset/use-list-user-assets";
 import { useGetUserAssetQuery } from "@/app/(auth)/assets/[asset-id]/use-get-user-asset-query";
+import { IMAGE_FORMATS } from "@/components/_select-character/selected-character/character-content/image-formats";
 
 interface StepPhotoUploadProps {
   photoUrl: string;
@@ -29,12 +30,10 @@ export function StepPhotoUpload({
   const [selectedAssetId, setSelectedAssetId] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const imageFormats = ["jpg", "jpeg", "png", "gif", "webp"];
-
   const { onUploadFileChange, addUserAssetMutation } = useUploadFileV2(
     handleUploadSuccess,
     {},
-    { types: imageFormats },
+    { types: IMAGE_FORMATS },
   );
   const isUploading = addUserAssetMutation?.isPending ?? false;
 
@@ -42,7 +41,7 @@ export function StepPhotoUpload({
   const { data: selectedAsset } = useGetUserAssetQuery(selectedAssetId);
 
   const imageAssets =
-    userAssets?.filter((asset) => imageFormats.includes(asset.contentType)) ||
+    userAssets?.filter((asset) => IMAGE_FORMATS.includes(asset.contentType)) ||
     [];
 
   function handleUploadSuccess(resp: UploadFileResponse) {

@@ -1,5 +1,6 @@
+import { IMAGE_FORMATS } from "@/components/_select-character/selected-character/character-content/image-formats";
 import { useNewConvoStore } from "@/components/step";
-import { useListUserAssets } from "@/domain/asset/use-list-user-assets";
+import { Icons } from "@/components/ui/icons.v2";
 import {
   Select,
   SelectContent,
@@ -7,14 +8,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { UploadFileButton } from "@/domain/file-upload/upload-file-button";
+import { useListUserAssets } from "@/domain/asset/use-list-user-assets";
 import { UploadFileResponse } from "@/domain/file-upload/use-upload-file";
-import { Icons } from "@/components/ui/icons.v2";
+import { useUploadFileV2 } from "@/domain/file-upload/use-upload-file-v2";
 import { cn } from "@/lib/utils";
 import { useRef, useState } from "react";
-import { useUploadFileV2 } from "@/domain/file-upload/use-upload-file-v2";
-
-const IMAGE_FORMATS = ["jpg", "jpeg", "png", "gif", "webp"];
 
 export const BackgroundImageSelector = () => {
   const setConvo = useNewConvoStore((state) => state.setConvo);

@@ -1,17 +1,16 @@
 "use client";
 
+import { Nothing } from "@/app/nmm/nothing";
 import { NavBar } from "@/components/navbar";
+import { useSearchQueryStore } from "@/components/search/state";
+import { Icons } from "@/components/ui/icons.v2";
 import { useListUserAssets } from "@/domain/asset/use-list-user-assets";
+import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
 import { UploadFileButton } from "@/domain/file-upload/upload-file-button";
 import { cn } from "@/lib/utils";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMemo } from "react";
 import { useDeleteUserAssetMutation } from "./use-delete-user-asset-mutation";
-import { useSearchQueryStore } from "@/components/search/state";
-import { Nothing } from "@/app/nmm/nothing";
-import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
-import { Icons } from "@/components/ui/icons.v2";
-import { imageFormats } from "@/components/_select-character/selected-character/character-content/image-formats";
 
 export default function Assets() {
   const { data: userAssets, isError } = useListUserAssets();
@@ -76,7 +75,7 @@ export default function Assets() {
                     "border-[1px] px-3 rounded-full text-xs py-[2px] border-gray-400 text-gray-400 transition-all dark:hover:text-white dark:hover:border-white hover:text-black hover:border-black",
                     assetType === assetTypeSearchParam
                       ? "dark:text-white dark:border-white text-gray-800 border-gray-800"
-                      : "dark:text-gray-600 dark:border-gray-600 text-gray-300 border-gray-300"
+                      : "dark:text-gray-600 dark:border-gray-600 text-gray-300 border-gray-300",
                   )}
                 >
                   {assetType}

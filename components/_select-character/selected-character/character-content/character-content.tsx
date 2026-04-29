@@ -6,7 +6,7 @@ import { useListCharacterContentsQuery } from "@/domain/character-contents/use-l
 import { UploadFileButton } from "@/domain/file-upload/upload-file-button";
 import Link from "next/link";
 import { useState } from "react";
-import { imageFormats } from "./image-formats";
+import { IMAGE_FORMATS } from "./image-formats";
 
 function ImageItem({ item }: any) {
   const [showMeta, setShowMetaData] = useState(false);
@@ -67,7 +67,7 @@ export const CharacterContent = ({ characterId }: { characterId: string }) => {
               ...resp,
             });
           }}
-          types={imageFormats}
+          types={IMAGE_FORMATS}
         />
 
         {isSuperAdmin && (
@@ -90,7 +90,7 @@ export const CharacterContent = ({ characterId }: { characterId: string }) => {
       ) : (
         <section className="grid grid-cols-4 py-10 md:py-20 gap-4">
           {data?.map((item: any) => {
-            if (imageFormats?.includes(item?.extension)) {
+            if (IMAGE_FORMATS.includes(item?.extension)) {
               return <ImageItem item={item} key={item.id} />;
             }
           })}

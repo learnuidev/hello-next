@@ -44,7 +44,7 @@ export default function InterviewPage() {
   };
 
   return (
-    <div className="max-w-9xl mx-auto">
+    <div className="max-w-7xl mx-auto">
       <header className="p-4">
         <h1 className="font-light text-2xl">Grid Bank</h1>
       </header>
@@ -59,7 +59,7 @@ export default function InterviewPage() {
             <p>Failed Loading Images</p>
           </div>
         ) : (
-          <section className="grid grid-cols-1 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 p-4">
+          <section className="grid grid-cols-1 gap-12 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 p-4">
             {gridBankAssets?.map((asset) => {
               return (
                 <ContentItemPreview

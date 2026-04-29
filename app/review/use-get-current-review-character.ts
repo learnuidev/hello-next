@@ -219,8 +219,6 @@ export const useGetCurrentReviewCharacter = () => {
     [currentCharacter?.lang, currentComponent?.lang],
   );
 
-  console.log("CURR CHAR", currentCharacter);
-
   return {
     currentCharacter,
     hasReviewedAll,

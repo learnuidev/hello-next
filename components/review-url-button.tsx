@@ -20,7 +20,7 @@ export const ReviewUrlButton = ({
   children?: React.ReactNode;
 }) => {
   const routeName = usePathname();
-  const reviewUrl = useGetReviewUrl();
+  const reviewUrl = useGetReviewUrl({ contentId });
 
   const { reviewMode: _reviewMode } = useReviewModeView();
 

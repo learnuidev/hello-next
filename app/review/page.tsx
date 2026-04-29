@@ -68,23 +68,17 @@ function ReviewMode() {
   } = useGetCurrentReviewCharacter();
 
   const router = useRouter();
-  const { setPreviousPath, previousPath } = usePreviousPathnameStore();
+  const { previousPath } = usePreviousPathnameStore();
 
   const { reviewMode } = useReviewModeView();
-  const { mode, level, entryId } = useGetReviewParams();
-
-  const isContent = useIsContent(mode);
+  const { mode } = useGetReviewParams();
 
   const { clozeContentMode } = useClozeContentMode();
-
-  console.log("REVIVE MODE", reviewMode);
-  console.log("CLOZE CONTENT MODE", clozeContentMode);
 
   if (reviewMode === "cloze") {
     if (clozeContentMode === "content") {
       return (
         <ReviewClozeContent
-          // contentId={mode}
           isLoading={isReviewCharactersLoading}
           currentCharacter={currentCharacter?.hanzi}
           lang={lang}

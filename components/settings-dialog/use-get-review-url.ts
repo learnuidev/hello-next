@@ -16,6 +16,7 @@ export const getReviewSearchParams = ({
   input,
   reviewSpeed,
   reviewMode,
+  contentId,
 }: any) => {
   return getReviewUrl({
     mode,
@@ -27,14 +28,17 @@ export const getReviewSearchParams = ({
     input,
     reviewSpeed,
     reviewMode,
+    contentId,
   });
 };
 
-export const useGetReviewUrl = ({ reviewMode } = {} as any) => {
+export const useGetReviewUrl = (
+  { reviewMode, contentId: _contentId } = {} as any,
+) => {
   const { mode } = useLearningMode();
 
   const params = useParams();
-  const contentId = params["content-id"];
+  const contentId = _contentId || params["content-id"];
 
   const { entryId } = useDiaryParams();
 
@@ -46,6 +50,7 @@ export const useGetReviewUrl = ({ reviewMode } = {} as any) => {
     mode: recentlyWatched?.[0]?.id || contentId || mode,
     entryId,
     level,
+    contentId,
 
     reviewSpeed,
     reviewMode,
@@ -83,6 +88,7 @@ export const useGetReviewUrlFn = () => {
 export const getReviewUrl = ({
   mode,
   character,
+  contentId,
   entryId,
   level,
   studyMode,
@@ -116,6 +122,10 @@ export const getReviewUrl = ({
     if (mode) {
       urlSearchParams.set("mode", mode);
     }
+  }
+
+  if (contentId) {
+    urlSearchParams.set("mode", contentId);
   }
 
   if (studyMode) {

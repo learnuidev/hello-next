@@ -147,11 +147,6 @@ export const SentenceItem = (props: any) => {
             <Icons.magnifyingGlass />
           </Link>
 
-          <GoogleTranslateLink
-            hanzi={unEncoded}
-            className={"h-6 w-6 text-xs"}
-          />
-
           {isSuperAdmin && currentPhrase?.id && !currentPhrase?.contentId && (
             <button
               disabled={

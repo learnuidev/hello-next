@@ -1,21 +1,20 @@
 "use client";
 
+import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { ContentItemPreview } from "./components/content-item-preview";
+import { ContentsList } from "./components/contents-list";
 import { listGridBankMediaContent } from "./modules/media/media.api";
 import { GridBankMediaContent } from "./modules/media/media.types";
-import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
-import { withTimeout } from "./utils/with-timeout";
 
 export default function InterviewPage() {
   const {
-    data: gridBankAssets,
+    data: gridBankContents,
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["list-grid-bank-assets"],
+    queryKey: ["list-grid-bank-contents"],
     queryFn: () => {
-      return withTimeout(listGridBankMediaContent(), 3000);
+      return listGridBankMediaContent();
     },
     retry: false,
     refetchOnWindowFocus: false,
@@ -27,7 +26,7 @@ export default function InterviewPage() {
 
   const toggleBookMark = (videoId: string) => {
     queryClient.setQueryData(
-      ["list-grid-bank-assets"],
+      ["list-grid-bank-contents"],
       (prevData: GridBankMediaContent[]) => {
         return prevData.map((item) => {
           if (item.video_id === videoId) {
@@ -59,17 +58,7 @@ export default function InterviewPage() {
             <p>Failed Loading Images</p>
           </div>
         ) : (
-          <section className="grid grid-cols-1 gap-12 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 p-4">
-            {gridBankAssets?.map((asset) => {
-              return (
-                <ContentItemPreview
-                  key={asset.video_id}
-                  asset={asset}
-                  onToggleBookmark={toggleBookMark}
-                />
-              );
-            })}
-          </section>
+          <ContentsList gridBankContents={gridBankContents || []} />
         )}
       </main>
     </div>

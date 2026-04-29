@@ -1,0 +1,1474 @@
+{
+  "(auth)_apps_page": {
+    "h1": "Apps"
+  },
+  "(auth)_assets_[asset_id]_page": {
+    "h1": "Assets"
+  },
+  "(auth)_assets_page": {
+    "h1": "Assets"
+  },
+  "(auth)_checkout_success_page": {
+    "h1": "Success",
+    "p": "Checkout ID:"
+  },
+  "(auth)_collections_page": {
+    "p": "Create your first collection above",
+    "span": "Collections",
+    "h1": "Collections",
+    "input_placeholder": "New collection..."
+  },
+  "(auth)_contents_[contentId]_page": {
+    "link": "Back"
+  },
+  "(auth)_convos_[content_id]_content_item_v2_components_audio_player_audio_player": {
+    "button": "A",
+    "button_1": "A",
+    "dropdownmenuitem": "Karaoke View",
+    "dropdownmenuitem_1": "Paragraph View",
+    "dropdownmenuitem_2": "Show Video",
+    "dropdownmenuitem_3": "Hide Video",
+    "h4": "Sentence meaning",
+    "h4_1": "Word meaning",
+    "p": "汉语水平"
+  },
+  "(auth)_convos_[content_id]_convo_header": {
+    "span": "|"
+  },
+  "(auth)_convos_[content_id]_convo_viewtype": {
+    "p": ":"
+  },
+  "(auth)_convos_[content_id]_dyna_cloze_dyna_cloze": {
+    "h1": "dynacloze"
+  },
+  "(auth)_convos_[content_id]_dyna_cloze_dyna_selector": {
+    "h1": "Select one of the following",
+    "button": "Dynacloze",
+    "reviewurlbutton": "DynaclozeR"
+  },
+  "(auth)_convos_[content_id]_page": {
+    "link": "Back"
+  },
+  "(auth)_convos_[content_id]_speak_speak_sentence": {
+    "h2": "Please repeat the following sentence in",
+    "span": "汉子"
+  },
+  "(auth)_convos_[content_id]_speak_speak": {
+    "h2": "Please repeat the following sentence in",
+    "span": "汉子",
+    "div": "/"
+  },
+  "(auth)_convos__play_transcript_item": {
+    "button": "Set Start",
+    "button_1": "Set End"
+  },
+  "(auth)_convos__play_v2_play_v2": {
+    "button": "Reset",
+    "button_1": "Save"
+  },
+  "(auth)_convos_audiobook_player_audiobook_player.core": {
+    "p": "Click here to play"
+  },
+  "(auth)_convos_audiobook_player_components_all_transcriptions_editor": {
+    "button": "Cancel",
+    "button_1": "Download",
+    "label": "Upload",
+    "input_placeholder": "Search transcriptions (input, English, pinyin, hanzi, etc.)",
+    "div": "Showing",
+    "div_1": "of",
+    "div_2": "transcriptions",
+    "label_1": "Start",
+    "button_2_title": "Set to current time",
+    "button_3": "Now",
+    "label_2": "End",
+    "button_4_title": "Set to current time",
+    "button_5": "Now",
+    "button_6_title": "Play from this time",
+    "button_7": "Play",
+    "span": "-",
+    "button_8": "(",
+    "button_9": ")",
+    "label_3": "Word",
+    "label_4": "Start",
+    "label_5": "End",
+    "button_10_title": "Add word before",
+    "button_11": "+ Before",
+    "button_12_title": "Add word after",
+    "button_13": "+ After",
+    "button_14_title": "Delete word",
+    "button_15": "Delete",
+    "button_16": "+ Add Word",
+    "button_17_title": "Add new transcription before",
+    "button_18": "+ Before",
+    "button_19_title": "Add new transcription after",
+    "button_20": "+ After",
+    "button_21_title": "Split at midpoint",
+    "button_22": "Split",
+    "button_23_title": "Merge with transcription above",
+    "button_24": "Merge Up",
+    "button_25_title": "Merge with transcription below",
+    "button_26": "Merge Down",
+    "button_27_title": "Delete this transcription",
+    "button_28": "Delete",
+    "button_29": "Settings",
+    "button_30": "Suggestions",
+    "label_6": "Smart Set",
+    "p": "Automatically set adjacent transcriptions start/end times",
+    "label_7": "Auto Scroll",
+    "p_1": "Automatically scroll to the current transcription while\n                    playing",
+    "label_8": "View Mode",
+    "p_2": "Choose how transcriptions are displayed",
+    "button_31": "Current",
+    "button_32": "All",
+    "p_3": "transcription",
+    "p_4": "need\n                      attention",
+    "div_3": "-",
+    "div_4": "Missing",
+    "div_5": "✓",
+    "p_5": "All good",
+    "p_6": "All transcriptions have valid time ranges"
+  },
+  "(auth)_convos_audiobook_player_components_audiobook_settings_popover": {
+    "h4": "Player Settings",
+    "label": "T. Size",
+    "label_1": "PERC",
+    "label_2": "View Type",
+    "label_3": "Show",
+    "label_4": "FSM",
+    "label_5": "Meta View",
+    "label_6": "Font Size",
+    "label_7": "Edit Transcriptions"
+  },
+  "(auth)_convos_audiobook_player_components_character_menu_bar": {
+    "span": "Play from here",
+    "span_1": "Play from here"
+  },
+  "(auth)_convos_audiobook_player_components_current_transcription_editor": {
+    "button": "Cancel",
+    "button_1": "Save"
+  },
+  "(auth)_convos_audiobook_player_components_font_size_controls": {
+    "button_aria_label": "Decrease font size",
+    "button_1": "A",
+    "span": "|",
+    "button_2_aria_label": "Increase font size",
+    "button_3": "A"
+  },
+  "(auth)_convos_audiobook_player_components_mini_dictionary": {
+    "span": "mentions",
+    "tabstrigger": "Mentions",
+    "tabstrigger_1": "Example Sentences",
+    "button_title": "Play from this time",
+    "p": "No mentions in this content",
+    "p_1": "No example sentences available",
+    "button_1": "See Less",
+    "button_2": "See More"
+  },
+  "(auth)_convos_content_settings": {
+    "h3": "Settings",
+    "tabstrigger": "General Info",
+    "tabstrigger_1": "Transcriptions"
+  },
+  "(auth)_convos_content_transcription_settings": {
+    "label": "Regenerate all translations for this content.",
+    "p": "This will re-process all transcriptions and regenerate their\n        translations. This action cannot be undone."
+  },
+  "(auth)_convos_contents_list": {
+    "selectvalue_placeholder": "排序",
+    "selectitem": "最新",
+    "selectitem_1": "最早",
+    "selectvalue_1_placeholder": "类型",
+    "selectitem_2": "所有类型",
+    "selectvalue_2_placeholder": "按作者筛选",
+    "selectitem_3": "所有作者",
+    "span": "•",
+    "button": "Load More"
+  },
+  "(auth)_convos_convo_details": {
+    "div": "Learn"
+  },
+  "(auth)_convos_convo_insights_convo_context_dialog": {
+    "link": "Selected:"
+  },
+  "(auth)_convos_convo_insights_convo_insights_frequency_filter": {
+    "selectvalue_placeholder": "频率排序",
+    "selectitem": "默认",
+    "selectitem_1": "从高到低",
+    "selectitem_2": "从低到高"
+  },
+  "(auth)_convos_convo_insights_convo_insights_header": {
+    "span": "total chars",
+    "span_1": "new chars"
+  },
+  "(auth)_convos_convo_insights_convo_insights_hsk_level_filter": {
+    "selectvalue_placeholder": "HSK等级",
+    "selectitem": "全部",
+    "selectitem_1": "汉语水平",
+    "selectitem_2": "非汉语水平"
+  },
+  "(auth)_convos_convo_insights_convo_insights_learn_status_filter": {
+    "selectvalue_placeholder": "学习状态",
+    "selectitem": "全部",
+    "selectitem_1": "未学",
+    "selectitem_2": "已学",
+    "selectitem_3": "掌握"
+  },
+  "(auth)_convos_convo_insights_convo_insights_search": {
+    "input_placeholder": "搜索..."
+  },
+  "(auth)_convos_convo_insights_convo_insights_table": {
+    "p": "学习",
+    "p_1": "取消掌握",
+    "span": "⇅"
+  },
+  "(auth)_convos_convo_insights_convo_insights_unknown_table": {
+    "span": "⇅"
+  },
+  "(auth)_convos_convo_insights_convo_insights_view_toggle": {
+    "button_aria_label": "Grid view",
+    "button_1_aria_label": "List view"
+  },
+  "(auth)_convos_convo_insights_convo_insights_word_table": {
+    "span": "⇅"
+  },
+  "(auth)_convos_convo_insights_convo_insights": {
+    "p": "句子功能即将推出..."
+  },
+  "(auth)_convos_convo_insights_total_plays_chart": {
+    "h3": "Repeat History"
+  },
+  "(auth)_convos_diary_insights": {
+    "div": "...",
+    "span": "total chars",
+    "span_1": "new chars",
+    "span_2": "learned"
+  },
+  "(auth)_convos_general_content_settings": {
+    "label": "Content Name",
+    "input_placeholder": "Content title",
+    "label_1": "Description",
+    "textarea_placeholder": "Content description",
+    "label_2": "Language",
+    "selectvalue_placeholder": "Select language",
+    "label_3": "Content Type",
+    "selectvalue_1_placeholder": "Select content type",
+    "selectitem": "Not Selected",
+    "label_4": "Background Image",
+    "img_alt": "Background",
+    "button": "Select Different",
+    "button_1": "Upload New",
+    "button_2": "Remove",
+    "tabstrigger": "Upload New",
+    "tabstrigger_1": "Select from Assets",
+    "p": "Uploading...",
+    "p_1": "PNG, JPG or GIF (max 5MB)",
+    "p_2": "No images available",
+    "p_3": "Upload a new image to get started",
+    "button_3": "Delete"
+  },
+  "(auth)_convos_interactive_content_player": {
+    "button_aria_label": "Rewind 10 seconds",
+    "button_1_aria_label": "Forward 10 seconds"
+  },
+  "(auth)_convos_new_content_v2_bilibili_flow_bilibili_flow": {
+    "div": "Bilibili Flow"
+  },
+  "(auth)_convos_new_content_v2_components_add_content_button": {
+    "button": "Add Content"
+  },
+  "(auth)_convos_new_content_v2_components_background_image_selector": {
+    "div": "Background Image (optional)",
+    "img_alt": "Background",
+    "button": "Remove",
+    "p": "Uploading...",
+    "p_1": "PNG, JPG or GIF (max 5MB)",
+    "span": "Or select from uploaded images",
+    "selectvalue_placeholder": "Choose from your uploads...",
+    "span_1": "·"
+  },
+  "(auth)_convos_new_content_v2_components_content_title_input": {
+    "label": "Content Title",
+    "input_placeholder": "Content Title"
+  },
+  "(auth)_convos_new_content_v2_components_content_type_selector": {
+    "label": "Content Type",
+    "selectvalue_placeholder": "Select content type",
+    "selectitem": "Not Selected"
+  },
+  "(auth)_convos_new_content_v2_components_transcriptions_input": {
+    "span": "Add subtitles text",
+    "p": "or",
+    "span_1": "Upload subtitles"
+  },
+  "(auth)_convos_new_content_v2_components_user_asset_selector": {
+    "div": "Select from Uploaded Files",
+    "div_1": "Loading...",
+    "span": "Select from Uploaded Files",
+    "selectvalue_placeholder": "Choose from your uploads...",
+    "span_1": "·"
+  },
+  "(auth)_convos_new_content_v2_new_content_v2": {
+    "h1": "New Content",
+    "span": "Preview"
+  },
+  "(auth)_convos_new_content_v2_video_flow_video_flow": {
+    "uploadfilebutton": "Add Video"
+  },
+  "(auth)_convos_new_content_v2_youtube_flow_components_youtube_input": {
+    "label": "Youtube Url",
+    "input_placeholder": "Youtube URL or ID"
+  },
+  "(auth)_convos_new_convo_new_convo_input": {
+    "label": "Add text here"
+  },
+  "(auth)_convos_play_v3_play_v3": {
+    "link": "Courses",
+    "subtitleinputeditor_title": "input",
+    "subtitleinputeditor_1_title": "pinyin",
+    "subtitleinputeditor_2_title": "English"
+  },
+  "(auth)_convos_play_v3_player_settings": {
+    "button": "A",
+    "button_1": "A",
+    "div": "P",
+    "div_1": "P"
+  },
+  "(auth)_convos_play_v3_transcriptions_view": {
+    "p": "pinyin",
+    "p_1": "roman",
+    "subtitleinputeditor_title": "hanzi",
+    "subtitleinputeditor_1_title": "input",
+    "button": "Set Start",
+    "button_1": "Set End"
+  },
+  "(auth)_courses_page": {
+    "button": "汉语水平"
+  },
+  "(auth)_diary_components_add_entry": {
+    "span": "Words:",
+    "span_1": "/",
+    "textarea_placeholder": "Type your thoughts here...",
+    "textarea_1_placeholder": "Type your thoughts here..."
+  },
+  "(auth)_diary_page": {
+    "span": "Add",
+    "link": "Clear"
+  },
+  "(auth)_diary_v2_components_CorrectionItem": {
+    "span": "!"
+  },
+  "(auth)_diary_v2_components_CorrectionPanelContent": {
+    "button": "Apply All (",
+    "button_1": ")",
+    "button_2": "Reject All",
+    "span": "Checking for corrections...",
+    "span_1": "Unable to analyze",
+    "span_2": "Using cached results",
+    "p": "No pending suggestions",
+    "p_1": "Keep writing or check applied/denied tabs",
+    "p_2": "No",
+    "p_3": "corrections",
+    "p_4": "Switch to another tab to see more",
+    "span_3": "!",
+    "p_5": "+",
+    "p_6": "more",
+    "p_7": "Start writing",
+    "p_8": "Your corrections will appear here",
+    "p_9": "Perfect!",
+    "p_10": "No corrections needed"
+  },
+  "(auth)_diary_v2_components_CorrectionPanelHeader": {
+    "button_title": "Settings"
+  },
+  "(auth)_diary_v2_components_SettingsPanel": {
+    "label": "Source Language",
+    "label_1": "Target Language",
+    "p": "These settings control the language pairs used for text corrections.\n            Changes will apply to new corrections."
+  },
+  "(auth)_diary_v2_page": {
+    "h1": "the diary",
+    "editorcontent_placeholder": "Record something"
+  },
+  "(auth)_enrollments_page": {
+    "p": "Failed to load enrollments",
+    "h1": "My Enrollments",
+    "p_1": "You are not enrolled in any series yet.",
+    "h1_1": "My Enrollments",
+    "div": "Enrolled:"
+  },
+  "(auth)_insights_InsightsFilters": {
+    "button": "Prev",
+    "button_1": "Next"
+  },
+  "(auth)_insights_InsightsHeader": {
+    "cardtitle": "Listening",
+    "div": "1577",
+    "span": "+",
+    "p": "+20.1% from last month",
+    "cardtitle_1": "Writing",
+    "div_1": "433",
+    "span_1": "+",
+    "p_1": "+180.1% from last month",
+    "cardtitle_2": "Characters Discovered",
+    "span_2": "+",
+    "p_2": "+19% from last month",
+    "cardtitle_3": "Characters Learned",
+    "span_3": "+12",
+    "p_3": "+201 since last week"
+  },
+  "(auth)_insights_insights_v2_overview_insight_view_overview_insight_view": {
+    "h1": "Insights"
+  },
+  "(auth)_insights_insights_v2_overview_insight_view_top_eight_languages": {
+    "p": "Top words learned by language"
+  },
+  "(auth)_insights_insights_v2_precision_insight_view_character_search_result": {
+    "div": "尝试"
+  },
+  "(auth)_insights_insights_v2_precision_insight_view_no_result_view": {
+    "h1": "Nothing here",
+    "p": "Please try a different term and try again"
+  },
+  "(auth)_insights_insights_v2_precision_insight_view_precision_insight_view": {
+    "h1": "Precision"
+  },
+  "(auth)_insights_insights_v2_precision_insight_view_search_history_result": {
+    "p": "You searched for this query",
+    "p_1": "learning"
+  },
+  "(auth)_insights_insights_v2_precision_insight_view_top_ten_incorrect_components": {
+    "p": "Top Incorrect Characters",
+    "span": "(",
+    "span_1": ")"
+  },
+  "(auth)_insights_insights_v2_precision_insight_view_top_ten_recently_learned_components": {
+    "p": "Recently Learned Characters",
+    "span": "(",
+    "span_1": ")"
+  },
+  "(auth)_insights_insights_v2_precision_insight_view_top_ten_recently_reviewed_components": {
+    "p": "Recently Reviewed Characters",
+    "span": "(",
+    "span_1": ")"
+  },
+  "(auth)_insights_insights_v2_precision_insight_view_word_search_result": {
+    "span": "非汉语水平",
+    "span_1": "汉语水平"
+  },
+  "(auth)_insights_insights_v2_progress_insight_view_progress_insight_view": {
+    "h1": "Progress"
+  },
+  "(auth)_insights_insights_v3_character_discover_area_chart_v2": {
+    "selectvalue_placeholder": "Select metric",
+    "selectitem": "Characters Learned",
+    "selectitem_1": "Characters Reviewed"
+  },
+  "(auth)_insights_insights_v3_components_hsk_progress_chart": {
+    "p": "%"
+  },
+  "(auth)_insights_insights_v3_components_top_ten_incorrect_characters_chart": {
+    "span": "incorrect rate",
+    "p": "%"
+  },
+  "(auth)_insights_page": {
+    "tabstrigger": "Overview",
+    "tabstrigger_1": "Characters"
+  },
+  "(auth)_onboarding_page": {
+    "steptitle": "Current Language",
+    "stepinput_placeholder": "your current language",
+    "steptitle_1": "Target Language",
+    "stepinput_1_placeholder": "your target language",
+    "steptitle_2": "Current Interests",
+    "stepinput_2_placeholder": "your interests",
+    "steptitle_3": "Current Interests",
+    "button": "Confirm"
+  },
+  "(auth)_plans_components_with_user_plan_onboarding": {
+    "h1": "You dont have a plan.",
+    "p": "Please",
+    "link": "Upgrade",
+    "p_1": "to continue.",
+    "h1_1": "Your plan has expired.",
+    "p_2": "Please click here to",
+    "link_1": "Upgrade"
+  },
+  "(auth)_plans_pricing_section": {
+    "h1": "Choose Your Plan",
+    "p": "Get started with Mandarino today. Choose the plan that works best\n            for you.",
+    "carddescription": "Perfect for getting started and trying out our platform",
+    "span": "$0",
+    "span_1": "/month",
+    "span_2": "1 month free trial",
+    "span_3": "Basic features included",
+    "span_4": "Community support",
+    "span_5": "Up to 3 projects",
+    "button": "Selected",
+    "link": "Get Started Free",
+    "badge": "Most Popular",
+    "carddescription_1": "Pay once, yours forever",
+    "span_6": "one-time",
+    "span_7": "Everything in Free plan",
+    "span_8": "Unlimited projects",
+    "span_9": "Priority support",
+    "span_10": "Advanced analytics",
+    "span_11": "Custom integrations",
+    "span_12": "Lifetime updates",
+    "button_1": "Selected",
+    "link_1": "Get Pro Access",
+    "button_2": "Contact Sales"
+  },
+  "(auth)_series_[seriesId]_components_series_details_tabs": {
+    "h2": "集",
+    "p": "暂无内容",
+    "span": "查看",
+    "span_1": "订阅后访问"
+  },
+  "(auth)_series_[seriesId]_page": {
+    "button": "Enrolled",
+    "button_1": "Enroll"
+  },
+  "(auth)_studio_components_content_management": {
+    "h2": "内容",
+    "p": "管理您的内容库",
+    "button": "添加内容",
+    "dialogtitle": "添加内容到系列",
+    "dialogdescription": "添加新内容到现有系列",
+    "label": "Title *",
+    "input_placeholder": "Enter content title",
+    "label_1": "Format *",
+    "selectvalue_placeholder": "Select content format",
+    "label_2": "Media URL *",
+    "input_1_placeholder": "Enter media URL",
+    "label_3": "Series *",
+    "selectvalue_1_placeholder": "Select a series",
+    "button_1": "取消",
+    "button_2": "添加内容",
+    "h3": "暂无内容",
+    "p_1": "添加内容到系列以开始",
+    "button_3": "添加内容"
+  },
+  "(auth)_studio_components_series_form": {
+    "button": "取消",
+    "button_1": "返回",
+    "button_2": "下一步"
+  },
+  "(auth)_studio_components_series_management": {
+    "h2": "系列",
+    "p": "管理您的内容系列",
+    "button": "添加系列",
+    "h3": "暂无系列",
+    "p_1": "创建您的第一个系列以开始",
+    "button_1": "创建系列"
+  },
+  "(auth)_studio_components_sources_management": {
+    "h2": "来源",
+    "p": "创建和管理您的内容来源",
+    "button": "添加来源",
+    "dialogtitle": "创建新来源",
+    "dialogdescription": "创建新的内容来源（频道、作者等）",
+    "label": "Username *",
+    "input_placeholder": "e.g., @username",
+    "p_1": "The unique identifier for this source",
+    "label_1": "Title",
+    "input_1_placeholder": "e.g., Chinese Learning Channel",
+    "p_2": "Display name for the source (defaults to username if empty)",
+    "label_2": "Status",
+    "selectvalue_placeholder": "Select status",
+    "selectitem": "Unclaimed",
+    "selectitem_1": "Claimed",
+    "selectitem_2": "Verified",
+    "button_1": "取消",
+    "h3": "暂无来源",
+    "p_3": "创建您的第一个来源以开始",
+    "button_2": "创建来源",
+    "carddescription": "@",
+    "div": "Owner ID:",
+    "div_1": "...",
+    "dialogtitle_1": "编辑来源",
+    "dialogdescription_1": "更新来源信息",
+    "label_3": "Username *",
+    "input_2_placeholder": "e.g., @username",
+    "label_4": "Title",
+    "input_3_placeholder": "e.g., Chinese Learning Channel",
+    "label_5": "Status",
+    "selectvalue_1_placeholder": "Select status",
+    "selectitem_3": "Unclaimed",
+    "selectitem_4": "Claimed",
+    "selectitem_5": "Verified",
+    "button_3": "取消"
+  },
+  "(auth)_studio_create_series_components_step_description": {
+    "label": "描述",
+    "span": "*",
+    "textarea_placeholder": "提供本系列涵盖内容的概述、目标受众以及学习者可以期待的内容...",
+    "span_1": "描述系列内容和目标",
+    "span_2": "/500",
+    "h3": "应包含的内容",
+    "span_3": "涵盖的主要主题和话题",
+    "span_4": "目标熟练程度水平",
+    "span_5": "学习目标",
+    "span_6": "内容频率和结构"
+  },
+  "(auth)_studio_create_series_components_step_photo_upload": {
+    "label": "封面照片",
+    "span": "（可选）",
+    "img_alt": "Series cover",
+    "button": "选择不同的",
+    "button_1": "上传新的",
+    "button_2": "删除",
+    "tabstrigger": "上传新的",
+    "tabstrigger_1": "从资产中选择",
+    "p": "PNG、JPG 或 GIF（最大 5MB）",
+    "p_1": "没有可用图片",
+    "p_2": "上传新图片以开始",
+    "h3": "照片指南",
+    "span_1": "使用高质量图片（建议 16:9 宽高比）",
+    "span_2": "选择代表您系列内容的图片",
+    "span_3": "避免文字或复杂的背景",
+    "span_4": "您可以稍后添加或更改此照片"
+  },
+  "(auth)_studio_create_series_components_step_source_selection": {
+    "label": "来源",
+    "span": "*",
+    "p": "暂无来源",
+    "button": "创建新来源",
+    "dialogtitle": "创建新来源",
+    "dialogdescription": "为您的系列创建新来源",
+    "label_1": "用户名 *",
+    "input_placeholder": "例如：@username",
+    "label_2": "标题",
+    "input_1_placeholder": "例如：中文学习频道",
+    "button_1": "取消",
+    "p_1": "@",
+    "button_2": "创建新来源",
+    "dialogtitle_1": "创建新来源",
+    "dialogdescription_1": "为您的系列创建新来源",
+    "label_3": "用户名 *",
+    "input_2_placeholder": "例如：@username",
+    "label_4": "标题",
+    "input_3_placeholder": "例如：中文学习频道",
+    "button_3": "取消",
+    "h3": "来源指南",
+    "span_1": "选择与此系列内容相关的来源",
+    "span_2": "您可以随时创建新来源",
+    "span_3": "选择后您仍可以编辑来源"
+  },
+  "(auth)_studio_create_series_components_step_summary": {
+    "p": "在创建系列之前，请审阅以下所有信息。\n          如有需要，您可以返回编辑任何部分。",
+    "h3": "标题",
+    "h3_1": "描述",
+    "h3_2": "主题类型",
+    "h3_3": "来源",
+    "h3_4": "封面照片",
+    "img_alt": "Series cover",
+    "h4": "准备创建？",
+    "p_1": "点击下方的\"创建系列\"来完成您的新系列创建。您随时可以编辑这些详情。"
+  },
+  "(auth)_studio_create_series_components_step_title": {
+    "label": "系列标题",
+    "span": "*",
+    "input_placeholder": "例如：中华文化探索",
+    "p": "标题至少需要 3 个字符",
+    "h3": "优秀标题的技巧",
+    "span_1": "保持简洁且易于记忆",
+    "span_2": "使用描述性关键词",
+    "span_3": "避免特殊字符"
+  },
+  "(auth)_studio_create_series_components_step_topic_type": {
+    "label": "主题类型",
+    "span": "*",
+    "h3": "主题指南",
+    "span_1": "为您的系列选择最相关的分类",
+    "span_2": "考虑您的主要内容重点和受众",
+    "span_3": "需要时您可以稍后更新"
+  },
+  "(auth)_studio_create_series_page": {
+    "h1": "创建新系列",
+    "p": "按步骤填写信息以创建新系列"
+  },
+  "(auth)_studio_page": {
+    "h1": "Studio",
+    "p": "管理您的内容系列、来源和管道"
+  },
+  "(auth)_studio_series_[seriesId]_components_draggable_episode_list": {
+    "span": "#",
+    "span_1": "字",
+    "span_2": "词",
+    "span_3": "查看",
+    "div": "未保存的更改",
+    "button": "保存排序"
+  },
+  "(auth)_studio_series_[seriesId]_page": {
+    "p": "加载中...",
+    "h3": "加载失败",
+    "button": "重试",
+    "button_1": "返回",
+    "h3_1": "数据未找到",
+    "p_1": "无法获取系列信息",
+    "button_2": "重试",
+    "button_3": "返回",
+    "h1": "系列详情",
+    "h2": "编辑系列",
+    "p_2": "更新系列的详细信息",
+    "h2_1": "内容",
+    "p_3": "个内容项",
+    "button_4": "从已有内容添加",
+    "button_5": "添加内容",
+    "h3_2": "暂无内容",
+    "p_4": "此系列还没有添加任何内容",
+    "button_6": "添加新内容"
+  },
+  "(auth)_studio_series_[seriesId]_port_data_page": {
+    "span": "字",
+    "span_1": "词",
+    "span_2": "句",
+    "p": "加载中...",
+    "h3": "加载失败",
+    "button": "返回",
+    "h1": "从已有内容添加",
+    "button_1": "添加到系列",
+    "input_placeholder": "搜索内容...",
+    "button_2": "创建新内容",
+    "button_3": "加载更多"
+  },
+  "(auth)_timeline__components_timeline_dates_drawer": {
+    "drawertitle": "Select a date"
+  },
+  "(auth)_timeline__components_timeline_tab_body": {
+    "div": "Loading ...",
+    "span": "(",
+    "span_1": ")",
+    "h1": "Joined Mandarino"
+  },
+  "(unauth)_guidelines_page": {
+    "h1": "Community Guidelines",
+    "p": "Please note that these Community Guidelines were last revised on\n          August 16st, 2025",
+    "h2": "Always be Respectful",
+    "p_1": "We join from different parts of the world, speaking at different\n          levels, but all with the same goal — to learn. We value curiosity,\n          asking questions, and understanding each other’s cultures. Be\n          respectful of others and their backgrounds.",
+    "h2_1": "Content Upload Policy",
+    "p_2": "Please dont upload content that is",
+    "li": "Illegal",
+    "li_1": "Pornographic",
+    "li_2": "Excessively profane or violent",
+    "li_3": "Spam",
+    "li_4": "Threatening, harassing, or bullying",
+    "li_5": "Associated with racism or intolerance",
+    "li_6": "Impersonating someone in a misleading or deceptive manner",
+    "li_7": "Personal confidential information"
+  },
+  "(unauth)_playground_animated_navbar_page": {
+    "button": "Toggle",
+    "tab": "Home",
+    "tab_1": "Create",
+    "tab_2": "Library",
+    "tab_3": "Explore",
+    "tab_4": "Search"
+  },
+  "(unauth)_playground_animated_pill_page": {
+    "tab": "Home",
+    "tab_1": "Create",
+    "tab_2": "Library",
+    "tab_3": "Explore",
+    "tab_4": "Search"
+  },
+  "(unauth)_privacy_page": {
+    "h1": "Privacy",
+    "p": "Please note that these Privacy were last revised on August 16st, 2025",
+    "h2": "General",
+    "p_1": "We care about your privacy. This policy explains how we collect, use,\n          and share your information when you use Mandarino’s websites, apps,\n          and services. By using them, you agree to this policy.",
+    "h2_1": "Information we collect",
+    "p_2": "When you use the Service, Mandarino may collect the following personal\n          information about you.",
+    "li": "Account Registration",
+    "li_1": "Profile Settings",
+    "li_2": "User Uploaded Content"
+  },
+  "(unauth)_terms_page": {
+    "h1": "Terms & Conditions",
+    "p": "Please note that these Terms and Conditions were last revised on\n          August 16st, 2025",
+    "h2": "General",
+    "p_1": "The service lets you use different educational tools, like learning or\n          practicing a language. Mandarino can update, change, pause, improve,\n          or stop any part of the service at any time.",
+    "h2_1": "Acceptable Use of the Services",
+    "span": "You’re responsible for what you do on our services, including\n            through your account. To keep things safe and enjoyable for\n            everyone, some actions aren’t allowed. When using the services, you\n            must follow our",
+    "link": "Community Guidelines.",
+    "h2_2": "Registration",
+    "p_2": "When you sign up for and use the service, you agree to:",
+    "li": "Give Mandarino accurate and up-to-date information about yourself\n            (or your organization).",
+    "li_1": "Keep your password and account details private and secure.",
+    "li_2": "Update your information if it changes, so it stays correct and\n            current.",
+    "li_3": "Take full responsibility for everything that happens under your\n            account.",
+    "h2_3": "Content Submission",
+    "p_3": "When you upload or share anything on Mandarino (like text, photos,\n          audio, videos or other materials), you give Mandarino permission to\n          use it in many ways. This permission:",
+    "li_4": "Is free for Mandarino (you won’t get paid).",
+    "li_5": "You can delete any time",
+    "li_6": "Allows Mandarino to give others permission to use it too.",
+    "span_1": "Please dont upload content that that violates Mandarino's",
+    "link_1": "Community Guidelines.",
+    "h2_4": "Copyright Infringement Notice",
+    "p_4": "If you believe something on our service violates your copyright, you\n          can send us a notice under the DMCA with details about the work, the\n          infringing material, your contact info, and a statement that your\n          claim is made in good faith. Our copyright agent can be reached at",
+    "a": "mandarinohello@gmail.com",
+    "p_5": ".",
+    "p_6": "If your content was removed by mistake, you may send us a\n          counter‑notice with your contact info, a description of the removed\n          content, and a statement that you believe it was removed in error.\n          We’ll forward your counter‑notice to the original claimant, and\n          they’ll have 10 days to let us know if they’re taking legal action. If\n          we don’t hear back, we may restore your content.",
+    "h2_5": "License to Apps",
+    "p_7": "You can use one copy of the Mandarino app on a device you own or\n          control. You can’t share, copy, or mess with the app’s code (no\n          reverse-engineering, decompiling, etc.). Mandarino owns all rights to\n          the app, including updates and fixes.",
+    "h2_6": "Refund Policy",
+    "p_8": "You get 30 days to try the product (via Mandarino Free). If you decide\n          to buy (Mandarino Pro), all payments are final. We don’t give refunds\n          or credits for virtual items or unused membership time, unless your\n          local law requires it.",
+    "h2_7": "Termination",
+    "p_9": "Mandarino can end your access to the service anytime, for any reason,\n          and you won’t be able to keep using it. You can also close your\n          account anytime by following the instructions in the service. Certain\n          sections of these Terms will still apply even after your account is\n          closed.",
+    "h2_8": "Trademarks",
+    "p_10": "‘Mandarino’ and the related logos, graphics, and trademarks belong to\n          Mandarino or other owners. Using the service doesn’t give you any\n          right to use or copy these names, logos, or trademarks.",
+    "h2_9": "Privacy",
+    "p_11": "Use of the Service is also governed by our Privacy Policy, a copy of\n          which is located at",
+    "link_2": "www.mandarino.io/privacy",
+    "p_12": ". By using the Service, you consent to the terms of the Privacy\n          Policy.",
+    "h2_10": "Governing Law",
+    "p_13": "These Terms and Conditions are governed by the laws of the Province of\n          Québec and the laws of Canada that apply there, no matter where you\n          are from or where you use the service.",
+    "h2_11": "Language",
+    "p_14": "This agreement was written in English. If a translation says something\n          different, the English version is what counts."
+  },
+  "features_page": {
+    "h1": "Mandarin Blueprint",
+    "p": "An Ingenious Step-By-Step Online Course That Makes Learning Simple\n              & Fun",
+    "link": "Get The Blueprint",
+    "h1_1": "Street Smart Chinese",
+    "p_1": "HAVE A CONVERSATION IN CHINESE ON THE STREET WITHIN 10 WEEKS!",
+    "link_1": "Start Learning",
+    "h1_2": "Nomad Mandarin Method",
+    "p_2": "an interactive and immersive platform designed to help you learn\n              mandarin by creatively exploring the world",
+    "link_2": "Start Learning",
+    "link_3": "Read the book"
+  },
+  "insights_overview_components_life_time_characters_stats": {
+    "profilestatsitem_title": "Characters"
+  },
+  "insights_overview_components_life_time_sentences_stats": {
+    "profilestatsitem_title": "Sentences"
+  },
+  "insights_overview_components_life_time_words_stats": {
+    "profilestatsitem_title": "Words"
+  },
+  "insights_overview_components_profile_banner": {
+    "h1": "Me",
+    "p": "Joined"
+  },
+  "insights_overview_components_time_studied_stats": {
+    "profilestatsitem_title": "Time Reviewed"
+  },
+  "insights_overview_components_total_active_days_stats": {
+    "profilestatsitem_title": "Total"
+  },
+  "language_selector_page": {
+    "h1": "I want to learn"
+  },
+  "next_components_feature_select": {
+    "selectvalue_placeholder": "Select a feature"
+  },
+  "next_features_phrase_new_phrase": {
+    "h2": "title",
+    "h2_1": "Select Source Language",
+    "h2_2": "Select Target Language",
+    "button": "Add"
+  },
+  "next_features_phrase_old_phrase_ui": {
+    "img_alt": "Chinese flag",
+    "img_1_alt": "Chinese flag"
+  },
+  "next_features_phrase_phrase_ui": {
+    "textarea_placeholder": "Type a message..."
+  },
+  "next_features_phrase_phrase": {
+    "h1": "Settings",
+    "span": "History",
+    "span_1": "Settings",
+    "h2": "Recent History"
+  },
+  "nmm_[component_id]_character_details_character_details": {
+    "div": "TODO"
+  },
+  "nmm_component_review": {
+    "p": "Review",
+    "p_1": "Lets quickly review before submitting",
+    "a": "@",
+    "span": ",",
+    "button": "Complete"
+  },
+  "nmm_hsk_hsk_character_view": {
+    "div": "Loading..."
+  },
+  "nmm_nmm_settings": {
+    "h4": "Settings",
+    "label": "PERC",
+    "label_1": "Preview Mode"
+  },
+  "nmm_v2": {
+    "button": "About",
+    "button_1": "Sentences",
+    "button_2": "Story",
+    "button_3": "Search",
+    "button_4": "About",
+    "button_5": "Sentences",
+    "button_6": "Story",
+    "button_7": "Search"
+  },
+  "overview_average_mastery_days": {
+    "p": "On average, it took you",
+    "p_1": "days and",
+    "p_2": "attempts to master each character. The character",
+    "p_3": "required the most effort, taking",
+    "p_4": "attempts and",
+    "p_5": "days to achieve\n        mastery."
+  },
+  "overview_averate_character_review": {
+    "p": "You have reviewed an average of",
+    "p_1": "times per\n      character."
+  },
+  "overview_character_review_ratio": {
+    "p": "Out of the",
+    "p_1": "learned\n      characters, you have reviewed",
+    "span": "(",
+    "span_1": ")",
+    "p_2": "and mastered",
+    "span_2": "(",
+    "span_3": ")",
+    "p_3": "."
+  },
+  "overview_life_time_learning_fact": {
+    "p": "You have learned",
+    "p_1": "characters out of",
+    "p_2": ", which\n      represents a character learning percentage"
+  },
+  "overview_overview_page": {
+    "h2": "facts",
+    "div": "Nothing here, yet. Please learn some characters first"
+  },
+  "overview_recently_viewed_content": {
+    "h2": "recently viewed content",
+    "h4": "You havent watched any content",
+    "p": "Click",
+    "link": "here",
+    "p_1": "to get started"
+  },
+  "overview_user_learning_summary": {
+    "span": "(",
+    "span_1": "days remaining)",
+    "p": "Yo",
+    "p_1": ", here is\n            your learning summary:"
+  },
+  "pinyin_pinyin_columns": {
+    "span": "A",
+    "span_1": "a",
+    "span_2": "ai",
+    "span_3": "ao",
+    "span_4": "an",
+    "span_5": "ang",
+    "span_6": "E",
+    "span_7": "e",
+    "span_8": "ei",
+    "span_9": "en",
+    "span_10": "eng",
+    "span_11": "I",
+    "span_12": "i",
+    "span_13": "a",
+    "span_14": "ao",
+    "span_15": "e",
+    "span_16": "ou",
+    "span_17": "an",
+    "span_18": "ang",
+    "span_19": "in",
+    "span_20": "ing",
+    "span_21": "ong",
+    "span_22": "O",
+    "span_23": "o",
+    "span_24": "ong",
+    "span_25": "ou",
+    "span_26": "U",
+    "span_27": "u",
+    "span_28": "a",
+    "span_29": "ai",
+    "span_30": "an",
+    "span_31": "ang",
+    "span_32": "e",
+    "span_33": "ei",
+    "span_34": "o",
+    "span_35": "un"
+  },
+  "pinyin_pinyin_table": {
+    "button": "a",
+    "button_1": "e",
+    "button_2": "i",
+    "button_3": "o",
+    "button_4": "u",
+    "button_5": "ü",
+    "button_6": "pi",
+    "span": "/",
+    "span_1": "problem initials",
+    "span_2": "/",
+    "span_3": "characters"
+  },
+  "review_change_mode": {
+    "h1": "Change",
+    "h1_1": "Level"
+  },
+  "review_daily_view": {
+    "div": "TODO"
+  },
+  "review_hsk_review_mode_hsk_exam_mode_hsk_exam_mode": {
+    "h1": "HSK iExam",
+    "p": "Coming Soon",
+    "button": "Back to Menu"
+  },
+  "review_hsk_review_mode_hsk_srs_mode": {
+    "h1": "HSK SRS Mode"
+  },
+  "review_hsk_review_mode_select_hsk_review_mode": {
+    "h1": "HSK Review",
+    "p": "Please select one of the following",
+    "button": "HSK SRS",
+    "button_1": "HSK iExam"
+  },
+  "review_page": {
+    "h1": "Please select review mode",
+    "reviewmodeselectorbutton": "cloze",
+    "reviewmodeselectorbutton_1": "classic"
+  },
+  "review_review_cloze_hsk_level_selector": {
+    "selectvalue_placeholder": "Select a level",
+    "selectlabel": "HSK Level"
+  },
+  "review_review_cloze_review_cloze": {
+    "h4": "Nothing here",
+    "button": "Restart",
+    "button_1": "Back to classic mode",
+    "p": "..."
+  },
+  "review_review_cloze_content_hsk_level_selector": {
+    "selectvalue_placeholder": "Select a level",
+    "selectlabel": "HSK Level"
+  },
+  "review_review_cloze_content_mando_context_menu": {
+    "span": "Search"
+  },
+  "review_review_cloze_content_review_cloze_content": {
+    "h4": "Nothing here",
+    "button": "Back to hsk mode",
+    "h4_1": "Nothing here",
+    "button_1": "Restart",
+    "button_2": "Back to classic mode",
+    "p": "...",
+    "p_1": "Oops, your answer is incorrect. Correct answer is:",
+    "p_2": "Learn more:"
+  },
+  "review_review_item": {
+    "h1": "items"
+  },
+  "review_review_mode": {
+    "div": "...",
+    "h1": "Do you know this paragraph?",
+    "p": "ms",
+    "h1_1": "Do you know this character?",
+    "h2": "..."
+  },
+  "review_total_items": {
+    "p": "items"
+  },
+  "review_total_reviews": {
+    "span": "+",
+    "span_1": "+",
+    "h4": "items"
+  },
+  "why_features_list": {
+    "button": "Register For Free"
+  },
+  "why_why_mandarino_banner": {
+    "span": "WHY GET A",
+    "span_1": "MANDARINO",
+    "span_2": "ACCOUNT?",
+    "h2": "Say goodbye to",
+    "span_3": "switching",
+    "h2_1": "between\n        apps. Experience a language learning app that",
+    "span_4": "evolves",
+    "h2_2": "with you."
+  },
+  "Editor_ToC": {
+    "a": ".",
+    "p": "Start editing your document to see the outline."
+  },
+  "Editor_bubble_menu_color_selector": {
+    "span": "A",
+    "div": "Color",
+    "div_1": "A"
+  },
+  "Editor_bubble_menu_link_selector": {
+    "p": "↗",
+    "p_1": "Link",
+    "input_placeholder": "Paste a link"
+  },
+  "Editor_slash_command": {
+    "div": "Loading..."
+  },
+  "Login": {
+    "h2": "Login",
+    "p": "Or",
+    "a": "create a new account",
+    "label": "Email address",
+    "input_placeholder": "Email address",
+    "label_1": "Password",
+    "input_1_placeholder": "Password",
+    "button": "Login"
+  },
+  "Register": {
+    "h2": "Register for a new account",
+    "p": "Or",
+    "a": "login to your account",
+    "label": "Email address",
+    "input_placeholder": "Email address",
+    "label_1": "Password",
+    "input_1_placeholder": "Password",
+    "label_2": "Remember me",
+    "a_1": "Forgot your password?",
+    "button": "Sign Up",
+    "h2_1": "Confirm Code",
+    "label_3": "Email address",
+    "input_2_placeholder": "Email address",
+    "label_4": "Code",
+    "input_3_placeholder": "Password",
+    "button_1": "Sign Up",
+    "h2_2": "Confirm Code",
+    "label_5": "Username",
+    "input_4_placeholder": "Email address",
+    "label_6": "Code",
+    "input_5_placeholder": "Code",
+    "label_7": "Remember me",
+    "a_2": "Forgot your password?",
+    "button_2": "Sign Up",
+    "h2_3": "Register",
+    "p_1": "Or",
+    "a_3": "login to your account",
+    "label_8": "Email address",
+    "input_6_placeholder": "Email address",
+    "button_3": "Sign Up",
+    "input_7_placeholder": "Your answer"
+  },
+  "_select_character_add_to_collection_dialog": {
+    "dialogtitle": "Add to Collection",
+    "dialogdescription": "Select an existing collection or create a new one.",
+    "p": "No collections yet.",
+    "span": "items",
+    "input_placeholder": "New collection name"
+  },
+  "_select_character_character_analytics": {
+    "span": "total",
+    "span_1": "new"
+  },
+  "_select_character_character_title": {
+    "p": "汉语水平",
+    "p_1": "汉语水平",
+    "p_2": "汉语水平",
+    "button": "Save",
+    "button_1": "Cancel"
+  },
+  "_select_character_content_dropdown": {
+    "filterselect_title": "Select a content"
+  },
+  "_select_character_normal_view": {
+    "div": "Audio"
+  },
+  "_select_character_selected_character_antonyms_view": {
+    "div": "Error loading antonyms:",
+    "div_1": "No antonyms found for this character."
+  },
+  "_select_character_selected_character_character_bookmark": {
+    "p": "You bookmarked this",
+    "p_1": "learning"
+  },
+  "_select_character_selected_character_character_overview_sidebar": {
+    "tabstrigger": "Content Examples",
+    "tabstrigger_1": "Sentences",
+    "tabstrigger_2": "句子变换",
+    "button": "Previous",
+    "span": "/",
+    "button_1": "Next",
+    "selectvalue_placeholder": "Select content",
+    "selectlabel": "Content",
+    "span_1": "/"
+  },
+  "_select_character_selected_character_character_overview_view": {
+    "tabstrigger": "Overview",
+    "tabstrigger_1": "Grammar",
+    "tabstrigger_2": "Learning Context",
+    "tabstrigger_3": "Synonyms",
+    "tabstrigger_4": "Antonyms",
+    "tabstrigger_5": "Sentences",
+    "tabstrigger_6": "句子变换",
+    "tabstrigger_7": "Advanced Search"
+  },
+  "_select_character_selected_character_character_variant_summary": {
+    "h2": "Use Cases",
+    "h2_1": "Similar Looking Characters"
+  },
+  "_select_character_selected_character_hanbook_link": {
+    "img_alt": "hanbook"
+  },
+  "_select_character_selected_character_selected_character_stats": {
+    "p": "d"
+  },
+  "_select_character_selected_character_selected_character": {
+    "button": "Back to overview",
+    "button_1": "Back to overview"
+  },
+  "_select_character_selected_character_spanish_dict_link_spanish_dict_link": {
+    "svg_aria_label": "SpanishDictionary.com logo"
+  },
+  "_select_character_selected_character_synonyms_view": {
+    "div": "Error loading synonyms:",
+    "div_1": "No synonyms found for this character."
+  },
+  "_select_character_selected_character_tweet_page_tweet_page": {
+    "div": "@",
+    "a_aria_label": "View original tweet",
+    "div_1": "Likes",
+    "div_2": "Replies",
+    "div_3": "Retweets",
+    "div_4": "Views",
+    "img_alt": "Tweet media"
+  },
+  "_select_character_selected_character_upload_audio_button": {
+    "label": "Choose File"
+  },
+  "animated_contents_filter": {
+    "tab": "All"
+  },
+  "animated_navbar": {
+    "button": "Toggle",
+    "tab": "Home",
+    "tab_1": "Create",
+    "tab_2": "Library",
+    "tab_3": "Explore",
+    "tab_4": "Search"
+  },
+  "chinglish_button": {
+    "button": "C"
+  },
+  "dyno_cloze_core_dyno_cloze_navbar": {
+    "h1": "dynacloze",
+    "link": "DynaClozeR"
+  },
+  "en_button": {
+    "button": "E"
+  },
+  "floating_character_navbar": {
+    "label": "Remove From System"
+  },
+  "grammar_analysis": {
+    "button": "Run in Client",
+    "h4": "Grammar Analysis",
+    "p": "| hsk"
+  },
+  "landing_page_landing_navbar": {
+    "p": "Learn",
+    "p_1": "Login",
+    "p_2": "Login"
+  },
+  "landing_page_landing_page": {
+    "h2": "Grammar Analysis, Context Learning, Automatic Sentence Mining,\n                Content Tracking, Analytics & your own language learning\n                superapp",
+    "button": "Talk to founder",
+    "button_1": "Try it for free",
+    "img_alt": "Mandarino search results page",
+    "img_1_alt": "Mandarino search results page",
+    "link": "Terms & Conditions"
+  },
+  "landing_page_mandarino_banner": {
+    "h1": "Mandarino",
+    "p": "A modern language learning app"
+  },
+  "navbar": {
+    "button": "day",
+    "button_1": "week",
+    "button_2": "month",
+    "button_3": "year",
+    "button_4": "Today"
+  },
+  "new_home_page_content_card_stats_list": {
+    "span": "字",
+    "span_1": "词",
+    "span_2": "句"
+  },
+  "no_permission_view": {
+    "p": "You dont have the permission to view this page"
+  },
+  "onboarding_with_onboarding": {
+    "label": "Source Language",
+    "input_placeholder": "Source Language",
+    "label_1": "Target Language",
+    "input_1_placeholder": "Target Language"
+  },
+  "pinyin_button": {
+    "button": "P"
+  },
+  "read_mode_button": {
+    "button": "R"
+  },
+  "search_index": {
+    "header": "mandarin",
+    "span": "o",
+    "p": "personalized language learning platform at",
+    "strong": "scale",
+    "span_1": "hmm:",
+    "span_2": "hsk:"
+  },
+  "search_dialog_search_dialog": {
+    "input_placeholder": "search"
+  },
+  "search_dialog": {
+    "button": "Save changes"
+  },
+  "search_only_pinyin_button": {
+    "button": "S"
+  },
+  "settings_dialog_api_keys_tab_api_keys_tab": {
+    "cardtitle": "API Keys",
+    "button": "+ Add new secret key",
+    "carddescription": "As the project owner, you can manage all API keys, but avoid sharing\n            or exposing them in client-side code; Mandarino may disable any\n            publicly leaked key for security."
+  },
+  "settings_dialog_api_keys_tab_add_user_credential_dialog": {
+    "cardtitle": "Create new secret key",
+    "span": "Name",
+    "span_1": "Optional",
+    "input_placeholder": "My test key",
+    "span_2": "Permissions",
+    "h3": "Resources",
+    "p": "Permissions",
+    "button": "Cancel"
+  },
+  "settings_dialog_api_keys_tab_add_user_credential_success_dialog": {
+    "cardtitle": "Save your key",
+    "span": "Copy",
+    "button": "Done"
+  },
+  "settings_dialog_api_keys_tab_api_keys_table": {
+    "p": "Loading...",
+    "p_1": "Something went wrong!",
+    "p_2": "Nothing here. Please add a user credential",
+    "tablecaption": "A list of your recent API Keys.",
+    "tablehead": "Name",
+    "tablehead_1": "Secret Key",
+    "tablehead_2": "Created At"
+  },
+  "settings_dialog_api_keys_tab_delete_api_key_dialog": {
+    "cardtitle": "Revoke secret key",
+    "input_placeholder": "Change Password",
+    "button": "Cancel"
+  },
+  "settings_dialog_api_keys_tab_update_user_credential_dialog": {
+    "cardtitle": "Create new secret key",
+    "span": "Name",
+    "span_1": "Optional",
+    "input_placeholder": "My test key",
+    "span_2": "Permissions",
+    "h3": "Resources",
+    "p": "Permissions",
+    "button": "Cancel"
+  },
+  "settings_dialog_listen_tab_listen_tab": {
+    "cardtitle": "Automatic Playback",
+    "carddescription": "Turn automatic playback on or off",
+    "cardtitle_1": "Playback Speed",
+    "carddescription_1": "Select your desired audio playback speed.",
+    "p": "x"
+  },
+  "settings_dialog_login_and_security_tab_login_and_security_tab": {
+    "cardtitle": "Password Manager",
+    "carddescription": "Manage Your password here",
+    "input_placeholder": "Change Password"
+  },
+  "settings_dialog_profile_tab_profile_tab": {
+    "cardtitle": "Profile",
+    "carddescription": "Manage Your profile here",
+    "input_placeholder": "Username",
+    "input_1_placeholder": "Email"
+  },
+  "settings_dialog_tracking_tab_tracking_tab": {
+    "cardtitle": "Tracking",
+    "carddescription": "Manage your tracking here",
+    "label": "Navigation",
+    "p": "Track navigation through out the app",
+    "label_1": "Content",
+    "p_1": "Track the content you've learned",
+    "label_2": "Search",
+    "p_2": "Track which you've searched",
+    "cardtitle_1": "Auto Convert",
+    "carddescription_1": "Manage automatic conversion settings",
+    "label_3": "Auto Convert",
+    "p_3": "Automatically convert traditional to simplified Chinese"
+  },
+  "settings_dialog_ui_tab_ui_tab": {
+    "cardtitle": "App & Dock",
+    "carddescription": "Change your App & Dock display settings",
+    "label": "The Dock",
+    "p": "Automatically hide and show the Dock (Desktop only)",
+    "cardtitle_1": "Display",
+    "carddescription_1": "Switch to"
+  },
+  "settings_dialog_settings_dialog": {
+    "span": "App & Dock",
+    "span_1": "General",
+    "span_2": "Content",
+    "button": "Close Settings",
+    "button_1": "Save"
+  },
+  "speak_useSpeechRecognition_v2": {
+    "span": "Browser doesnt support speech recognition.",
+    "p": "Microphone:",
+    "button": "Start",
+    "button_1": "Stop",
+    "button_2": "Reset"
+  },
+  "summary_summary": {
+    "strong": "Note:",
+    "p": "The summary, audio and sentences above were\n          generated by AI and may contain inaccuracies."
+  },
+  "summary_with_youtube_video": {
+    "input_placeholder": "Video Url",
+    "button": "Add",
+    "button_1": "Cancel"
+  },
+  "text_percentage_colorizer": {
+    "label": "Your Text",
+    "input_placeholder": "Enter text here...",
+    "label_1": "Colorize Percentage",
+    "span": "%",
+    "label_2": "Color",
+    "input_1_placeholder": "#3B82F6",
+    "p": "Colorized",
+    "p_1": "Total",
+    "p_2": "Gradient %",
+    "p_3": "%"
+  },
+  "the_dock": {
+    "div": "."
+  },
+  "ui_breadcrumb": {
+    "nav_aria_label": "breadcrumb",
+    "span": "More"
+  },
+  "ui_dialog": {
+    "span": "Close"
+  },
+  "with_detect_language_with_detect_language": {
+    "link": "Back"
+  },
+  "wordle_wordle_sentence": {
+    "h2": "Write the following sentence in",
+    "span": "汉子",
+    "button": "Retry"
+  },
+  "wordle_wordle.core": {
+    "button": "Continue"
+  },
+  "wordle_wordle": {
+    "h2": "Write the following sentence in",
+    "span": "汉子",
+    "div": "/",
+    "button": "Retry"
+  }
+}

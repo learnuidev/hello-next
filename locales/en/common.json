@@ -1,0 +1,8 @@
+{
+  "apps": "Apps",
+  "start": "Start",
+  "stop": "Stop",
+  "reset": "Reset",
+  "save": "Save",
+  "cancel": "Cancel"
+}

@@ -1,13 +1,23 @@
 {
-  "aiProvider": "openai",
-  "aiModel": "gpt-4o-mini",
+  "aiProviders": {
+    "zh": {
+      "aiModel": "deepseek-v4-flash",
+      "aiProvider": "deepseek"
+    }
+  },
   "sync": {
-    "type": "remote"
+    "type": "local"
   },
   "locale": {
-    "sourceEntries": ["app", "components"],
+    "sourceEntries": [
+      "app",
+      "components"
+    ],
     "location": "locales",
     "sourceLanguage": "en",
-    "targetLanguages": ["fr", "es", "zh"]
-  }
+    "targetLanguages": [
+      "zh"
+    ]
+  },
+  "cloud": {}
 }

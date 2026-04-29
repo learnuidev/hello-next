@@ -26,7 +26,7 @@ export function ContentItemPreview({ content }: ContentItemPreviewProps) {
 
   return (
     <div
-      className="relative h-128 w-full sm:h-72 sm:w-36 md:h-120 md:w-80 rounded-lg overflow-hidden bg-gray-100 shadow-sm hover:shadow-md transition-shadow duration-200"
+      className="my-4 relative h-128 w-full sm:h-72 sm:w-36 md:h-120 md:w-80 rounded-lg overflow-hidden bg-gray-100 shadow-sm hover:shadow-md transition-shadow duration-200"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >

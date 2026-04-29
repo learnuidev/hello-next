@@ -4,6 +4,7 @@ import { useFormState, useFormStatus } from "react-dom";
 import { GridBankMediaContent } from "../../modules/media/media.types";
 import { Icons } from "@/components/ui/icons.v2";
 import { toggleBookmark } from "../../modules/media/media.actions";
+import ReactPlayer from "react-player";
 
 function BookmarkButton({ isBookmarked }: { isBookmarked: boolean }) {
   const { pending } = useFormStatus();
@@ -39,11 +40,14 @@ export function VideoDetailsContent({
       <div className="max-w-5xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8 items-start">
           <div className="space-y-4">
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-black group h-[800px]">
-              <video
-                src={content.url_video_watermark}
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-black group">
+              <ReactPlayer
+                url={content.url_video_watermark}
+                playing
                 controls
-                className="w-full aspect-[9/16]"
+                width="100%"
+                height="880px"
+                style={{ position: "relative", zIndex: 50 }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </div>

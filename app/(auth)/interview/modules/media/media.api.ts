@@ -1,4 +1,3 @@
-import { GRID_BANK_DATA } from "./media.mock";
 import {
   GridBankMediaContent,
   GridBankMediaContentSchema,
@@ -7,7 +6,17 @@ import {
 export const listGridBankMediaContent = async (): Promise<
   GridBankMediaContent[]
 > => {
-  const result = GridBankMediaContentSchema.array().safeParse(GRID_BANK_DATA);
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/list-grid-bank-assets`, {
+    method: 'GET',
+    cache: 'no-store',
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch grid bank data');
+  }
+
+  const data = await response.json();
+  const result = GridBankMediaContentSchema.array().safeParse(data);
 
   if (!result.success) {
     throw new Error(`Invalid data: ${result.error.message}`);

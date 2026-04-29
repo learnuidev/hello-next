@@ -38,15 +38,7 @@ export function ContentItemPreview({
       >
         {asset.bookmarked ? <Icons.bookmarkSolid /> : <Icons.bookmark />}
       </button>
-      <Image
-        src={asset?.url_image_watermark}
-        alt={asset?.title}
-        fill
-        loading="lazy"
-        decoding="async"
-        className={`object-cover transition-opacity duration-200`}
-        sizes="(max-width: 639px) 256px, (max-width: 1999px) 222px, (min-width: 1200px) 256px"
-      />
+
       <video
         ref={videoRef}
         src={asset?.url_video_watermark}
@@ -54,6 +46,17 @@ export function ContentItemPreview({
         playsInline
         className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-200`}
       />
+      {isHovered ? null : (
+        <Image
+          src={asset?.url_image_watermark}
+          alt={asset?.title}
+          fill
+          loading="lazy"
+          decoding="async"
+          className={`object-cover transition-opacity duration-200`}
+          sizes="(max-width: 639px) 256px, (max-width: 1999px) 222px, (min-width: 1200px) 256px"
+        />
+      )}
     </div>
   );
 }

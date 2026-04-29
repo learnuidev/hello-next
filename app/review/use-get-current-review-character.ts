@@ -162,12 +162,8 @@ export const useGetCurrentReviewCharacter = () => {
       reviewSpeed,
       reviewMode,
     });
-    // if (["hsk3", "hsk"]?.includes(mode)) {
-    //   return `/review?mode=${mode}&level=${level}&study-mode=${studyMode}&date=${date}`;
-    // }
-    return `/review?${reviewSearchParamsUrl}`;
 
-    // return `/review?date=${date}`;
+    return `/review?${reviewSearchParamsUrl}`;
   };
 
   const goToNextChar = () => {
@@ -207,11 +203,6 @@ export const useGetCurrentReviewCharacter = () => {
       reviewMode,
       unReviewedCharacters?.length,
     ],
-  );
-
-  const hasNoChars = useMemo(
-    () => !currentCharacter || hasReviewedAll,
-    [currentCharacter, hasReviewedAll],
   );
 
   const lang = useMemo(

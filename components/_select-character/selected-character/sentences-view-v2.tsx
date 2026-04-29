@@ -8,8 +8,8 @@ import Link from "next/link";
 import { usePaginationStore } from "@/stores/use-pagination-store";
 import { useReadModeStore } from "@/stores/use-readmode-store";
 
-import { useBrightModeStore } from "../../settings-dialog/use-bright-mode-store";
 import { useCanTrackFunction } from "@/components/use-can-track-function";
+import { useBrightModeStore } from "../../settings-dialog/use-bright-mode-store";
 
 function SentenceViewItem({ prop }: { prop: any }) {
   const brightMode = useBrightModeStore((state) => state.mode);
@@ -37,16 +37,6 @@ function SentenceViewItem({ prop }: { prop: any }) {
       className="font-extralight text-xl"
       onClick={() => {
         trackFunction();
-        // if (!addHistoryMutation?.isLoading) {
-        //   addHistoryMutation.mutate({
-        //     // pathName: routeName,
-        //     hanzi: prop?.input || prop?.hanzi,
-        //     lang: prop?.lang || lang,
-        //     query: query,
-        //     contentId: prop?.id,
-        //     eventType: "CONTENT_VIEWED",
-        //   } as any);
-        // }
       }}
     >
       {readMode ? (
@@ -109,7 +99,7 @@ export const SentencesViewV2 = ({
 
   const sliced = relatedSentences?.slice(
     pagination?.start || 0,
-    pagination?.end || 10
+    pagination?.end || 10,
   );
 
   return (

@@ -102,6 +102,14 @@ export const SentenceItem = (props: any) => {
           </p>
         </div>
         <div className="flex gap-2 justify-end items-end w-full pr-2 mt-2 sm:mt-0">
+          {currentPhrase?.contentId && (
+            <Link
+              href={`/convos/${currentPhrase?.contentId}${currentPhrase?.start ? `?start=${currentPhrase?.start}` : ""}`}
+            >
+              <Icons.mandarin className="h-6 w-6 text-xs" />
+            </Link>
+          )}
+
           {currentPhrase?.contentId && currentPhrase?.id ? (
             <YoutubeButton
               disableHistory={!!props?.disableHistory}

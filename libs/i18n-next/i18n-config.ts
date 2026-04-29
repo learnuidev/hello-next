@@ -61,12 +61,12 @@ export const i18nOptions = {
     skipOnVariables: false,
   },
 
-  // backend: {
-  //   backends: [
-  //     resourcesToBackend(
-  //       (lng: string, ns: string) => import(`/locales/${lng}/${ns}.json`)
-  //     ),
-  //   ],
-  //   backendOptions: [],
-  // },
+  backend: {
+    backends: [
+      resourcesToBackend(
+        (lng: string, ns: string) => import(`@/locales/${lng}/${ns}.json`),
+      ),
+    ],
+    backendOptions: [],
+  },
 };

@@ -123,11 +123,7 @@ export const SentenceItem = (props: any) => {
               customRef={customRef}
               text={currentPhrase?.input || currentPhrase?.hanzi}
               lang={lang || currentPhrase?.lang}
-              className={cn(
-                `text-sm bg-white dark:bg-black p-2 w-8 h-8 ring-1 ${"ring-slate-900/5 dark:ring-slate-800 dark:text-slate-300"} shadow-lg rounded-full flex items-center justify-center transition hover:dark:ring-slate-300`,
-                "h-6 w-6 text-xs",
-                "ml-1",
-              )}
+              className="h-6 w-6 text-xs"
             />
           )}
 
@@ -142,7 +138,7 @@ export const SentenceItem = (props: any) => {
               contentId: currentPhrase?.contentId || contentId,
               context: currentPhrase?.hanzi || currentPhrase?.input,
             })}
-            className={`text-xs bg-white dark:bg-black p-2 w-6 h-6 ring-1 ${`dark:text-white ring-slate-900/5 dark:ring-gray-800`} shadow-lg rounded-full flex items-center justify-center transition`}
+            className="h-6 w-6 text-xs"
           >
             <Icons.magnifyingGlass />
           </Link>
@@ -153,7 +149,7 @@ export const SentenceItem = (props: any) => {
                 deleteSentenceMutation.isPending ||
                 deleteSentenceMutation.isSuccess
               }
-              className={`text-xs bg-white dark:bg-black p-2 w-6 h-6 ring-1 ${`dark:text-white ring-slate-900/5 dark:ring-gray-800`} shadow-lg rounded-full flex items-center justify-center transition`}
+              className="h-6 w-6 text-xs"
               onDoubleClick={() => {
                 // @ts-ignore
                 deleteSentenceMutation?.mutateAsync({

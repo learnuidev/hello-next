@@ -101,19 +101,19 @@ export const SentenceItem = (props: any) => {
             <span> {characterAnalytics?.masteryRate}</span>
           </p>
         </div>
-        <div className="flex gap-2 justify-end items-end w-full pr-2 mt-2 sm:mt-0">
+        <div className="flex gap-4 justify-end items-center w-full sm:mt-0">
           {currentPhrase?.contentId && (
             <Link
               href={`/convos/${currentPhrase?.contentId}${currentPhrase?.start ? `?start=${currentPhrase?.start}` : ""}`}
             >
-              <Icons.mandarin className="h-6 w-6 text-xs" />
+              <Icons.mandarin />
             </Link>
           )}
 
           {currentPhrase?.contentId && currentPhrase?.id ? (
             <YoutubeButton
+              className="text-md"
               disableHistory={!!props?.disableHistory}
-              className="h-6 w-6 text-xs"
               contentId={currentPhrase?.contentId}
               transcriptId={currentPhrase?.id}
               sentenceInput={currentPhrase?.input || currentPhrase?.hanzi}
@@ -123,7 +123,6 @@ export const SentenceItem = (props: any) => {
               customRef={customRef}
               text={currentPhrase?.input || currentPhrase?.hanzi}
               lang={lang || currentPhrase?.lang}
-              className="h-6 w-6 text-xs"
             />
           )}
 
@@ -138,7 +137,6 @@ export const SentenceItem = (props: any) => {
               contentId: currentPhrase?.contentId || contentId,
               context: currentPhrase?.hanzi || currentPhrase?.input,
             })}
-            className="h-6 w-6 text-xs"
           >
             <Icons.magnifyingGlass />
           </Link>

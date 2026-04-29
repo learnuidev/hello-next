@@ -6,13 +6,12 @@ import ReactPlayer from "react-player";
 import { useSearchParams } from "next/navigation";
 import { Icons } from "../ui/icons.v2";
 
-import { useCurrentTime } from "./use-current-time-store";
 import { cn } from "@/lib/utils";
+import { useCurrentTime } from "./use-current-time-store";
 
 import { create } from "zustand";
 import {
   useContextPlayContextState,
-  usePlayHistoryState,
   usePlayHistoryStore,
 } from "./hooks/use-play-history-state";
 
@@ -90,7 +89,7 @@ export function YoutubeButton({
 
   const transcriptions = useMemo(
     () => content?.transcriptions || [],
-    [content?.transcriptions]
+    [content?.transcriptions],
   );
 
   const currentTranscription = useMemo(
@@ -100,9 +99,9 @@ export function YoutubeButton({
         (trans: any) =>
           trans?.id === transcriptId ||
           (trans?.input || trans?.hanzi) === sentenceInput ||
-          (trans?.input || trans?.hanzi)?.includes(sentenceInput)
+          (trans?.input || trans?.hanzi)?.includes(sentenceInput),
       ),
-    [sentenceInput, transcriptId, transcriptions]
+    [sentenceInput, transcriptId, transcriptions],
   );
 
   const togglePlay = useCallback(() => {
@@ -196,7 +195,7 @@ export function YoutubeButton({
         {isPlaying ? (
           <Icons.pause className={cn("text-2xl", className)} />
         ) : (
-          <Icons.play className={cn("text-2xl", className)} />
+          <Icons.microphone className={cn("text-2xl", className)} />
         )}
       </button>
     </div>

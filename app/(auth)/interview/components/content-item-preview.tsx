@@ -31,7 +31,10 @@ export function ContentItemPreview({
       onMouseLeave={() => setIsHovered(false)}
     >
       <button
-        onClick={() => {
+        onClick={(event) => {
+          // This prevents event from bubbling and trigger parent level events
+          event.preventDefault();
+          event.stopPropagation();
           onToggleBookmark(asset.video_id);
         }}
         className="absolute top-4 right-4 z-50 text-2xl text-white"

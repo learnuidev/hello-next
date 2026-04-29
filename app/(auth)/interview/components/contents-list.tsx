@@ -19,7 +19,8 @@ export const ContentsList = ({
   const parentRef = useRef<HTMLDivElement>(null);
 
   const { rowCount, itemsByRow } = useMemo(() => {
-    const maxColumns = Math.max(COLUMNS.sm, COLUMNS.md, COLUMNS.lg);
+    const maxColumns = COLUMNS.lg;
+
     const rowCount = Math.ceil(gridBankContents.length / maxColumns);
     const itemsByRow: GridBankMediaContent[][] = [];
 

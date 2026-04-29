@@ -28,7 +28,7 @@ const displayLanguages = Object.fromEntries(
       langId === myelinConfig.locale.sourceLanguage ||
       myelinConfig.locale.targetLanguages?.includes(langId)
     );
-  })
+  }),
 );
 
 export type Language = keyof typeof languagesList;
@@ -61,12 +61,12 @@ export const i18nOptions = {
     skipOnVariables: false,
   },
 
-  backend: {
-    backends: [
-      resourcesToBackend(
-        (lng: string, ns: string) => import(`/locales/${lng}/${ns}.json`)
-      ),
-    ],
-    backendOptions: [],
-  },
+  // backend: {
+  //   backends: [
+  //     resourcesToBackend(
+  //       (lng: string, ns: string) => import(`/locales/${lng}/${ns}.json`)
+  //     ),
+  //   ],
+  //   backendOptions: [],
+  // },
 };

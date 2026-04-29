@@ -23,7 +23,9 @@ export function useCharacterLearningContext({
         JSON.stringify(item),
       ),
     ),
-  ]?.map((item: any) => JSON.parse(item));
+  ]
+    ?.map((item: any) => JSON.parse(item))
+    ?.filter((item) => item?.contentId);
 
   return contentContext;
 }
@@ -33,8 +35,6 @@ export const CharacterLearningContext = ({
 
   characterId,
 }: any) => {
-  // const learnedCharacter = selectedComp;
-
   const contentContext = useCharacterLearningContext({ characterId });
 
   if (!contentContext?.length) {
@@ -44,8 +44,6 @@ export const CharacterLearningContext = ({
   if (contentContext?.length) {
     return (
       <div>
-        {/* <h1>TODO: {characterId}</h1> */}
-
         {contentContext?.map((item: any) => {
           return (
             <SentenceItem

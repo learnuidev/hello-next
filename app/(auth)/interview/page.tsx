@@ -4,6 +4,8 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { ContentItemPreview } from "./components/content-item-preview";
 import { listGridBankMediaContent } from "./modules/media/media.api";
 import { GridBankMediaContent } from "./modules/media/media.types";
+import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
+import { withTimeout } from "./utils/with-timeout";
 
 export default function InterviewPage() {
   const {
@@ -12,7 +14,13 @@ export default function InterviewPage() {
     isError,
   } = useQuery({
     queryKey: ["list-grid-bank-assets"],
-    queryFn: listGridBankMediaContent,
+    queryFn: () => {
+      return withTimeout(listGridBankMediaContent(), 3000);
+    },
+    retry: false,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
   });
 
   const queryClient = useQueryClient();
@@ -43,8 +51,8 @@ export default function InterviewPage() {
 
       <main>
         {isLoading ? (
-          <div>
-            <p>Is Loading...</p>{" "}
+          <div className="text-center my-32">
+            <LottieLoadingAnimation />
           </div>
         ) : isError ? (
           <div>

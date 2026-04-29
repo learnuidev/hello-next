@@ -1,8 +1,17 @@
 import { GRID_BANK_DATA } from "./media.mock";
-import { GridBankMediaContent } from "./media.types";
+import {
+  GridBankMediaContent,
+  GridBankMediaContentSchema,
+} from "./media.types";
 
 export const listGridBankMediaContent = async (): Promise<
   GridBankMediaContent[]
 > => {
-  return GRID_BANK_DATA;
+  const result = GridBankMediaContentSchema.array().safeParse(GRID_BANK_DATA);
+
+  if (!result.success) {
+    throw new Error(`Invalid data: ${result.error.message}`);
+  }
+
+  return result.data;
 };

@@ -39,7 +39,7 @@ export function VideoDetailsContent({
       <div className="max-w-5xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8 items-start">
           <div className="space-y-4">
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-black group">
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-black group h-[800px]">
               <video
                 src={content.url_video_watermark}
                 controls
@@ -47,9 +47,6 @@ export function VideoDetailsContent({
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </div>
-            <h1 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-400 leading-tight">
-              {content.title}
-            </h1>
           </div>
 
           <div className="space-y-6 lg:sticky lg:top-8">

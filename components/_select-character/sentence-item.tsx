@@ -211,6 +211,7 @@ export const SentenceItem = (props: any) => {
                             getNmmLink({
                               id: item?.input,
                               lang,
+                              contentId: currentPhrase?.contentId || contentId,
                             }),
                           );
                         }}
@@ -262,7 +263,8 @@ export const SentenceItem = (props: any) => {
                               key={`character-title-${item}-${idx}-${idx}`}
                               href={getNmmLink({
                                 id: item,
-                                contentId,
+                                contentId:
+                                  currentPhrase?.contentId || contentId,
 
                                 lang,
                               })}

@@ -26,17 +26,17 @@ import { smartSplit } from "../youtube-page/utils/smart-split";
 import { YoutubeButton } from "../youtube-page/youtube-button";
 import { CharacterItem } from "./character-item";
 import { PlayButtonV2 } from "./play-button-v2";
-import { GoogleTranslateLink } from "./selected-character/google-translate-link";
 import { useGetCharacterAnalytics } from "./use-get-character-analytics";
 import { isNonRomanLang, isRomanLang } from "./utils/is-non-roman-lang";
 import { WithInteractiveTitle } from "./with-interative-title";
+import { useGetContentId } from "@/app/(auth)/convos/[content-id]/hooks/use-get-content-id";
 
 export const SentenceItem = (props: any) => {
-  const { selectedComp, selectedChar, lang, currentPhrase } = props;
+  const { selectedComp, lang, currentPhrase } = props;
 
   const searchParams = useSearchParams();
 
-  const contentId = searchParams.get("contentId");
+  const contentId = useGetContentId();
 
   const resolvedLang =
     currentPhrase?.lang || lang || selectedComp?.lang || currentPhrase?.lang;
@@ -102,14 +102,6 @@ export const SentenceItem = (props: any) => {
           </p>
         </div>
         <div className="flex gap-4 justify-end items-center w-full sm:mt-0">
-          {currentPhrase?.contentId && (
-            <Link
-              href={`/convos/${currentPhrase?.contentId}${currentPhrase?.start ? `?start=${currentPhrase?.start}` : ""}`}
-            >
-              <Icons.mandarin />
-            </Link>
-          )}
-
           {currentPhrase?.contentId && currentPhrase?.id ? (
             <YoutubeButton
               className="text-md"
@@ -124,6 +116,14 @@ export const SentenceItem = (props: any) => {
               text={currentPhrase?.input || currentPhrase?.hanzi}
               lang={lang || currentPhrase?.lang}
             />
+          )}
+
+          {currentPhrase?.contentId && (
+            <Link
+              href={`/convos/${currentPhrase?.contentId}${currentPhrase?.start ? `?start=${currentPhrase?.start}` : ""}`}
+            >
+              <Icons.mandarin />
+            </Link>
           )}
 
           <Link
@@ -260,7 +260,13 @@ export const SentenceItem = (props: any) => {
                                   : "text-2xl"
                               }
                               key={`character-title-${item}-${idx}-${idx}`}
-                              href={`/nmm/${item}?lang=${lang || "zh"}`}
+                              href={getNmmLink({
+                                id: item,
+                                contentId,
+
+                                lang,
+                              })}
+                              // href={`/nmm/${item}?lang=${lang || "zh"}`}
                             >
                               <CharacterItem
                                 hanzis={smartSplit({

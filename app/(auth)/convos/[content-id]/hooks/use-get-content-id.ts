@@ -8,7 +8,5 @@ export const useGetContentId = () => {
 
   const contentId = params["content-id"] || params.contentId;
 
-  console.log("CONTENT ID", contentId);
-
   return contentId;
 };

@@ -8,7 +8,7 @@ export const getNmmLink = ({
   id: string;
   lang: string;
   contentId?: string;
-  context?: string;
+  context?: string | null;
   view?: string;
 }) => {
   let baseLink = `/nmm/${encodeURIComponent(id)}?lang=${lang}`;

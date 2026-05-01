@@ -33,6 +33,7 @@ import { useCharacterEditStore } from "./use-character-edit-store";
 import { useYoutubeRefState } from "./use-youtube-ref-state";
 import { isNonRomanLang } from "./utils/is-non-roman-lang";
 import { WithInteractiveTitle } from "./with-interative-title";
+import { useGetContentId } from "@/app/(auth)/convos/[content-id]/hooks/use-get-content-id";
 
 export const CharacterTitle = (props: any) => {
   const { lang, characterId } = props;
@@ -74,6 +75,7 @@ export const CharacterTitle = (props: any) => {
   const StatusIcon = getStatusIcon(character?.status);
   const showPinyin = useBrightModeStore((state) => state.showPinyin);
   const { readMode } = useReadModeState();
+  const contentId = useGetContentId();
 
   const customRef: any = useRef(null) as any;
 
@@ -255,7 +257,12 @@ export const CharacterTitle = (props: any) => {
                                 : "text-2xl"
                             }
                             key={`character-title-${item}-${idx}-${idx}`}
-                            href={`/nmm/${item}?lang=${lang || "zh"}${context ? `&context=${context}` : ""}`}
+                            href={getNmmLink({
+                              id: item,
+                              contentId,
+                              context: context,
+                              lang,
+                            })}
                           >
                             <CharacterItem
                               hanzis={smartSplit({
@@ -373,7 +380,12 @@ export const CharacterTitle = (props: any) => {
                             : "text-2xl"
                         }
                         key={`character-title-${item}-${idx}-${idx}`}
-                        href={`/nmm/${item}?lang=${lang || "zh"}${context ? `&context=${context}` : ""}`}
+                        href={getNmmLink({
+                          id: item,
+                          contentId,
+                          context: context,
+                          lang,
+                        })}
                       >
                         <CharacterItem
                           hanzis={smartSplit({

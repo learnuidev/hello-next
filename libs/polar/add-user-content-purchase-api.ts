@@ -12,7 +12,7 @@ export const addUserContentPurchaseApi = async ({
   userEmail: string;
   orderId: string;
   contentId: string;
-  payload: any;
+  payload?: any;
 }) => {
   // const order = await polarApi.orders.get({ id: orderId });
 

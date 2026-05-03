@@ -18,10 +18,24 @@ export async function POST(req: Request) {
       contentId,
     );
 
+    if (!contentPurchase) {
+      // return 404 with message: purchase not found
+      return Response.json(
+        {
+          message: "You have not purchased the content",
+        },
+
+        { status: 404 },
+      );
+    }
+
     return Response.json(contentPurchase);
   } else {
-    return Response.json({
-      message: "Not authorized",
-    });
+    return Response.json(
+      {
+        message: "Not authorized",
+      },
+      { status: 401 },
+    );
   }
 }

@@ -14,13 +14,9 @@ export const getContentPurchase = async (
     },
   });
 
-  console.log("COMMAND", command);
-
-  console.log("AWS CONFIG", awsConfig.tables);
-
   const response = await dynamodbClient.send(command);
 
-  console.log("RESPONSE", response);
+  const contentPurchase = response?.Item;
 
-  return response?.Item;
+  return contentPurchase;
 };

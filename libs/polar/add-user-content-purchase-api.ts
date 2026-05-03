@@ -7,27 +7,29 @@ export const addUserContentPurchaseApi = async ({
   userEmail,
   orderId,
   contentId,
+  payload,
 }: {
   userEmail: string;
   orderId: string;
   contentId: string;
+  payload: any;
 }) => {
-  const order = await polarApi.orders.get({ id: orderId });
+  // const order = await polarApi.orders.get({ id: orderId });
 
-  if (!order) {
-    throw new Error(`Order with ID: ${orderId} not found`);
-  }
+  // if (!order) {
+  //   throw new Error(`Order with ID: ${orderId} not found`);
+  // }
 
   const newPlan = {
     userId: userEmail,
     id: `${userEmail}_${contentId}`,
     createdAt: Date.now(),
+    // payload,
   };
 
   const command = new PutCommand({
     TableName: awsConfig.tables.contentPurchasesTable,
     Item: newPlan,
-    ConditionExpression: "attrbute_not_exists(id)",
   });
 
   await dynamodbClient.send(command);

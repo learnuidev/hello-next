@@ -7,18 +7,47 @@ import { Webhooks } from "@polar-sh/nextjs";
 export const POST = Webhooks({
   webhookSecret: polarApiConfig.webhookSecret,
   onPayload: async (payload) => {},
+  onOrderUpdated: async (payload) => {
+    const orderId = payload.data.id;
+    const userEmail = payload.data.customer.email;
+    // const contentId = payload.data?.metadata?.contentId || `${Date.now()}`;
+    const contentId = `${Date.now()}-content`;
+
+    console.log("PAY LOAD", payload);
+
+    if (contentId) {
+      console.log("Content successfully added");
+
+      await addUserContentPurchaseApi({
+        userEmail,
+        orderId,
+        contentId,
+        payload,
+      });
+    } else {
+      await addUserPlanApi({ orderId, userEmail });
+      console.log("Plan successfully created");
+    }
+
+    console.log("Plan successfully created");
+  },
   onOrderCreated: async (payload) => {
     const orderId = payload.data.id;
     const userEmail = payload.data.customer.email;
-    const contentId = payload.data.metadata.contentId;
+    const contentId = `${Date.now()}-content`;
+    // const contentId = payload.data?.metadata?.contentId || `${Date.now()}`;
+
+    console.log("PAY LOAD", payload);
 
     if (contentId) {
-      if (typeof contentId !== "string") {
-        throw new Error("Content ID must be string");
-      }
       console.log("Content successfully added");
 
-      await addUserContentPurchaseApi({ userEmail, orderId, contentId });
+      await addUserContentPurchaseApi({
+        userEmail,
+        orderId,
+        contentId,
+        payload,
+      });
     } else {
       await addUserPlanApi({ orderId, userEmail });
       console.log("Plan successfully created");

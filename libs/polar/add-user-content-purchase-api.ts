@@ -23,6 +23,7 @@ export const addUserContentPurchaseApi = async ({
     id: `${userEmail}_${contentId}`,
     createdAt: Date.now(),
     contentId,
+    polarOrderId: orderId,
   };
 
   const command = new PutCommand({

@@ -1,6 +1,5 @@
 "use client";
 
-import { useJwtToken } from "@/app/next/features/html-parser/hooks/use-jwt-token";
 import { currentAuthUser } from "@/libs/cognito/auth";
 
 import { ProductsListResponse } from "@polar-sh/sdk/models/operations/productslist.js";

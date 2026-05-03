@@ -24,7 +24,7 @@ export const addUserContentPurchaseApi = async ({
     userId: userEmail,
     id: `${userEmail}_${contentId}`,
     createdAt: Date.now(),
-    // payload,
+    payload,
   };
 
   const command = new PutCommand({

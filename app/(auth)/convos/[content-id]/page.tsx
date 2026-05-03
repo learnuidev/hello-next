@@ -15,6 +15,7 @@ import { ConvosNavBar } from "../convos-nav-bar";
 import { useRecentlyWatchedContent } from "../use-recently-watched-content-store";
 import { useGetContentId } from "./hooks/use-get-content-id";
 import { useGo } from "./hooks/use-go";
+import { WithContentPurcase } from "./with-content-purchase";
 
 function RemoveIfExistsButton({ contentId }: { contentId: string }) {
   const { recentlyWatched, setRecentlyWatched, isLoading } =
@@ -101,20 +102,22 @@ export default function ContentItem() {
   }, [editMode, goToNext, goToBefore]);
 
   return (
-    <WithContentItem>
-      <main>
-        <div>
-          {isFSM ? null : (
-            <div className="px-4 md:px-12">
-              <ConvosNavBar />
-            </div>
-          )}
+    <WithContentPurcase>
+      <WithContentItem>
+        <main>
+          <div>
+            {isFSM ? null : (
+              <div className="px-4 md:px-12">
+                <ConvosNavBar />
+              </div>
+            )}
 
-          <div className="mb-24">
-            <ConvoDetails contentId={contentId} />
+            <div className="mb-24">
+              <ConvoDetails contentId={contentId} />
+            </div>
           </div>
-        </div>
-      </main>
-    </WithContentItem>
+        </main>
+      </WithContentItem>
+    </WithContentPurcase>
   );
 }

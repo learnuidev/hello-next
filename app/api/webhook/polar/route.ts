@@ -1,4 +1,5 @@
 // src/app/api/webhook/polar/route.ts
+import { addUserContentPurchaseApi } from "@/libs/polar/add-user-content-purchase-api";
 import { addUserPlanApi } from "@/libs/polar/add-user-plan-api";
 import { polarApiConfig } from "@/libs/polar/polar-api-config";
 import { Webhooks } from "@polar-sh/nextjs";
@@ -9,8 +10,19 @@ export const POST = Webhooks({
   onOrderCreated: async (payload) => {
     const orderId = payload.data.id;
     const userEmail = payload.data.customer.email;
+    const contentId = payload.data.metadata.contentId;
 
-    await addUserPlanApi({ orderId, userEmail });
+    if (contentId) {
+      if (typeof contentId !== "string") {
+        throw new Error("Content ID must be string");
+      }
+      console.log("Content successfully added");
+
+      await addUserContentPurchaseApi({ userEmail, orderId, contentId });
+    } else {
+      await addUserPlanApi({ orderId, userEmail });
+      console.log("Plan successfully created");
+    }
 
     console.log("Plan successfully created");
   },

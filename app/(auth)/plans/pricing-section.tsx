@@ -17,25 +17,37 @@ import { useGetMemberType } from "./hooks/use-get-member-type";
 import { useListProductsQuery } from "./hooks/use-list-products-query";
 import { productNames } from "./plans.types";
 import { formatPrice } from "./utils/format-price";
+import { Nothing } from "@/app/nmm/nothing";
 
 export function PricingSection() {
-  const { data: products, isLoading } = useListProductsQuery();
+  const { data: products, isLoading, isError } = useListProductsQuery();
+
+  console.log("products", products);
 
   const proProduct = products?.result?.items?.find(
-    (item) => item?.name === productNames.pro
+    (item) => item?.name === productNames.pro,
   );
   const freeProduct = products?.result?.items?.find(
-    (item) => item?.name === productNames.free
+    (item) => item?.name === productNames.free,
   );
 
-  const { data: authUserProfile } = useGetAuthUserProfileQuery();
+  const { data: authUserProfile, isLoading: isProfileLoading } =
+    useGetAuthUserProfileQuery();
 
   const memberType = useGetMemberType();
 
   const isProMember = memberType === "pro";
   const isFreeMember = memberType === "free";
 
-  if (isLoading) {
+  if (isError) {
+    return (
+      <div>
+        <Nothing message={"Error loading plans"} />
+      </div>
+    );
+  }
+
+  if (isLoading || isProfileLoading) {
     return (
       <div>
         <LottieLoadingAnimation />
@@ -61,7 +73,9 @@ export function PricingSection() {
         <div
           className={cn(
             "grid gap-8 mx-auto",
-            isProMember ? "md:grid-cols-1 max-w-md" : "md:grid-cols-2 max-w-4xl"
+            isProMember
+              ? "md:grid-cols-1 max-w-md"
+              : "md:grid-cols-2 max-w-4xl",
           )}
         >
           {/* Free Plan */}
@@ -166,7 +180,7 @@ export function PricingSection() {
                       ? 0
                       : (proProduct?.prices[0].amountType === "fixed" &&
                           proProduct?.prices[0].priceAmount) ||
-                          0
+                          0,
                   )}
                 </span>
                 <span className="text-slate-600 dark:text-slate-400 ml-2">
@@ -240,7 +254,7 @@ export function PricingSection() {
         </div>
 
         {/* FAQ or Additional Info */}
-        <div className="text-center mt-16">
+        {/* <div className="text-center mt-16">
           <p className="text-slate-600 dark:text-slate-400 mb-4">
             {`Need help choosing? We're here to help you find the perfect plan.`}
           </p>
@@ -250,7 +264,7 @@ export function PricingSection() {
           >
             Contact Sales
           </Button>
-        </div>
+        </div> */}
       </div>
     </div>
   );

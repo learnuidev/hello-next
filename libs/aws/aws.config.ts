@@ -12,6 +12,7 @@ export interface AWSConfig {
     componentsTable: string;
     grammarTable: string;
     plansTable: string;
+    contentPurchasesTable: string;
   };
 
   accessKeyId: string;
@@ -31,6 +32,7 @@ export const awsConfig: AWSConfig = {
     componentsTable: process.env.COMPONENTS_TABLE || "",
     grammarTable: process.env.GRAMMAR_TABLE || "",
     plansTable: process.env.PLANS_TABLE || "",
+    contentPurchasesTable: process.env.CONTENT_PURCHASES_TABLE || "",
   },
   accessKeyId: process.env.AWS_ACCESS_KEY_ID || "",
   secretKey: process.env.AWS_SECRET_ACCESS_KEY || "",

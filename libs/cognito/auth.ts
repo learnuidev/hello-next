@@ -83,13 +83,12 @@ export async function confirmSignInPasswordless({
 }
 
 function formatUser(user: any) {
-  const { refreshToken, idToken } = user.getSignInUserSession();
+  const { idToken } = user.getSignInUserSession();
 
   const formattedUser = {
-    ...user.attributes,
-    refreshToken: refreshToken.getToken(),
     jwt: idToken.jwtToken,
-    // jwtToken: accessToken.jwtToken,
+  } as {
+    jwt: string;
   };
 
   return formattedUser;
@@ -131,13 +130,9 @@ export async function signOut() {
 }
 
 export async function currentAuthUser() {
-  try {
-    const user = await Auth.currentAuthenticatedUser();
+  const user = await Auth.currentAuthenticatedUser();
 
-    return formatUser(user);
-  } catch (err) {
-    throw err;
-  }
+  return formatUser(user);
 }
 
 const auth = {

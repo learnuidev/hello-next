@@ -1,17 +1,6 @@
-// import { polarApiConfig } from "@/libs/polar/polar-api-config";
-// import { Checkout } from "@polar-sh/nextjs";
-
-// export const GET = Checkout({
-//   accessToken: polarApiConfig.accessToken,
-//   successUrl: polarApiConfig.successUrl,
-//   server: polarApiConfig.server,
-// });
-
-// app/api/checkout/route.ts
 import { polarApi } from "@/libs/polar/polar-api";
 import { polarApiConfig } from "@/libs/polar/polar-api-config";
 import { NextResponse } from "next/server";
-// import { polarApi } from "@/lib/polar";
 
 export async function POST(request: Request) {
   const { productId, customerEmail, customerName, contentId } =

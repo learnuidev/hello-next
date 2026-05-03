@@ -22,7 +22,7 @@ export const POST = Webhooks({
         userEmail,
         orderId,
         contentId,
-        payload,
+        payload: payload.data,
       });
     } else {
       await addUserPlanApi({ orderId, userEmail });
@@ -46,7 +46,7 @@ export const POST = Webhooks({
         userEmail,
         orderId,
         contentId,
-        payload,
+        payload: payload.data,
       });
     } else {
       await addUserPlanApi({ orderId, userEmail });

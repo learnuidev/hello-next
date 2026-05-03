@@ -4,7 +4,7 @@ import { polarApi } from "@/libs/polar/polar-api";
 
 export const maxDuration = 60;
 
-export async function GET(req: Request) {
+export async function GET() {
   const headersApi = await headers();
 
   const jwtToken = headersApi.get("authorization") || "";

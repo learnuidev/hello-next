@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useListProductsQuery } from "../../plans/hooks/use-list-products-query";
 import { useGetAuthUserProfileQuery } from "@/hooks/user/use-get-auth-user-profile";
 import { useMutation } from "@tanstack/react-query";
+import { siteConfig } from "@/lib/config";
 
 export const WithContentPurcase = ({
   children,
@@ -38,6 +39,8 @@ export const WithContentPurcase = ({
           productId: mandarinoGradedContent?.id,
           customerEmail: authUserProfile?.email,
           contentId,
+          successUrl: window.location.href,
+          // successUrl: `${siteConfig.appUrl}/convos/${contentId}`,
         }),
       });
 

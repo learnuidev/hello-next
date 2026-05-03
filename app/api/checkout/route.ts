@@ -3,7 +3,7 @@ import { polarApiConfig } from "@/libs/polar/polar-api-config";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
-  const { productId, customerEmail, customerName, contentId } =
+  const { productId, customerEmail, customerName, contentId, successUrl } =
     await request.json();
 
   try {
@@ -11,7 +11,7 @@ export async function POST(request: Request) {
       products: [productId],
       customerEmail: customerEmail,
       customerName: customerName,
-      successUrl: polarApiConfig.successUrl,
+      successUrl: successUrl || polarApiConfig.successUrl,
 
       metadata: {
         contentId,

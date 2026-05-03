@@ -5,8 +5,11 @@ import { useQuery } from "@tanstack/react-query";
 
 interface ContentPurchase {
   userId: string;
+  // id = email_contentId
   id: string;
   createdAt: number;
+  contentId: string;
+  polarOrderId: string;
 }
 
 const getContentPurchaseApi = async (

@@ -1,8 +1,8 @@
-import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import { useGetContentQuery } from "@/domain/content/content.queries";
+import { useGetAuthUserProfileQuery } from "@/hooks/user/use-get-auth-user-profile";
 
 export const useIsContentAuthor = (contentId: string) => {
-  const { data: user } = useCurrentAuthUser();
+  const { data: user } = useGetAuthUserProfileQuery();
 
   const { data: content } = useGetContentQuery({ contentId });
 

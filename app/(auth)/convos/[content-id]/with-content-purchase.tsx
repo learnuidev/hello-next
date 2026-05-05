@@ -8,6 +8,7 @@ import { useListProductsQuery } from "../../plans/hooks/use-list-products-query"
 import { useGetAuthUserProfileQuery } from "@/hooks/user/use-get-auth-user-profile";
 import { useMutation } from "@tanstack/react-query";
 import { siteConfig } from "@/lib/config";
+import { useIsContentAuthor } from "./hooks/use-is-content-author";
 
 export const WithContentPurcase = ({
   children,
@@ -17,6 +18,7 @@ export const WithContentPurcase = ({
   const contentId = useGetContentId();
   const { data: authUserProfile, isLoading: isProfileLoading } =
     useGetAuthUserProfileQuery();
+  const isAuthor = useIsContentAuthor(contentId);
 
   const { data, isLoading, isError, error } = useGetContentPurchase(contentId);
 
@@ -49,8 +51,6 @@ export const WithContentPurcase = ({
     },
   });
 
-  console.log("mandarinoGradedContent", mandarinoGradedContent);
-
   if (isLoading) {
     return (
       <div>
@@ -59,7 +59,7 @@ export const WithContentPurcase = ({
     );
   }
 
-  if (isError) {
+  if (isError && !isAuthor) {
     return (
       <div>
         <Nothing icon={Icons.cat} message={error?.message}>

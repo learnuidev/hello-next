@@ -9,7 +9,10 @@ export const useGetContentId = () => {
   };
 
   const contentId =
-    params["content-id"] || params.contentId || searchParams.get("contentId");
+    params["content-id"] ||
+    params.contentId ||
+    searchParams.get("contentId") ||
+    "";
 
   return contentId;
 };

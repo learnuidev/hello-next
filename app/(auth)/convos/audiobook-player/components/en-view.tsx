@@ -15,7 +15,7 @@ export function EnView({
         if (seekAndPlay) seekAndPlay(currentTranscription.start);
       }}
       style={{ fontSize: `${fontSize}px` }}
-      className="dark:text-gray-600 font-extralight mt-0 sm:mt-12"
+      className="dark:text-white text-black font-extralight mt-0 sm:mt-12"
     >
       {showChinglish && containsChinglish
         ? currentTranscription?.chinglish

@@ -344,11 +344,16 @@ export const SentenceItem = (props: any) => {
 
                         setIfExists({ ...currentPhrase });
 
+                        const finalContentId =
+                          currentPhrase?.contentId !== undefined
+                            ? currentPhrase?.contentId
+                            : contentId;
+
                         router.push(
                           getNmmLink({
                             id: cleanedVal,
                             lang: resolvedLang,
-                            contentId: currentPhrase?.contentId || contentId,
+                            contentId: finalContentId,
                             context:
                               currentPhrase?.hanzi || currentPhrase?.input,
                           }),

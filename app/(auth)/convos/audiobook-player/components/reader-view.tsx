@@ -24,6 +24,19 @@ export function ReaderView({
 
   return (
     <div>
+      {hideEnglish
+        ? null
+        : showEn && (
+            <EnView
+              currentTime={currentTime}
+              containsChinglish={containsChinglish}
+              currentTranscription={currentTranscription}
+              seekAndPlay={seekAndPlay}
+              contentId={contentId}
+              lang={lang}
+            />
+          )}
+
       {currentTranscription?.lang === "zh" && currentTranscription?.words ? (
         <ReaderViewChinese
           currentTime={currentTime}
@@ -54,19 +67,6 @@ export function ReaderView({
           />
         </div>
       )}
-
-      {hideEnglish
-        ? null
-        : showEn && (
-            <EnView
-              currentTime={currentTime}
-              containsChinglish={containsChinglish}
-              currentTranscription={currentTranscription}
-              seekAndPlay={seekAndPlay}
-              contentId={contentId}
-              lang={lang}
-            />
-          )}
     </div>
   );
 }

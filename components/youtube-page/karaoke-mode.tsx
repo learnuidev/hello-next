@@ -92,7 +92,7 @@ function CurrentTranscriptionViewer({
         {showEn && (
           <p
             className={cn(
-              "text-[16px] lg:text-xl font-extralight dark:text-gray-500 text-black sm:mt-20 mt-12",
+              "text-[16px] lg:text-xl font-extralight  text-black sm:mt-20 mt-12",
             )}
           >
             {containsChinglish && showChinglish

@@ -9,6 +9,7 @@ import { useGetAuthUserProfileQuery } from "@/hooks/user/use-get-auth-user-profi
 import { useMutation } from "@tanstack/react-query";
 import { siteConfig } from "@/lib/config";
 import { useIsContentAuthor } from "./hooks/use-is-content-author";
+import { useGetContentQuery } from "@/domain/content/content.queries";
 
 export const WithContentPurcase = ({
   children,
@@ -19,6 +20,12 @@ export const WithContentPurcase = ({
   const { data: authUserProfile, isLoading: isProfileLoading } =
     useGetAuthUserProfileQuery();
   const isAuthor = useIsContentAuthor(contentId);
+  const { data: user, isLoading: isAuthProfileLoading } =
+    useGetAuthUserProfileQuery();
+
+  const { data: content, isLoading: isContentLoading } = useGetContentQuery({
+    contentId,
+  });
 
   const { data, isLoading, isError, error } = useGetContentPurchase(contentId);
 
@@ -51,7 +58,7 @@ export const WithContentPurcase = ({
     },
   });
 
-  if (isLoading) {
+  if (isLoading || isAuthProfileLoading || isContentLoading) {
     return (
       <div>
         <LottieLoadingAnimation />

@@ -151,6 +151,7 @@ export const CharacterTitle = (props: any) => {
                           router.push(
                             getNmmLink({
                               id: item?.input,
+                              contentId,
                               lang,
                             }),
                           );

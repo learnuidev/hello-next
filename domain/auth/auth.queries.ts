@@ -1,3 +1,4 @@
+import { useGetAuthUserProfileQuery } from "@/hooks/user/use-get-auth-user-profile";
 import { currentAuthUser } from "@/libs/cognito/auth";
 import { isSuperAdmin } from "@/libs/constants/super-admin-emails";
 import { useQuery } from "@tanstack/react-query";
@@ -14,7 +15,7 @@ export function useCurrentAuthUser(options = {}) {
 }
 
 export const useIsSuperAdmin = () => {
-  const { data } = useCurrentAuthUser();
+  const { data } = useGetAuthUserProfileQuery();
 
   return isSuperAdmin(data?.email);
 };

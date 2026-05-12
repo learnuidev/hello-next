@@ -15,6 +15,7 @@ import { Icons } from "../ui/icons.v2";
 import { useSelectedItem } from "./use-selected-item";
 import { useReadModeState } from "../read-mode-button";
 import { ReaderView } from "@/app/(auth)/convos/audiobook-player/components/reader-view";
+import { EnglishTopView } from "@/app/(auth)/convos/audiobook-player/components/english-top-view";
 
 function CurrentTranscriptionViewer({
   seekTo,
@@ -37,6 +38,11 @@ function CurrentTranscriptionViewer({
   const showEn = useBrightModeStore((state) => state.showEn);
   const showPinyin = useBrightModeStore((state) => state.showPinyin);
 
+  const view =
+    (showChinglish
+      ? currentTranscription?.chinglish || currentTranscription?.en
+      : currentTranscription?.en) || "";
+
   return (
     <MandoContextMenu lang={currentTranscription?.lang || ""}>
       <div
@@ -47,6 +53,10 @@ function CurrentTranscriptionViewer({
           romanOrPinyin?.length < 16 ? "text-4x" : "text-lg",
         )}
       >
+        {showEn && (
+          <EnglishTopView currentTranscription={currentTranscription} />
+        )}
+
         {isNonRomanContent && showPinyin && (
           <Link
             target="_blank"
@@ -55,7 +65,7 @@ function CurrentTranscriptionViewer({
             }}
             href={`/nmm/${currentTranscription?.input || currentTranscription?.hanzi}?lang=${lang}`}
             className={cn(
-              "text-[16px] font-light dark:text-gray-500 mb-0 sm:mb-4 block",
+              "text-[16px] font-light dark:text-gray-500 mb-0 block",
             )}
           >
             {currentTranscription?.pinyin || currentTranscription?.roman}
@@ -88,18 +98,6 @@ function CurrentTranscriptionViewer({
             words={currentTranscription.words}
           />
         </div>
-
-        {showEn && (
-          <p
-            className={cn(
-              "text-[16px] lg:text-xl font-extralight dark:text-white text-black sm:mt-20 mt-12",
-            )}
-          >
-            {containsChinglish && showChinglish
-              ? currentTranscription?.chinglish
-              : currentTranscription?.en}
-          </p>
-        )}
       </div>
     </MandoContextMenu>
   );

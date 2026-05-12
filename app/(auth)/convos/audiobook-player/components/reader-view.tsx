@@ -39,7 +39,7 @@ export function ReaderView({
             // />
           )}
 
-      <div className="sm:mt-16 mt-4">
+      <div className="mb-4">
         {currentTranscription?.lang === "zh" && currentTranscription?.words ? (
           <ReaderViewChinese
             currentTime={currentTime}

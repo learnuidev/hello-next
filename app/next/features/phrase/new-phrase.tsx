@@ -99,7 +99,7 @@ export const NewPhrase = ({ cancelNewChat }: { cancelNewChat: () => void }) => {
                 .then((resp) => {
                   cancelNewChat();
                   router.push(
-                    `${rootUrl}?feature-id=phrase&contextId=${resp?.id}`
+                    `${rootUrl}?feature-id=phrase&contextId=${resp?.id}`,
                   );
                 });
             }}

@@ -272,6 +272,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
                       content={content}
                       currentTranscription={currentTranscription}
                       currentTime={currentTime}
+                      isVideoHidden={isVideoHidden}
                       isPlaying={playing}
                       loop={loop}
                     />

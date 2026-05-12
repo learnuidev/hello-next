@@ -27,10 +27,10 @@ export const EnglishTopView = ({
 
   return (
     <div className={cn("sticky top-0 z-30 dark:text-gray-300", className)}>
-      <div className="pb-4 mt-8">
+      <div className="pb-4">
         <div
           className={cn(
-            `flex justify-between items-center mt-2 w-full`,
+            `flex justify-between items-center w-full`,
             view.length > 400 ? "h-36" : view.length > 200 ? "h-24" : "h-16",
           )}
         >

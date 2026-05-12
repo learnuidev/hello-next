@@ -75,7 +75,7 @@ export const ParaView = ({
     <div className={cn("px-4 pb-24", "max-w-4xl")}>
       <EnglishTopView currentTranscription={currentTranscription} />
 
-      <div className="mb-8 sm:mt-16 mt-8">
+      <div className="mb-8">
         <ScrollArea
           className={cn(
             `space-y-4 rounded-md dark:border-gray-900 w-full pb-8`,

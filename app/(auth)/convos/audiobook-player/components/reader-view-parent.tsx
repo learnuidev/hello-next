@@ -20,13 +20,14 @@ export const ReaderViewParent = ({
   content,
   currentTranscription,
   currentTime,
-
+  isVideoHidden,
   isPlaying,
 }: {
   currentTranscription: ContentTranscription;
   content: IContent;
   currentTime: number;
   isPlaying: boolean;
+  isVideoHidden: boolean;
   loop?: ContentTranscription;
 }) => {
   const showPinyin = useBrightModeStore((state) => state.showPinyin);
@@ -50,15 +51,17 @@ export const ReaderViewParent = ({
   const containsChinglish = !!content.transcriptions?.[0]?.chinglish;
 
   return (
-    <div className={cn("px-4 pb-24", "max-w-4xl")}>
+    <div
+      className={cn("px-4 pb-24", "max-w-4xl", isVideoHidden ? "mx-auto" : "")}
+    >
       <EnglishTopView currentTranscription={currentTranscription} />
 
-      <div className="pb-32 sm:mt-16 mt-4">
+      <div className="">
         <div>
           <div>
             <div className="">
               <div className="text-sm sm:text-2xl gap-4">
-                <div className="py-4 sm:space-y-8 space-y-2">
+                <div className="">
                   {group?.map((transcription: ContentTranscription) => {
                     if (readMode) {
                       return (

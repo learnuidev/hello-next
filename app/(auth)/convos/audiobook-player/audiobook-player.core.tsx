@@ -280,11 +280,10 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
                 </div>
               ) : (
                 <div
-                  className={
-                    isVideoHidden
-                      ? "col-span-12 mx-auto max-w-4xl sm:mt-32 mt-8"
-                      : ""
-                  }
+                  className={cn(
+                    isVideoHidden ? "col-span-12 mx-auto max-w-4xl" : "",
+                    "sm:mt-32 mt-8",
+                  )}
                 >
                   <ParaView
                     loop={loop}

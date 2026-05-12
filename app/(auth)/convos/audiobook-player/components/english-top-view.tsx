@@ -26,12 +26,14 @@ export const EnglishTopView = ({
       : currentTranscription?.en) || "";
 
   return (
-    <div className={cn("sticky top-0 z-30 dark:text-gray-300", className)}>
+    <div
+      className={cn("sticky top-0 z-30 dark:text-gray-300 mb-12", className)}
+    >
       <div className="pb-4">
         <div
           className={cn(
             `flex justify-between items-center w-full`,
-            view.length > 400 ? "h-36" : view.length > 200 ? "h-24" : "h-16",
+            // view.length > 400 ? "h-36" : view.length > 200 ? "h-24" : "h-16",
           )}
         >
           <p className="space-x-2 font-extralight pb-[4px] overflow sm:text-xl text-md">

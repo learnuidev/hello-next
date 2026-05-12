@@ -142,7 +142,7 @@ export function AudioBookSettingsPopover({
             {/* )} */}
 
             <div className="flex items-center space-x-2 justify-between">
-              <Label htmlFor="video-visible">FSM</Label>
+              <Label htmlFor="video-visible">Focus Mode</Label>
               <Switch
                 checked={isFSM}
                 onCheckedChange={() => {

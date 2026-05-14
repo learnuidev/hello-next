@@ -73,7 +73,7 @@ export const TheDock = ({
               className={cn(
                 "transition",
 
-                "hidden sm:block w-full"
+                "hidden sm:block w-full",
               )}
             >
               {children}

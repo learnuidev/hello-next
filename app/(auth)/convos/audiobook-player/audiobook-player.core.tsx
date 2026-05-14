@@ -1,8 +1,8 @@
-import { Slider } from "@/components/ui/slider";
-
 import { MandoContextMenu } from "@/app/review/review-cloze-content/mando-context-menu";
 
 import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
+import { TheDock } from "@/components/the-dock";
+import { Icons } from "@/components/ui/icons.v2";
 import { useContextPlayContextState } from "@/components/youtube-page/hooks/use-play-history-state";
 import { KaraokeMode } from "@/components/youtube-page/karaoke-mode";
 import { usePlayerViewModeStore } from "@/components/youtube-page/player-view-mode-store";
@@ -11,17 +11,15 @@ import { useIsSmall } from "@/components/youtube-page/utils/use-is-small";
 import { IContent } from "@/domain/content/content.api";
 import { cn } from "@/lib/utils";
 import ReactPlayer from "react-player";
-import { formatTime } from "../_play/utils";
 import { isVideoUrl } from "../utils/is-video-url";
 import { isYoutube } from "../utils/is-youtube";
 import { AllTranscriptionsEditor } from "./components/all-transcriptions-editor";
+import { AudiobookPlayerBar } from "./components/audiobook-player-bar";
 import { AudioBookPlayerControls } from "./components/audiobook-player-controls";
 import { CharacterMenuBar } from "./components/character-menu-bar";
+import { ParaView } from "./components/para-view";
 import { ReaderViewParent } from "./components/reader-view-parent";
 import { useAudioBookState } from "./hooks/use-audiobook-state";
-import { ParaView } from "./components/para-view";
-import { AudiobookPlayerBar } from "./components/audiobook-player-bar";
-import { Icons } from "@/components/ui/icons.v2";
 
 export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
   const {
@@ -299,57 +297,52 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
           </div>
         )}
 
-        <div className="fixed bottom-0 sm:bottom-2 w-full">
-          <div className="w-full max-w-4xl mx-auto sm:p-4 sm:py-2 p-2">
-            {isYoutubeOrVideo ? null : (
-              <ReactPlayer
-                key={content?.audio}
-                playbackRate={playbackRate}
-                progressInterval={progressInterval}
-                url={content?.audio}
-                onPlay={() => {
-                  setNewContextId();
+        {isYoutubeOrVideo ? null : (
+          <ReactPlayer
+            key={content?.audio}
+            playbackRate={playbackRate}
+            progressInterval={progressInterval}
+            url={content?.audio}
+            onPlay={() => {
+              setNewContextId();
 
-                  setPlaying(true);
-                }}
-                onPause={() => setPlaying(false)}
-                width="100%"
-                height="50px"
-                onReady={onReady}
-                playing={false}
-                controls={false}
-                ref={playerRef}
-                onProgress={(value) => {
-                  setCurrentTime(value.playedSeconds);
-                }}
-              />
-            )}
+              setPlaying(true);
+            }}
+            onPause={() => setPlaying(false)}
+            width="100%"
+            height="50px"
+            onReady={onReady}
+            playing={false}
+            controls={false}
+            ref={playerRef}
+            onProgress={(value) => {
+              setCurrentTime(value.playedSeconds);
+            }}
+          />
+        )}
+        <TheDock className="bottom-4 sm:bottom-2">
+          <div className="dark:bg-auto p-4 w-full max-w-4xl mx-auto">
+            <AudioBookPlayerControls
+              loop={loop}
+              setLoop={setLoop}
+              currentTranscription={currentTranscription}
+              seekBefore={seekBefore}
+              seekAfter={seekAfter}
+              handlePlayPause={handlePlayPause}
+              playing={playing}
+              showEn={showEn}
+              containsChinglish={containsChinglish}
+              isYoutubeOrVideo={isYoutubeOrVideo}
+              isReaderView={viewMode === "reader"}
+            />
 
-            <div className=" dark:bg-auto p-4">
-              <AudioBookPlayerControls
-                loop={loop}
-                setLoop={setLoop}
-                currentTranscription={currentTranscription}
-                seekBefore={seekBefore}
-                seekAfter={seekAfter}
-                handlePlayPause={handlePlayPause}
-                playing={playing}
-                showEn={showEn}
-                containsChinglish={containsChinglish}
-                isYoutubeOrVideo={isYoutubeOrVideo}
-                isReaderView={viewMode === "reader"}
-              />
-
-              <AudiobookPlayerBar
-                currentTime={currentTime}
-                handleSeekChange={handleSeekChange}
-                duration={duration}
-              />
-            </div>
-
-            {/* {!editMode && ( */}
+            <AudiobookPlayerBar
+              currentTime={currentTime}
+              handleSeekChange={handleSeekChange}
+              duration={duration}
+            />
           </div>
-        </div>
+        </TheDock>
       </div>
     </MandoContextMenu>
   );

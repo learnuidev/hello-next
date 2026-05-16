@@ -26,6 +26,7 @@ import { useGetContentId } from "./[content-id]/hooks/use-get-content-id";
 import { contentTypes } from "./constants/content-types";
 import { languages } from "@/app/next/features/phrase/languages";
 import { IMAGE_FORMATS } from "@/components/_select-character/selected-character/character-content/image-formats";
+import { isYoutube } from "./utils/is-youtube";
 
 export const GeneralContentSettings = () => {
   const [contentType, setContentType] = useState("not-selected");
@@ -37,6 +38,7 @@ export const GeneralContentSettings = () => {
   const [selectedAssetId, setSelectedAssetId] = useState("");
   const [imageTab, setImageTab] = useState<"upload" | "select">("upload");
   const [dragActive, setDragActive] = useState(false);
+  const [audioUrl, setAudioUrl] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const updateContentMutation = useUpdateContentMutation();
@@ -84,6 +86,9 @@ export const GeneralContentSettings = () => {
     if (content?.backgroundImageUrl) {
       setBackgroundImageUrl(content?.backgroundImageUrl);
     }
+    if (content?.audio) {
+      setAudioUrl(content?.audio);
+    }
   }, [
     content?.contentType,
     content?.title,
@@ -91,6 +96,7 @@ export const GeneralContentSettings = () => {
     content?.lang,
     content?.backgroundImageId,
     content?.backgroundImageUrl,
+    content?.audio,
   ]);
 
   useEffect(() => {
@@ -213,6 +219,22 @@ export const GeneralContentSettings = () => {
           </SelectContent>
         </Select>
       </div>
+
+      {(isYoutube(audioUrl) || content?.type === "youtube") && (
+        <div className="my-4 mb-8">
+          <Label className="text-[16px] text-gray-500 block">
+            Audio URL (YouTube)
+          </Label>
+          <input
+            className="w-full h-12 text-lg bg-transparent dark:text-white dark:border-gray-800 px-2"
+            value={audioUrl}
+            onChange={(event) => {
+              setAudioUrl(event.target.value);
+            }}
+            placeholder="YouTube URL"
+          />
+        </div>
+      )}
 
       <div className="my-4 mb-8">
         <Label className="text-[16px] text-gray-500 block mb-4">
@@ -367,6 +389,7 @@ export const GeneralContentSettings = () => {
               description: contentDescription,
               lang: contentLang,
               backgroundImageId,
+              audio: audioUrl,
               updatedAt: Date.now(),
             } as any);
           }}

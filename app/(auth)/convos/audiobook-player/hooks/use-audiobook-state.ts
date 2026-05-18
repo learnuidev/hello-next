@@ -108,6 +108,8 @@ export const useAudioBookState = (content: IContent) => {
             } catch (err) {
               console.error(err);
             }
+          } else {
+            play();
           }
         }
 
@@ -347,9 +349,12 @@ export const useAudioBookState = (content: IContent) => {
 
   useEffect(() => {
     if (isReady) {
-      seek(currentTime);
+      seekAndPlay(currentTime);
+      if (!isYoutubeOrVideo && !start) {
+        setPlaying(true);
+      }
     }
-  }, [isReady]);
+  }, []);
 
   const containsChinglish = !!transcriptions?.[0]?.chinglish;
 

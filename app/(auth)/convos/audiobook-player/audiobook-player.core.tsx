@@ -312,7 +312,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
             width="100%"
             height="50px"
             onReady={onReady}
-            playing={false}
+            playing={playing}
             controls={false}
             ref={playerRef}
             onProgress={(value) => {

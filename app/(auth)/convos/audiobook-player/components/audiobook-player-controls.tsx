@@ -1,13 +1,8 @@
 import { Icons } from "@/components/ui/icons.v2";
-
 import { cn } from "@/lib/utils";
+import { useState } from "react";
 import { AudioBookSettingsPopover } from "./audiobook-settings-popover";
-
-// Improve player controls
-
-// Group by following
-// edit buttons - transcript editor
-//
+import { ContentSuggestionsDrawer } from "./content-suggestions-drawer";
 
 export function AudioBookPlayerControls({
   loop,
@@ -21,7 +16,10 @@ export function AudioBookPlayerControls({
   containsChinglish,
   isYoutubeOrVideo,
   isReaderView,
+  contentId,
 }: any) {
+  const [contentDrawerOpen, setContentDrawerOpen] = useState(false);
+
   return (
     <div className="p-0">
       <div className="flex flex-col sm:flex-row items-center justify-between sm:px-4 gap-3 sm:gap-16">
@@ -68,6 +66,13 @@ export function AudioBookPlayerControls({
             <Icons.rotateRight className="text-xl" />
           </button>
 
+          <button
+            onClick={() => setContentDrawerOpen(true)}
+            className="p-2 rounded-full"
+          >
+            <Icons.list className="text-xl" />
+          </button>
+
           <AudioBookSettingsPopover
             isReaderView={isReaderView}
             containsChinglish={containsChinglish}
@@ -78,6 +83,12 @@ export function AudioBookPlayerControls({
 
         <div></div>
       </div>
+
+      <ContentSuggestionsDrawer
+        open={contentDrawerOpen}
+        onOpenChange={setContentDrawerOpen}
+        contentId={contentId}
+      />
     </div>
   );
 }

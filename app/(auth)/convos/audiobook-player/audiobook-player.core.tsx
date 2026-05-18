@@ -334,6 +334,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
               containsChinglish={containsChinglish}
               isYoutubeOrVideo={isYoutubeOrVideo}
               isReaderView={viewMode === "reader"}
+              contentId={content.id}
             />
 
             <AudiobookPlayerBar

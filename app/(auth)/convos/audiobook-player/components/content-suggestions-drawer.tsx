@@ -163,7 +163,7 @@ export function ContentSuggestionsDrawer({
           ))}
         </div>
 
-        <div className="px-4 pt-3 flex gap-2 items-center">
+        <div className="px-4 pt-3 flex gap-2 items-center my-4">
           <div className="relative flex-1">
             <Icons.magnifyingGlass className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs" />
             <input

@@ -244,6 +244,14 @@ export const useAudioBookState = (content: IContent) => {
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
+      const target = event.target as HTMLElement;
+      const isInputFocused =
+        target?.tagName === "INPUT" ||
+        target?.tagName === "TEXTAREA" ||
+        target?.isContentEditable;
+
+      if (isInputFocused) return;
+
       if (["s"]?.includes(event.key?.toLowerCase()) && !editMode) {
         event.preventDefault();
         toggleSearchPinyin();

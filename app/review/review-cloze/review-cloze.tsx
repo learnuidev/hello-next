@@ -350,7 +350,6 @@ export function ReviewCloze({
                     href={getNmmLink({
                       id: option?.hanzi || option?.input,
                       lang: sentence?.lang,
-                      view: "review",
                     })}
                     className={cn(
                       "border-orange-400 text-black  border-[2px] p-2 dark:text-white text-lg block text-center",

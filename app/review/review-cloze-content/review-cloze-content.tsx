@@ -8,13 +8,20 @@ import { useGetCharacterLearningContext } from "@/components/_select-character/s
 import { DynoOptionsContainer } from "@/components/dyno-cloze-core/dyno-cloze-core";
 import { DynoClozeLoader } from "@/components/dyno-cloze-core/dyno-cloze-loader";
 import { DynaClozeNavbar } from "@/components/dyno-cloze-core/dyno-cloze-navbar";
+import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
+import { useChinglishState } from "@/components/settings-dialog/use-chinglish-state";
 import { Icons } from "@/components/ui/icons.v2";
 import { YoutubeButton } from "@/components/youtube-page/youtube-button";
 import { useGetContentQuery } from "@/domain/content/content.queries";
+import {
+  useListCharactersMapQuery,
+  useListCharactersQuery,
+} from "@/domain/lesson/character.queries";
 import { useListGrammarsQuery } from "@/domain/sentence/grammar.queries";
 import { useListSentencesQuery } from "@/domain/sentence/sentence.queries";
 import { useListDiscoveryQuery } from "@/domain/sentence/use-list-discovery-query";
 import { cn } from "@/lib/utils";
+import { getNmmLink } from "@/libs/utils/get-nmm-link";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useMemo, useRef, useState } from "react";
@@ -24,13 +31,6 @@ import { useReviewModeView } from "../use-review-mode";
 import { ReviewItemHanzi } from "./review-item-hanzi";
 import { getRandomWords } from "./utils/get-random-words";
 import { shuffleArray } from "./utils/shuffle-array";
-import {
-  useListCharactersMapQuery,
-  useListCharactersQuery,
-} from "@/domain/lesson/character.queries";
-import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
-import { useChinglishState } from "@/components/settings-dialog/use-chinglish-state";
-import { getNmmLink } from "@/libs/utils/get-nmm-link";
 
 const ClozeNavbar = ({
   onClose,
@@ -399,9 +399,7 @@ export function ReviewClozeContent({
                     href={getNmmLink({
                       id: option?.hanzi || option?.input,
                       lang: sentence?.lang,
-                      view: "review",
                     })}
-                    // href={`/nmm/${option?.input || option?.hanzi}?lang=${sentence?.lang}`}
                     className={cn(
                       "border-orange-400 text-black  border-[2px] p-2 dark:text-white text-lg block text-center",
                       response

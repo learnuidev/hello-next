@@ -33,10 +33,11 @@ export function ConvoInsightsCharacterTab({
     }
 
     const totalLearned = data.uniqueCharactersMemo.filter(
-      (char: any) => char?.isLearned
+      (char: any) =>
+        char?.status === "learned" || char?.status === "DISCOVERED",
     ).length;
     const totalMastered = data.uniqueCharactersMemo.filter(
-      (char: any) => char?.status === "forgotten"
+      (char: any) => char?.status === "forgotten",
     ).length;
     const totalNew = data.uniqueCharacters.length - totalLearned;
 

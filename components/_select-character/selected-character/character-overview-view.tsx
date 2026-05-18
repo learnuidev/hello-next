@@ -108,6 +108,15 @@ export const CharacterOverviewView = ({
                           </TabsTrigger>
                         )}
 
+                        {items?.length > 0 && (
+                          <TabsTrigger
+                            value="content-sentences"
+                            className="px-0 data-[state=active]:text-black data-[state=active]:dark:text-white text-gray-500 data-[state=active]:font-bold block sm:hidden"
+                          >
+                            Content Examples
+                          </TabsTrigger>
+                        )}
+
                         <TabsTrigger
                           value="sentences"
                           className="px-0 data-[state=active]:text-black data-[state=active]:dark:text-white text-gray-500 data-[state=active]:font-bold block sm:hidden"
@@ -163,6 +172,22 @@ export const CharacterOverviewView = ({
                       lang={lang || selectedComp?.lang}
                     />
                   </TabsContent>
+                  <TabsContent value="content-sentences">
+                    <div>
+                      {items?.map((item: any) => {
+                        return (
+                          <SentenceItem
+                            key={JSON.stringify(item)}
+                            currentPhrase={item}
+                            selectedComp={selectedComp}
+                            selectedChar={characterId}
+                            lang={item?.lang}
+                          />
+                        );
+                      })}
+                    </div>
+                  </TabsContent>
+
                   <TabsContent value="sentences">
                     <div>
                       {sentences?.map((item: any) => {

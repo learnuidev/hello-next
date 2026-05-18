@@ -2,12 +2,10 @@ import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode
 
 import { isNonRomanLang } from "@/components/_select-character/utils/is-non-roman-lang";
 import { cn } from "@/lib/utils";
-import { getPinyin } from "@/libs/utils/segment-text";
 import { CurrentTranscriptionProps } from "../audiobook-player.types";
-import { EnView } from "./en-view";
+import { EnglishTopView } from "./english-top-view";
 import { InputView } from "./input-view";
 import { ReaderViewChinese } from "./reader-view-chinese";
-import { EnglishTopView } from "./english-top-view";
 
 export function ReaderView({
   currentTime,
@@ -29,14 +27,6 @@ export function ReaderView({
         ? null
         : showEn && (
             <EnglishTopView currentTranscription={currentTranscription} />
-            // <EnView
-            //   currentTime={currentTime}
-            //   containsChinglish={containsChinglish}
-            //   currentTranscription={currentTranscription}
-            //   seekAndPlay={seekAndPlay}
-            //   contentId={contentId}
-            //   lang={lang}
-            // />
           )}
 
       <div className="mb-4">

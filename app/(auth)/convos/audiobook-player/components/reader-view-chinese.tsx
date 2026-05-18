@@ -119,6 +119,7 @@ export function ReaderViewChinese({
                             currentTime < item?.end &&
                             !nonHanYuChars.includes(charItem) &&
                             "underline underline-offset-8",
+                          className,
                         )}
                       />
                     </span>

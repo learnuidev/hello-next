@@ -90,7 +90,11 @@ function CurrentTranscriptionViewer({
           }}
         >
           <TextPercentageColorizerV2
-            className={"text-xl sm:text-4xl"}
+            className={
+              currentTranscription.input?.length > 100
+                ? "text-xl sm:text-4xl"
+                : "text-3xl sm:text-4xl"
+            }
             text={currentTranscription.input}
             startTime={currentTranscription.start}
             endTime={currentTranscription.end}
@@ -200,11 +204,17 @@ export function KaraokeMode({
           <ActiveKaraokeContainer>
             <div className="max-w-7xl">
               <ReaderView
+                className={cn(
+                  currentTranscription.input?.length > 100
+                    ? "text-xl sm:text-4xl"
+                    : "text-3xl sm:text-4xl",
+                  className,
+                )}
                 currentTime={currentTime}
                 containsChinglish={!!containsChinglish}
                 currentTranscription={currentTranscription}
                 seekAndPlay={seekAndPlay}
-                className={className}
+                // className={className}
                 contentId={contentId}
                 lang={lang}
               />

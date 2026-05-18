@@ -17,6 +17,20 @@ import { useRepeatHistoryStore } from "../../_play/use-repeat-history";
 import { ContentFormat } from "@/domain/content-v2/content-v2.types";
 import { isYoutube } from "../../utils/is-youtube";
 
+function isInputFieldHoc(handler: (event: KeyboardEvent) => void) {
+  return (event: KeyboardEvent) => {
+    const target = event.target as HTMLElement;
+    const isInputFocused =
+      target?.tagName === "INPUT" ||
+      target?.tagName === "TEXTAREA" ||
+      target?.isContentEditable;
+
+    if (isInputFocused) return;
+
+    return handler(event);
+  };
+}
+
 export const useAudioBookState = (content: IContent) => {
   const { playbackRate } = useListenState();
   const [playing, setPlaying] = useState(false);
@@ -243,15 +257,7 @@ export const useAudioBookState = (content: IContent) => {
   const { showChinglish, setShowChinglish } = useChinglishState();
 
   useEffect(() => {
-    function onKeyDown(event: KeyboardEvent) {
-      const target = event.target as HTMLElement;
-      const isInputFocused =
-        target?.tagName === "INPUT" ||
-        target?.tagName === "TEXTAREA" ||
-        target?.isContentEditable;
-
-      if (isInputFocused) return;
-
+    const onKeyDown = isInputFieldHoc(function onKeyDown(event: KeyboardEvent) {
       if (["s"]?.includes(event.key?.toLowerCase()) && !editMode) {
         event.preventDefault();
         toggleSearchPinyin();
@@ -305,7 +311,7 @@ export const useAudioBookState = (content: IContent) => {
         event.preventDefault();
         handlePlayPause();
       }
-    }
+    });
 
     window.addEventListener("keydown", onKeyDown);
     return () => {

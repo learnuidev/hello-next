@@ -4,70 +4,19 @@ import { useEffect, useRef, useState } from "react";
 
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
 
 const CHAR_SIZE = 90;
+const DELAY_BETWEEN_STROKES = 300;
+const DELAY_BETWEEN_CHARS = 250;
+const DELAY_BETWEEN_LOOPS = 1500;
 
-type HanziCharacterProps = {
-  character: string;
-  animate: boolean;
-  showOutline: boolean;
-};
-
-const HanziCharacter = ({
-  character,
-  animate,
-  showOutline,
-}: HanziCharacterProps) => {
-  const targetRef = useRef<HTMLDivElement>(null);
-  const [failed, setFailed] = useState(false);
-
-  useEffect(() => {
-    const target = targetRef.current;
-    if (!target) return;
-
-    setFailed(false);
-
-    let cancelled = false;
-
-    import("hanzi-writer").then(({ default: HanziWriter }) => {
-      if (cancelled || !targetRef.current) return;
-
-      const isDark = document.documentElement.classList.contains("dark");
-
-      const writer = HanziWriter.create(targetRef.current, character, {
-        width: CHAR_SIZE,
-        height: CHAR_SIZE,
-        padding: 5,
-        showOutline,
-        showCharacter: !animate,
-        strokeColor: isDark ? "#e5e7eb" : "#333333",
-        outlineColor: isDark ? "#374151" : "#dddddd",
-        strokeAnimationSpeed: 1,
-        delayBetweenStrokes: 300,
-        delayBetweenLoops: 1500,
-        onLoadCharDataError: () => setFailed(true),
-      });
-
-      if (animate) {
-        writer.loopCharacterAnimation();
-      }
-    });
-
-    return () => {
-      cancelled = true;
-      if (target) target.innerHTML = "";
-    };
-  }, [character, animate, showOutline]);
-
-  if (failed) return null;
-
-  return (
-    <div
-      ref={targetRef}
-      className="flex items-center justify-center rounded-xl bg-white ring-1 ring-gray-100 dark:bg-[rgb(20,21,22)] dark:ring-gray-800"
-      style={{ width: CHAR_SIZE, height: CHAR_SIZE }}
-    />
-  );
+type HanziWriterInstance = {
+  showCharacter: (opts?: { duration?: number }) => unknown;
+  hideCharacter: (opts?: { duration?: number }) => unknown;
+  animateCharacter: (opts?: {
+    onComplete?: (res: { canceled: boolean }) => void;
+  }) => unknown;
 };
 
 export const HanziAnimator = ({ characters }: { characters: string }) => {
@@ -77,6 +26,114 @@ export const HanziAnimator = ({ characters }: { characters: string }) => {
   const chars = Array.from(characters ?? "").filter(
     (char) => char.trim().length > 0,
   );
+
+  const targetRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const failedRef = useRef<Set<number>>(new Set());
+  const [failed, setFailed] = useState<Set<number>>(new Set());
+
+  useEffect(() => {
+    failedRef.current = new Set();
+    setFailed(new Set());
+  }, [characters]);
+
+  useEffect(() => {
+    const targets = targetRefs.current.slice(0, chars.length);
+    if (!targets.length) return;
+
+    let cancelled = false;
+    const timers: ReturnType<typeof setTimeout>[] = [];
+    const clearTimers = () => {
+      timers.forEach((timer) => clearTimeout(timer));
+      timers.length = 0;
+    };
+
+    import("hanzi-writer").then(({ default: HanziWriter }) => {
+      if (cancelled) return;
+
+      const isDark = document.documentElement.classList.contains("dark");
+
+      const writers: (HanziWriterInstance | null)[] = chars.map(
+        (char, index) => {
+          const el = targets[index];
+          if (!el) return null;
+          el.innerHTML = "";
+
+          try {
+            return HanziWriter.create(el, char, {
+              width: CHAR_SIZE,
+              height: CHAR_SIZE,
+              padding: 5,
+              showOutline,
+              showCharacter: !animate,
+              strokeColor: isDark ? "#e5e7eb" : "#333333",
+              outlineColor: isDark ? "#374151" : "#dddddd",
+              strokeAnimationSpeed: 1,
+              delayBetweenStrokes: DELAY_BETWEEN_STROKES,
+              onLoadCharDataError: () => {
+                const next = new Set(failedRef.current);
+                next.add(index);
+                failedRef.current = next;
+                setFailed(next);
+              },
+            }) as HanziWriterInstance;
+          } catch {
+            return null;
+          }
+        },
+      );
+
+      if (!animate) return;
+
+      const isPlayable = (index: number) =>
+        Boolean(writers[index]) && !failedRef.current.has(index);
+
+      const hideAll = () => {
+        writers.forEach((writer) => {
+          writer?.hideCharacter({ duration: 0 });
+        });
+      };
+
+      let i = 0;
+      const advance = () => {
+        if (cancelled) return;
+
+        while (i < writers.length && !isPlayable(i)) i++;
+
+        if (i >= writers.length) {
+          const timer = setTimeout(() => {
+            if (cancelled) return;
+            hideAll();
+            i = 0;
+            advance();
+          }, DELAY_BETWEEN_LOOPS);
+          timers.push(timer);
+          return;
+        }
+
+        writers[i]?.animateCharacter({
+          onComplete: () => {
+            const timer = setTimeout(() => {
+              i += 1;
+              advance();
+            }, DELAY_BETWEEN_CHARS);
+            timers.push(timer);
+          },
+        });
+      };
+
+      hideAll();
+      advance();
+    });
+
+    return () => {
+      cancelled = true;
+      clearTimers();
+      targets.forEach((el) => {
+        if (el) el.innerHTML = "";
+      });
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [characters, animate, showOutline]);
 
   if (!chars.length) return null;
 
@@ -124,11 +181,16 @@ export const HanziAnimator = ({ characters }: { characters: string }) => {
 
       <div className="mb-6 mt-4 flex flex-wrap gap-3">
         {chars.map((char, index) => (
-          <HanziCharacter
+          <div
             key={`${char}-${index}`}
-            character={char}
-            animate={animate}
-            showOutline={showOutline}
+            ref={(el) => {
+              targetRefs.current[index] = el;
+            }}
+            className={cn(
+              "flex items-center justify-center rounded-xl bg-white ring-1 ring-gray-100 dark:bg-[rgb(20,21,22)] dark:ring-gray-800",
+              failed.has(index) && "hidden",
+            )}
+            style={{ width: CHAR_SIZE, height: CHAR_SIZE }}
           />
         ))}
       </div>

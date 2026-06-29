@@ -76,6 +76,13 @@ export const CharacterOverviewView = ({
                         </TabsTrigger>
 
                         <TabsTrigger
+                          value="stroke-order"
+                          className="px-0 data-[state=active]:text-black data-[state=active]:dark:text-white text-gray-500 data-[state=active]:font-bold"
+                        >
+                          Stroke Order
+                        </TabsTrigger>
+
+                        <TabsTrigger
                           value="grammar-analysis"
                           className="px-0 data-[state=active]:text-black data-[state=active]:dark:text-white text-gray-500 data-[state=active]:font-bold"
                         >
@@ -145,7 +152,6 @@ export const CharacterOverviewView = ({
 
                   <TabsContent value="overview">
                     <div>
-                      <HanziAnimator characters={characterId} />
                       {variant ? (
                         <div className="dark:bg-[rgb(11,12,13)] bg-gray-50 p-2 sm:px-8 rounded-2xl mt-4">
                           <div className="mt-6">
@@ -159,6 +165,10 @@ export const CharacterOverviewView = ({
                         />
                       )}
                     </div>
+                  </TabsContent>
+
+                  <TabsContent value="stroke-order">
+                    <HanziAnimator characters={characterId} />
                   </TabsContent>
 
                   <TabsContent value="learning-context">

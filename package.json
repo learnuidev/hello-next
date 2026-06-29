@@ -101,6 +101,7 @@
     "eslint": "8.49.0",
     "eslint-config-next": "15.5.5",
     "framer-motion": "12.18.1",
+    "hanzi-writer": "^3.7.3",
     "i18next": "^26.0.8",
     "i18next-browser-languagedetector": "^8.2.1",
     "i18next-chained-backend": "^5.0.3",

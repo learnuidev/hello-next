@@ -22,6 +22,7 @@ type HanziWriterInstance = {
 export const HanziAnimator = ({ characters }: { characters: string }) => {
   const [animate, setAnimate] = useState(true);
   const [showOutline, setShowOutline] = useState(true);
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
   const chars = Array.from(characters ?? "").filter(
     (char) => char.trim().length > 0,
@@ -93,6 +94,24 @@ export const HanziAnimator = ({ characters }: { characters: string }) => {
         });
       };
 
+      if (selectedIndex !== null && isPlayable(selectedIndex)) {
+        const animateLoop = () => {
+          if (cancelled) return;
+          writers[selectedIndex]?.animateCharacter({
+            onComplete: () => {
+              const timer = setTimeout(() => {
+                animateLoop();
+              }, DELAY_BETWEEN_LOOPS);
+              timers.push(timer);
+            },
+          });
+        };
+
+        hideAll();
+        animateLoop();
+        return;
+      }
+
       let i = 0;
       const advance = () => {
         if (cancelled) return;
@@ -133,7 +152,7 @@ export const HanziAnimator = ({ characters }: { characters: string }) => {
       });
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [characters, animate, showOutline]);
+  }, [characters, animate, showOutline, selectedIndex]);
 
   if (!chars.length) return null;
 
@@ -186,8 +205,13 @@ export const HanziAnimator = ({ characters }: { characters: string }) => {
             ref={(el) => {
               targetRefs.current[index] = el;
             }}
+            onClick={() => {
+              setSelectedIndex((prev) => (prev === index ? null : index));
+            }}
             className={cn(
-              "flex items-center justify-center rounded-xl bg-white ring-1 ring-gray-100 dark:bg-[rgb(20,21,22)] dark:ring-gray-800",
+              "flex cursor-pointer items-center justify-center rounded-xl bg-white ring-1 ring-gray-100 dark:bg-[rgb(20,21,22)] dark:ring-gray-800",
+              selectedIndex === index &&
+                "ring-2 ring-gray-500 dark:ring-gray-400",
               failed.has(index) && "hidden",
             )}
             style={{ width: CHAR_SIZE, height: CHAR_SIZE }}

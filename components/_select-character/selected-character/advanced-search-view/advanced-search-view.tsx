@@ -6,6 +6,7 @@ import { HanbookLink } from "../hanbook-link";
 import { SpanishDictLink } from "../spanish-dict-link/spanish-dict-link";
 import { YablaLink } from "../yabla-link";
 import { YoutubeLink } from "../youtube-link";
+import { QstheoryLink } from "../qstheory-link";
 import { ZhihuLink } from "../zhihu-link";
 
 export const AdvancedSearchView = ({
@@ -30,6 +31,9 @@ export const AdvancedSearchView = ({
         <BilibiliLink className="text-2xl" hanzi={characterId} />
         {lang === "zh" && (
           <ZhihuLink className="text-2xl" hanzi={characterId} />
+        )}
+        {lang === "zh" && (
+          <QstheoryLink className="text-2xl" hanzi={characterId} />
         )}
 
         {lang === "es" && (

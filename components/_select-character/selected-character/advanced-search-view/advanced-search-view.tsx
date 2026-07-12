@@ -6,6 +6,7 @@ import { HanbookLink } from "../hanbook-link";
 import { SpanishDictLink } from "../spanish-dict-link/spanish-dict-link";
 import { YablaLink } from "../yabla-link";
 import { YoutubeLink } from "../youtube-link";
+import { ZhihuLink } from "../zhihu-link";
 
 export const AdvancedSearchView = ({
   lang,
@@ -27,6 +28,9 @@ export const AdvancedSearchView = ({
 
         <YoutubeLink className="text-2xl" characterId={characterId} />
         <BilibiliLink className="text-2xl" hanzi={characterId} />
+        {lang === "zh" && (
+          <ZhihuLink className="text-2xl" hanzi={characterId} />
+        )}
 
         {lang === "es" && (
           <SpanishDictLink className="text-2xl" text={characterId} />

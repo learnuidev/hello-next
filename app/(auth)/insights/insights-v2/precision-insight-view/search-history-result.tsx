@@ -9,29 +9,45 @@ import { useListLearnedCharactersByDate } from "@/hooks/use-list-learned-charact
 import { isSameDay } from "date-fns";
 import { NoResultView } from "./no-result-view";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
+import { useGetCharacterQuery } from "@/domain/character/use-get-character-query";
 
 export function SearchHistoryResult({ query }: { query?: string }) {
   const { data: groups } = useListLearnedCharactersByDate({
     variant: "search",
     query,
+    learnedToday: true,
   });
 
   const lang = useGetCurrentLang();
 
   const character = useGetCharacter({ characterId: query || "" });
 
+  const { data: char } = useGetCharacterQuery({ hanzi: query || "" });
+
   const charaterCreatedAt = character?.createdAt || 0;
 
   const filteredSearchResults = groups?.map((group) => group.items)?.flat();
 
-  if (!filteredSearchResults?.length) {
+  const allHistory = [
+    ...filteredSearchResults,
+    ...(char?.searchContexts || []),
+  ];
+
+  if (!allHistory?.length) {
     return <NoResultView />;
   }
+
+  const allHistoryIds = [
+    ...new Set(allHistory.map((item) => item.hanzi || item.input)),
+  ];
 
   return (
     <>
       <section className="space-y-8 mt-12 pb-32">
-        {filteredSearchResults?.map((comp, idx: any) => {
+        {allHistoryIds?.map((_comp, idx: any) => {
+          const comp = allHistory.find(
+            (val) => (val?.input || val?.hanzi) === _comp,
+          );
           const hanziOrInput = comp?.input || comp?.hanzi;
 
           const originalDiff = comp?.createdAt - charaterCreatedAt;

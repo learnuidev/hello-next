@@ -18,6 +18,7 @@ import { useListBookmarksQuery } from "@/domain/bookmark/use-list-bookmarks-quer
 export function useListLearnedCharactersByDate({
   variant,
   query,
+  learnedToday,
 }: {
   variant:
     | "all"
@@ -28,6 +29,7 @@ export function useListLearnedCharactersByDate({
     | "reviewed"
     | "bookmarked";
   query?: string;
+  learnedToday?: boolean;
 }): {
   isLoading: boolean;
   data: {
@@ -70,13 +72,13 @@ export function useListLearnedCharactersByDate({
       case "click":
         return (
           data?.Items?.filter(
-            (event: any) => event?.eventType === "CONTENT_VIEWED"
+            (event: any) => event?.eventType === "CONTENT_VIEWED",
           ) || []
         );
       case "track":
         return (
           data?.Items?.filter(
-            (event: any) => event?.eventType === "CONTENT_TRACKED"
+            (event: any) => event?.eventType === "CONTENT_TRACKED",
           ) || []
         );
 

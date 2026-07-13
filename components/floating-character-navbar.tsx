@@ -14,6 +14,7 @@ import { useListCharactersQuery } from "@/domain/lesson/character.queries";
 import { useDeleteCharacterMutation } from "@/domain/lesson/use-delete-character-mutation";
 import { useGetComponentQuery } from "@/domain/lesson/use-get-component-query";
 import { useDiscoverMutation } from "@/domain/nmm/discover.mutations";
+import { useListLearnedCharactersByDate } from "@/hooks/use-list-learned-characters-by-date";
 import { useShowAutomaticallyTheDock } from "@/hooks/use-show-automatically-the-dock";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
@@ -96,6 +97,14 @@ export const FloatingCharacterNavbar = ({
   const addCharacterMutation = useAddCharacterMutation();
 
   const deleteCharacterMutation = useDeleteCharacterMutation();
+
+  const { data: groups } = useListLearnedCharactersByDate({
+    variant: "search",
+    query: selectedChar,
+    learnedToday: true,
+  });
+
+  const searchContexts = groups?.map((group) => group.items)?.flat();
 
   const searchParams = useSearchParams();
 
@@ -213,6 +222,8 @@ export const FloatingCharacterNavbar = ({
                     story: "todo",
                     hanzi: firstLesson?.hanzi || selectedChar,
                     journeyId: firstLesson?.id || "default",
+                    searchContexts:
+                      searchContexts?.length > 0 ? searchContexts : undefined,
                   } as any);
                 }}
               >

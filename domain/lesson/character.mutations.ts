@@ -15,6 +15,7 @@ export type AddCharacterParams = {
   status: string;
   story?: string;
   lang?: string;
+  searchContexts?: string[];
 };
 
 const addCharacter = async (

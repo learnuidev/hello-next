@@ -12,6 +12,7 @@ export interface ICharacter {
   }[];
 
   contentContext: any;
+  searchContexts?: any[];
   location: string;
   component: string;
   sub_components: { hanzi: string; en: string }[];

@@ -449,7 +449,7 @@ export const CharacterTitle = (props: any) => {
               customRef={customRef}
               text={selectedCompInput}
               lang={lang}
-              className="text-2xl"
+              className="text-2xl pr-6"
             />
           )}
 

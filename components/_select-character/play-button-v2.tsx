@@ -205,7 +205,7 @@ export function PlayButtonV2({
             setAudioUrl(resp.audioUrl);
           });
       }}
-      className={cn(className, "w-4")}
+      className={cn(className, "w-4 pr-6")}
     >
       {getAudioMutation?.isPending ? (
         <Icons.spinner spinPulse />

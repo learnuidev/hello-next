@@ -7,6 +7,7 @@ import { IContent } from "@/domain/content/content.api";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { useListenState } from "@/app/(auth)/listen/hooks/use-listen-state";
+import { usePlayerViewModeStore } from "@/components/youtube-page/player-view-mode-store";
 import { useSearchParams } from "next/navigation";
 import { useReadModeState } from "@/components/read-mode-button";
 import { useChinglishState } from "@/components/settings-dialog/use-chinglish-state";
@@ -236,6 +237,13 @@ export const useAudioBookState = (content: IContent) => {
 
   const audioUrl = content?.audio;
 
+  const _toggleLoops = usePlayerViewModeStore((state) => state.toggleLoops);
+  const toggleLoops = useMemo(
+    () =>
+      _toggleLoops?.filter((loop: any) => loop?.contentId === content.id),
+    [_toggleLoops, content.id],
+  );
+
   const editMode = useContentEditStore((state) => state.editMode);
 
   const setShowPinyin = useBrightModeStore((state) => state.setShowPinyin);
@@ -360,6 +368,17 @@ export const useAudioBookState = (content: IContent) => {
       }
     }
   }, [currentTime, transcriptions, loop, debounceSeek]);
+
+  useEffect(() => {
+    if (toggleLoops?.length) {
+      const lastEnd = Math.max(...toggleLoops?.map((x: any) => x?.end));
+      const firstStart = Math.min(...toggleLoops?.map((x: any) => x?.start));
+
+      if (currentTime > lastEnd) {
+        debounceSeek(firstStart);
+      }
+    }
+  }, [currentTime, toggleLoops, debounceSeek]);
 
   useEffect(() => {
     if (isReady) {

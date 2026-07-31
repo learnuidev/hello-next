@@ -286,7 +286,7 @@ export const TranscriptItem = ({
   const showPinyin = useBrightModeStore((state) => state.showPinyin);
 
   return (
-    <div className="w-120 px-4">
+    <div className=" px-4">
       <div className="flex items-center space-x-4 flex-col lg:flex-row">
         <div
           className={`${

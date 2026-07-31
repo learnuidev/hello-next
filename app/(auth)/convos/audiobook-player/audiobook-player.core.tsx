@@ -19,6 +19,7 @@ import { AudioBookPlayerControls } from "./components/audiobook-player-controls"
 import { CharacterMenuBar } from "./components/character-menu-bar";
 import { ParaView } from "./components/para-view";
 import { ReaderViewParent } from "./components/reader-view-parent";
+import { TranscriptListView } from "./components/transcript-list-view";
 import { useAudioBookState } from "./hooks/use-audiobook-state";
 
 export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
@@ -275,6 +276,20 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
                       loop={loop}
                     />
                   </div>
+                </div>
+              ) : viewMode === "list" ? (
+                <div
+                  className={cn(
+                    isVideoHidden ? "col-span-12 mx-auto max-w-4xl" : "",
+                    "sm:mt-32 mt-8",
+                  )}
+                >
+                  <TranscriptListView
+                    content={content}
+                    contentId={content.id}
+                    currentTime={currentTime}
+                    playerRef={playerRef}
+                  />
                 </div>
               ) : (
                 <div

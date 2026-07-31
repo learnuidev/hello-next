@@ -125,6 +125,16 @@ export function AudioBookSettingsPopover({
                     )
                   }
                 />
+                <ViewTypeButton
+                  icon={Icons.list}
+                  label="List"
+                  active={viewMode === "list"}
+                  onClick={() =>
+                    setViewMode((prev: any) =>
+                      prev === "list" ? null : "list",
+                    )
+                  }
+                />
               </div>
             </div>
             {/* {isYoutubeOrVideo && ( */}

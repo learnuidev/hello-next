@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { AudioBookSettingsPopover } from "./audiobook-settings-popover";
 import { ContentSuggestionsDrawer } from "./content-suggestions-drawer";
+import { usePlayerViewModeStore } from "@/components/youtube-page/player-view-mode-store";
 
 export function AudioBookPlayerControls({
   loop,
@@ -20,6 +21,10 @@ export function AudioBookPlayerControls({
 }: any) {
   const [contentDrawerOpen, setContentDrawerOpen] = useState(false);
 
+  const setToggleLoops = usePlayerViewModeStore(
+    (state) => state.setToggleLoops,
+  );
+
   return (
     <div className="p-0">
       <div className="flex flex-col sm:flex-row items-center justify-between sm:px-4 gap-3 sm:gap-16">
@@ -27,6 +32,7 @@ export function AudioBookPlayerControls({
         <div className="px-6 sm:px-8 flex items-center gap-4 rounded-full">
           <button
             onClick={() => {
+              setToggleLoops([]);
               setLoop((loop: any) => {
                 if (loop) {
                   return null;

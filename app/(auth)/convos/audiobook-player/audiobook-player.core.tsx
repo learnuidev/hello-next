@@ -285,6 +285,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
                 >
                   <ParaView
                     loop={loop}
+                    setLoop={setLoop}
                     content={content}
                     currentTranscription={currentTranscription}
                     currentTime={currentTime}

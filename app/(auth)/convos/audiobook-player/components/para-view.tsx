@@ -26,7 +26,7 @@ export const ParaView = ({
   currentTranscription,
   currentTime,
   loop,
-
+  setLoop,
   isPlaying,
   seekAndPlay,
 }: {
@@ -35,7 +35,7 @@ export const ParaView = ({
   content: IContent;
   currentTime: number;
   isPlaying: boolean;
-
+  setLoop: (id: string | null) => void;
   seekAndPlay: (time: number) => void;
 }) => {
   const showEn = useBrightModeStore((state) => state.showEn);
@@ -120,6 +120,9 @@ export const ParaView = ({
                           }
                           onClick={() => {
                             seekAndPlay(transcription?.start);
+                            if (loop) {
+                              setLoop(transcription?.id);
+                            }
                           }}
                         >
                           {smartSplit({

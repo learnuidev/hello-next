@@ -43,18 +43,21 @@ const WINDOW_SIZE = WINDOW_BEFORE + WINDOW_AFTER;
 const WINDOW_STEP = 4;
 
 /** Spring that glides the sheet so the active line sits dead centre. */
-const SPRING_STIFFNESS = 70;
-/** Nearly critical: settles crisply instead of bouncing past the line. */
-const SPRING_DAMPING = 16;
+const SPRING_STIFFNESS = 90;
+/** Damped to critical: settles crisply instead of bouncing past the line. */
+const SPRING_DAMPING = 19;
 const MAX_SCROLL_SPEED = 1400;
 
 /**
- * After a tap the sheet is held perfectly still for a beat. A seek changes the
- * active line, the rendered range and the playhead at once; letting all of that
- * land first means the glide always starts from the line you tapped, with one
- * clean movement instead of a correction.
+ * After a tap the sheet is held perfectly still until the seek has settled.
+ * A tap changes the active line, the rendered range and the playhead at once,
+ * and a slow seek can report its new position a few hundred milliseconds later.
+ * Waiting for the highlight to stop moving — with a floor and a ceiling — means
+ * the glide always starts from the line you tapped, in one clean movement.
  */
-const TAP_HOLD_MS = 190;
+const TAP_HOLD_MIN_MS = 150;
+const TAP_HOLD_MAX_MS = 700;
+const TAP_HOLD_STABLE_FRAMES = 3;
 
 /** How long manual scrolling wins before auto-follow takes over again. */
 const MANUAL_SCROLL_GRACE = 4000;
@@ -118,7 +121,12 @@ export function AppleKaraokeView({
   } | null>(null);
   const browseRangeRef = useRef<{ start: number; end: number } | null>(null);
   const reanchorRef = useRef(false);
-  const holdUntilRef = useRef(0);
+  const holdRef = useRef<null | {
+    until: number;
+    expire: number;
+    index: number;
+    stable: number;
+  }>(null);
   /** Range the last measured target belongs to (guards against stale targets). */
   const desiredKeyRef = useRef("");
   const settleFramesRef = useRef(0);
@@ -416,11 +424,31 @@ export function AppleKaraokeView({
       }
 
       // Settling window after a tap: stay exactly where we are (tracking the
-      // real scroll position) so the animation starts from under the finger.
-      if (now < holdUntilRef.current) {
+      // real scroll position) until the highlighted line stops changing, so the
+      // animation starts from under the finger.
+      if (holdRef.current) {
+        const hold = holdRef.current;
+        const index = activeIndexRef.current;
+
+        if (index === hold.index) {
+          hold.stable += 1;
+        } else {
+          hold.index = index;
+          hold.stable = 0;
+        }
+
+        const ready =
+          now >= hold.until && hold.stable >= TAP_HOLD_STABLE_FRAMES;
+
+        if (!ready && now < hold.expire) {
+          velocity = 0;
+          virtualScrollRef.current = stage.scrollTop;
+          return;
+        }
+
+        holdRef.current = null;
         velocity = 0;
         virtualScrollRef.current = stage.scrollTop;
-        return;
       }
 
       // Hand the browsed range back to the tight auto window — but only once the
@@ -555,7 +583,14 @@ export function AppleKaraokeView({
 
       // Let the seek land before the sheet moves at all, so the glide starts
       // from the line that was tapped.
-      holdUntilRef.current = performance.now() + TAP_HOLD_MS;
+      const now = performance.now();
+
+      holdRef.current = {
+        until: now + TAP_HOLD_MIN_MS,
+        expire: now + TAP_HOLD_MAX_MS,
+        index: activeIndexRef.current,
+        stable: 0,
+      };
       settleFramesRef.current = 0;
 
       // Taking over the sheet: resume following the audio right away.

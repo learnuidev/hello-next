@@ -34,12 +34,15 @@ export function ConvoInsightsCharacterTab({
 
     const totalLearned = data.uniqueCharactersMemo.filter(
       (char: any) =>
-        char?.status === "learned" || char?.status === "DISCOVERED",
+        char?.status === "learned" ||
+        char?.status === "DISCOVERED" ||
+        char?.status === "needs_review",
     ).length;
     const totalMastered = data.uniqueCharactersMemo.filter(
       (char: any) => char?.status === "forgotten",
     ).length;
-    const totalNew = data.uniqueCharacters.length - totalLearned;
+    const totalNew =
+      data.uniqueCharacters.length - (totalLearned + totalMastered);
 
     return { totalNew, totalLearned, totalMastered };
   }, [data?.uniqueCharactersMemo, data?.uniqueCharacters]);
@@ -61,8 +64,12 @@ export function ConvoInsightsCharacterTab({
 
     if (learnStatus !== "all") {
       filtered = filtered.filter((char: any) => {
-        if (learnStatus === "learned") {
-          return char?.status === "learned" || char?.status === "DISCOVERED";
+        if (learnStatus !== "forgotten") {
+          return (
+            char?.status === "learned" ||
+            char?.status === "DISCOVERED" ||
+            char?.status === "needs_review"
+          );
         }
 
         if (learnStatus === "forgotten") {

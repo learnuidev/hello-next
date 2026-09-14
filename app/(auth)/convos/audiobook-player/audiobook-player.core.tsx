@@ -3,7 +3,6 @@ import { MandoContextMenu } from "@/app/review/review-cloze-content/mando-contex
 import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
 import { Icons } from "@/components/ui/icons.v2";
 import { useContextPlayContextState } from "@/components/youtube-page/hooks/use-play-history-state";
-import { KaraokeMode } from "@/components/youtube-page/karaoke-mode";
 import { usePlayerViewModeStore } from "@/components/youtube-page/player-view-mode-store";
 import { useContentEditStore } from "@/components/youtube-page/use-content-edit-store";
 import { useIsSmall } from "@/components/youtube-page/utils/use-is-small";
@@ -17,6 +16,7 @@ import { AudiobookPlayerBar } from "./components/audiobook-player-bar";
 import { AudioBookPlayerControls } from "./components/audiobook-player-controls";
 import { AudiobookPlayerDock } from "./components/audiobook-player-dock";
 import { CharacterMenuBar } from "./components/character-menu-bar";
+import { AppleKaraokeView } from "./components/karaoke/apple-karaoke-view";
 import { ParaView } from "./components/para-view";
 import { ReaderViewParent } from "./components/reader-view-parent";
 import { TranscriptListView } from "./components/transcript-list-view";
@@ -216,46 +216,22 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
                   </p>
                 </div>
               ) : viewMode === "karaoke" ? (
-                <div
-                  className={
-                    isVideoHidden
-                      ? "col-span-12 mx-auto max-w-4xl sm:mt-32 mt-24"
-                      : "col-span-12 md:col-span-5"
-                  }
-                >
-                  <div
-                    className={
-                      isVideoHidden
-                        ? "col-span-12"
-                        : "col-span-12 md:col-span-5"
+                <div className="col-span-12 mx-auto w-full max-w-6xl">
+                  <AppleKaraokeView
+                    transcriptions={content.transcriptions}
+                    fallbackTranscription={currentTranscription}
+                    lang={content?.lang}
+                    currentTime={currentTime}
+                    isPlaying={playing}
+                    playerRef={playerRef}
+                    coverUrl={
+                      content?.coverPhotoUrl || content?.backgroundImageUrl
                     }
-                  >
-                    <KaraokeMode
-                      currentTranscription={currentTranscription}
-                      seekAndPlay={seekAndPlay}
-                      lang={content?.lang}
-                      isPlaying={playing}
-                      containsChinglish={containsChinglish}
-                      seekTo={(time: number) => {
-                        playerRef.current.seekTo(time, "seconds");
-
-                        try {
-                          playerRef.current?.player?.player?.play();
-                        } catch (err) {
-                          console.error(err);
-                        }
-                      }}
-                      play={() => {
-                        try {
-                          playerRef.current?.player?.player?.play();
-                        } catch (err) {
-                          console.error(err);
-                        }
-                      }}
-                      transcriptions={content.transcriptions}
-                      currentTime={currentTime}
-                    />
-                  </div>
+                    compact={!isVideoHidden}
+                    seekAndPlay={seekAndPlay}
+                    onPlay={play}
+                    onPause={pause}
+                  />
                 </div>
               ) : viewMode === "reader" ? (
                 <div

@@ -4,6 +4,7 @@ import "@/libs/cognito/init";
 
 import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
 import { Nothing } from "@/app/nmm/nothing";
+import { AutoHideOnIdle } from "@/components/auto-hide-on-idle";
 import { Icons } from "@/components/ui/icons.v2";
 import { usePlayerViewModeStore } from "@/components/youtube-page/player-view-mode-store";
 import { useContentEditStore } from "@/components/youtube-page/use-content-edit-store";
@@ -110,8 +111,13 @@ export default function ContentItem() {
       <main>
         <div>
           {isFSM ? null : (
-            <div className="px-4 md:px-12">
-              <ConvosNavBar />
+            <div className="sticky top-0 z-50">
+              <AutoHideOnIdle
+                hiddenOffset="-100%"
+                className="px-4 md:px-12 bg-white/85 backdrop-blur-sm dark:bg-[rgb(9,10,11)]/85"
+              >
+                <ConvosNavBar />
+              </AutoHideOnIdle>
             </div>
           )}
 

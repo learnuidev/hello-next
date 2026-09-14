@@ -95,14 +95,6 @@ export const KaraokeStyles = () => (
     animation: mn-k-dot 1250ms ease-in-out infinite;
   }
 
-  .mn-k-ring {
-    animation: mn-k-ring 2400ms ease-out infinite;
-  }
-
-  .mn-k-float {
-    animation: mn-k-float 3200ms ease-in-out infinite;
-  }
-
   @keyframes mn-k-flash {
     0% {
       background-color: var(--k-flash);
@@ -157,34 +149,11 @@ export const KaraokeStyles = () => (
     }
   }
 
-  @keyframes mn-k-ring {
-    0% {
-      opacity: 0.55;
-      transform: scale(0.75);
-    }
-    100% {
-      opacity: 0;
-      transform: scale(1.65);
-    }
-  }
-
-  @keyframes mn-k-float {
-    0%,
-    100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-8px);
-    }
-  }
-
   @media (prefers-reduced-motion: reduce) {
     .mn-k-kenburns,
     .mn-k-breathe,
     .mn-k-beat,
-    .mn-k-dot,
-    .mn-k-ring,
-    .mn-k-float {
+    .mn-k-dot {
       animation: none !important;
     }
 

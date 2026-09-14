@@ -106,8 +106,6 @@ export function AppleKaraokeView({
 
   const [activeIndex, setActiveIndex] = useState(-1);
   const activeIndexRef = useRef(-2);
-  const [countdown, setCountdown] = useState(0);
-  const countdownRef = useRef(-1);
   const [inGap, setInGap] = useState(false);
   const inGapRef = useRef(false);
   const [flashKey, setFlashKey] = useState<string | null>(null);
@@ -176,7 +174,6 @@ export function AppleKaraokeView({
     }
 
     let frame = 0;
-    const firstStart = chunks[0].start;
 
     const loop = () => {
       frame = requestAnimationFrame(loop);
@@ -189,14 +186,7 @@ export function AppleKaraokeView({
         setActiveIndex(index);
       }
 
-      if (index < 0) {
-        const remaining = Math.max(0, Math.ceil(firstStart - time));
-
-        if (remaining !== countdownRef.current) {
-          countdownRef.current = remaining;
-          setCountdown(remaining);
-        }
-      } else {
+      if (index >= 0) {
         const next = chunks[index + 1];
         const gap =
           !!next && time > chunks[index].end + 0.35 && next.start - time > 2.2;
@@ -266,20 +256,28 @@ export function AppleKaraokeView({
     }
 
     const active = stage.querySelector<HTMLElement>('[data-k-active="1"]');
+    const isIntro = activeIndexRef.current < 0;
+
+    // During the count-in nothing is active yet. Anchor on the first line so it
+    // still sits low in the stage, leaving the top clear for the count-in —
+    // otherwise the sheet is never positioned and the lyrics ride up under it.
+    const target =
+      active ??
+      (isIntro ? stage.querySelector<HTMLElement>("[data-k-index]") : null);
 
     // The singer's line can be outside a browsed range; the loop must not chase
     // a target from before that range existed.
-    if (!active) {
+    if (!target) {
       desiredScrollRef.current = null;
       return;
     }
 
     const stageHeight = stage.clientHeight;
-    const anchor =
-      activeIndexRef.current < 0 ? stageHeight * 0.72 : stageHeight / 2;
+    // Just below centre while the count-in dots run, well clear of them.
+    const anchor = isIntro ? stageHeight * 0.55 : stageHeight / 2;
 
     desiredScrollRef.current =
-      active.offsetTop + active.offsetHeight / 2 - anchor;
+      target.offsetTop + target.offsetHeight / 2 - anchor;
     desiredKeyRef.current = `${windowStart}:${windowEnd}`;
 
     // First paint — or coming back from a range that no longer held the active
@@ -630,7 +628,10 @@ export function AppleKaraokeView({
     showPinyin &&
     (isNonRomanLang(lang) || chunks.some((chunk) => chunk.hasRoman));
   const isIntro = activeIndex < 0;
-  const spacer = Math.max(stageHeight / 2, 0);
+  // Room above the first line: the count-in parks it at 55% of the stage, so the
+  // scroll range has to reach that far or the lyrics ride up under the dots.
+  const topSpacer = Math.max(stageHeight * 0.62, 0);
+  const bottomSpacer = Math.max(stageHeight / 2, 0);
 
   const cssVars = {
     "--k-sung": isDark ? "#ffffff" : "#0b0b0f",
@@ -717,7 +718,7 @@ export function AppleKaraokeView({
             : "h-[58vh] min-h-[400px] max-h-[640px]",
         )}
       >
-        <div style={{ height: spacer }} />
+        <div style={{ height: topSpacer }} />
 
         {windowChunks.map((chunk, index) => {
           const globalIndex = windowStart + index;
@@ -769,40 +770,24 @@ export function AppleKaraokeView({
           );
         })}
 
-        <div style={{ height: spacer }} />
+        <div style={{ height: bottomSpacer }} />
       </div>
 
-      {/* Count-in + first-play affordance */}
+      {/* Count-in: just three dots, in the space the lyrics will not use yet */}
       {isIntro && (
-        <div className="pointer-events-none absolute inset-x-0 top-[8%] z-20 flex flex-col items-center gap-3">
-          <div className="relative flex h-20 w-20 items-center justify-center">
-            {[0, 0.8, 1.6].map((delay) => (
-              <span
-                key={delay}
-                className="mn-k-ring absolute inset-0 rounded-full border"
-                style={{
-                  borderColor: isDark
-                    ? "rgba(255,255,255,0.35)"
-                    : "rgba(11,11,15,0.25)",
-                  animationDelay: `${delay}s`,
-                }}
-              />
-            ))}
-            <span className="mn-k-float text-4xl opacity-90">
-              <Icons.music />
-            </span>
-          </div>
-
-          <p className="text-[0.7rem] uppercase tracking-[0.4em] text-gray-500">
-            starting in
-          </p>
-
-          <p
-            className="text-5xl font-semibold tabular-nums"
-            style={{ color: isDark ? "#fff" : "#0b0b0f" }}
-          >
-            {Math.max(countdown, 1)}
-          </p>
+        <div className="pointer-events-none absolute inset-x-0 top-[9%] z-20 flex items-center justify-center gap-2">
+          {[0, 1, 2].map((dot) => (
+            <span
+              key={dot}
+              className="mn-k-dot h-2 w-2 rounded-full"
+              style={{
+                backgroundColor: isDark
+                  ? "rgba(255,255,255,0.9)"
+                  : "rgba(11,11,15,0.75)",
+                animationDelay: `${dot * 0.16}s`,
+              }}
+            />
+          ))}
         </div>
       )}
 

@@ -260,16 +260,19 @@ export function KaraokeMode({
           </button>
         ) : isIntro ? (
           <button
-            className="text-xl sm:text-4xl"
+            aria-label="Play"
+            className="flex items-center justify-center gap-2 py-4"
             onClick={() => {
               play();
             }}
           >
-            <Icons.music />
-
-            <p className="mt-0 sm:mt-4 text-gray-400 text-lg sm:text-2xl font-extralight">
-              Starting in {parseInt(`${startingTime || 0}`)}
-            </p>
+            {[0, 1, 2].map((dot) => (
+              <span
+                key={dot}
+                className="h-2 w-2 animate-pulse rounded-full bg-gray-400"
+                style={{ animationDelay: `${dot * 0.2}s` }}
+              />
+            ))}
           </button>
         ) : (
           <CurrentTranscriptionViewer

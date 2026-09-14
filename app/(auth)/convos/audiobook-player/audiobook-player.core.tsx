@@ -201,7 +201,8 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
                 "sm:px-12",
               )}
             >
-              {currentTime === 0 && !playing ? (
+              {/* {currentTime === 0 && !playing ? ( */}
+              {false ? (
                 <div className="flex justify-center flex-col items-center sm:mt-48 mt-16">
                   <button
                     onClick={() => {

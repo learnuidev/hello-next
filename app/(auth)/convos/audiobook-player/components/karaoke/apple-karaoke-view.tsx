@@ -851,18 +851,6 @@ export function AppleKaraokeView({
         />
       )}
 
-      {!isPlaying && currentTime === 0 && (
-        <div className="absolute inset-0 z-30 flex items-center justify-center">
-          <button
-            onClick={() => onPlay?.()}
-            className="flex h-20 w-20 items-center justify-center rounded-full border border-white/20 bg-white/10 text-3xl backdrop-blur-md transition hover:scale-105 hover:bg-white/20"
-            style={{ color: isDark ? "#fff" : "#0b0b0f" }}
-          >
-            <Icons.play />
-          </button>
-        </div>
-      )}
-
       {/* Back to the current line, after browsing the sheet by hand */}
       {!isIntro && !following && (
         <button

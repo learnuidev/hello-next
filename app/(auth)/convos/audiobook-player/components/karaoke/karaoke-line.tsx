@@ -84,14 +84,7 @@ export const KaraokeLine = memo(
 
     const fontSize = getFontSize(chunk.visibleLength, compact);
 
-    // The phonetic guide and the translation belong to the line being sung and
-    // to it alone: the rest of the sheet stays plain lyrics. They mount with the
-    // line instead of sitting there at opacity 0, so nothing else on screen has
-    // to carry their height — the view absorbs the change (see the active-line
-    // anchor in the owner) instead of pre-reserving a blank row on every line.
-    const showRomanRow =
-      showRoman && isActive && chunk.tokens.some((token) => !!token.roman);
-    const showTranslationRow = showTranslation && !!translation && isActive;
+    const hasRoman = showRoman && chunk.tokens.some((token) => !!token.roman);
 
     // Static syllables never travel through React: we write the custom
     // properties ourselves so a line that was live-animated always lands in a
@@ -201,7 +194,6 @@ export const KaraokeLine = memo(
     return (
       <div
         data-k-index={globalIndex}
-        data-k-key={chunk.key}
         data-k-active={isActive ? "1" : undefined}
         onClick={(event) => {
           const tokenStart = (event.target as HTMLElement)?.dataset?.kStart;
@@ -240,10 +232,12 @@ export const KaraokeLine = memo(
                 key={token.key}
                 className="inline-flex flex-col items-center"
               >
-                {showRomanRow && (
+                {hasRoman && (
                   <span
-                    className="mn-k-sub whitespace-nowrap font-normal"
+                    className="whitespace-nowrap font-normal"
                     style={{
+                      // A reading guide for the whole sheet, not a spotlight on
+                      // the line being sung: every line that has one shows it.
                       opacity: 0.7,
                       fontSize: "0.34em",
                       lineHeight: 1.5,
@@ -266,9 +260,9 @@ export const KaraokeLine = memo(
           )}
         </div>
 
-        {showTranslationRow && (
+        {showTranslation && translation && (
           <div
-            className="mn-k-sub mx-auto mt-2 line-clamp-2 max-w-3xl px-2 text-center"
+            className="mx-auto mt-2 line-clamp-2 max-w-3xl px-2 text-center transition-opacity duration-500"
             style={{
               fontSize: Math.max(fontSize * 0.36, 12),
               lineHeight: 1.5,

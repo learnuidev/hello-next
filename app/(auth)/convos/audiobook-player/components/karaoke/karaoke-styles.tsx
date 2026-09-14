@@ -47,13 +47,6 @@ export const KaraokeStyles = () => (
     animation: mn-k-flash 520ms ease-out;
   }
 
-  /* Pinyin and the translation mount with the line being sung. The keyframes
-     only declare the start, so each element eases up to whatever opacity it
-     carries of its own accord (0.7 for the guide, 1 for the translation). */
-  .mn-k-sub {
-    animation: mn-k-sub-in 520ms cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
   .mn-k-stage {
     -webkit-mask-image: linear-gradient(
       to bottom,
@@ -111,12 +104,6 @@ export const KaraokeStyles = () => (
     }
   }
 
-  @keyframes mn-k-sub-in {
-    from {
-      opacity: 0;
-    }
-  }
-
   @keyframes mn-k-kenburns {
     from {
       transform: scale(1.18) translate3d(-1.5%, -1.5%, 0);
@@ -166,8 +153,7 @@ export const KaraokeStyles = () => (
     .mn-k-kenburns,
     .mn-k-breathe,
     .mn-k-beat,
-    .mn-k-dot,
-    .mn-k-sub {
+    .mn-k-dot {
       animation: none !important;
     }
 

@@ -143,13 +143,6 @@ export function AppleKaraokeView({
   const resyncInRef = useRef(0);
   const positionedRef = useRef(false);
   const samplesRef = useRef<{ el: HTMLElement; top: number }[]>([]);
-  /**
-   * Where the singing line — and the line about to be sung — sat before this
-   * commit. The guides those lines carry change height, which moves every line
-   * below them; no sample above can see that, so the lines themselves are the
-   * anchor (see the layout effect).
-   */
-  const anchorRef = useRef<{ key: string; top: number }[]>([]);
 
   const autoWindowStart = useMemo(() => {
     if (chunks.length === 0) {
@@ -242,12 +235,6 @@ export function AppleKaraokeView({
       nextSamples.push({ el: lines[index], top: lines[index].offsetTop });
     }
 
-    // Measured before anything is written, so every read stays batched ahead of
-    // the single scrollTop write that follows.
-    const active = stage.querySelector<HTMLElement>('[data-k-active="1"]');
-    const activeKey = active?.dataset.kKey ?? null;
-    const activeTop = active ? active.offsetTop : null;
-
     // Absorb any content shift before it can be painted.
     let shift = 0;
 
@@ -263,47 +250,12 @@ export function AppleKaraokeView({
     // Never compensate for a shift we are about to re-anchor anyway: when a
     // browsed range collapses, the content above the active line disappears and
     // scrollTop would slam into its clamp instead of holding still.
-    let applied = 0;
-
     if (shift !== 0 && !reanchorRef.current) {
       stage.scrollTop += shift;
-      applied = shift;
       virtualScrollRef.current = null;
     }
 
-    // Pinyin and the translation belong to the singing line, so they mount and
-    // unmount with it — which resizes that line, and so shifts every line below
-    // it. Both sit *below* the first retained sample, where the check above
-    // cannot see them, so the lines that matter are tracked by key: the one
-    // being sung and the one about to be. Whichever of them is active now is
-    // put back exactly where it was, leaving just the glide to move the sheet.
-    const previousAnchors = anchorRef.current;
-    const nextEl = stage.querySelector<HTMLElement>(
-      `[data-k-index="${activeIndexRef.current + 1}"]`,
-    );
-
-    anchorRef.current = [
-      active && activeKey && activeTop !== null
-        ? { key: activeKey, top: activeTop }
-        : null,
-      nextEl?.dataset.kKey
-        ? { key: nextEl.dataset.kKey, top: nextEl.offsetTop }
-        : null,
-    ].filter(Boolean) as { key: string; top: number }[];
-
-    const held = activeKey
-      ? previousAnchors.find((anchor) => anchor.key === activeKey)
-      : undefined;
-
-    if (held && activeTop !== null && !reanchorRef.current) {
-      const extra = activeTop - held.top - applied;
-
-      if (extra !== 0) {
-        stage.scrollTop += extra;
-        virtualScrollRef.current = null;
-      }
-    }
-
+    const active = stage.querySelector<HTMLElement>('[data-k-active="1"]');
     const isIntro = activeIndexRef.current < 0;
 
     // During the count-in nothing is active yet. Anchor on the first line so it
@@ -777,15 +729,12 @@ export function AppleKaraokeView({
           const isLineActive = distance === 0;
           const showsGapDots = inGap && globalIndex === activeIndex + 1;
 
-          // The translation is read from the parent for whichever chunk is
-          // being sung, so a sentence split across several lines keeps its
-          // reading for all of them — the old "once per parent" rule would
-          // leave every later chunk of that sentence blank.
-          const translation = showEn
-            ? showChinglish
-              ? chunk.parent?.chinglish || chunk.parent?.en
-              : chunk.parent?.en
-            : undefined;
+          const translation =
+            showEn && chunk.isFirstOfParent
+              ? showChinglish
+                ? chunk.parent?.chinglish || chunk.parent?.en
+                : chunk.parent?.en
+              : undefined;
 
           return (
             <div key={chunk.key}>

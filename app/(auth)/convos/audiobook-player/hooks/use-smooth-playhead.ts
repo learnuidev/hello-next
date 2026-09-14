@@ -72,13 +72,16 @@ export const useSmoothPlayhead = ({
         playerTime = null;
       }
 
-      // Only trust the player's own clock when it roughly agrees with what we
-      // have been told: right after a seek, or while a video player warms up, it
-      // can report something completely different.
+      // The player's own clock is the truth, but a freshly mounted video player
+      // can report nonsense before it is ready. Distrust it only while the
+      // reported time is still *fresh* — once the callback has gone quiet, the
+      // player is the only thing that knows about a seek we were not told about.
+      const reportIsStale = now - reportedAt > 250;
+
       if (
         playerTime === null ||
         !playing ||
-        Math.abs(playerTime - reportedTime) > 2.5
+        (Math.abs(playerTime - reportedTime) > 2.5 && !reportIsStale)
       ) {
         playerTime = null;
       }

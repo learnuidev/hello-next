@@ -43,12 +43,25 @@ const WINDOW_SIZE = WINDOW_BEFORE + WINDOW_AFTER;
 const WINDOW_STEP = 4;
 
 /** Spring that glides the sheet so the active line sits dead centre. */
-const SPRING_STIFFNESS = 60;
-const SPRING_DAMPING = 13;
-const MAX_SCROLL_SPEED = 2600;
+const SPRING_STIFFNESS = 70;
+/** Nearly critical: settles crisply instead of bouncing past the line. */
+const SPRING_DAMPING = 16;
+const MAX_SCROLL_SPEED = 1400;
+
+/**
+ * After a tap the sheet is held perfectly still for a beat. A seek changes the
+ * active line, the rendered range and the playhead at once; letting all of that
+ * land first means the glide always starts from the line you tapped, with one
+ * clean movement instead of a correction.
+ */
+const TAP_HOLD_MS = 190;
 
 /** How long manual scrolling wins before auto-follow takes over again. */
 const MANUAL_SCROLL_GRACE = 4000;
+
+/** While browsing by hand, the rendered range grows/slides in these steps. */
+const BROWSE_STEP = 30;
+const BROWSE_MAX = 100;
 
 export function AppleKaraokeView({
   transcriptions,
@@ -98,6 +111,20 @@ export function AppleKaraokeView({
   const [stageHeight, setStageHeight] = useState(0);
   const [following, setFollowing] = useState(true);
   const followingRef = useRef(true);
+  /** Non-null while the reader is browsing: an explicit rendered range. */
+  const [browseRange, setBrowseRange] = useState<{
+    start: number;
+    end: number;
+  } | null>(null);
+  const browseRangeRef = useRef<{ start: number; end: number } | null>(null);
+  const reanchorRef = useRef(false);
+  const holdUntilRef = useRef(0);
+  /** Range the last measured target belongs to (guards against stale targets). */
+  const desiredKeyRef = useRef("");
+  const settleFramesRef = useRef(0);
+  const windowStartRef = useRef(0);
+  const windowEndRef = useRef(0);
+  const chunksRef = useRef<any[]>([]);
 
   const stageRef = useRef<HTMLDivElement | null>(null);
   const manualScrollUntilRef = useRef(0);
@@ -111,7 +138,7 @@ export function AppleKaraokeView({
   const positionedRef = useRef(false);
   const samplesRef = useRef<{ el: HTMLElement; top: number }[]>([]);
 
-  const windowStart = useMemo(() => {
+  const autoWindowStart = useMemo(() => {
     if (chunks.length === 0) {
       return 0;
     }
@@ -124,10 +151,14 @@ export function AppleKaraokeView({
     return Math.min(quantised, lastStart);
   }, [activeIndex, chunks.length]);
 
+  const windowStart = browseRange ? browseRange.start : autoWindowStart;
+  const windowEnd = browseRange
+    ? browseRange.end
+    : Math.min(chunks.length, autoWindowStart + WINDOW_SIZE);
 
   const windowChunks = useMemo(
-    () => chunks.slice(windowStart, windowStart + WINDOW_SIZE),
-    [chunks, windowStart],
+    () => chunks.slice(windowStart, windowEnd),
+    [chunks, windowStart, windowEnd],
   );
 
   // ── Playhead → active chunk / count-in / instrumental-gap tracking ─────────
@@ -194,18 +225,16 @@ export function AppleKaraokeView({
       return;
     }
 
+    windowStartRef.current = windowStart;
+    windowEndRef.current = windowEnd;
+    browseRangeRef.current = browseRange;
+    chunksRef.current = chunks;
+
     const lines = stage.querySelectorAll<HTMLElement>("[data-k-index]");
     const nextSamples: { el: HTMLElement; top: number }[] = [];
 
     for (let index = 0; index < lines.length; index += 4) {
       nextSamples.push({ el: lines[index], top: lines[index].offsetTop });
-    }
-
-    const active = stage.querySelector<HTMLElement>('[data-k-active="1"]');
-
-    if (!active) {
-      samplesRef.current = nextSamples;
-      return;
     }
 
     // Absorb any content shift before it can be painted.
@@ -220,9 +249,21 @@ export function AppleKaraokeView({
 
     samplesRef.current = nextSamples;
 
-    if (shift !== 0) {
+    // Never compensate for a shift we are about to re-anchor anyway: when a
+    // browsed range collapses, the content above the active line disappears and
+    // scrollTop would slam into its clamp instead of holding still.
+    if (shift !== 0 && !reanchorRef.current) {
       stage.scrollTop += shift;
       virtualScrollRef.current = null;
+    }
+
+    const active = stage.querySelector<HTMLElement>('[data-k-active="1"]');
+
+    // The singer's line can be outside a browsed range; the loop must not chase
+    // a target from before that range existed.
+    if (!active) {
+      desiredScrollRef.current = null;
+      return;
     }
 
     const stageHeight = stage.clientHeight;
@@ -231,10 +272,13 @@ export function AppleKaraokeView({
 
     desiredScrollRef.current =
       active.offsetTop + active.offsetHeight / 2 - anchor;
+    desiredKeyRef.current = `${windowStart}:${windowEnd}`;
 
-    // First paint: land on the current line without animating through a book.
-    if (!positionedRef.current) {
+    // First paint — or coming back from a range that no longer held the active
+    // line — land on the current line instead of animating through the book.
+    if (!positionedRef.current || reanchorRef.current) {
       positionedRef.current = true;
+      reanchorRef.current = false;
       stage.scrollTop = desiredScrollRef.current;
       virtualScrollRef.current = desiredScrollRef.current;
     }
@@ -249,6 +293,59 @@ export function AppleKaraokeView({
       typeof window !== "undefined" &&
       typeof window.matchMedia === "function" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    /**
+     * Keeps the rendered range one screen ahead of a browsing reader, so the
+     * sheet never runs out of lyrics before the start or the end of the book.
+     */
+    const extendBrowseRange = (stage: HTMLDivElement) => {
+      const total = chunksRef.current.length;
+      const { start, end } = { start: windowStartRef.current, end: windowEndRef.current };
+      const stageHeight = stage.clientHeight;
+
+      if (!stageHeight || total === 0) {
+        return;
+      }
+
+      const nearTop = stage.scrollTop < stageHeight * 0.9;
+      const nearBottom =
+        stage.scrollHeight - stage.scrollTop - stageHeight < stageHeight * 0.9;
+
+      const next = (() => {
+        if (nearTop && start > 0) {
+          const nextStart = Math.max(0, start - BROWSE_STEP);
+
+          return {
+            start: nextStart,
+            end: Math.min(total, nextStart + BROWSE_MAX),
+          };
+        }
+
+        if (nearBottom && end < total) {
+          const nextEnd = Math.min(total, end + BROWSE_STEP);
+
+          return { start: Math.max(0, nextEnd - BROWSE_MAX), end: nextEnd };
+        }
+
+        return null;
+      })();
+
+      if (!next) {
+        return;
+      }
+
+      setBrowseRange((previous) => {
+        if (
+          previous &&
+          previous.start === next.start &&
+          previous.end === next.end
+        ) {
+          return previous;
+        }
+
+        return next;
+      });
+    };
 
     const loop = (now: number) => {
       frame = requestAnimationFrame(loop);
@@ -267,6 +364,10 @@ export function AppleKaraokeView({
           setFollowing(false);
         }
 
+        // Cheap (a few layout reads, no writes), so run it every frame and the
+        // sheet is always one screen ahead of the reader.
+        extendBrowseRange(stage);
+
         velocity = 0;
         virtualScrollRef.current = null;
         return;
@@ -275,12 +376,75 @@ export function AppleKaraokeView({
       if (!followingRef.current) {
         followingRef.current = true;
         setFollowing(true);
+
+        // Coming back to auto-follow: the singing line may have left the
+        // browsed range. Add it rather than teleporting — adding content never
+        // moves what is already on screen, so the sheet can glide there from
+        // wherever the reader is looking.
+        if (!stage.querySelector('[data-k-active="1"]')) {
+          const index = activeIndexRef.current;
+          const total = chunksRef.current.length;
+          const start = windowStartRef.current;
+          const end = windowEndRef.current;
+          const reach = WINDOW_SIZE * 2;
+
+          if (
+            index >= 0 &&
+            total > 0 &&
+            index >= start - reach &&
+            index <= end + reach
+          ) {
+            settleFramesRef.current = 0;
+            setBrowseRange({
+              start: Math.min(start, Math.max(0, index - WINDOW_BEFORE)),
+              end: Math.max(end, Math.min(total, index + WINDOW_AFTER)),
+            });
+            return;
+          }
+
+          // Far away: one clean jump back to the singer.
+          reanchorRef.current = true;
+          setBrowseRange(null);
+          return;
+        }
       }
 
       const desired = desiredScrollRef.current;
 
       if (desired === null) {
         return;
+      }
+
+      // Settling window after a tap: stay exactly where we are (tracking the
+      // real scroll position) so the animation starts from under the finger.
+      if (now < holdUntilRef.current) {
+        velocity = 0;
+        virtualScrollRef.current = stage.scrollTop;
+        return;
+      }
+
+      // Hand the browsed range back to the tight auto window — but only once the
+      // sheet has been still *and* the target was measured against the range we
+      // are about to replace. Collapsing mid-glide is what made the sheet appear
+      // to jump instead of animating from the line that was tapped.
+      if (browseRangeRef.current) {
+        const settled =
+          virtualScrollRef.current !== null &&
+          Math.abs(desired - virtualScrollRef.current) < 1.5;
+
+        settleFramesRef.current = settled
+          ? settleFramesRef.current + 1
+          : 0;
+
+        const fresh =
+          desiredKeyRef.current ===
+          `${windowStartRef.current}:${windowEndRef.current}`;
+
+        if (fresh && settleFramesRef.current > 12) {
+          settleFramesRef.current = 0;
+          reanchorRef.current = true;
+          setBrowseRange(null);
+        }
       }
 
       // Trust our own bookkeeping between syncs: reading scrollTop every frame
@@ -301,6 +465,15 @@ export function AppleKaraokeView({
       }
 
       if (reduceMotion) {
+        velocity = 0;
+        virtualScrollRef.current = desired;
+        stage.scrollTop = desired;
+        return;
+      }
+
+      // Targets further than this cannot come from a line the reader tapped;
+      // treat them as a jump rather than a long high-speed flight.
+      if (Math.abs(error) > stage.clientHeight * 1.5) {
         velocity = 0;
         virtualScrollRef.current = desired;
         stage.scrollTop = desired;
@@ -375,6 +548,16 @@ export function AppleKaraokeView({
 
       seekAndPlay?.(time);
 
+      // Move the playhead now instead of waiting for the next progress tick:
+      // until that arrives, the reported time still points at the old line and
+      // the sheet would start gliding the wrong way before correcting itself.
+      timeRef.current = time;
+
+      // Let the seek land before the sheet moves at all, so the glide starts
+      // from the line that was tapped.
+      holdUntilRef.current = performance.now() + TAP_HOLD_MS;
+      settleFramesRef.current = 0;
+
       // Taking over the sheet: resume following the audio right away.
       manualScrollUntilRef.current = 0;
 
@@ -386,7 +569,7 @@ export function AppleKaraokeView({
 
       flashTimerRef.current = setTimeout(() => setFlashKey(null), 560);
     },
-    [seekAndPlay],
+    [seekAndPlay, timeRef],
   );
 
   if (chunks.length === 0) {

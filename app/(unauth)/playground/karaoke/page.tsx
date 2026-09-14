@@ -110,10 +110,14 @@ const BOOK_SENTENCES: { text: string; en: string }[] = [
   { text: "老井缓缓地开始讲述一个关于远方的故事说在山的另一边有一片会发光的湖水每年冬天都会有人从很远的地方走来只为了看上一眼", en: "The old well slowly began to tell a story about a faraway place: beyond the mountain there is a lake that glows, and every winter people walk a very long way just to see it once." },
 ];
 
-const buildBookTranscriptions = () => {
+const buildBookTranscriptions = (cycles = 1) => {
   let cursor = 3;
 
-  return BOOK_SENTENCES.map((sentence, lineIndex) => {
+  const script = Array.from({ length: cycles }).flatMap((_, cycle) =>
+    BOOK_SENTENCES.map((sentence, index) => ({ ...sentence, cycle, index })),
+  );
+
+  return script.map((sentence, lineIndex) => {
     const chars = sentence.text.split("");
     const units: string[] = [];
 
@@ -145,7 +149,7 @@ const buildBookTranscriptions = () => {
     cursor = end + 4;
 
     return {
-      id: `book-${lineIndex}`,
+      id: `book-${sentence.cycle}-${sentence.index}`,
       input: sentence.text,
       hanzi: sentence.text,
       pinyin: "",
@@ -268,14 +272,14 @@ const useFakePlayer = (startAt: number, startPaused = false) => {
     isPlaying,
     play: () => setIsPlaying(true),
     pause: () => setIsPlaying(false),
+    // Like react-player: the seek lands in the element immediately, but the
+    // reported time only catches up on the next progress tick (~100ms).
     seekAndPlay: (time: number) => {
       timeRef.current = time;
-      setCurrentTime(time);
       setIsPlaying(true);
     },
     seek: (time: number) => {
       timeRef.current = time;
-      setCurrentTime(time);
     },
   };
 };
@@ -292,6 +296,9 @@ export default function KaraokePlayground() {
   // No player ref + a single transcription: the degraded path other callers use.
   const noPlayer = searchParams.get("noplayer") === "1";
   const barDuration = parseFloat(searchParams.get("bar") || "0") || 240;
+  // Read as a primitive: useSearchParams() can hand back a new object identity
+  // every render, which would rebuild the whole book on every playback tick.
+  const cycles = Number(searchParams.get("cycles") || 1) || 1;
 
   useEffect(() => {
     if (theme) {
@@ -301,14 +308,14 @@ export default function KaraokePlayground() {
 
   const transcriptions = useMemo(() => {
     if (lang === "book") {
-      return buildBookTranscriptions();
+      return buildBookTranscriptions(cycles);
     }
 
     return buildMockTranscriptions(
       lang === "en" ? ENGLISH_LINES : CHINESE_LINES,
       lang,
     );
-  }, [lang]);
+  }, [lang, cycles]);
 
   const player = useFakePlayer(startAt, paused);
 

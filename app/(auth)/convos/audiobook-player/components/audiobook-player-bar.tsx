@@ -144,35 +144,23 @@ export const AudiobookPlayerBar = ({
   }, [safeDuration, timeRef]);
 
   // ── Drag to scrub; the seek is committed on release ───────────────────────
-  useEffect(() => {
-    if (dragRatio === null) {
-      return;
-    }
+  // Pointer capture (rather than window listeners) keeps this correct even for
+  // a click faster than a React re-render.
+  const finishDrag = useCallback(
+    (clientX: number) => {
+      if (dragRatioRef.current === null) {
+        return;
+      }
 
-    const onMove = (event: PointerEvent) => {
-      const ratio = ratioFromEvent(event.clientX);
-
-      dragRatioRef.current = ratio;
-      setDragRatio(ratio);
-      setHoverRatio(ratio);
-    };
-
-    const onUp = (event: PointerEvent) => {
-      const ratio = ratioFromEvent(event.clientX);
+      const ratio = ratioFromEvent(clientX);
 
       dragRatioRef.current = null;
       setDragRatio(null);
+      setHoverRatio(null);
       handleSeekChange([ratioToTime(ratio)]);
-    };
-
-    window.addEventListener("pointermove", onMove);
-    window.addEventListener("pointerup", onUp);
-
-    return () => {
-      window.removeEventListener("pointermove", onMove);
-      window.removeEventListener("pointerup", onUp);
-    };
-  }, [dragRatio, handleSeekChange, ratioFromEvent, ratioToTime]);
+    },
+    [handleSeekChange, ratioFromEvent, ratioToTime],
+  );
 
   const previewRatio = dragRatio ?? hoverRatio;
   const previewTime = previewRatio !== null ? ratioToTime(previewRatio) : null;
@@ -188,15 +176,32 @@ export const AudiobookPlayerBar = ({
         aria-valuemax={Math.round(safeDuration)}
         aria-valuenow={Math.round(previewTime ?? currentTime ?? 0)}
         onPointerDown={(event) => {
+          event.currentTarget.setPointerCapture?.(event.pointerId);
+
           const ratio = ratioFromEvent(event.clientX);
 
           dragRatioRef.current = ratio;
           setDragRatio(ratio);
+          setHoverRatio(ratio);
         }}
         onPointerMove={(event) => {
-          if (dragRatioRef.current === null) {
-            setHoverRatio(ratioFromEvent(event.clientX));
+          const ratio = ratioFromEvent(event.clientX);
+
+          if (dragRatioRef.current !== null) {
+            dragRatioRef.current = ratio;
+            setDragRatio(ratio);
           }
+
+          setHoverRatio(ratio);
+        }}
+        onPointerUp={(event) => {
+          event.currentTarget.releasePointerCapture?.(event.pointerId);
+          finishDrag(event.clientX);
+        }}
+        onPointerCancel={(event) => {
+          dragRatioRef.current = null;
+          setDragRatio(null);
+          setHoverRatio(null);
         }}
         onPointerLeave={() => {
           if (dragRatioRef.current === null) {

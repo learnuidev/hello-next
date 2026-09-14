@@ -273,8 +273,9 @@ export function AppleKaraokeView({
     }
 
     const stageHeight = stage.clientHeight;
-    // Just below centre while the count-in dots run, well clear of them.
-    const anchor = isIntro ? stageHeight * 0.55 : stageHeight / 2;
+    // The singing line sits above centre, so the lines still to come get the
+    // space below it — and during the count-in it drops a little lower.
+    const anchor = isIntro ? stageHeight * 0.55 : stageHeight * 0.36;
 
     desiredScrollRef.current =
       target.offsetTop + target.offsetHeight / 2 - anchor;
@@ -713,9 +714,11 @@ export function AppleKaraokeView({
         onPointerDown={() => pauseFollowing()}
         className={cn(
           "mn-k-stage mn-k-scroll relative z-10 overflow-y-auto overscroll-contain",
+          // Roomier on desktop: phones keep a compact window, wide screens get
+          // a proper lyric stage.
           compact
-            ? "h-[46vh] min-h-[300px] max-h-[420px]"
-            : "h-[58vh] min-h-[400px] max-h-[640px]",
+            ? "h-[46vh] min-h-[300px] max-h-[420px] sm:h-[56vh] sm:max-h-[560px]"
+            : "h-[58vh] min-h-[400px] max-h-[640px] sm:h-[76vh] sm:min-h-[520px] sm:max-h-[900px]",
         )}
       >
         <div style={{ height: topSpacer }} />

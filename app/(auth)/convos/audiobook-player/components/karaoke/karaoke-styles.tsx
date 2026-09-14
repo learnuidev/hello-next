@@ -20,11 +20,14 @@ export const KaraokeStyles = () => (
     background-clip: text;
     color: transparent;
     -webkit-text-fill-color: transparent;
-    transform: translate3d(0, calc(var(--pop) * -2px), 0) scale(calc(1 + var(--pop) * 0.05));
-    transform-origin: 50% 82%;
-    /* The glow rides the sweep front: it is transparent until a syllable is
-       actually being sung, so it costs nothing on a resting line. */
-    text-shadow: 0 0 calc(24px * var(--pop)) rgba(var(--k-glow-rgb), calc(0.5 * var(--pop)));
+    /* Deliberately barely there: a 2% swell and three quarters of a pixel of
+       lift, anchored to the baseline so the syllable grows upwards. Anything
+       stronger reads as the text jumping around while you are reading it. */
+    transform: translate3d(0, calc(var(--pop) * -0.75px), 0) scale(calc(1 + var(--pop) * 0.02));
+    transform-origin: 50% 85%;
+    /* The glow rides the sweep front: transparent until a syllable is actually
+       being sung, so a resting line costs nothing. */
+    text-shadow: 0 0 calc(14px * var(--pop)) rgba(var(--k-glow-rgb), calc(0.3 * var(--pop)));
   }
 
   .mn-k-line {

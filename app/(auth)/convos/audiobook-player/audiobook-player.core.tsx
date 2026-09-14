@@ -333,6 +333,9 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
               currentTime={currentTime}
               handleSeekChange={handleSeekChange}
               duration={duration}
+              transcriptions={content.transcriptions}
+              playerRef={playerRef}
+              isPlaying={playing}
             />
           </div>
         </AudiobookPlayerDock>

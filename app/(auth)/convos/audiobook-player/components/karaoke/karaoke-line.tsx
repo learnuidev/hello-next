@@ -113,9 +113,11 @@ export const KaraokeLine = memo(
       }
 
       let frame = 0;
+      const tokens = tokenRefs.current;
       const pops = new Float32Array(chunk.tokens.length);
       const lastProgress = new Float32Array(chunk.tokens.length).fill(-1);
       const lastPop = new Float32Array(chunk.tokens.length).fill(-1);
+      const willChange = new Uint8Array(chunk.tokens.length);
 
       const loop = () => {
         frame = requestAnimationFrame(loop);
@@ -124,7 +126,7 @@ export const KaraokeLine = memo(
 
         for (let index = 0; index < chunk.tokens.length; index++) {
           const token = chunk.tokens[index];
-          const el = tokenRefs.current[index];
+          const el = tokens[index];
 
           if (!el || token.isSpace) {
             continue;
@@ -149,10 +151,13 @@ export const KaraokeLine = memo(
             el.style.setProperty("--p", `${roundedProgress}`);
           }
 
-          // The syllable you are on lifts and swells, then settles.
+          // The syllable you are on swells very slightly, then settles. The
+          // approach is slow (≈250ms) and the release even slower, so the
+          // character never snaps back the moment it is sung.
           const popTarget = progress > 0 && progress < 1 ? 1 : 0;
+          const approach = popTarget > pops[index] ? 0.085 : 0.055;
 
-          pops[index] += (popTarget - pops[index]) * 0.17;
+          pops[index] += (popTarget - pops[index]) * approach;
 
           const pop = pops[index] < 0.004 ? 0 : pops[index];
           const roundedPop = Math.round(pop * 100) / 100;
@@ -161,6 +166,15 @@ export const KaraokeLine = memo(
             lastPop[index] = roundedPop;
             el.style.setProperty("--pop", `${roundedPop}`);
           }
+
+          // Promote only the syllable that is actually moving, so the sheet
+          // keeps one or two composited layers instead of hundreds.
+          const promoted = roundedPop > 0 ? 1 : 0;
+
+          if (promoted !== willChange[index]) {
+            willChange[index] = promoted;
+            el.style.willChange = promoted ? "transform" : "";
+          }
         }
       };
 
@@ -168,6 +182,12 @@ export const KaraokeLine = memo(
 
       return () => {
         cancelAnimationFrame(frame);
+
+        tokens.forEach((el) => {
+          if (el) {
+            el.style.willChange = "";
+          }
+        });
       };
     }, [isActive, chunk.tokens, timeRef]);
 

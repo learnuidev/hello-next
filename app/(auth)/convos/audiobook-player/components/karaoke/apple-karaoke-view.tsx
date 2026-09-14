@@ -17,7 +17,7 @@ import {
 import { buildKaraokeChunks, findActiveChunkIndex } from "./karaoke-data";
 import { KaraokeLine } from "./karaoke-line";
 import { KaraokeStyles } from "./karaoke-styles";
-import { useSmoothPlayhead } from "./use-smooth-playhead";
+import { useSmoothPlayhead } from "../../hooks/use-smooth-playhead";
 
 type AppleKaraokeViewProps = {
   transcriptions?: any[];
@@ -412,7 +412,7 @@ export function AppleKaraokeView({
 
   const cssVars = {
     "--k-sung": isDark ? "#ffffff" : "#0b0b0f",
-    "--k-unsung": isDark ? "rgba(255,255,255,0.32)" : "rgba(11,11,15,0.28)",
+    "--k-unsung": isDark ? "rgba(255,255,255,0.4)" : "rgba(11,11,15,0.34)",
     "--k-muted": isDark ? "rgba(255,255,255,0.62)" : "rgba(11,11,15,0.6)",
     "--k-glow-rgb": isDark ? "255,255,255" : "11,11,15",
     "--k-flash": isDark ? "rgba(255,255,255,0.12)" : "rgba(11,11,15,0.08)",

@@ -1,6 +1,7 @@
 "use client";
 
 import { AppleKaraokeView } from "@/app/(auth)/convos/audiobook-player/components/karaoke/apple-karaoke-view";
+import { AudiobookPlayerBar } from "@/app/(auth)/convos/audiobook-player/components/audiobook-player-bar";
 import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
 import { useChinglishState } from "@/components/settings-dialog/use-chinglish-state";
 import { useTheme } from "next-themes";
@@ -290,6 +291,7 @@ export default function KaraokePlayground() {
   const compact = searchParams.get("compact") === "1";
   // No player ref + a single transcription: the degraded path other callers use.
   const noPlayer = searchParams.get("noplayer") === "1";
+  const barDuration = parseFloat(searchParams.get("bar") || "0") || 240;
 
   useEffect(() => {
     if (theme) {
@@ -409,6 +411,22 @@ export default function KaraokePlayground() {
         compact={compact}
         coverUrl="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=800&q=60"
       />
+
+      {/* The player scrubber, on a recording much longer than the transcriptions
+          so the empty stretches and the start marker are visible. */}
+      <div className="mt-10 rounded-2xl border border-black/10 p-4 dark:border-white/10">
+        <p className="mb-2 px-4 text-xs uppercase tracking-widest opacity-50 sm:px-8">
+          player scrubber · {Math.round(barDuration)}s recording
+        </p>
+        <AudiobookPlayerBar
+          currentTime={player.currentTime}
+          duration={barDuration}
+          transcriptions={transcriptions}
+          playerRef={player.playerRef}
+          isPlaying={player.isPlaying}
+          handleSeekChange={(value) => player.seek(value[0])}
+        />
+      </div>
     </div>
   );
 }

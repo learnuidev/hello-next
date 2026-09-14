@@ -234,7 +234,7 @@ export const KaraokeLine = memo(
               >
                 {hasRoman && (
                   <span
-                    className="whitespace-nowrap font-normal uppercase tracking-wide transition-opacity duration-500"
+                    className="whitespace-nowrap font-normal transition-opacity duration-500"
                     style={{
                       opacity: isActive ? 0.7 : 0,
                       fontSize: "0.34em",

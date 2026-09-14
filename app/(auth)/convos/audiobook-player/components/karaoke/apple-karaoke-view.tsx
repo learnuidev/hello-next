@@ -143,6 +143,15 @@ export function AppleKaraokeView({
   const resyncInRef = useRef(0);
   const positionedRef = useRef(false);
   const samplesRef = useRef<{ el: HTMLElement; top: number }[]>([]);
+  /**
+   * Where the singing line sat before the last commit. The guides it carries
+   * change its own height (and the height of the line above it), which no
+   * sample above can see — so the line itself is the anchor.
+   */
+  const activeAnchorRef = useRef<{ key: string | null; top: number | null }>({
+    key: null,
+    top: null,
+  });
 
   const autoWindowStart = useMemo(() => {
     if (chunks.length === 0) {
@@ -235,6 +244,12 @@ export function AppleKaraokeView({
       nextSamples.push({ el: lines[index], top: lines[index].offsetTop });
     }
 
+    // Measured before anything is written, so every read stays batched ahead of
+    // the single scrollTop write that follows.
+    const active = stage.querySelector<HTMLElement>('[data-k-active="1"]');
+    const activeKey = active?.dataset.kKey ?? null;
+    const activeTop = active ? active.offsetTop : null;
+
     // Absorb any content shift before it can be painted.
     let shift = 0;
 
@@ -250,12 +265,37 @@ export function AppleKaraokeView({
     // Never compensate for a shift we are about to re-anchor anyway: when a
     // browsed range collapses, the content above the active line disappears and
     // scrollTop would slam into its clamp instead of holding still.
+    let applied = 0;
+
     if (shift !== 0 && !reanchorRef.current) {
       stage.scrollTop += shift;
+      applied = shift;
       virtualScrollRef.current = null;
     }
 
-    const active = stage.querySelector<HTMLElement>('[data-k-active="1"]');
+    // Pinyin and the translation belong to the singing line, so they mount and
+    // unmount with it — which resizes that line, and the line above it. Both sit
+    // *below* the first retained sample, where the check above cannot see them,
+    // so the highlighted line is tracked directly: it stays exactly where it was
+    // and only the glide to the next line moves the sheet.
+    const previousAnchor = activeAnchorRef.current;
+
+    activeAnchorRef.current = { key: activeKey, top: activeTop };
+
+    if (
+      activeTop !== null &&
+      previousAnchor.top !== null &&
+      previousAnchor.key === activeKey &&
+      !reanchorRef.current
+    ) {
+      const extra = activeTop - previousAnchor.top - applied;
+
+      if (extra !== 0) {
+        stage.scrollTop += extra;
+        virtualScrollRef.current = null;
+      }
+    }
+
     const isIntro = activeIndexRef.current < 0;
 
     // During the count-in nothing is active yet. Anchor on the first line so it
@@ -729,12 +769,15 @@ export function AppleKaraokeView({
           const isLineActive = distance === 0;
           const showsGapDots = inGap && globalIndex === activeIndex + 1;
 
-          const translation =
-            showEn && chunk.isFirstOfParent
-              ? showChinglish
-                ? chunk.parent?.chinglish || chunk.parent?.en
-                : chunk.parent?.en
-              : undefined;
+          // The translation is read from the parent for whichever chunk is
+          // being sung, so a sentence split across several lines keeps its
+          // reading for all of them — the old "once per parent" rule would
+          // leave every later chunk of that sentence blank.
+          const translation = showEn
+            ? showChinglish
+              ? chunk.parent?.chinglish || chunk.parent?.en
+              : chunk.parent?.en
+            : undefined;
 
           return (
             <div key={chunk.key}>

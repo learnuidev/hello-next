@@ -42,6 +42,54 @@ const WINDOW_AFTER = 22;
 const WINDOW_SIZE = WINDOW_BEFORE + WINDOW_AFTER;
 const WINDOW_STEP = 4;
 
+/** Below this the break is too short to be worth counting down. */
+const GAP_DOTS_MIN_WAIT = 2.2;
+
+/**
+ * The three dots count the wait down instead of just pulsing: each third of it
+ * lights one more, so a long intro or a long instrumental break tells you how
+ * long you have — with a 21s wait, one dot for the first 7s, two by 14s and all
+ * three by 21s. The first dot is lit for the whole of the first third, so the
+ * count never starts from nothing.
+ */
+const filledDotCount = (time: number, from: number, to: number) => {
+  const total = to - from;
+
+  if (!(total > 0)) {
+    return 1;
+  }
+
+  return Math.min(3, Math.floor(Math.max(time - from, 0) / (total / 3)) + 1);
+};
+
+/**
+ * The three dots of a wait, lit one per third. They never pulse: the count is
+ * the whole message, and a filled dot stays filled until the wait is over.
+ */
+const WaitDots = ({
+  filled,
+  containerClassName,
+  dotClassName,
+  activeColor,
+  idleColor,
+}: {
+  filled: number;
+  containerClassName: string;
+  dotClassName: string;
+  activeColor: string;
+  idleColor: string;
+}) => (
+  <div className={cn("flex items-center justify-center", containerClassName)}>
+    {[0, 1, 2].map((dot) => (
+      <span
+        key={dot}
+        className={cn("rounded-full transition-colors duration-300", dotClassName)}
+        style={{ backgroundColor: dot < filled ? activeColor : idleColor }}
+      />
+    ))}
+  </div>
+);
+
 /** Spring that glides the sheet so the active line sits dead centre. */
 const SPRING_STIFFNESS = 90;
 /** Damped to critical: settles crisply instead of bouncing past the line. */
@@ -108,6 +156,9 @@ export function AppleKaraokeView({
   const activeIndexRef = useRef(-2);
   const [inGap, setInGap] = useState(false);
   const inGapRef = useRef(false);
+  /** Filled count-in / break dots (0 when there is no wait to count down). */
+  const [filledDots, setFilledDots] = useState(0);
+  const dotsRef = useRef(0);
   const [flashKey, setFlashKey] = useState<string | null>(null);
   const [stageHeight, setStageHeight] = useState(0);
   const [following, setFollowing] = useState(true);
@@ -186,15 +237,30 @@ export function AppleKaraokeView({
         setActiveIndex(index);
       }
 
-      if (index >= 0) {
-        const next = chunks[index + 1];
-        const gap =
-          !!next && time > chunks[index].end + 0.35 && next.start - time > 2.2;
+      const next = index >= 0 ? chunks[index + 1] : null;
+      // A *sustained* break, rather than "the next line is still a while away":
+      // the count has to run to the end of the wait, or the last dot would
+      // disappear before the wait it is counting down was even over.
+      const gap =
+        !!next &&
+        next.start - chunks[index].end > GAP_DOTS_MIN_WAIT &&
+        time > chunks[index].end + 0.35;
 
-        if (gap !== inGapRef.current) {
-          inGapRef.current = gap;
-          setInGap(gap);
-        }
+      if (gap !== inGapRef.current) {
+        inGapRef.current = gap;
+        setInGap(gap);
+      }
+
+      const dots =
+        index < 0
+          ? filledDotCount(time, 0, chunks[0].start)
+          : gap && next
+            ? filledDotCount(time, chunks[index].end, next.start)
+            : 0;
+
+      if (dots !== dotsRef.current) {
+        dotsRef.current = dots;
+        setFilledDots(dots);
       }
     };
 
@@ -739,20 +805,17 @@ export function AppleKaraokeView({
           return (
             <div key={chunk.key}>
               {showsGapDots && (
-                <div className="flex items-center justify-center gap-1 py-1">
-                  {[0, 1, 2].map((dot) => (
-                    <span
-                      key={dot}
-                      className="mn-k-dot h-1.5 w-1.5 rounded-full"
-                      style={{
-                        backgroundColor: isDark
-                          ? "rgba(255,255,255,0.85)"
-                          : "rgba(11,11,15,0.7)",
-                        animationDelay: `${dot * 0.16}s`,
-                      }}
-                    />
-                  ))}
-                </div>
+                <WaitDots
+                  filled={filledDots}
+                  containerClassName="gap-1 py-1"
+                  dotClassName="h-1.5 w-1.5"
+                  activeColor={
+                    isDark ? "rgba(255,255,255,0.85)" : "rgba(11,11,15,0.7)"
+                  }
+                  idleColor={
+                    isDark ? "rgba(255,255,255,0.22)" : "rgba(11,11,15,0.16)"
+                  }
+                />
               )}
 
               <KaraokeLine
@@ -776,22 +839,16 @@ export function AppleKaraokeView({
         <div style={{ height: bottomSpacer }} />
       </div>
 
-      {/* Count-in: just three dots, in the space the lyrics will not use yet */}
+      {/* Count-in: three dots counting down the wait, in the space the lyrics
+          will not use yet */}
       {isIntro && (
-        <div className="pointer-events-none absolute inset-x-0 top-[9%] z-20 flex items-center justify-center gap-2">
-          {[0, 1, 2].map((dot) => (
-            <span
-              key={dot}
-              className="mn-k-dot h-2 w-2 rounded-full"
-              style={{
-                backgroundColor: isDark
-                  ? "rgba(255,255,255,0.9)"
-                  : "rgba(11,11,15,0.75)",
-                animationDelay: `${dot * 0.16}s`,
-              }}
-            />
-          ))}
-        </div>
+        <WaitDots
+          filled={filledDots}
+          containerClassName="pointer-events-none absolute inset-x-0 top-[9%] z-20 gap-2"
+          dotClassName="h-2 w-2"
+          activeColor={isDark ? "rgba(255,255,255,0.9)" : "rgba(11,11,15,0.75)"}
+          idleColor={isDark ? "rgba(255,255,255,0.22)" : "rgba(11,11,15,0.16)"}
+        />
       )}
 
       {!isPlaying && currentTime === 0 && (

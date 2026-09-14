@@ -144,14 +144,12 @@ export function AppleKaraokeView({
   const positionedRef = useRef(false);
   const samplesRef = useRef<{ el: HTMLElement; top: number }[]>([]);
   /**
-   * Where the singing line sat before the last commit. The guides it carries
-   * change its own height (and the height of the line above it), which no
-   * sample above can see — so the line itself is the anchor.
+   * Where the singing line — and the line about to be sung — sat before this
+   * commit. The guides those lines carry change height, which moves every line
+   * below them; no sample above can see that, so the lines themselves are the
+   * anchor (see the layout effect).
    */
-  const activeAnchorRef = useRef<{ key: string | null; top: number | null }>({
-    key: null,
-    top: null,
-  });
+  const anchorRef = useRef<{ key: string; top: number }[]>([]);
 
   const autoWindowStart = useMemo(() => {
     if (chunks.length === 0) {
@@ -274,21 +272,31 @@ export function AppleKaraokeView({
     }
 
     // Pinyin and the translation belong to the singing line, so they mount and
-    // unmount with it — which resizes that line, and the line above it. Both sit
-    // *below* the first retained sample, where the check above cannot see them,
-    // so the highlighted line is tracked directly: it stays exactly where it was
-    // and only the glide to the next line moves the sheet.
-    const previousAnchor = activeAnchorRef.current;
+    // unmount with it — which resizes that line, and so shifts every line below
+    // it. Both sit *below* the first retained sample, where the check above
+    // cannot see them, so the lines that matter are tracked by key: the one
+    // being sung and the one about to be. Whichever of them is active now is
+    // put back exactly where it was, leaving just the glide to move the sheet.
+    const previousAnchors = anchorRef.current;
+    const nextEl = stage.querySelector<HTMLElement>(
+      `[data-k-index="${activeIndexRef.current + 1}"]`,
+    );
 
-    activeAnchorRef.current = { key: activeKey, top: activeTop };
+    anchorRef.current = [
+      active && activeKey && activeTop !== null
+        ? { key: activeKey, top: activeTop }
+        : null,
+      nextEl?.dataset.kKey
+        ? { key: nextEl.dataset.kKey, top: nextEl.offsetTop }
+        : null,
+    ].filter(Boolean) as { key: string; top: number }[];
 
-    if (
-      activeTop !== null &&
-      previousAnchor.top !== null &&
-      previousAnchor.key === activeKey &&
-      !reanchorRef.current
-    ) {
-      const extra = activeTop - previousAnchor.top - applied;
+    const held = activeKey
+      ? previousAnchors.find((anchor) => anchor.key === activeKey)
+      : undefined;
+
+    if (held && activeTop !== null && !reanchorRef.current) {
+      const extra = activeTop - held.top - applied;
 
       if (extra !== 0) {
         stage.scrollTop += extra;

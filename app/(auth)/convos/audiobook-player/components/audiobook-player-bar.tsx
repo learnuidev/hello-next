@@ -256,18 +256,23 @@ export const AudiobookPlayerBar = ({
           />
         )}
 
-        {/* Knob — appears under the pointer, like the Music app */}
+        {/* Knob — appears under the pointer, like the Music app. The position
+            lives on the wrapper so the scale transition stays independent. */}
         <div
           ref={knobRef}
-          className={cn(
-            "pointer-events-none absolute left-0 top-1/2 h-3 w-3 rounded-full bg-white shadow-[0_1px_4px_rgba(0,0,0,0.35)] transition-transform duration-200",
-            previewRatio === null
-              ? "scale-0 group-hover:scale-100"
-              : dragRatio !== null
-                ? "scale-125"
-                : "scale-100",
-          )}
-        />
+          className="pointer-events-none absolute left-0 top-1/2 h-0 w-0"
+        >
+          <div
+            className={cn(
+              "-ml-1.5 -mt-1.5 h-3 w-3 rounded-full bg-white shadow-[0_1px_4px_rgba(0,0,0,0.35)] transition-transform duration-200",
+              previewRatio === null
+                ? "scale-0 group-hover:scale-100"
+                : dragRatio !== null
+                  ? "scale-125"
+                  : "scale-100",
+            )}
+          />
+        </div>
 
         {/* Time bubble */}
         {hoverRatio !== null && safeDuration > 0 && (

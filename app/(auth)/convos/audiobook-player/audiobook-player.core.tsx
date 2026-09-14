@@ -1,7 +1,6 @@
 import { MandoContextMenu } from "@/app/review/review-cloze-content/mando-context-menu";
 
 import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
-import { TheDock } from "@/components/the-dock";
 import { Icons } from "@/components/ui/icons.v2";
 import { useContextPlayContextState } from "@/components/youtube-page/hooks/use-play-history-state";
 import { KaraokeMode } from "@/components/youtube-page/karaoke-mode";
@@ -16,6 +15,7 @@ import { isYoutube } from "../utils/is-youtube";
 import { AllTranscriptionsEditor } from "./components/all-transcriptions-editor";
 import { AudiobookPlayerBar } from "./components/audiobook-player-bar";
 import { AudioBookPlayerControls } from "./components/audiobook-player-controls";
+import { AudiobookPlayerDock } from "./components/audiobook-player-dock";
 import { CharacterMenuBar } from "./components/character-menu-bar";
 import { ParaView } from "./components/para-view";
 import { ReaderViewParent } from "./components/reader-view-parent";
@@ -336,8 +336,8 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
             }}
           />
         )}
-        <TheDock className="bottom-4 sm:bottom-2">
-          <div className="dark:bg-auto p-4 w-full max-w-4xl mx-auto">
+        <AudiobookPlayerDock className="bottom-4 sm:bottom-2">
+          <div className="p-4 w-full">
             <AudioBookPlayerControls
               loop={loop}
               setLoop={setLoop}
@@ -359,7 +359,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
               duration={duration}
             />
           </div>
-        </TheDock>
+        </AudiobookPlayerDock>
       </div>
     </MandoContextMenu>
   );

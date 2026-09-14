@@ -6,6 +6,7 @@ export const whiteListUrls = [
   "/why",
   "/learn",
   "/pinyin",
+  "/dock-preview", // TEMP: local verification of the audiobook dock, remove me
 
   "/terms",
   "/privacy",

@@ -106,11 +106,11 @@ export default function ContentItem() {
       <WithContentItem>
         <main>
           <div>
-            {isFSM ? null : (
+            {/* {isFSM ? null : (
               <div className="px-4 md:px-12">
                 <ConvosNavBar />
               </div>
-            )}
+            )} */}
 
             <div className="mb-24">
               <ConvoDetails contentId={contentId} />

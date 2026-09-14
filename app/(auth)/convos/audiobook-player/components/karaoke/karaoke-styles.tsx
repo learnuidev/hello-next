@@ -22,22 +22,22 @@ export const KaraokeStyles = () => (
     -webkit-text-fill-color: transparent;
     transform: translate3d(0, calc(var(--pop) * -2px), 0) scale(calc(1 + var(--pop) * 0.05));
     transform-origin: 50% 82%;
-    will-change: transform;
+    /* The glow rides the sweep front: it is transparent until a syllable is
+       actually being sung, so it costs nothing on a resting line. */
+    text-shadow: 0 0 calc(24px * var(--pop)) rgba(var(--k-glow-rgb), calc(0.5 * var(--pop)));
   }
 
   .mn-k-line {
     transition:
       opacity 520ms cubic-bezier(0.22, 1, 0.36, 1),
-      transform 640ms cubic-bezier(0.22, 1, 0.36, 1),
-      filter 520ms ease;
+      transform 640ms cubic-bezier(0.22, 1, 0.36, 1);
     border-radius: 20px;
   }
 
   .mn-k-line-active {
     transition:
       opacity 300ms ease,
-      transform 720ms cubic-bezier(0.34, 1.4, 0.5, 1),
-      filter 400ms ease;
+      transform 720ms cubic-bezier(0.34, 1.4, 0.5, 1);
   }
 
   .mn-k-line-flash {
@@ -65,6 +65,9 @@ export const KaraokeStyles = () => (
     scrollbar-width: none;
     -ms-overflow-style: none;
     scroll-behavior: auto;
+    /* The follow loop owns the scroll position; the browser's scroll anchoring
+       would otherwise fight it whenever the window slides. */
+    overflow-anchor: none;
   }
 
   .mn-k-scroll::-webkit-scrollbar {

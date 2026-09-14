@@ -94,8 +94,17 @@ export const useSmoothPlayhead = ({
         return;
       }
 
-      // Snap hard on seeks, glide otherwise.
-      const responsiveness = Math.abs(diff) > 1 ? 14 : playing ? 9 : 14;
+      // A seek is a jump, not a fast-forward: snapping here matters because a
+      // glide would walk the highlight through every line in between (and make
+      // the whole lyric sheet animate in a burst).
+      if (Math.abs(diff) > 0.75) {
+        timeRef.current = target;
+        return;
+      }
+
+      // Otherwise ease into the reported time so playback glides instead of
+      // stepping once every progress tick.
+      const responsiveness = 9;
 
       timeRef.current = current + diff * Math.min(1, dt * responsiveness);
     };

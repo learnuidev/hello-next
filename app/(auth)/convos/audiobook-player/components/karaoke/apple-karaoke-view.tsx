@@ -103,6 +103,14 @@ export function AppleKaraokeView({
   const manualScrollUntilRef = useRef(0);
   const flashTimerRef = useRef<any>(null);
 
+  /** Content-space scrollTop that centres the active line (set pre-paint). */
+  const desiredScrollRef = useRef<number | null>(null);
+  /** Where we believe the scroll is, without reading it every frame. */
+  const virtualScrollRef = useRef<number | null>(null);
+  const resyncInRef = useRef(0);
+  const positionedRef = useRef(false);
+  const samplesRef = useRef<{ el: HTMLElement; top: number }[]>([]);
+
   const windowStart = useMemo(() => {
     if (chunks.length === 0) {
       return 0;
@@ -116,7 +124,6 @@ export function AppleKaraokeView({
     return Math.min(quantised, lastStart);
   }, [activeIndex, chunks.length]);
 
-  const windowStartRef = useRef(windowStart);
 
   const windowChunks = useMemo(
     () => chunks.slice(windowStart, windowStart + WINDOW_SIZE),
@@ -168,34 +175,80 @@ export function AppleKaraokeView({
   }, [chunks, timeRef]);
 
   // ── Auto-follow ───────────────────────────────────────────────────────────
-  // Everything is derived from live DOM geometry every frame: the position of
-  // the active line's text relative to the middle of the stage. Nothing is
-  // cached, so wrapping, fonts or a translation appearing can never leave the
-  // lyrics stranded off-screen.
+  // Measurements happen once per commit, before the browser paints; the frame
+  // loop that follows them is pure arithmetic plus a single scrollTop write.
+  // Two rules keep the result smooth:
+  //
+  // 1. Lines are addressed in *content* space (`offsetTop`), so the target
+  //    position never depends on where the sheet currently happens to be
+  //    rendered — a re-render can never leave the lyrics stranded.
+  // 2. When the rendered window slides, the content above the active line
+  //    changes height. That shift is detected on a *retained* line and baked
+  //    into scrollTop in the same pre-paint pass, so nothing visibly moves —
+  //    and, crucially, it never drags a reader who has scrolled away back to
+  //    the singer.
+  useLayoutEffect(() => {
+    const stage = stageRef.current;
+
+    if (!stage) {
+      return;
+    }
+
+    const lines = stage.querySelectorAll<HTMLElement>("[data-k-index]");
+    const nextSamples: { el: HTMLElement; top: number }[] = [];
+
+    for (let index = 0; index < lines.length; index += 4) {
+      nextSamples.push({ el: lines[index], top: lines[index].offsetTop });
+    }
+
+    const active = stage.querySelector<HTMLElement>('[data-k-active="1"]');
+
+    if (!active) {
+      samplesRef.current = nextSamples;
+      return;
+    }
+
+    // Absorb any content shift before it can be painted.
+    let shift = 0;
+
+    for (const sample of samplesRef.current) {
+      if (sample.el.isConnected) {
+        shift = sample.el.offsetTop - sample.top;
+        break;
+      }
+    }
+
+    samplesRef.current = nextSamples;
+
+    if (shift !== 0) {
+      stage.scrollTop += shift;
+      virtualScrollRef.current = null;
+    }
+
+    const stageHeight = stage.clientHeight;
+    const anchor =
+      activeIndexRef.current < 0 ? stageHeight * 0.72 : stageHeight / 2;
+
+    desiredScrollRef.current =
+      active.offsetTop + active.offsetHeight / 2 - anchor;
+
+    // First paint: land on the current line without animating through a book.
+    if (!positionedRef.current) {
+      positionedRef.current = true;
+      stage.scrollTop = desiredScrollRef.current;
+      virtualScrollRef.current = desiredScrollRef.current;
+    }
+  });
+
   useEffect(() => {
     let frame = 0;
     let velocity = 0;
     let last = performance.now();
-    let lastWindowStart = Number.NaN;
 
     const reduceMotion =
       typeof window !== "undefined" &&
       typeof window.matchMedia === "function" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    const centerOffset = (stage: HTMLDivElement, line: HTMLElement) => {
-      const stageRect = stage.getBoundingClientRect();
-      const textEl = (line.firstElementChild as HTMLElement) || line;
-      const rect = textEl.getBoundingClientRect();
-
-      // During the count-in the first lines sit low so the ring has room.
-      const anchor =
-        activeIndexRef.current < 0
-          ? stageRect.top + stageRect.height * 0.72
-          : stageRect.top + stageRect.height / 2;
-
-      return rect.top + rect.height / 2 - anchor;
-    };
 
     const loop = (now: number) => {
       frame = requestAnimationFrame(loop);
@@ -208,37 +261,14 @@ export function AppleKaraokeView({
         return;
       }
 
-      const active = stage.querySelector<HTMLElement>('[data-k-active="1"]');
-
-      if (!active) {
-        return;
-      }
-
-      let offset = centerOffset(stage, active);
-
-      // The rendered window slides in blocks; absorb that jump instantly so
-      // nothing visibly moves at the moment the DOM changes under us.
-      if (windowStartRef.current !== lastWindowStart) {
-        lastWindowStart = windowStartRef.current;
-        velocity = 0;
-        stage.scrollTop += offset;
-        return;
-      }
-
-      // A seek (or the first paint) lands far away: jump instead of scrolling
-      // through the whole book.
-      if (Math.abs(offset) > stage.clientHeight * 1.5) {
-        velocity = 0;
-        stage.scrollTop += offset;
-        return;
-      }
-
       if (now < manualScrollUntilRef.current) {
         if (followingRef.current) {
           followingRef.current = false;
           setFollowing(false);
         }
 
+        velocity = 0;
+        virtualScrollRef.current = null;
         return;
       }
 
@@ -247,14 +277,33 @@ export function AppleKaraokeView({
         setFollowing(true);
       }
 
-      if (Math.abs(offset) < 0.4 && Math.abs(velocity) < 8) {
+      const desired = desiredScrollRef.current;
+
+      if (desired === null) {
+        return;
+      }
+
+      // Trust our own bookkeeping between syncs: reading scrollTop every frame
+      // would force a style flush right after writing it.
+      if (virtualScrollRef.current === null || resyncInRef.current <= 0) {
+        virtualScrollRef.current = stage.scrollTop;
+        resyncInRef.current = 12;
+      }
+
+      resyncInRef.current -= 1;
+
+      const error = desired - virtualScrollRef.current;
+
+      if (Math.abs(error) < 0.4 && Math.abs(velocity) < 8) {
         velocity = 0;
+        virtualScrollRef.current = desired;
         return;
       }
 
       if (reduceMotion) {
-        stage.scrollTop += offset;
         velocity = 0;
+        virtualScrollRef.current = desired;
+        stage.scrollTop = desired;
         return;
       }
 
@@ -262,7 +311,7 @@ export function AppleKaraokeView({
       const step = dt / steps;
 
       for (let index = 0; index < steps; index++) {
-        const accel = offset * SPRING_STIFFNESS - velocity * SPRING_DAMPING;
+        const accel = error * SPRING_STIFFNESS - velocity * SPRING_DAMPING;
 
         velocity += accel * step;
         velocity = Math.max(
@@ -271,32 +320,16 @@ export function AppleKaraokeView({
         );
       }
 
-      stage.scrollTop += velocity * dt;
-
-      // Re-read after writing: if the scroll was clamped (start or end of the
-      // sheet), stop pushing instead of building up velocity against a wall.
-      offset = centerOffset(stage, active);
-
-      if (Math.abs(offset) < 0.4) {
-        velocity = 0;
-      }
+      // Always glide: a click on a line half a screen away travels from what
+      // the reader is looking at instead of teleporting there.
+      virtualScrollRef.current += velocity * dt;
+      stage.scrollTop = virtualScrollRef.current;
     };
 
     frame = requestAnimationFrame(loop);
 
     return () => cancelAnimationFrame(frame);
   }, []);
-
-  useEffect(() => {
-    windowStartRef.current = windowStart;
-
-    // Keep the scroll position stable across a window slide.
-    const stage = stageRef.current;
-
-    if (stage) {
-      stage.dataset.windowStart = `${windowStart}`;
-    }
-  }, [windowStart]);
 
   // The spacer that lets the first and last lines reach the middle depends on
   // the stage height, so read it before the first paint and keep it in sync.
@@ -381,7 +414,7 @@ export function AppleKaraokeView({
     "--k-sung": isDark ? "#ffffff" : "#0b0b0f",
     "--k-unsung": isDark ? "rgba(255,255,255,0.32)" : "rgba(11,11,15,0.28)",
     "--k-muted": isDark ? "rgba(255,255,255,0.62)" : "rgba(11,11,15,0.6)",
-    "--k-glow": isDark ? "rgba(255,255,255,0.3)" : "rgba(11,11,15,0.16)",
+    "--k-glow-rgb": isDark ? "255,255,255" : "11,11,15",
     "--k-flash": isDark ? "rgba(255,255,255,0.12)" : "rgba(11,11,15,0.08)",
   } as React.CSSProperties;
 

@@ -66,6 +66,10 @@ export const KaraokeLine = memo(
 
     // Past lines recede further than upcoming ones, which stay readable so you
     // can see what is coming — how Apple Music Sing layers its lyrics.
+    //
+    // Only opacity and transform are animated: both are composited, while
+    // animating `filter: blur()` here re-rasterises every line of the sheet on
+    // every line change and makes the whole thing stutter.
     const opacity = isActive
       ? 1
       : isPast
@@ -77,10 +81,6 @@ export const KaraokeLine = memo(
       : isPast
         ? Math.max(0.78, 0.93 - distanceAbs * 0.014)
         : Math.max(0.82, 0.95 - distanceAbs * 0.012);
-
-    const blur = isActive
-      ? 0
-      : Math.min(isPast ? 2 : 1.2, Math.max(0, (distanceAbs - 1) * 0.35));
 
     const fontSize = getFontSize(chunk.visibleLength, compact);
 
@@ -191,8 +191,6 @@ export const KaraokeLine = memo(
         style={{
           opacity,
           transform: `scale(${scale})`,
-          filter: blur > 0.02 ? `blur(${blur.toFixed(2)}px)` : "none",
-          textShadow: isActive ? "0 0 34px var(--k-glow)" : "none",
         }}
       >
         <div

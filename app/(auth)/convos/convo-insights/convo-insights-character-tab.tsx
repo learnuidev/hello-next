@@ -62,6 +62,14 @@ export function ConvoInsightsCharacterTab({
       });
     }
 
+    if (learnStatus === "unlearned") {
+      filtered = filtered.filter((char: any) => {
+        return !char?.isLearned;
+      });
+
+      return filtered;
+    }
+
     if (learnStatus !== "all") {
       filtered = filtered.filter((char: any) => {
         if (learnStatus !== "forgotten") {

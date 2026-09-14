@@ -2,6 +2,7 @@
 
 import { AutoHideOnIdle } from "@/components/auto-hide-on-idle";
 import { AudiobookPlayerDock } from "../(auth)/convos/audiobook-player/components/audiobook-player-dock";
+import { TheDock } from "@/components/the-dock";
 
 export default function DockPreview() {
   return (
@@ -25,6 +26,20 @@ export default function DockPreview() {
         <div className="h-64">reading content</div>
         <div className="mt-[150vh]">deep in the transcript</div>
       </div>
+
+      {/* The floating bars (main + character navbar) share this: idle auto-hide */}
+      <TheDock className="bottom-2">
+        <div className="flex justify-center">
+          <div
+            id="floating-navbar"
+            className="flex items-center gap-6 rounded-full bg-gray-50 px-8 py-2 text-sm shadow-2xl dark:bg-black"
+          >
+            <button id="nav-home">home</button>
+            <button id="nav-convos">convos</button>
+            <button id="nav-character">character</button>
+          </div>
+        </div>
+      </TheDock>
 
       <AudiobookPlayerDock className="bottom-4 sm:bottom-2">
         <div className="p-4 w-full">

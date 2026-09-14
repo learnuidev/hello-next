@@ -1,86 +1,45 @@
-import { cn } from "@/lib/utils";
-import { AnimatePresence, motion } from "framer-motion";
-import React, { useState } from "react";
+"use client";
 
+import { AutoHideOnIdle } from "@/components/auto-hide-on-idle";
+import { cn } from "@/lib/utils";
+import React from "react";
+
+/**
+ * The floating bars (main navbar, character navbar, cloze dock, ...).
+ *
+ * They sit pinned to the bottom of the viewport and behave exactly like the
+ * audiobook player dock: visible while you are moving around, then they fade
+ * and sink away once the pointer goes idle — and come straight back on the
+ * next movement. Resting the pointer on them, or focusing them with the
+ * keyboard, keeps them up; on touch screens (below `sm`) they stay put.
+ *
+ * The behaviour is unconditional, matching the player dock. `isAutomatic` is
+ * still accepted so existing call sites keep working, but the bars no longer
+ * sit there permanently when a preference says otherwise.
+ */
 export const TheDock = ({
   children,
   innerClassName,
   className,
-  isAutomatic = true,
 }: {
   children?: React.ReactNode;
   innerClassName?: string;
   className?: string;
+  /** Accepted for backwards compatibility; the bars always auto-hide now. */
   isAutomatic?: boolean;
 }) => {
-  const [show, setShow] = useState(false);
-
-  if (!isAutomatic) {
-    return (
-      <div className={cn("flex w-full fixed z-50 bottom-0", className)}>
-        <div className={cn("block w-full", innerClassName)}>{children}</div>
-      </div>
-    );
-  }
-
   return (
-    <div>
-      <div className={cn("flex w-full fixed z-50 bottom-32", className)}>
-        <div className={cn("block sm:hidden w-full", innerClassName)}>
-          {children}
-        </div>
-      </div>
-
-      <div
-        onMouseEnter={() => {
-          setShow(true);
-        }}
-        onMouseLeave={() => {
-          setShow(false);
-        }}
-        className={cn("flex w-full fixed z-50 bottom-2")}
-      >
-        <div className="text-black">.</div>
-        <AnimatePresence>
-          {show && (
-            <motion.div
-              exit={{
-                y: -20,
-                opacity: 0,
-                scale: 0.8,
-                filter: "blur(800px)",
-                transition: { ease: "easeIn", duration: 0.12 },
-              }}
-              initial={{
-                opacity: 0,
-                scale: 0.9,
-                y: 80,
-                filter: "blur(800px)",
-              }}
-              animate={
-                {
-                  opacity: 1,
-                  scale: 1.15,
-                  y: -5,
-                  filter: "blur(0px)",
-                  transition: {
-                    duration: 0.1,
-                    ease: "easeOut",
-                    type: "just",
-                  },
-                } as any
-              }
-              className={cn(
-                "transition",
-
-                "hidden sm:block w-full",
-              )}
-            >
-              {children}
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
+    <div
+      className={cn(
+        "pointer-events-none fixed inset-x-0 z-50 flex justify-center",
+        className ?? "bottom-2",
+      )}
+    >
+      {/* AutoHideOnIdle owns pointer events: interactive while shown,
+          click-through once it has sunk away. */}
+      <AutoHideOnIdle className={cn("w-full", innerClassName)}>
+        {children}
+      </AutoHideOnIdle>
     </div>
   );
 };

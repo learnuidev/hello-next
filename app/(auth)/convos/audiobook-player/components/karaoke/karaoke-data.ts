@@ -154,6 +154,75 @@ const trimSpaceEdges = (tokens: KaraokeToken[]) => {
 };
 
 /**
+ * Splits a line's tokens into balanced groups.
+ *
+ * A naive "cut every N characters" split leaves orphan syllables on their own
+ * line ("…山山洞" / "里"), which looks broken in a karaoke view — so lines are
+ * divided into equal parts at token boundaries instead, and a runt tail is
+ * folded back into the previous chunk.
+ */
+const groupTokens = (
+  tokens: KaraokeToken[],
+  maxChars: number,
+): KaraokeToken[][] => {
+  const visibleLength = (group: KaraokeToken[]) =>
+    group.reduce((acc, token) => acc + (token.isSpace ? 0 : token.text.length), 0);
+
+  const total = visibleLength(tokens);
+
+  if (total === 0) {
+    return [];
+  }
+
+  // Comfortably fits on one line — leave it alone.
+  if (total <= maxChars * 1.35) {
+    return [trimSpaceEdges(tokens)];
+  }
+
+  const parts = Math.max(2, Math.ceil(total / maxChars));
+  const target = total / parts;
+
+  const groups: KaraokeToken[][] = [];
+  let current: KaraokeToken[] = [];
+  let count = 0;
+
+  tokens.forEach((token) => {
+    if (
+      !token.isSpace &&
+      count >= target &&
+      current.some((item) => !item.isSpace)
+    ) {
+      groups.push(current);
+      current = [];
+      count = 0;
+    }
+
+    if (!token.isSpace) {
+      count += token.text.length;
+    }
+
+    current.push(token);
+  });
+
+  if (current.length > 0) {
+    groups.push(current);
+  }
+
+  if (groups.length > 1) {
+    const tail = groups[groups.length - 1];
+
+    if (visibleLength(tail) < Math.max(target * 0.5, 3)) {
+      groups.pop();
+      groups[groups.length - 1] = [...groups[groups.length - 1], ...tail];
+    }
+  }
+
+  return groups
+    .map(trimSpaceEdges)
+    .filter((group) => group.some((token) => !token.isSpace));
+};
+
+/**
  * Flattens transcriptions into short, singable chunks.
  *
  * Lines whose timings are unusable are dropped, unless none of them can be
@@ -188,17 +257,8 @@ export const buildKaraokeChunks = (
       ? MAX_CHARS_PER_CHUNK_CJK
       : MAX_CHARS_PER_CHUNK_ROMAN;
 
-    let current: KaraokeToken[] = [];
-    let visibleCount = 0;
-    let isFirstOfParent = true;
-
-    const flush = () => {
-      const trimmed = trimSpaceEdges(current);
-
-      current = [];
-      visibleCount = 0;
-
-      const visible = trimmed.filter((token) => !token.isSpace);
+    groupTokens(tokens, maxChars).forEach((group, groupIndex) => {
+      const visible = group.filter((token) => !token.isSpace);
 
       if (visible.length === 0) {
         return;
@@ -206,38 +266,21 @@ export const buildKaraokeChunks = (
 
       chunks.push({
         key: `${line.id ?? parentIndex}-c${chunks.length}`,
-        tokens: trimmed,
+        tokens: group,
         start: visible[0].start,
-        end: Math.max(visible[visible.length - 1].end, visible[0].start + 0.05),
+        end: Math.max(
+          visible[visible.length - 1].end,
+          visible[0].start + 0.05,
+        ),
         parentIndex,
         parent: line,
         visibleLength: visible.reduce(
           (acc, token) => acc + token.text.length,
           0,
         ),
-        isFirstOfParent,
+        isFirstOfParent: groupIndex === 0,
       });
-
-      isFirstOfParent = false;
-    };
-
-    tokens.forEach((token) => {
-      if (
-        !token.isSpace &&
-        visibleCount > 0 &&
-        visibleCount + token.text.length > maxChars
-      ) {
-        flush();
-      }
-
-      if (!token.isSpace) {
-        visibleCount += token.text.length;
-      }
-
-      current.push(token);
     });
-
-    flush();
   });
 
   if (chunks.length > 0) {
@@ -258,19 +301,13 @@ export const buildKaraokeChunks = (
       return;
     }
 
-    let current: KaraokeToken[] = [];
-    let visibleCount = 0;
     const isCjkLine = containsCjk(line.input || line.hanzi || "");
     const maxChars = isCjkLine
       ? MAX_CHARS_PER_CHUNK_CJK
       : MAX_CHARS_PER_CHUNK_ROMAN;
 
-    const flush = () => {
-      const trimmed = trimSpaceEdges(current);
-      const visible = trimmed.filter((token) => !token.isSpace);
-
-      current = [];
-      visibleCount = 0;
+    groupTokens(tokens, maxChars).forEach((group, groupIndex) => {
+      const visible = group.filter((token) => !token.isSpace);
 
       if (visible.length === 0) {
         return;
@@ -280,7 +317,7 @@ export const buildKaraokeChunks = (
 
       fallbackChunks.push({
         key: `fallback-${parentIndex}-${fallbackChunks.length}`,
-        tokens: trimmed,
+        tokens: group,
         start: cursor,
         end: cursor + duration,
         parentIndex,
@@ -289,25 +326,11 @@ export const buildKaraokeChunks = (
           (acc, token) => acc + token.text.length,
           0,
         ),
-        isFirstOfParent: fallbackChunks.length === 0,
+        isFirstOfParent: groupIndex === 0,
       });
 
       cursor += duration + 0.35;
-    };
-
-    tokens.forEach((token) => {
-      if (
-        visibleCount > 0 &&
-        visibleCount + token.text.length > maxChars
-      ) {
-        flush();
-      }
-
-      visibleCount += token.text.length;
-      current.push(token);
     });
-
-    flush();
   });
 
   return fallbackChunks;

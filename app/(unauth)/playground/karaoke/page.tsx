@@ -106,6 +106,7 @@ const BOOK_SENTENCES: { text: string; en: string }[] = [
   { text: "井边坐着一只灰色的兔子正在数着手里的石头", en: "Beside the well sat a grey rabbit, counting the stones in its hands." },
   { text: "兔子抬起头说你也是来听井里的故事的吗", en: "The rabbit looked up and asked: did you also come to hear the well's stories?" },
   { text: "小狐狸点点头于是它们一起坐在了井边", en: "The little fox nodded, and so they sat down together beside the well." },
+  { text: "老井缓缓地开始讲述一个关于远方的故事说在山的另一边有一片会发光的湖水每年冬天都会有人从很远的地方走来只为了看上一眼", en: "The old well slowly began to tell a story about a faraway place: beyond the mountain there is a lake that glows, and every winter people walk a very long way just to see it once." },
 ];
 
 const buildBookTranscriptions = () => {
@@ -140,7 +141,7 @@ const buildBookTranscriptions = () => {
     });
 
     const end = start + units.length * perUnit;
-    cursor = end + 1.4;
+    cursor = end + 4;
 
     return {
       id: `book-${lineIndex}`,
@@ -287,6 +288,8 @@ export default function KaraokePlayground() {
   const theme = searchParams.get("theme");
   const paused = searchParams.get("paused") === "1";
   const compact = searchParams.get("compact") === "1";
+  // No player ref + a single transcription: the degraded path other callers use.
+  const noPlayer = searchParams.get("noplayer") === "1";
 
   useEffect(() => {
     if (theme) {
@@ -394,11 +397,12 @@ export default function KaraokePlayground() {
       </div>
 
       <AppleKaraokeView
-        transcriptions={transcriptions}
+        transcriptions={noPlayer ? undefined : transcriptions}
+        fallbackTranscription={noPlayer ? transcriptions[0] : undefined}
         lang={lang}
         currentTime={player.currentTime}
         isPlaying={player.isPlaying}
-        playerRef={player.playerRef}
+        playerRef={noPlayer ? undefined : player.playerRef}
         seekAndPlay={player.seekAndPlay}
         onPlay={player.play}
         onPause={player.pause}

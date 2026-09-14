@@ -9,6 +9,7 @@ import { useTheme } from "next-themes";
 import {
   useCallback,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -219,11 +220,17 @@ export function AppleKaraokeView({
       // nothing visibly moves at the moment the DOM changes under us.
       if (windowStartRef.current !== lastWindowStart) {
         lastWindowStart = windowStartRef.current;
+        velocity = 0;
+        stage.scrollTop += offset;
+        return;
+      }
 
-        if (Math.abs(offset) < stage.clientHeight * 3) {
-          stage.scrollTop += offset;
-          return;
-        }
+      // A seek (or the first paint) lands far away: jump instead of scrolling
+      // through the whole book.
+      if (Math.abs(offset) > stage.clientHeight * 1.5) {
+        velocity = 0;
+        stage.scrollTop += offset;
+        return;
       }
 
       if (now < manualScrollUntilRef.current) {
@@ -291,8 +298,9 @@ export function AppleKaraokeView({
     }
   }, [windowStart]);
 
-  // Re-measure the stage whenever it resizes (layout, video toggle, rotation).
-  useEffect(() => {
+  // The spacer that lets the first and last lines reach the middle depends on
+  // the stage height, so read it before the first paint and keep it in sync.
+  useLayoutEffect(() => {
     const stage = stageRef.current;
 
     if (!stage) {
@@ -313,15 +321,6 @@ export function AppleKaraokeView({
 
     return () => observer.disconnect();
   }, [compact]);
-
-  // Keep the spacer height honest even if the element mounts before layout.
-  useEffect(() => {
-    const stage = stageRef.current;
-
-    if (stage && stage.clientHeight !== stageHeight) {
-      setStageHeight(stage.clientHeight);
-    }
-  });
 
   useEffect(() => {
     return () => {

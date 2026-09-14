@@ -624,7 +624,11 @@ export function AppleKaraokeView({
     );
   }
 
-  const showRoman = showPinyin && isNonRomanLang(lang);
+  // Driven by the data as well as the language: content can arrive with a
+  // different language code ("zh-CN") or only carry a line-level reading.
+  const showRoman =
+    showPinyin &&
+    (isNonRomanLang(lang) || chunks.some((chunk) => chunk.hasRoman));
   const isIntro = activeIndex < 0;
   const spacer = Math.max(stageHeight / 2, 0);
 

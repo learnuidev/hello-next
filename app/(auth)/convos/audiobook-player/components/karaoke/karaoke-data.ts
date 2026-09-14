@@ -33,6 +33,8 @@ export type KaraokeChunk = {
   parent: any;
   /** Number of visible (non whitespace) characters — drives font sizing. */
   visibleLength: number;
+  /** True when this chunk has pronunciation data to show as a guide. */
+  hasRoman: boolean;
   isFirstOfParent: boolean;
 };
 
@@ -41,6 +43,70 @@ const CJK_RE =
   /[\u2e80-\u2eff\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\uac00-\ud7af]/;
 
 export const containsCjk = (text: string) => CJK_RE.test(text || "");
+
+/**
+ * Pronunciation is not always attached to individual words: plenty of content
+ * only carries the romanised reading for the whole line ("hěn jiǔ yǐ qián").
+ * When that is all we have, zip it back onto the syllables so the pinyin guide
+ * still works for every line.
+ */
+const withLineRoman = (tokens: KaraokeToken[], line: any): KaraokeToken[] => {
+  const lineRoman = [line?.pinyin, line?.roman]
+    .filter((value) => typeof value === "string" && value.trim().length > 0)
+    .flatMap((value: string) => value.trim().split(/\s+/));
+
+  const visible = tokens.filter((token) => !token.isSpace);
+
+  if (
+    lineRoman.length === 0 ||
+    visible.length === 0 ||
+    visible.every((token) => !!token.roman)
+  ) {
+    return tokens;
+  }
+
+  // One reading per token, e.g. words that carry their own pinyin.
+  if (lineRoman.length === visible.length) {
+    let index = 0;
+
+    return tokens.map((token) => {
+      if (token.isSpace || token.roman) {
+        return token;
+      }
+
+      const roman = lineRoman[index];
+      index += 1;
+
+      return { ...token, roman: roman || undefined };
+    });
+  }
+
+  // One reading per *character* — how pinyin is usually stored. Spread it back
+  // over whatever grouping we are displaying.
+  const totalChars = visible.reduce(
+    (acc, token) => acc + token.text.length,
+    0,
+  );
+
+  if (lineRoman.length !== totalChars) {
+    return tokens;
+  }
+
+  let cursor = 0;
+
+  return tokens.map((token) => {
+    const length = token.text.length;
+    const slice = lineRoman.slice(cursor, cursor + length);
+
+    cursor += length;
+
+    if (token.isSpace || token.roman || slice.length === 0) {
+      return token;
+    }
+
+    return { ...token, roman: slice.join(" ") };
+  });
+};
 
 const toNumber = (value: any): number | null => {
   const parsed = typeof value === "number" ? value : parseFloat(value);
@@ -84,8 +150,10 @@ export const buildKaraokeTokens = (line: any, lang?: string): KaraokeToken[] => 
     return start !== null && end !== null && end > start;
   });
 
+  let tokens: KaraokeToken[];
+
   if (usableWords.length > 0 && hasWordTimings) {
-    return usableWords.map((word, index) => {
+    tokens = usableWords.map((word, index) => {
       const start = toNumber(word.start) ?? lineStart;
       const end = toNumber(word.end) ?? start + 0.01;
 
@@ -98,45 +166,58 @@ export const buildKaraokeTokens = (line: any, lang?: string): KaraokeToken[] => 
         roman: formatRoman(word) || undefined,
       };
     });
+  } else {
+    // No per-word timing. Prefer the segmented words when we have them — they
+    // carry the pronunciation — and only fall back to slicing the raw text.
+    const pieces =
+      usableWords.length > 0
+        ? usableWords.map((word) => ({
+            text: word.input as string,
+            roman: formatRoman(word) || undefined,
+          }))
+        : (input.includes(" ") || !containsCjk(input)
+            ? input.split(/(\s+)/).filter((piece) => piece.length > 0)
+            : Array.from(input)
+          ).map((piece) => ({ text: piece, roman: undefined as string | undefined }));
+
+    const visiblePieces = pieces.filter(
+      (piece) => !WHITESPACE_RE.test(piece.text),
+    );
+    const totalChars =
+      visiblePieces.reduce((acc, piece) => acc + piece.text.length, 0) || 1;
+
+    const duration = Math.max(lineEnd - lineStart, 0.01);
+    let cursor = lineStart;
+
+    tokens = pieces.map((piece, index) => {
+      if (WHITESPACE_RE.test(piece.text)) {
+        return {
+          key: `${line.id ?? "line"}-s${index}`,
+          text: piece.text,
+          start: cursor,
+          end: cursor,
+          isSpace: true,
+        };
+      }
+
+      const pieceStart = cursor;
+      cursor = Math.min(
+        lineEnd,
+        pieceStart + duration * (piece.text.length / totalChars),
+      );
+
+      return {
+        key: `${line.id ?? "line"}-p${index}`,
+        text: piece.text,
+        start: pieceStart,
+        end: Math.max(cursor, pieceStart + 0.005),
+        isSpace: false,
+        roman: piece.roman,
+      };
+    });
   }
 
-  // No per-word timing: slice the line ourselves.
-  const pieces = input.includes(" ") || !containsCjk(input)
-    ? input.split(/(\s+)/).filter((piece) => piece.length > 0)
-    : Array.from(input);
-
-  const visiblePieces = pieces.filter((piece) => !WHITESPACE_RE.test(piece));
-  const totalChars =
-    visiblePieces.reduce((acc, piece) => acc + piece.length, 0) || 1;
-
-  const duration = Math.max(lineEnd - lineStart, 0.01);
-  let cursor = lineStart;
-
-  return pieces.map((piece, index) => {
-    if (WHITESPACE_RE.test(piece)) {
-      return {
-        key: `${line.id ?? "line"}-s${index}`,
-        text: piece,
-        start: cursor,
-        end: cursor,
-        isSpace: true,
-      };
-    }
-
-    const pieceStart = cursor;
-    cursor = Math.min(
-      lineEnd,
-      pieceStart + duration * (piece.length / totalChars),
-    );
-
-    return {
-      key: `${line.id ?? "line"}-p${index}`,
-      text: piece,
-      start: pieceStart,
-      end: Math.max(cursor, pieceStart + 0.005),
-      isSpace: false,
-    };
-  });
+  return withLineRoman(tokens, line);
 };
 
 const trimSpaceEdges = (tokens: KaraokeToken[]) => {
@@ -278,6 +359,7 @@ export const buildKaraokeChunks = (
           (acc, token) => acc + token.text.length,
           0,
         ),
+        hasRoman: visible.some((token) => !!token.roman),
         isFirstOfParent: groupIndex === 0,
       });
     });
@@ -326,6 +408,7 @@ export const buildKaraokeChunks = (
           (acc, token) => acc + token.text.length,
           0,
         ),
+        hasRoman: visible.some((token) => !!token.roman),
         isFirstOfParent: groupIndex === 0,
       });
 

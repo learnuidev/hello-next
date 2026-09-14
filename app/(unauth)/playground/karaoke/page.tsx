@@ -110,7 +110,13 @@ const BOOK_SENTENCES: { text: string; en: string }[] = [
   { text: "老井缓缓地开始讲述一个关于远方的故事说在山的另一边有一片会发光的湖水每年冬天都会有人从很远的地方走来只为了看上一眼", en: "The old well slowly began to tell a story about a faraway place: beyond the mountain there is a lake that glows, and every winter people walk a very long way just to see it once." },
 ];
 
-const buildBookTranscriptions = (cycles = 1) => {
+const SYLLABLES = [
+  "hěn", "jiǔ", "yǐ", "qián", "yǒu", "yī", "zhǐ", "xiǎo", "hú", "lí",
+  "zhù", "zài", "dà", "sēn", "lín", "lǐ", "tā", "měi", "tiān", "zǎo",
+  "chén", "dōu", "huì", "pá", "dào", "shān", "dǐng", "kàn", "zhe", "yuǎn",
+];
+
+const buildBookTranscriptions = (cycles = 1, unaligned = false) => {
   let cursor = 3;
 
   const script = Array.from({ length: cycles }).flatMap((_, cycle) =>
@@ -131,17 +137,20 @@ const buildBookTranscriptions = (cycles = 1) => {
 
     const words = units.map((unit, index) => {
       const wordStart = start + index * perUnit;
+      const pinyin = Array.from(unit)
+        .map((_, charIndex) => SYLLABLES[(index * 2 + charIndex) % SYLLABLES.length])
+        .join(" ");
 
       return {
         id: `bw-${lineIndex}-${index}`,
         input: unit,
         hanzi: unit,
-        pinyin: "",
+        pinyin,
         roman: "",
-        start: wordStart,
-        end: wordStart + perUnit,
         startIndex: index * 2,
         endIndex: index * 2 + unit.length,
+        // Mirrors content whose words were never aligned to the audio.
+        ...(unaligned ? {} : { start: wordStart, end: wordStart + perUnit }),
       };
     });
 
@@ -299,6 +308,8 @@ export default function KaraokePlayground() {
   // Read as a primitive: useSearchParams() can hand back a new object identity
   // every render, which would rebuild the whole book on every playback tick.
   const cycles = Number(searchParams.get("cycles") || 1) || 1;
+  // Content whose word records exist but were never aligned to the audio.
+  const unaligned = searchParams.get("unaligned") === "1";
 
   useEffect(() => {
     if (theme) {
@@ -308,14 +319,14 @@ export default function KaraokePlayground() {
 
   const transcriptions = useMemo(() => {
     if (lang === "book") {
-      return buildBookTranscriptions(cycles);
+      return buildBookTranscriptions(cycles, unaligned);
     }
 
     return buildMockTranscriptions(
       lang === "en" ? ENGLISH_LINES : CHINESE_LINES,
       lang,
     );
-  }, [lang, cycles]);
+  }, [lang, cycles, unaligned]);
 
   const player = useFakePlayer(startAt, paused);
 

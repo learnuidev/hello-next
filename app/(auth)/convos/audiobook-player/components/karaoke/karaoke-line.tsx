@@ -259,11 +259,14 @@ export const KaraokeLine = memo(
                   <span
                     className="whitespace-nowrap font-normal"
                     style={{
-                      // A reading guide for the whole sheet, not a spotlight on
-                      // the line being sung: every line that has one shows it.
+                      // Only the line being sung shows its guide. Hidden with
+                      // `visibility`, never unmounted: the box keeps the height
+                      // the scroll maths measures, so lines above and below stay
+                      // exactly where they are as the guide comes and goes.
                       opacity: 0.7,
                       fontSize: romanFontSize,
                       lineHeight: 1.5,
+                      visibility: isActive ? "visible" : "hidden",
                     }}
                   >
                     {token.roman || "\u00A0"}
@@ -295,6 +298,10 @@ export const KaraokeLine = memo(
               ),
               lineHeight: 1.5,
               color: "var(--k-muted)",
+              // Same rule as the roman guide: only the sung line carries the
+              // English / chinglish, and it is hidden rather than removed so the
+              // reserved space survives.
+              visibility: isActive ? "visible" : "hidden",
             }}
           >
             {translation}

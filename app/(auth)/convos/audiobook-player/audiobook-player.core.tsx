@@ -21,6 +21,7 @@ import { ParaView } from "./components/para-view";
 import { ReaderViewParent } from "./components/reader-view-parent";
 import { TranscriptListView } from "./components/transcript-list-view";
 import { useAudioBookState } from "./hooks/use-audiobook-state";
+import { getCoverPhotoUrl } from "@/libs/utils/get-cover-photo-url";
 
 export const AudiobookPlayerCore = ({
   content,
@@ -73,15 +74,7 @@ export const AudiobookPlayerCore = ({
     return;
   }
 
-  const coverPhotoUrl =
-    content?.coverPhotoUrl ||
-    content?.backgroundImageUrl ||
-    content?.thumbnails?.standard?.url ||
-    content?.thumbnails?.high?.url ||
-    content?.thumbnails?.medium?.url ||
-    content?.thumbnails?.default?.url ||
-    content?.thumbnails?.maxres?.url ||
-    content?.thumbnails?.[0]?.url;
+  const coverPhotoUrl = getCoverPhotoUrl(content);
 
   const progressInterval = 100;
 

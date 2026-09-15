@@ -37,6 +37,7 @@ import {
 import { defaultPic } from "@/data/default-image-urls";
 import { useSearchSuggestions } from "@/hooks/use-search-suggestions";
 import { Button } from "@/components/ui/button";
+import { getCoverPhotoUrl } from "@/libs/utils/get-cover-photo-url";
 
 type ContentType = {
   title: string;
@@ -286,14 +287,7 @@ export function ContentsList({ contentViewType }: { contentViewType: string }) {
                         className="aspect-square sm:w-40 sm:flex-shrink-0 bg-cover bg-center"
                         style={{
                           backgroundImage: `url(${
-                            item?.coverPhotoUrl ||
-                            item?.thumbnails?.standard?.url ||
-                            item?.thumbnails?.high?.url ||
-                            item?.thumbnails?.medium?.url ||
-                            item?.thumbnails?.default?.url ||
-                            item?.thumbnails?.maxres?.url ||
-                            item?.thumbnails?.[0]?.url ||
-                            defaultPic
+                            getCoverPhotoUrl(item) || defaultPic
                           })`,
                         }}
                       />

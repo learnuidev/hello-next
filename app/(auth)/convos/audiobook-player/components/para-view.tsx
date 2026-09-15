@@ -15,6 +15,7 @@ import { CharacterItem } from "@/components/_select-character/character-item";
 import { isCharacterPartOfWordMatch } from "@/lib/content-bookmark";
 import { useFontSizeStore } from "../hooks/use-font-size";
 import { useGetGroupedTranscriptions } from "../hooks/use-get-grouped-transcriptions";
+import { useTranscriptionHighlight } from "../hooks/use-transcription-highlight";
 import { containsUnknownStyles } from "../utils/contains-unknown-styles";
 
 // import { getYablaLink } from "./utils/get-yabla-link";
@@ -71,6 +72,10 @@ export const ParaView = ({
 
   const { fontSize } = useFontSizeStore();
 
+  const { activeClassName } = useTranscriptionHighlight({
+    background: "dark:bg-[rgb(11,12,13)]",
+  });
+
   return (
     <div className={cn("px-4 pb-24", "max-w-4xl")}>
       <EnglishTopView currentTranscription={currentTranscription} />
@@ -107,13 +112,14 @@ export const ParaView = ({
                       return (
                         <span
                           role="button"
-                          className={`${
+                          className={cn(
+                            "transition block py-1 px-1",
                             currentTime
                               ? isActiveTranscription
-                                ? "dark:text-white text-black dark:bg-[rgb(11,12,13)]"
+                                ? activeClassName
                                 : "opacity-50"
-                              : ""
-                          } transition block py-1 px-1`}
+                              : "",
+                          )}
                           key={
                             transcription?.id ||
                             `${transcription?.hanzi}-${transcription?.start}`
@@ -152,7 +158,7 @@ export const ParaView = ({
                                     containsInUnknown && "font-light",
                                     currentTime
                                       ? isActiveTranscription
-                                        ? "dark:text-white text-black dark:bg-[rgb(11,12,13)]"
+                                        ? activeClassName
                                         : "opacity-50"
                                       : "",
                                   )}

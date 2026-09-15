@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 import { useCharacterMenuBarStore } from "../hooks/use-character-menu-bar";
 import { useFontSizeStore } from "../hooks/use-font-size";
 import { useGetGroupedTranscriptions } from "../hooks/use-get-grouped-transcriptions";
+import { useTranscriptionHighlight } from "../hooks/use-transcription-highlight";
 import { ReaderView } from "./reader-view";
 import { containsUnknownStyles } from "../utils/contains-unknown-styles";
 
@@ -48,6 +49,10 @@ export const ReaderViewParent = ({
 
   const isSmall = useIsSmall();
 
+  const { isFocusMode, activeClassName } = useTranscriptionHighlight({
+    background: "dark:bg-[rgb(9,10,11)]",
+  });
+
   const containsChinglish = !!content.transcriptions?.[0]?.chinglish;
 
   return (
@@ -74,7 +79,7 @@ export const ReaderViewParent = ({
                           className={cn(
                             transcription.start < currentTime &&
                               transcription.end > currentTime
-                              ? "dark:text-white text-black dark:bg-[rgb(9,10,11)]"
+                              ? activeClassName
                               : cn(`opacity-50`),
                             // : "dark:text-white text-black",
                           )}
@@ -102,7 +107,7 @@ export const ReaderViewParent = ({
                           className={cn(
                             transcription.start < currentTime &&
                               transcription.end > currentTime
-                              ? "dark:text-white text-black dark:bg-[rgb(9,10,11)]"
+                              ? activeClassName
                               : cn(`opacity-50`),
                           )}
                         >
@@ -146,7 +151,12 @@ export const ReaderViewParent = ({
                                     "sm:!text-3xl text-2xl",
                                     transcription.start < currentTime &&
                                       transcription.end > currentTime
-                                      ? "   !dark:text-white"
+                                      ? // `focus` mode paints each character with
+                                        // its tone colour, so the current
+                                        // transcription must not be forced white.
+                                        isFocusMode
+                                        ? ""
+                                        : "   !dark:text-white"
                                       : "dark:text-gray-500",
                                     containsInUnknown &&
                                       containsUnknownStyles(

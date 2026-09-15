@@ -22,7 +22,11 @@ import { ReaderViewParent } from "./components/reader-view-parent";
 import { TranscriptListView } from "./components/transcript-list-view";
 import { useAudioBookState } from "./hooks/use-audiobook-state";
 
-export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
+export const AudiobookPlayerCore = ({
+  content,
+}: {
+  content: IContent & any;
+}) => {
   const {
     seekAndPlay,
     setLoop,
@@ -68,6 +72,16 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
   if (!content) {
     return;
   }
+
+  const coverPhotoUrl =
+    content?.coverPhotoUrl ||
+    content?.backgroundImageUrl ||
+    content?.thumbnails?.standard?.url ||
+    content?.thumbnails?.high?.url ||
+    content?.thumbnails?.medium?.url ||
+    content?.thumbnails?.default?.url ||
+    content?.thumbnails?.maxres?.url ||
+    content?.thumbnails?.[0]?.url;
 
   const progressInterval = 100;
 
@@ -225,9 +239,7 @@ export const AudiobookPlayerCore = ({ content }: { content: IContent }) => {
                     currentTime={currentTime}
                     isPlaying={playing}
                     playerRef={playerRef}
-                    coverUrl={
-                      content?.coverPhotoUrl || content?.backgroundImageUrl
-                    }
+                    coverUrl={coverPhotoUrl}
                     compact={!isVideoHidden}
                     seekAndPlay={seekAndPlay}
                     onPlay={play}

@@ -45,6 +45,23 @@ const getFontSize = (length: number, compact: boolean) => {
   return sizes.xlong;
 };
 
+/**
+ * The English / chinglish line is what most readers actually scan, so it is
+ * sized as a real second line rather than a caption. The floors matter as much
+ * as the ratio: the lyric size collapses on very long lines, and the
+ * translation must not be dragged down with it.
+ */
+const TRANSLATION_SCALE = 0.6;
+const TRANSLATION_MIN_SIZE = { compact: 15, focus: 18 };
+
+/**
+ * The pinyin / roman guide is sized in `em` so it tracks the lyric it sits
+ * above — but a fixed `em` alone shrinks it into illegibility on long lines,
+ * exactly like the translation, so a px floor is mixed in with CSS `max()`.
+ */
+const ROMAN_SCALE = 0.46;
+const ROMAN_MIN_SIZE = { compact: 11, focus: 13 };
+
 export const KaraokeLine = memo(
   function KaraokeLine({
     chunk,
@@ -85,6 +102,12 @@ export const KaraokeLine = memo(
     const fontSize = getFontSize(chunk.visibleLength, compact);
 
     const hasRoman = showRoman && chunk.tokens.some((token) => !!token.roman);
+
+    // `em` keeps the guide in proportion to the lyric above it; the px floor
+    // stops it dissolving on the long lines where the lyric itself shrinks.
+    const romanFontSize = `max(${ROMAN_SCALE}em, ${
+      compact ? ROMAN_MIN_SIZE.compact : ROMAN_MIN_SIZE.focus
+    }px)`;
 
     // Static syllables never travel through React: we write the custom
     // properties ourselves so a line that was live-animated always lands in a
@@ -239,7 +262,7 @@ export const KaraokeLine = memo(
                       // A reading guide for the whole sheet, not a spotlight on
                       // the line being sung: every line that has one shows it.
                       opacity: 0.7,
-                      fontSize: "0.34em",
+                      fontSize: romanFontSize,
                       lineHeight: 1.5,
                     }}
                   >
@@ -264,7 +287,12 @@ export const KaraokeLine = memo(
           <div
             className="mx-auto mt-2 line-clamp-2 max-w-3xl px-2 text-center transition-opacity duration-500"
             style={{
-              fontSize: Math.max(fontSize * 0.36, 12),
+              fontSize: Math.max(
+                fontSize * TRANSLATION_SCALE,
+                compact
+                  ? TRANSLATION_MIN_SIZE.compact
+                  : TRANSLATION_MIN_SIZE.focus,
+              ),
               lineHeight: 1.5,
               color: "var(--k-muted)",
             }}

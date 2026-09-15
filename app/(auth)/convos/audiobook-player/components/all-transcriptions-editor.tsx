@@ -384,6 +384,13 @@ export const AllTranscriptionsEditor = ({
     reset();
   };
 
+  const handleEditorModeChange = (mode: "fields" | "raw") => {
+    // The raw editor reports whether it has unreadable blocks; leaving it clears
+    // the flag so it can never keep Save disabled in field mode.
+    setRawHasErrors(false);
+    setEditorMode(mode);
+  };
+
   const scrollToTranscription = (index: number) => {
     const currentTranscription = transcriptions[index];
     const ref = transcriptionRefs.current[currentTranscription.id];
@@ -560,7 +567,7 @@ export const AllTranscriptionsEditor = ({
                 ? "bg-white dark:bg-[rgb(9,10,11)] text-gray-900 dark:text-[rgb(230,230,230)] shadow-sm"
                 : "text-gray-500 dark:text-[rgb(140,140,140)] hover:text-gray-700 dark:hover:text-[rgb(200,200,200)]"
             }`}
-            onClick={() => setEditorMode("fields")}
+            onClick={() => handleEditorModeChange("fields")}
             title="Edit each transcription with separate fields"
           >
             Fields
@@ -571,7 +578,7 @@ export const AllTranscriptionsEditor = ({
                 ? "bg-white dark:bg-[rgb(9,10,11)] text-gray-900 dark:text-[rgb(230,230,230)] shadow-sm"
                 : "text-gray-500 dark:text-[rgb(140,140,140)] hover:text-gray-700 dark:hover:text-[rgb(200,200,200)]"
             }`}
-            onClick={() => setEditorMode("raw")}
+            onClick={() => handleEditorModeChange("raw")}
             title="Edit the whole transcript as plain text"
           >
             Raw Text

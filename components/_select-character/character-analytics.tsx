@@ -23,7 +23,10 @@ import { ConvoInsightsFrequencyFilter } from "@/app/(auth)/convos/convo-insights
 import { CharacterSearchResult } from "@/app/(auth)/insights/insights-v2/precision-insight-view/character-search-result";
 import { WordSearchResult } from "@/app/(auth)/insights/insights-v2/precision-insight-view/word-search-result";
 import { useMemo } from "react";
-import { useSegmentTextQuery } from "@/libs/utils/segment-text";
+import {
+  pickPinyinSource,
+  useSegmentTextQuery,
+} from "@/libs/utils/segment-text";
 import { useListGrammarsQuery } from "@/domain/sentence/grammar.queries";
 
 function getTotalFrequency(text: string, word: string): number {
@@ -73,10 +76,18 @@ export function CharacterAnalytics({
     from: "character-analytics",
   });
 
+  const learnedCharacter: any = (learnedCharacters as any)?.[characterId];
+
   const { data: segmentedText } = useSegmentTextQuery({
     text: characterId,
     lang,
     filterOptions: ["unique"],
+    // Reuse the pinyin stored with the character instead of reading the words
+    // one by one out of context.
+    originalPinyin: pickPinyinSource(
+      learnedCharacter?.pinyin,
+      learnedCharacter?.roman,
+    ),
   });
 
   const { data: grammar } = useListGrammarsQuery({

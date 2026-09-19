@@ -3,7 +3,12 @@
 import { siteConfig } from "@/lib/config";
 import { AddContentParams } from "./content.types";
 import { TranscriptionWord } from "@/components/_select-character/selected-character/tweet-page/tweet-page";
-import { getPinyin, segmentText } from "@/libs/utils/segment-text";
+import {
+  createSegmentPinyin,
+  getPinyin,
+  pickPinyinSource,
+  segmentText,
+} from "@/libs/utils/segment-text";
 import { fetchWithToken } from "@/libs/cognito/fetch-with-token";
 
 const addContentApi = `${siteConfig.apiUrl}/v1/add-content`;
@@ -114,16 +119,37 @@ export const getContent = async (
     ...resp,
     transcriptions: await Promise.all(
       resp?.transcriptions?.map(async (transcription: any) => {
+        const transcriptionText =
+          transcription?.hanzi || transcription?.input || "";
+        // The transcription already carries the pinyin of the whole line: the
+        // words take their reading from it rather than being read word by word,
+        // where a word on its own reads wrong (了 as `liǎo`, 行 as `xíng`).
+        const originalPinyin = pickPinyinSource(
+          transcription?.pinyin,
+          transcription?.roman,
+        );
+
         const segmentedText = await segmentText({
-          text: transcription?.hanzi || transcription?.input,
+          text: transcriptionText,
           lang: resp?.lang,
+          originalPinyin,
+        });
+
+        const pinyinParser = createSegmentPinyin({
+          text: transcriptionText,
+          lang: resp?.lang,
+          originalPinyin,
         });
 
         const transcriptionWords = (transcription?.words || segmentedText).map(
           (word: any) => {
+            const wordInput = word?.input || word?.hanzi || "";
+
             return {
               ...word,
-              pinyin: getPinyin(word?.input || ""),
+              pinyin: pinyinParser
+                ? pinyinParser.getPinyin(wordInput, word?.startIndex)
+                : getPinyin(wordInput),
             };
           },
         );

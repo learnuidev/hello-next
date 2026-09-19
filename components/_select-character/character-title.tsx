@@ -14,7 +14,10 @@ import { useListRelatedHSKWords } from "@/hooks/use-list-related-hsk-words";
 import { formatRoman } from "@/lib/format-roman";
 import { cn } from "@/lib/utils";
 import { getNmmLink } from "@/libs/utils/get-nmm-link";
-import { useSegmentTextQuery } from "@/libs/utils/segment-text";
+import {
+  pickPinyinSource,
+  useSegmentTextQuery,
+} from "@/libs/utils/segment-text";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useReadModeState } from "../read-mode-button";
@@ -94,6 +97,11 @@ export const CharacterTitle = (props: any) => {
   const { data: _segmentedData } = useSegmentTextQuery({
     text: selectedCompInput,
     lang,
+    // The discovery already knows how the whole phrase reads.
+    originalPinyin: pickPinyinSource(
+      meaningDiscovery?.pinyin,
+      meaningDiscovery?.roman,
+    ),
   });
 
   const router = useRouter();

@@ -12,7 +12,10 @@ import { useDeleteSentenceMutation } from "@/domain/sentence/use-delete-sentence
 import { formatRoman } from "@/lib/format-roman";
 import { cn } from "@/lib/utils";
 import { getNmmLink } from "@/libs/utils/get-nmm-link";
-import { useSegmentTextQuery } from "@/libs/utils/segment-text";
+import {
+  pickPinyinSource,
+  useSegmentTextQuery,
+} from "@/libs/utils/segment-text";
 import { chineseConverter } from "mandarino/src/utils/chinese-converter";
 import { useRef } from "react";
 import { useReadModeState } from "../read-mode-button";
@@ -77,6 +80,12 @@ export const SentenceItem = (props: any) => {
   const { data: segmentedData } = useSegmentTextQuery({
     text: currentPhrase?.input || currentPhrase?.hanzi,
     lang,
+    // The line carries its own pinyin/romanisation already: every word takes its
+    // reading from there, so 了 stays `le` and 行 stays `háng`.
+    originalPinyin: pickPinyinSource(
+      currentPhrase?.pinyin,
+      currentPhrase?.roman,
+    ),
   });
 
   const Links = ({ customRef }: { customRef?: string }) => {

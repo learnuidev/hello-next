@@ -79,7 +79,8 @@ export const SentenceItem = (props: any) => {
 
   const { data: segmentedData } = useSegmentTextQuery({
     text: currentPhrase?.input || currentPhrase?.hanzi,
-    lang,
+    // The language this sentence is actually rendered as, not the raw prop.
+    lang: resolvedLang,
     // The line carries its own pinyin/romanisation already: every word takes its
     // reading from there, so 了 stays `le` and 行 stays `háng`.
     originalPinyin: pickPinyinSource(

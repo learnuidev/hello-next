@@ -66,6 +66,13 @@ interface SegmentTextInput {
 }
 
 /**
+ * True for a language that is written with Chinese characters — `zh` and the
+ * regional variants a caller may hold instead (`zh-CN`, `zh-Hans`, `zh-TW`).
+ */
+export const isChineseLang = (lang?: string) =>
+  typeof lang === "string" && lang.trim().toLowerCase().startsWith("zh");
+
+/**
  * Parser that reads every segment of `text` out of the pinyin of the whole text.
  *
  * Pinyin is read once for the whole text and each segment takes its reading from
@@ -86,7 +93,7 @@ export const createSegmentPinyin = ({
   // not that there is nothing left to do: read the text ourselves instead.
   const original = pickPinyinSource(originalPinyin);
 
-  if (lang !== "zh" && !original) {
+  if (!isChineseLang(lang) && !original) {
     return null;
   }
 
@@ -121,7 +128,9 @@ export async function segmentText({
   const pinyinParser = createSegmentPinyin({ text: sourceText, lang, originalPinyin });
 
   const segmentPinyin = (segment: string, startIndex?: number) =>
-    pinyinParser ? pinyinParser.getPinyin(segment, startIndex) : getPinyin(segment);
+    pinyinParser
+      ? pinyinParser.getPinyin(segment, startIndex)
+      : getPinyin(segment);
 
   let res = [];
 
@@ -161,7 +170,7 @@ export async function segmentText({
           lang,
           id: crypto.randomUUID(),
         },
-        ...(lang === "zh"
+        ...(isChineseLang(lang)
           ? {
               pinyin: segmentPinyin(segment.segment, segment.index),
             }

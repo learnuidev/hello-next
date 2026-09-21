@@ -181,7 +181,9 @@ export default function Convos() {
             className="gap-8"
           />
 
-          {isProMember && contentViewType !== "collections" && (
+          {isProMember &&
+            contentViewType !== "collections" &&
+            contentViewType !== "series" && (
             <button
               className="text-xl dark:hover:text-white px-3 py-1 dark:text-slate-600 shadow-md rounded-full"
               onClick={() => {

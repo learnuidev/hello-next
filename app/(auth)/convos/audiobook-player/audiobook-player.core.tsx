@@ -333,6 +333,7 @@ export const AudiobookPlayerCore = ({
               isYoutubeOrVideo={isYoutubeOrVideo}
               isReaderView={viewMode === "reader"}
               contentId={content.id}
+              content={content}
             />
 
             <AudiobookPlayerBar

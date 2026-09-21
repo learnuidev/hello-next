@@ -181,6 +181,8 @@ import { faTableTree } from "@fortawesome/sharp-solid-svg-icons/faTableTree";
 import { faTree as faTreeSolid } from "@fortawesome/sharp-solid-svg-icons/faTree";
 import { faTrees } from "@fortawesome/sharp-solid-svg-icons/faTrees";
 
+import { faStar as faStarSolid } from "@fortawesome/sharp-solid-svg-icons/faStar";
+import { faStar as faStarThin } from "@fortawesome/pro-thin-svg-icons/faStar";
 import { faGear } from "@fortawesome/sharp-solid-svg-icons/faGear";
 
 import { cn } from "@/lib/utils";
@@ -363,6 +365,8 @@ export const Icons = {
   diary: createFAIcon(faNotebook),
   bookmark: createFAIcon(faBookmark),
   bookmarkSolid: createFAIcon(faBookmarkSolid),
+  star: createFAIcon(faStarThin),
+  starSolid: createFAIcon(faStarSolid),
   repeat: createFAIcon(faRepeat),
   arrowLeft: createFAIcon(faArrowLeft),
   arrowRight: createFAIcon(faArrowRight),

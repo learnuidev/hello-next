@@ -4,6 +4,8 @@ import { useState } from "react";
 import { AudioBookSettingsPopover } from "./audiobook-settings-popover";
 import { ContentSuggestionsDrawer } from "./content-suggestions-drawer";
 import { usePlayerViewModeStore } from "@/components/youtube-page/player-view-mode-store";
+import { AddToContentCollectionDialog } from "@/components/content-collections/add-to-content-collection-dialog";
+import { ContentToCollect } from "@/domain/content-collections/content-collections.types";
 
 export function AudioBookPlayerControls({
   loop,
@@ -18,8 +20,11 @@ export function AudioBookPlayerControls({
   isYoutubeOrVideo,
   isReaderView,
   contentId,
+  content,
 }: any) {
   const [contentDrawerOpen, setContentDrawerOpen] = useState(false);
+  const [collectionDialogContent, setCollectionDialogContent] =
+    useState<ContentToCollect | null>(null);
 
   const setToggleLoops = usePlayerViewModeStore(
     (state) => state.setToggleLoops,
@@ -84,6 +89,11 @@ export function AudioBookPlayerControls({
             containsChinglish={containsChinglish}
             showEn={showEn}
             isYoutubeOrVideo={isYoutubeOrVideo}
+            content={content}
+            contentId={contentId}
+            onAddToCollection={(contentToCollect: ContentToCollect) =>
+              setCollectionDialogContent(contentToCollect)
+            }
           />
         </div>
 
@@ -95,6 +105,18 @@ export function AudioBookPlayerControls({
         onOpenChange={setContentDrawerOpen}
         contentId={contentId}
       />
+
+      {/* Rendered here (not inside the popover) so closing the popover does not
+          unmount the dialog. */}
+      {collectionDialogContent && (
+        <AddToContentCollectionDialog
+          open={!!collectionDialogContent}
+          onOpenChange={(open: boolean) => {
+            if (!open) setCollectionDialogContent(null);
+          }}
+          content={collectionDialogContent}
+        />
+      )}
     </div>
   );
 }

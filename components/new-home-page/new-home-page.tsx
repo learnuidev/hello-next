@@ -9,9 +9,10 @@ import { BaseTopicsList } from "../ui/base-topics-list";
 import { BaseTabs } from "../ui/base-tabs";
 import { ContentList } from "./components/content-list";
 import { SeriesList } from "./components/series-list";
+import { ContentCollectionsList } from "../content-collections/content-collections-list";
 import { PageContainer } from "../page-container";
 
-type TabType = "series" | "content";
+type TabType = "series" | "content" | "collections";
 
 const tabs = [
   {
@@ -21,6 +22,10 @@ const tabs = [
   {
     label: "系列",
     value: "series" as TabType,
+  },
+  {
+    label: "收藏",
+    value: "collections" as TabType,
   },
 ];
 
@@ -73,6 +78,8 @@ export function NewHomePage() {
               >
                 {activeTab === "series" ? (
                   <SeriesList activeTopic={activeTopic} />
+                ) : activeTab === "collections" ? (
+                  <ContentCollectionsList />
                 ) : (
                   <ContentList activeTopic={activeTopic} />
                 )}

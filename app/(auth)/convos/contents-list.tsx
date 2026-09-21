@@ -10,6 +10,9 @@ import { Nothing } from "@/app/nmm/nothing";
 
 import { useSearchQueryStore } from "@/components/search/state";
 import { Icons } from "@/components/ui/icons.v2";
+import { StarIconButton } from "@/components/content-collections/star-content-button";
+import { AddToContentCollectionDialog } from "@/components/content-collections/add-to-content-collection-dialog";
+import { ContentToCollect } from "@/domain/content-collections/content-collections.types";
 import {
   useListContentsQuery,
   useInfiniteListContentsQuery,
@@ -78,6 +81,8 @@ export function ContentsList({ contentViewType }: { contentViewType: string }) {
 
   const [sortBy, setSortBy] = useState<SortByType>("newest");
   const [authorFilter, setAuthorFilter] = useState<string>("all");
+  const [collectionDialogContent, setCollectionDialogContent] =
+    useState<ContentToCollect | null>(null);
 
   const _querySync = useSearchQueryStore((state) => state.querySync);
 
@@ -312,43 +317,64 @@ export function ContentsList({ contentViewType }: { contentViewType: string }) {
                           </p>
                         )}
                       </div>
-                      <button
-                        disabled={toggleFavouritContentMutation.isPending}
-                        className="text-xl z-50 self-start mt-2"
-                        onClick={(event) => {
-                          event.preventDefault();
-                          event.stopPropagation();
-                          if (isFavourited) {
-                            toggleFavouritContentMutation
-                              .mutateAsync({
-                                type: "unfavourite",
-                                contentId: item?.id,
-                              })
-                              .then(() => {
-                                toast({
-                                  title: "Success",
-                                  description:
-                                    "Content successfully unfavourited",
+                      <div className="flex items-center gap-3 z-50 self-start mt-2">
+                        <button
+                          disabled={toggleFavouritContentMutation.isPending}
+                          className="text-xl"
+                          onClick={(event) => {
+                            event.preventDefault();
+                            event.stopPropagation();
+                            if (isFavourited) {
+                              toggleFavouritContentMutation
+                                .mutateAsync({
+                                  type: "unfavourite",
+                                  contentId: item?.id,
+                                })
+                                .then(() => {
+                                  toast({
+                                    title: "Success",
+                                    description:
+                                      "Content successfully unfavourited",
+                                  });
                                 });
-                              });
-                          } else {
-                            toggleFavouritContentMutation
-                              .mutateAsync({
-                                type: "favourite",
-                                contentId: item?.id,
-                              })
-                              .then(() => {
-                                toast({
-                                  title: "Success",
-                                  description:
-                                    "Content successfully favourited",
+                            } else {
+                              toggleFavouritContentMutation
+                                .mutateAsync({
+                                  type: "favourite",
+                                  contentId: item?.id,
+                                })
+                                .then(() => {
+                                  toast({
+                                    title: "Success",
+                                    description:
+                                      "Content successfully favourited",
+                                  });
                                 });
-                              });
+                            }
+                          }}
+                        >
+                          {isFavourited ? <Icons.heartSolid /> : <Icons.heart />}
+                        </button>
+
+                        <StarIconButton
+                          size="none"
+                          className="text-xl"
+                          content={{
+                            contentId: item?.id,
+                            title: item?.title,
+                            thumbnailUrl: getCoverPhotoUrl(item),
+                            lang: item?.lang,
+                          }}
+                          onClick={() =>
+                            setCollectionDialogContent({
+                              contentId: item?.id,
+                              title: item?.title,
+                              thumbnailUrl: getCoverPhotoUrl(item),
+                              lang: item?.lang,
+                            })
                           }
-                        }}
-                      >
-                        {isFavourited ? <Icons.heartSolid /> : <Icons.heart />}
-                      </button>
+                        />
+                      </div>
                     </div>
                   </Link>
                 </div>
@@ -372,6 +398,19 @@ export function ContentsList({ contentViewType }: { contentViewType: string }) {
             </div>
           )}
         </section>
+      )}
+
+      {/* Rendered outside the content links on purpose: the dialog is portaled,
+          but React events still bubble through the component tree, so a dialog
+          nested inside a <Link> would navigate when its buttons are clicked. */}
+      {collectionDialogContent && (
+        <AddToContentCollectionDialog
+          open={!!collectionDialogContent}
+          onOpenChange={(open: boolean) => {
+            if (!open) setCollectionDialogContent(null);
+          }}
+          content={collectionDialogContent}
+        />
       )}
     </div>
   );

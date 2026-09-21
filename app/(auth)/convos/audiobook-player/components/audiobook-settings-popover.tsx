@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Icons } from "@/components/ui/icons.v2";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
@@ -17,6 +18,8 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { ContentEditButton } from "@/components/youtube-page/content-edit-button";
 import { usePlayerViewModeStore } from "@/components/youtube-page/player-view-mode-store";
+import { StarIconButton } from "@/components/content-collections/star-content-button";
+import { ContentToCollect } from "@/domain/content-collections/content-collections.types";
 import { ActiveButtons } from "./active-buttons";
 import { FontSizeControls } from "./font-size-controls";
 
@@ -49,11 +52,17 @@ export function AudioBookSettingsPopover({
   containsChinglish,
   showEn,
   isReaderView,
+  content,
+  contentId,
+  onAddToCollection,
 }: {
   isYoutubeOrVideo: boolean;
   showEn: boolean;
   containsChinglish: boolean;
   isReaderView: boolean;
+  content?: any;
+  contentId?: string;
+  onAddToCollection?: (content: ContentToCollect) => void;
 }) {
   const viewMode = usePlayerViewModeStore((state) => state.viewMode);
   const setViewMode = usePlayerViewModeStore((state) => state.setViewMode);
@@ -64,8 +73,12 @@ export function AudioBookSettingsPopover({
   const isFSM = usePlayerViewModeStore((state) => state.isFSM);
   const setIsFSM = usePlayerViewModeStore((state) => state.setIsFSM);
 
+  const [isOpen, setIsOpen] = useState(false);
+
+  const selectedContentId = contentId || content?.id;
+
   return (
-    <Popover>
+    <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
         <button className="w-12 justify-self-end">
           <Icons.gear className="text-2xl" />
@@ -174,6 +187,33 @@ export function AudioBookSettingsPopover({
               <Label htmlFor="edit-transcription">Edit Transcriptions</Label>
               <ContentEditButton className="text-2xl w-8" />
             </div>
+
+            {selectedContentId && (
+              <div className="flex items-center space-x-2 justify-between">
+                <Label>收藏</Label>
+                <StarIconButton
+                  size="none"
+                  className="bg-transparent dark:bg-transparent text-2xl w-8"
+                  content={{
+                    contentId: selectedContentId,
+                    title: content?.title,
+                    thumbnailUrl:
+                      content?.coverPhotoUrl || content?.backgroundImageUrl,
+                    lang: content?.lang,
+                  }}
+                  onClick={() => {
+                    setIsOpen(false);
+                    onAddToCollection?.({
+                      contentId: selectedContentId,
+                      title: content?.title,
+                      thumbnailUrl:
+                        content?.coverPhotoUrl || content?.backgroundImageUrl,
+                      lang: content?.lang,
+                    });
+                  }}
+                />
+              </div>
+            )}
           </div>
         </div>
       </PopoverContent>

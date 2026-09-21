@@ -6,13 +6,13 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useSetIfExists } from "@/app/(auth)/convos/[content-id]/hooks/use-character-context-store";
 import { useRecentlyWatchedContent } from "@/app/(auth)/convos/use-recently-watched-content-store";
 import { useGetComponentId } from "@/app/nmm/[component-id]/use-get-component-id";
-import { getSelectedText } from "@/app/review/review-cloze-content/utils/get-selected-text";
 import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
 import { useDeleteSentenceMutation } from "@/domain/sentence/use-delete-sentence-mutation";
 import { formatRoman } from "@/lib/format-roman";
 import { cn } from "@/lib/utils";
 import { getNmmLink } from "@/libs/utils/get-nmm-link";
 import {
+  isChineseLang,
   pickPinyinSource,
   useSegmentTextQuery,
 } from "@/libs/utils/segment-text";
@@ -88,6 +88,23 @@ export const SentenceItem = (props: any) => {
       currentPhrase?.roman,
     ),
   });
+
+  // A phrase that segments into a single item is one word on its own: opening
+  // that word only ever lands back on the phrase we are already showing, so in
+  // read mode each of its characters opens its own entry instead — 尴 in 尴尬
+  // opens 尴.
+  const opensCharacters =
+    isChineseLang(resolvedLang) && segmentedData?.length === 1;
+
+  const openPhrase = (id: string) => {
+    router.push(
+      getNmmLink({
+        id,
+        lang,
+        contentId: currentPhrase?.contentId || contentId,
+      }),
+    );
+  };
 
   const Links = ({ customRef }: { customRef?: string }) => {
     const hanziOrInput = encodeURIComponent(unEncoded);
@@ -215,15 +232,11 @@ export const SentenceItem = (props: any) => {
 
                       <span
                         onClick={() => {
-                          const selectedText = getSelectedText();
+                          // The characters below handle their own navigation
+                          // when this segment is the whole phrase.
+                          if (opensCharacters) return;
 
-                          router.push(
-                            getNmmLink({
-                              id: item?.input,
-                              lang,
-                              contentId: currentPhrase?.contentId || contentId,
-                            }),
-                          );
+                          openPhrase(item?.input);
                         }}
                       >
                         {smartSplit({
@@ -231,7 +244,15 @@ export const SentenceItem = (props: any) => {
                           lang: lang,
                         })?.map((character: any, idx: any) => {
                           return (
-                            <span key={`${character}-pinin-view-${idx}`}>
+                            <span
+                              key={`${character}-pinin-view-${idx}`}
+                              onClick={(event) => {
+                                if (!opensCharacters) return;
+
+                                event.stopPropagation();
+                                openPhrase(character);
+                              }}
+                            >
                               <CharacterItem
                                 hanzis={smartSplit({
                                   input: item?.input,

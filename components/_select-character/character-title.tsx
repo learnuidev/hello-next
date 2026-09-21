@@ -15,6 +15,7 @@ import { formatRoman } from "@/lib/format-roman";
 import { cn } from "@/lib/utils";
 import { getNmmLink } from "@/libs/utils/get-nmm-link";
 import {
+  isChineseLang,
   pickPinyinSource,
   useSegmentTextQuery,
 } from "@/libs/utils/segment-text";
@@ -108,6 +109,23 @@ export const CharacterTitle = (props: any) => {
 
   const segmentedData = _segmentedData;
 
+  // A phrase that segments into a single item is one word on its own: opening
+  // that word only ever lands back on this page, so in read mode each of its
+  // characters opens its own entry instead — 尴 in 尴尬 opens 尴.
+  const opensCharacters =
+    isChineseLang(lang) && segmentedData?.length === 1;
+
+  const openWord = (id: string) => {
+    const selectedText = getSelectedText();
+
+    if (selectedText && selectedText?.length < 36) {
+      router.push(getNmmLink({ id: selectedText, lang }));
+      return;
+    }
+
+    router.push(getNmmLink({ id, contentId, lang }));
+  };
+
   return (
     <div className="flex flex-col items-start space-y-2 w-full">
       {edit && meaningDiscovery?.id && isSuperAdmin ? (
@@ -150,21 +168,11 @@ export const CharacterTitle = (props: any) => {
 
                     <span
                       onClick={() => {
-                        const selectedText = getSelectedText();
+                        // The characters below handle their own navigation
+                        // when this segment is the whole phrase.
+                        if (opensCharacters) return;
 
-                        if (selectedText && selectedText?.length < 36) {
-                          router.push(getNmmLink({ id: selectedText, lang }));
-                          // setSelected(selectedText);
-                        } else {
-                          router.push(
-                            getNmmLink({
-                              id: item?.input,
-                              contentId,
-                              lang,
-                            }),
-                          );
-                          // setSelected(item);
-                        }
+                        openWord(item?.input);
                       }}
                     >
                       {smartSplit({
@@ -172,7 +180,15 @@ export const CharacterTitle = (props: any) => {
                         lang: lang,
                       })?.map((character: any, idx: any) => {
                         return (
-                          <span key={`${character}-pinin-view-${idx}`}>
+                          <span
+                            key={`${character}-pinin-view-${idx}`}
+                            onClick={(event) => {
+                              if (!opensCharacters) return;
+
+                              event.stopPropagation();
+                              openWord(character);
+                            }}
+                          >
                             <CharacterItem
                               hanzis={smartSplit({
                                 input: item?.input,

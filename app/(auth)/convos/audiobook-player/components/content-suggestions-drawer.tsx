@@ -24,18 +24,16 @@ import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { defaultPic } from "@/data/default-image-urls";
-import { useListFavouriteContentsQuery } from "../../[content-id]/hooks/use-list-favourited-contents-query";
 import { useListPublishedContentsQuery } from "../../[content-id]/hooks/use-list-published-contents-query";
 import { useRecentlyWatchedContent } from "../../use-recently-watched-content-store";
 import { contentTypes } from "../../constants/content-types";
 
-type ViewType = "history" | "me" | "public" | "favourites";
+type ViewType = "history" | "me" | "public";
 
 const viewTabs: { label: string; value: ViewType }[] = [
   { label: "历史", value: "history" },
   { label: "我", value: "me" },
   { label: "公开", value: "public" },
-  { label: "收藏", value: "favourites" },
 ];
 
 export function ContentSuggestionsDrawer({
@@ -59,7 +57,6 @@ export function ContentSuggestionsDrawer({
     isFetchingNextPage,
   } = useInfiniteListContentsQuery();
   const { data: publishedData } = useListPublishedContentsQuery({});
-  const { data: favouriteData } = useListFavouriteContentsQuery({});
   const { recentlyWatched } = useRecentlyWatchedContent();
 
   const router = useRouter();
@@ -90,8 +87,6 @@ export function ContentSuggestionsDrawer({
         return myContentItems;
       case "public":
         return publishedData?.items || [];
-      case "favourites":
-        return favouriteData?.items || [];
       default:
         return [];
     }
@@ -100,7 +95,6 @@ export function ContentSuggestionsDrawer({
     recentlyWatched,
     myContentItems,
     publishedData,
-    favouriteData,
   ]);
 
   const filteredContents = useMemo(() => {

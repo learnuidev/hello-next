@@ -2,6 +2,7 @@
 
 import "@/libs/cognito/init";
 
+import { useEffect } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { useConvosStore } from "@/stores/convos-store";
@@ -18,6 +19,13 @@ import { ContentCollectionsSections } from "@/components/content-collections/con
 import { createIndexDBStore } from "@/libs/index-db/index-db";
 import { useIsProMember } from "../plans/hooks/use-is-pro-member";
 import { ContentsList } from "./contents-list";
+import {
+  activeTabQueryParam,
+  defaultViewType,
+  isViewType,
+  viewTabs,
+  ViewType,
+} from "./view-tabs";
 
 import { NewContentV2 } from "./new-content-v2/new-content-v2";
 
@@ -51,29 +59,8 @@ const ContentViewMode = () => {
   }
 };
 
-type ViewType = "history" | "me" | "public" | "collections";
-
-const tabs = [
-  {
-    label: "历史",
-    value: "history" as ViewType,
-  },
-  {
-    label: "我",
-    value: "me" as ViewType,
-  },
-  {
-    label: "公开",
-    value: "public" as ViewType,
-  },
-  {
-    label: "收藏",
-    value: "collections" as ViewType,
-  },
-];
-
 export default function Convos() {
-  const [contentViewType, setViewType] = useViewType();
+  const [savedViewType, setSavedViewType] = useViewType();
 
   const isProMember = useIsProMember();
 
@@ -89,6 +76,47 @@ export default function Convos() {
   const addMode = searchParams.get("type");
 
   const isAdd = addMode === "add";
+
+  const activeParam = searchParams.get(activeTabQueryParam);
+
+  // The URL wins, then the saved preference, then the default tab.
+  const contentViewType: ViewType = isViewType(activeParam)
+    ? activeParam
+    : isViewType(savedViewType)
+      ? savedViewType
+      : defaultViewType;
+
+  const setViewType = (viewType: ViewType, { replace = false } = {}) => {
+    setSavedViewType(viewType);
+
+    const params = new URLSearchParams(searchParams.toString());
+    params.set(activeTabQueryParam, viewType);
+
+    const url = `/convos?${params.toString()}`;
+
+    if (replace) {
+      router.replace(url);
+    } else {
+      router.push(url);
+    }
+  };
+
+  // Whatever tab is showing, the URL and the saved preference should say so.
+  useEffect(() => {
+    if (isAdd || contentId) {
+      return;
+    }
+
+    if (activeParam !== contentViewType) {
+      setViewType(contentViewType, { replace: true });
+      return;
+    }
+
+    if (savedViewType !== contentViewType) {
+      setSavedViewType(contentViewType);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeParam, contentViewType, savedViewType, isAdd, contentId]);
 
   if (isAdd) {
     return <ContentViewMode />;
@@ -110,9 +138,9 @@ export default function Convos() {
 
         <div className="mt-4 flex justify-between items-center">
           <BaseTabs
-            tabs={tabs}
-            activeTab={contentViewType as ViewType}
-            onTabChange={setViewType}
+            tabs={viewTabs}
+            activeTab={contentViewType}
+            onTabChange={(tab: ViewType) => setViewType(tab)}
             layoutId="activeViewTab"
             className="gap-8"
           />

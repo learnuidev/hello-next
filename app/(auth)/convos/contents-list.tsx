@@ -23,9 +23,7 @@ import { useLearningMode } from "@/components/settings-dialog/learning-mode.stor
 import { useCurrentAuthUser } from "@/domain/auth/auth.queries";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 import Link from "next/link";
-import { useListFavouriteContentsQuery } from "./[content-id]/hooks/use-list-favourited-contents-query";
 import { useListPublishedContentsQuery } from "./[content-id]/hooks/use-list-published-contents-query";
-import { useToggleFavouriteContentMutation } from "./[content-id]/hooks/use-toggle-favourite-content-mutation";
 import { contentTypes } from "./constants/content-types";
 import { useContentViewType } from "./hooks/use-content-view-type";
 import { useRecentlyWatchedContent } from "./use-recently-watched-content-store";
@@ -64,11 +62,8 @@ export function ContentsList({ contentViewType }: { contentViewType: string }) {
   const { data, isLoading: isPublishedLoading } = useListPublishedContentsQuery(
     {},
   );
-  const { data: favouriteContents, isLoading: isFavouriteContentLoading } =
-    useListFavouriteContentsQuery({});
 
   const { toast } = useToast();
-  const toggleFavouritContentMutation = useToggleFavouriteContentMutation();
 
   const { recentlyWatched, setRecentlyWatched } = useRecentlyWatchedContent();
 
@@ -103,9 +98,7 @@ export function ContentsList({ contentViewType }: { contentViewType: string }) {
       ? recentlyWatched
       : contentViewType === "public"
         ? data?.items
-        : contentViewType === "favourites"
-          ? favouriteContents?.items
-          : myContentItems;
+        : myContentItems;
 
   const searchTransacription = (content: ContentType, query: string) => {
     if (!content?.transcriptions?.length) {
@@ -192,17 +185,12 @@ export function ContentsList({ contentViewType }: { contentViewType: string }) {
 
   const showLoading =
     isLoading ||
-    isFavouriteContentLoading ||
     isPublishedLoading ||
     isSearchLoading ||
     (contentViewType === "me" && !myContentItems.length && !isFetchingNextPage);
 
   if (showLoading) {
     return <LottieLoadingAnimation />;
-  }
-
-  if (contentViewType === "favourites" && contentsList?.length === 0) {
-    return <Nothing message={`Nothing favourited`} icon={Icons.content} />;
   }
 
   const selectedContent = contentTypes?.find(
@@ -268,10 +256,6 @@ export function ContentsList({ contentViewType }: { contentViewType: string }) {
         <section>
           <div className="grid grid-cols-[repeat(auto-fit,minmax(32rem,1fr))] sm:grid-cols-[repeat(2,minmax(20rem,1fr))] gap-8">
             {contentsList?.map((item: any, index: number) => {
-              const isFavourited = favouriteContents?.items?.find(
-                (content: any) => content?.id === item.id,
-              );
-
               return (
                 <div
                   key={item.id}
@@ -318,44 +302,6 @@ export function ContentsList({ contentViewType }: { contentViewType: string }) {
                         )}
                       </div>
                       <div className="flex items-center gap-3 z-50 self-start mt-2">
-                        <button
-                          disabled={toggleFavouritContentMutation.isPending}
-                          className="text-xl"
-                          onClick={(event) => {
-                            event.preventDefault();
-                            event.stopPropagation();
-                            if (isFavourited) {
-                              toggleFavouritContentMutation
-                                .mutateAsync({
-                                  type: "unfavourite",
-                                  contentId: item?.id,
-                                })
-                                .then(() => {
-                                  toast({
-                                    title: "Success",
-                                    description:
-                                      "Content successfully unfavourited",
-                                  });
-                                });
-                            } else {
-                              toggleFavouritContentMutation
-                                .mutateAsync({
-                                  type: "favourite",
-                                  contentId: item?.id,
-                                })
-                                .then(() => {
-                                  toast({
-                                    title: "Success",
-                                    description:
-                                      "Content successfully favourited",
-                                  });
-                                });
-                            }
-                          }}
-                        >
-                          {isFavourited ? <Icons.heartSolid /> : <Icons.heart />}
-                        </button>
-
                         <StarIconButton
                           size="none"
                           className="text-xl"

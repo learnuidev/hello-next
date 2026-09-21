@@ -32,7 +32,6 @@ import {
   faFaceSpiralEyes as faFaceSpiralEyesSolid,
   faGlassesRound as faGlassesRoundSolid,
   faGrinBeamSweat as faGrinBeamSweatSolid,
-  faHeart as faHeartSolid,
   faVolume as faVolumeSolid,
   // faMicrophone as faMicrophoneSolid,
   // faSeedling,
@@ -95,7 +94,6 @@ import {
   faGrid2,
   faGridRound2Plus,
   faGrinBeamSweat,
-  faHeart,
   faInfo,
   faInfoCircle,
   faItalic,
@@ -216,8 +214,6 @@ const createFAIcon = (icon: FontAwesomeIconProps["icon"]) => {
 
 export const Icons = {
   studio: createFAIcon(faVideo),
-  heart: createFAIcon(faHeart),
-  heartSolid: createFAIcon(faHeartSolid),
   magnifyingGlass: createFAIcon(faMagnifyingGlass),
   verticalStack: createFAIcon(faRectangleVerticalHistory),
   verticalStackSolid: createFAIcon(faRectangleVerticalHistorySolid),

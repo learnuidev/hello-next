@@ -18,13 +18,29 @@ import { useUpdateContentCollectionMutation } from "@/domain/content-collections
 import {
   ContentCollection,
   ContentCollectionItem,
+  ContentToCollect,
 } from "@/domain/content-collections/content-collections.types";
+import { StarIconButton } from "./star-content-button";
+import { AddToContentCollectionDialog } from "./add-to-content-collection-dialog";
 
 const springTransition = {
   type: "spring" as const,
   stiffness: 400,
   damping: 17,
 };
+
+/** The bits of a saved item that the add-to-collection dialog needs. */
+const toCollectPayload = (item: ContentCollectionItem): ContentToCollect => ({
+  contentId: item.contentId,
+  title: item.title,
+  subtitle: item.subtitle,
+  description: item.description,
+  thumbnailUrl: item.thumbnailUrl,
+  format: item.format,
+  lang: item.lang,
+  author: item.author,
+  seriesId: item.seriesId,
+});
 
 /**
  * A saved content, laid out like the cards on the /convos page: square cover
@@ -34,10 +50,12 @@ function CollectionContentCard({
   item,
   onRemove,
   isRemoving,
+  onStarClick,
 }: {
   item: ContentCollectionItem;
   onRemove: () => void;
   isRemoving: boolean;
+  onStarClick: (content: ContentToCollect) => void;
 }) {
   return (
     <motion.div
@@ -88,6 +106,16 @@ function CollectionContentCard({
               </p>
             )}
           </div>
+
+          <div className="flex items-center gap-3 z-50 self-start mt-2">
+            <StarIconButton
+              size="none"
+              className="text-xl"
+              content={toCollectPayload(item)}
+              initialIsCollected
+              onClick={() => onStarClick(toCollectPayload(item))}
+            />
+          </div>
         </div>
       </Link>
 
@@ -117,8 +145,10 @@ function CollectionContentCard({
  */
 function ContentCollectionSection({
   collection,
+  onStarClick,
 }: {
   collection: ContentCollection;
+  onStarClick: (content: ContentToCollect) => void;
 }) {
   const [isRenaming, setIsRenaming] = useState(false);
   const [title, setTitle] = useState(collection.title);
@@ -234,6 +264,7 @@ function ContentCollectionSection({
               item={item}
               isRemoving={removeItemsMutation.isPending}
               onRemove={() => handleRemoveItem(item.id)}
+              onStarClick={onStarClick}
             />
           ))}
         </div>
@@ -248,6 +279,8 @@ function ContentCollectionSection({
  */
 export function ContentCollectionsSections() {
   const [newTitle, setNewTitle] = useState("");
+  const [collectionDialogContent, setCollectionDialogContent] =
+    useState<ContentToCollect | null>(null);
 
   const { data: collectionsData, isLoading } = useListContentCollectionsQuery();
   const addCollectionMutation = useAddContentCollectionMutation();
@@ -314,8 +347,21 @@ export function ContentCollectionsSections() {
           <ContentCollectionSection
             key={collection.id}
             collection={collection}
+            onStarClick={setCollectionDialogContent}
           />
         ))
+      )}
+
+      {/* Kept out of the card links: React events bubble through the component
+          tree, so a dialog nested in a <Link> would navigate when clicked. */}
+      {collectionDialogContent && (
+        <AddToContentCollectionDialog
+          open={!!collectionDialogContent}
+          onOpenChange={(open: boolean) => {
+            if (!open) setCollectionDialogContent(null);
+          }}
+          content={collectionDialogContent}
+        />
       )}
     </div>
   );

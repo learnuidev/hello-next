@@ -29,18 +29,26 @@ export const StarIconButton = ({
   iconClassName,
   size = "default",
   onClick,
+  initialIsCollected,
 }: {
   content: ContentToCollect;
   className?: string;
   iconClassName?: string;
   size?: StarSize;
   onClick?: () => void;
+  /**
+   * Use when the caller already knows the answer (e.g. the collections tab,
+   * where every listed card is saved) to skip the per-card lookup request.
+   */
+  initialIsCollected?: boolean;
 }) => {
-  const { data } = useListContentCollectionsByContentQuery({
-    contentId: content?.contentId,
-  });
+  const { data } = useListContentCollectionsByContentQuery(
+    { contentId: content?.contentId },
+    { enabled: initialIsCollected === undefined && !!content?.contentId },
+  );
 
-  const isCollected = ((data as any)?.collectionIds || []).length > 0;
+  const isCollected =
+    initialIsCollected ?? ((data as any)?.collectionIds || []).length > 0;
 
   return (
     <button

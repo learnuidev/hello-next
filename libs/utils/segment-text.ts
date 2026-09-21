@@ -1,5 +1,6 @@
 import { filterNonHanYu } from "@/app/nmm/nmm-utils/filter-non-hanyu";
 import { useQuery } from "@tanstack/react-query";
+//
 
 import { pinyin } from "pinyin-pro";
 import {
@@ -125,7 +126,11 @@ export async function segmentText({
     segmentArray.push(segmentItem);
   }
 
-  const pinyinParser = createSegmentPinyin({ text: sourceText, lang, originalPinyin });
+  const pinyinParser = createSegmentPinyin({
+    text: sourceText,
+    lang,
+    originalPinyin,
+  });
 
   const segmentPinyin = (segment: string, startIndex?: number) =>
     pinyinParser

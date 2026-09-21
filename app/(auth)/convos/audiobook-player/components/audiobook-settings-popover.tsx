@@ -197,6 +197,8 @@ export function AudioBookSettingsPopover({
                   content={{
                     contentId: selectedContentId,
                     title: content?.title,
+                    description: content?.description,
+                    author: content?.author,
                     thumbnailUrl:
                       content?.coverPhotoUrl || content?.backgroundImageUrl,
                     lang: content?.lang,
@@ -206,6 +208,8 @@ export function AudioBookSettingsPopover({
                     onAddToCollection?.({
                       contentId: selectedContentId,
                       title: content?.title,
+                      description: content?.description,
+                      author: content?.author,
                       thumbnailUrl:
                         content?.coverPhotoUrl || content?.backgroundImageUrl,
                       lang: content?.lang,

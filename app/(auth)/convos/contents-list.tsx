@@ -369,6 +369,8 @@ export function ContentsList({ contentViewType }: { contentViewType: string }) {
                             setCollectionDialogContent({
                               contentId: item?.id,
                               title: item?.title,
+                              description: item?.description,
+                              author: item?.author,
                               thumbnailUrl: getCoverPhotoUrl(item),
                               lang: item?.lang,
                             })

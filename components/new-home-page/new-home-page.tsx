@@ -9,7 +9,7 @@ import { BaseTopicsList } from "../ui/base-topics-list";
 import { BaseTabs } from "../ui/base-tabs";
 import { ContentList } from "./components/content-list";
 import { SeriesList } from "./components/series-list";
-import { ContentCollectionsList } from "../content-collections/content-collections-list";
+import { ContentCollectionsSections } from "../content-collections/content-collections-sections";
 import { PageContainer } from "../page-container";
 
 type TabType = "series" | "content" | "collections";
@@ -37,7 +37,7 @@ export function NewHomePage() {
   const [activeTopic, setActiveTopic] = useState<TopicType>(
     () => activeTopicSearchParams,
   );
-  const [activeTab, setActiveTab] = useState<TabType>("series");
+  const [activeTab, setActiveTab] = useState<TabType>("collections");
 
   const router = useRouter();
 
@@ -79,7 +79,7 @@ export function NewHomePage() {
                 {activeTab === "series" ? (
                   <SeriesList activeTopic={activeTopic} />
                 ) : activeTab === "collections" ? (
-                  <ContentCollectionsList />
+                  <ContentCollectionsSections />
                 ) : (
                   <ContentList activeTopic={activeTopic} />
                 )}

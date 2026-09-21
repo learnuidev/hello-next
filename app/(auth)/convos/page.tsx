@@ -14,6 +14,7 @@ import { FloatingNavbar } from "@/components/floating-navbar";
 import { PageContainer } from "@/components/page-container";
 import { SearchBar } from "@/components/search-bar";
 import { BaseTabs } from "@/components/ui/base-tabs";
+import { ContentCollectionsSections } from "@/components/content-collections/content-collections-sections";
 import { createIndexDBStore } from "@/libs/index-db/index-db";
 import { useIsProMember } from "../plans/hooks/use-is-pro-member";
 import { ContentsList } from "./contents-list";
@@ -21,9 +22,9 @@ import { ContentsList } from "./contents-list";
 import { NewContentV2 } from "./new-content-v2/new-content-v2";
 
 const useViewTypeStore = createIndexDBStore({
-  name: "view-type",
+  name: "view-type-v2",
   handler: (set: any, get: any) => ({
-    viewType: "history",
+    viewType: "collections",
     setViewType: (f: any) =>
       typeof f === "function"
         ? set({ viewType: f(get().viewType) })
@@ -50,7 +51,7 @@ const ContentViewMode = () => {
   }
 };
 
-type ViewType = "history" | "me" | "public" | "favourites";
+type ViewType = "history" | "me" | "public" | "collections";
 
 const tabs = [
   {
@@ -67,7 +68,7 @@ const tabs = [
   },
   {
     label: "收藏",
-    value: "favourites" as ViewType,
+    value: "collections" as ViewType,
   },
 ];
 
@@ -116,7 +117,7 @@ export default function Convos() {
             className="gap-8"
           />
 
-          {isProMember && (
+          {isProMember && contentViewType !== "collections" && (
             <button
               className="text-xl dark:hover:text-white px-3 py-1 dark:text-slate-600 shadow-md rounded-full"
               onClick={() => {
@@ -129,7 +130,11 @@ export default function Convos() {
         </div>
 
         <div className="mt-8">
-          <ContentsList contentViewType={contentViewType} />
+          {contentViewType === "collections" ? (
+            <ContentCollectionsSections />
+          ) : (
+            <ContentsList contentViewType={contentViewType} />
+          )}
         </div>
       </PageContainer>
 

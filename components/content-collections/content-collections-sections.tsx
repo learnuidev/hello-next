@@ -252,9 +252,13 @@ export function ContentCollectionsSections() {
   const { data: collectionsData, isLoading } = useListContentCollectionsQuery();
   const addCollectionMutation = useAddContentCollectionMutation();
 
-  const collections: ContentCollection[] = ((collectionsData as any)?.items || [])
+  const collections: ContentCollection[] = (
+    (collectionsData as any)?.items || []
+  )
     .slice()
-    .sort((a: ContentCollection, b: ContentCollection) => b.createdAt - a.createdAt);
+    .sort(
+      (a: ContentCollection, b: ContentCollection) => b.createdAt - a.createdAt,
+    );
 
   const createCollection = () => {
     if (!newTitle.trim()) return;

@@ -1,6 +1,16 @@
 import { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  async redirects() {
+    return [
+      // The convos page is the app's home page.
+      {
+        source: "/",
+        destination: "/convos",
+        permanent: false,
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       {

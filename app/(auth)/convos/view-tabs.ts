@@ -1,4 +1,9 @@
-export type ViewType = "history" | "me" | "public" | "collections";
+export type ViewType =
+  | "history"
+  | "me"
+  | "public"
+  | "collections"
+  | "series";
 
 export const viewTabs: { label: string; value: ViewType }[] = [
   {
@@ -17,6 +22,10 @@ export const viewTabs: { label: string; value: ViewType }[] = [
     label: "收藏",
     value: "collections",
   },
+  {
+    label: "系列",
+    value: "series",
+  },
 ];
 
 /**
@@ -24,6 +33,11 @@ export const viewTabs: { label: string; value: ViewType }[] = [
  * `/convos?active=collections`, `/convos?active=history`, ...
  */
 export const activeTabQueryParam = "active";
+
+/** Topic subtab of the 系列 tab, e.g. `/convos?active=series&topic=kids`. */
+export const topicQueryParam = "topic";
+
+export const defaultTopic = "recommendation";
 
 export const defaultViewType: ViewType = "collections";
 

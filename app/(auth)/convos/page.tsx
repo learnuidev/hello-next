@@ -21,11 +21,17 @@ import { useIsProMember } from "../plans/hooks/use-is-pro-member";
 import { ContentsList } from "./contents-list";
 import {
   activeTabQueryParam,
+  defaultTopic,
   defaultViewType,
   isViewType,
+  topicQueryParam,
   viewTabs,
   ViewType,
 } from "./view-tabs";
+import { BaseTopicsList } from "@/components/ui/base-topics-list";
+import { SeriesList } from "@/components/new-home-page/components/series-list";
+import { TopicType } from "@/domain/topic/topic.types";
+import { topicsList } from "@/domain/topic/topic.constants";
 
 import { NewContentV2 } from "./new-content-v2/new-content-v2";
 
@@ -59,6 +65,9 @@ const ContentViewMode = () => {
   }
 };
 
+const isTopicType = (value: string | null | undefined): value is TopicType =>
+  !!value && topicsList.some((topic) => topic.type === value);
+
 export default function Convos() {
   const [savedViewType, setSavedViewType] = useViewType();
 
@@ -78,6 +87,7 @@ export default function Convos() {
   const isAdd = addMode === "add";
 
   const activeParam = searchParams.get(activeTabQueryParam);
+  const topicParam = searchParams.get(topicQueryParam);
 
   // The URL wins, then the saved preference, then the default tab.
   const contentViewType: ViewType = isViewType(activeParam)
@@ -86,19 +96,25 @@ export default function Convos() {
       ? savedViewType
       : defaultViewType;
 
-  const setViewType = (viewType: ViewType, { replace = false } = {}) => {
+  const activeTopic: TopicType = isTopicType(topicParam)
+    ? topicParam
+    : defaultTopic;
+
+  const handleTopicClick = (topicType: TopicType) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set(activeTabQueryParam, "series");
+    params.set(topicQueryParam, topicType);
+
+    router.push(`/convos?${params.toString()}`);
+  };
+
+  const setViewType = (viewType: ViewType) => {
     setSavedViewType(viewType);
 
     const params = new URLSearchParams(searchParams.toString());
     params.set(activeTabQueryParam, viewType);
 
-    const url = `/convos?${params.toString()}`;
-
-    if (replace) {
-      router.replace(url);
-    } else {
-      router.push(url);
-    }
+    router.push(`/convos?${params.toString()}`);
   };
 
   // Whatever tab is showing, the URL and the saved preference should say so.
@@ -107,8 +123,20 @@ export default function Convos() {
       return;
     }
 
-    if (activeParam !== contentViewType) {
-      setViewType(contentViewType, { replace: true });
+    const needsTabParam = activeParam !== contentViewType;
+    const needsTopicParam =
+      contentViewType === "series" && topicParam !== activeTopic;
+
+    if (needsTabParam || needsTopicParam) {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set(activeTabQueryParam, contentViewType);
+
+      if (contentViewType === "series") {
+        params.set(topicQueryParam, activeTopic);
+      }
+
+      setSavedViewType(contentViewType);
+      router.replace(`/convos?${params.toString()}`);
       return;
     }
 
@@ -116,7 +144,15 @@ export default function Convos() {
       setSavedViewType(contentViewType);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeParam, contentViewType, savedViewType, isAdd, contentId]);
+  }, [
+    activeParam,
+    contentViewType,
+    savedViewType,
+    topicParam,
+    activeTopic,
+    isAdd,
+    contentId,
+  ]);
 
   if (isAdd) {
     return <ContentViewMode />;
@@ -158,7 +194,22 @@ export default function Convos() {
         </div>
 
         <div className="mt-8">
-          {contentViewType === "collections" ? (
+          {contentViewType === "series" ? (
+            <div>
+              <BaseTopicsList
+                activeTopic={activeTopic}
+                onTopicClick={handleTopicClick}
+                layoutId="activeTopicTab"
+                variant="button"
+                animate
+                buttonClassName="text-lg sm:text-md"
+              />
+
+              <div className="mt-8">
+                <SeriesList activeTopic={activeTopic} />
+              </div>
+            </div>
+          ) : contentViewType === "collections" ? (
             <ContentCollectionsSections />
           ) : (
             <ContentsList contentViewType={contentViewType} />

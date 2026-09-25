@@ -244,7 +244,7 @@ export const KaraokeLine = memo(
               >
                 {hasRoman && (
                   <span
-                    className="whitespace-nowrap font-normal"
+                    className="mn-r-guide-gap whitespace-nowrap font-normal"
                     style={{
                       // Every line carries its guide, not just the one being
                       // sung — the lines you are not on are out of focus, which

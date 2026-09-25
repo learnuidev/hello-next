@@ -136,7 +136,7 @@ export function AudioBookSettingsPopover({
             </div>
             {/* )} */}
 
-            <div className="flex items-center space-x-2 justify-between">
+            {/* <div className="flex items-center space-x-2 justify-between">
               <Label htmlFor="video-visible">Focus Mode</Label>
               <Switch
                 checked={isFSM}
@@ -144,7 +144,7 @@ export function AudioBookSettingsPopover({
                   setIsFSM((isHidden: any) => !isHidden);
                 }}
               />
-            </div>
+            </div> */}
 
             <div className="flex items-center space-x-2 justify-between">
               <Label htmlFor="meta-view">Meta View</Label>

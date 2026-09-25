@@ -94,6 +94,17 @@ export const ReaderStyles = () => (
     line-height: calc(3.25rem * var(--r-scale, 1));
   }
 
+  /* The space between a word's reading and the word itself.
+     It is part of the text scale — a bigger word keeps its reading further off
+     — with a floor, so a small text size can never leave the guide touching the
+     character it belongs to. The guide also carries its own line box, so tone
+     marks are never clipped by the character below. */
+  .mn-r-guide-gap {
+    line-height: 1.5;
+    margin-bottom: 0.1875rem;
+    margin-bottom: max(0.0625rem, calc(0.1875rem * var(--r-scale, 1)));
+  }
+
   .mn-r-line-gap {
     margin-bottom: calc(1rem * var(--r-scale, 1));
   }

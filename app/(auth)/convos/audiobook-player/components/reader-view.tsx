@@ -46,7 +46,7 @@ const RomanGuide = ({
       data-r-word={sweeping ? 0 : undefined}
       data-r-glyph={sweeping ? 0 : undefined}
       data-r-glyphs={sweeping ? 1 : undefined}
-      className={cn(sweeping && "mn-r-sweep")}
+      className={cn("mn-r-text-guide mn-r-guide-gap", sweeping && "mn-r-sweep")}
     >
       {text}
     </p>

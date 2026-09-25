@@ -15,11 +15,10 @@ export const DEFAULT_FONT_SIZE = 16;
  * low: those numbers are multiplied by every surface's own base size.
  */
 export const MIN_FONT_SIZE = 12;
-export const MAX_FONT_SIZE = 32;
+export const MAX_FONT_SIZE = 20;
 
 /** How much bigger or smaller than that default things should be drawn. */
-export const fontScale = (fontSize: number) =>
-  fontSize / DEFAULT_FONT_SIZE;
+export const fontScale = (fontSize: number) => fontSize / DEFAULT_FONT_SIZE;
 
 export const useFontSizeStore = create<FontSizeState>((set, get) => ({
   fontSize: DEFAULT_FONT_SIZE,

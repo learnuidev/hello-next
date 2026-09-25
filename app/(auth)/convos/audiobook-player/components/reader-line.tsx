@@ -89,7 +89,7 @@ export const ReaderParagraphLine = memo(function ReaderParagraphLine({
       {showPinyin && (
         <p
           className={cn(
-            "mn-r-text-guide font-extralight",
+            "mn-r-text-guide mn-r-guide-gap font-extralight",
             // The reading above the transcription being read is painted with
             // the colour of that transcription, instead of the quieter grey it
             // wears above every other line.

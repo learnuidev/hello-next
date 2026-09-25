@@ -159,7 +159,7 @@ export function ReaderViewChinese({
                     isActive
                       ? activeTextClassName
                       : "dark:text-gray-500 text-gray-800",
-                    "mn-r-text-guide",
+                    "mn-r-text-guide mn-r-guide-gap",
                     sweeping && "mn-r-sweep",
                   )}
                 >

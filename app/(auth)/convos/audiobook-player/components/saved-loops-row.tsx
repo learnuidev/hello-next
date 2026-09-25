@@ -58,9 +58,14 @@ export const SavedLoopsOverlay = ({
   mode,
   onLoad,
   onStop,
+  onEditRange,
 }: {
   contentId?: string;
-  /** The stretch of recording the scrubber is showing. */
+  /**
+   * The stretch of recording the chips are laid out over. Always the whole of
+   * it: a chip is how you find a loop, so the row must not disappear into the
+   * one loop the track below it happens to be showing.
+   */
   view: { start: number; end: number };
   /** Where a moment sits inside that stretch, 0 → 1. */
   toRatio: (time: number) => number;
@@ -70,6 +75,12 @@ export const SavedLoopsOverlay = ({
   mode?: string;
   onLoad: (loop: SavedLoop) => void;
   onStop?: () => void;
+  /**
+   * Move the chip's own boundaries: opens the section picker on this loop, so
+   * the reader drags the ends of the loop they already have rather than
+   * choosing a section and starting again.
+   */
+  onEditRange?: (loop: SavedLoop) => void;
 }) => {
   const allLoops = useSavedLoopsStore((state) => state.loops);
   const renameLoop = useSavedLoopsStore((state) => state.renameLoop);
@@ -105,7 +116,8 @@ export const SavedLoopsOverlay = ({
     return () => observer.disconnect();
   }, []);
 
-  /** Only the loops on screen: inside a zoomed section, few of them are. */
+  /** Only the loops in the stretch the row is laid out over: every one of them,
+   *  because the row is the whole recording even when the track is zoomed. */
   const loops = useMemo(
     () =>
       allLoops
@@ -207,6 +219,22 @@ export const SavedLoopsOverlay = ({
               <span className="tabular-nums opacity-40">
                 {clock(loop.end - loop.start)}
               </span>
+
+              {/* The other half of "update this loop": the name is changed by
+                  double-clicking it, the range by opening the picker on it. */}
+              {onEditRange && (
+                <button
+                  type="button"
+                  aria-label={`Change the range of ${loop.name}`}
+                  title={`Change the range of ${loop.name} · lines ${
+                    loop.startIndex + 1
+                  }–${loop.endIndex + 1}`}
+                  onClick={() => onEditRange(loop)}
+                  className="rounded-full p-0.5 opacity-30 transition hover:bg-black/5 hover:opacity-80 dark:hover:bg-white/10"
+                >
+                  <Icons.timeline className="text-[9px]" />
+                </button>
+              )}
 
               <button
                 type="button"

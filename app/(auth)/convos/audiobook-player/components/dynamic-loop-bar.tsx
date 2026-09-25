@@ -18,6 +18,9 @@ import { LoopNameField } from "./loop-name-field";
  *
  * Saving is the exception: a loop worth looping twice is worth naming, so the
  * name is asked for in place, written and selected, the way a DAW asks for it.
+ * Moving a loop that is already saved is that same gesture — the picker opens on
+ * its own boundaries — except that the name is already known, so the strip
+ * offers Update instead of asking for one.
  */
 
 const transcripts = (count: number) =>
@@ -37,6 +40,8 @@ export const DynamicLoopBar = ({
   isPlaying,
   contentId,
   dimmed = false,
+  editingLoop = null,
+  onUpdateRange,
 }: {
   dynamicLoop: DynamicLoop;
   isPlaying?: boolean;
@@ -47,6 +52,14 @@ export const DynamicLoopBar = ({
    * bubble that follows the handle is the only thing being read.
    */
   dimmed?: boolean;
+  /**
+   * The saved loop whose range is being moved, when one is. The strip asks for
+   * no name then: the loop already has one, and nothing about it is changing
+   * except where it sits.
+   */
+  editingLoop?: { id: string; name: string } | null;
+  /** Keeps the section's new boundaries for that loop. */
+  onUpdateRange?: () => void;
 }) => {
   const { mode, range, lines } = dynamicLoop;
   // A section looping quietly in the regular view has nothing to show here: the
@@ -141,9 +154,27 @@ export const DynamicLoopBar = ({
               {/* Save belongs to the picker: it is what you do with a section
                   you have just chosen, and the Change button is how you get
                   back to choosing one. A section already looping has nothing
-                  new to save until you change it. */}
+                  new to save until you change it.
+
+                  Moving a loop that already exists is the same gesture with a
+                  different ending: the boundaries are kept for the loop you
+                  opened the picker on, which is why it says Update and asks for
+                  no name. */}
               {selecting &&
-                (naming ? (
+                (editingLoop && onUpdateRange ? (
+                  <button
+                    type="button"
+                    onClick={onUpdateRange}
+                    aria-label={`Update the range of ${editingLoop.name}`}
+                    title={`Keep these boundaries for ${editingLoop.name}`}
+                    className={QUIET_PILL}
+                  >
+                    <Icons.check className="text-[10px]" />
+                    <span className="max-w-[8rem] truncate">
+                      Update {editingLoop.name}
+                    </span>
+                  </button>
+                ) : naming ? (
                   <LoopNameField
                     initial={suggested}
                     onCommit={(name) => {

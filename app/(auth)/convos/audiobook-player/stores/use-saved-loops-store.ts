@@ -39,6 +39,22 @@ type SavedLoopsState = {
    * one you cannot name twice.
    */
   saveLoop: (loop: Omit<SavedLoop, "id" | "createdAt" | "color">) => SavedLoop;
+  /**
+   * Moves an existing loop to a different stretch of the recording.
+   *
+   * Only its boundaries move: the name, the colour and the identity stay,
+   * because this is the same loop the reader is moving rather than a new one —
+   * which is exactly what saving it again cannot express.
+   */
+  updateLoopRange: (
+    id: string,
+    range: {
+      start: number;
+      end: number;
+      startIndex: number;
+      endIndex: number;
+    },
+  ) => void;
   renameLoop: (id: string, name: string) => void;
   recolorLoop: (id: string, color: LoopColorKey) => void;
   removeLoop: (id: string) => void;
@@ -157,6 +173,14 @@ export const useSavedLoopsStore = create<SavedLoopsState>()(
         set({ loops: [...get().loops, saved] });
 
         return saved;
+      },
+
+      updateLoopRange: (id, range) => {
+        set({
+          loops: get().loops.map((item) =>
+            item.id === id ? { ...item, ...range } : item,
+          ),
+        });
       },
 
       renameLoop: (id, name) => {

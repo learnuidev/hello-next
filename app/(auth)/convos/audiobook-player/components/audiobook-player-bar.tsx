@@ -7,7 +7,7 @@ import { useSmoothPlayhead } from "../hooks/use-smooth-playhead";
 import type { DynamicLoop, LoopBoundary } from "../hooks/use-dynamic-loop";
 import { DynamicLoopBar } from "./dynamic-loop-bar";
 import { SavedLoopsOverlay } from "./saved-loops-row";
-import { useSavedLoopsStore } from "../stores/use-saved-loops-store";
+import { SavedLoop, useSavedLoopsStore } from "../stores/use-saved-loops-store";
 import { loopColor } from "../utils/loop-colors";
 import {
   DynamicLoopFill,
@@ -95,6 +95,71 @@ export const AudiobookPlayerBar = ({
   );
 
   const savedLoops = useSavedLoopsStore((state) => state.loops);
+  const updateLoopRange = useSavedLoopsStore((state) => state.updateLoopRange);
+
+  /**
+   * The saved loop whose boundaries the picker is moving, if it is moving one.
+   *
+   * It is a saved loop and not a section: renaming it needs no picker at all,
+   * but a range is only ever chosen on the scrubber, so changing one means
+   * opening the same picker you would use to choose that section from scratch —
+   * seeded with the loop's own boundaries, and ending in Update rather than a
+   * name.
+   */
+  const [editingLoopId, setEditingLoopId] = useState<string | null>(null);
+
+  const editingLoop = useMemo(
+    () =>
+      editingLoopId
+        ? (savedLoops.find((loop) => loop.id === editingLoopId) ?? null)
+        : null,
+    [editingLoopId, savedLoops],
+  );
+
+  const loopMode = dynamicLoop?.mode ?? "off";
+
+  // Only the picker can move a range, so leaving it — committing the section,
+  // quitting the loop, or picking another one — is the end of the edit.
+  useEffect(() => {
+    if (loopMode !== "selecting") {
+      setEditingLoopId(null);
+    }
+  }, [loopMode]);
+
+  const editLoopRange = useCallback(
+    (loop: SavedLoop) => {
+      if (!dynamicLoop) {
+        return;
+      }
+
+      // Load it first: the picker opens on what is already looping, so the
+      // handles start exactly on the loop's own boundaries. Then open it.
+      if (!dynamicLoop.playSavedLoop(loop)) {
+        return;
+      }
+
+      dynamicLoop.begin();
+      setEditingLoopId(loop.id);
+    },
+    [dynamicLoop],
+  );
+
+  const keepLoopRange = useCallback(() => {
+    const section = dynamicLoop?.range;
+
+    if (!editingLoop || !section) {
+      return;
+    }
+
+    updateLoopRange(editingLoop.id, {
+      start: section.start,
+      end: section.end,
+      startIndex: section.startIndex,
+      endIndex: section.endIndex,
+    });
+
+    setEditingLoopId(null);
+  }, [dynamicLoop?.range, editingLoop, updateLoopRange]);
 
   // The section wears the colour of the saved loop it is, when it is one.
   const accent = useMemo(() => {
@@ -169,6 +234,26 @@ export const AudiobookPlayerBar = ({
 
   const viewSpan = Math.max(view.end - view.start, 0.001);
   const zoomed = looping || quiet || lineLooped;
+
+  /**
+   * The chips are the way a loop is chosen, so they are laid out over the whole
+   * recording whatever the track below them is showing.
+   *
+   * They used to be clipped to the zoomed section, which left a reader inside a
+   * loop with that loop's own chip and nothing else — no way to switch to
+   * another one without stopping first. The row stays a map of every loop in the
+   * chapter; only the track zooms.
+   */
+  const chipView = useMemo(
+    () => ({ start: 0, end: safeDuration }),
+    [safeDuration],
+  );
+
+  const chipToRatio = useCallback(
+    (time: number) =>
+      Math.max(0, Math.min(time / (safeDuration || 0.001), 1)),
+    [safeDuration],
+  );
 
   const timeRef = useSmoothPlayhead({
     playerRef,
@@ -341,6 +426,8 @@ export const AudiobookPlayerBar = ({
           isPlaying={isPlaying}
           contentId={contentId}
           dimmed={!!draggingBoundary}
+          editingLoop={editingLoop}
+          onUpdateRange={keepLoopRange}
         />
       )}
 
@@ -350,12 +437,13 @@ export const AudiobookPlayerBar = ({
       {dynamicLoop && (
         <SavedLoopsOverlay
           contentId={contentId}
-          view={view}
-          toRatio={toRatio}
+          view={chipView}
+          toRatio={chipToRatio}
           activeRange={dynamicLoop.range}
           mode={dynamicLoop.mode}
           onLoad={(loop) => dynamicLoop.playSavedLoop(loop)}
           onStop={() => dynamicLoop.stop()}
+          onEditRange={editLoopRange}
         />
       )}
 

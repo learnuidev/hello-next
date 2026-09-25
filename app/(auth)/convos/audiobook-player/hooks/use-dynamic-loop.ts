@@ -98,6 +98,11 @@ export type DynamicLoop = {
   canLoop: boolean;
   /** How many transcripts the reader has starred (via the repeat button). */
   selectionCount: number;
+  /**
+   * The section the starred transcripts describe, when they describe one. One
+   * starred transcript is a single line, which the bar can loop on its own.
+   */
+  selectionRange: DynamicLoopRange | null;
   /** Load a saved loop and loop it. False when it cannot be honoured. */
   playSavedLoop: (saved: { start: number; end: number }) => boolean;
   /** Where the playhead was when the section was opened. */
@@ -1124,6 +1129,7 @@ export const useDynamicLoop = ({
       lines,
       canLoop,
       selectionCount,
+      selectionRange,
       playSavedLoop,
       returnPosition,
       begin,
@@ -1144,6 +1150,7 @@ export const useDynamicLoop = ({
       lines,
       canLoop,
       selectionCount,
+      selectionRange,
       playSavedLoop,
       returnPosition,
       begin,

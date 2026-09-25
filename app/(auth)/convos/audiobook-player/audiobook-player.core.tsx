@@ -78,6 +78,31 @@ export const AudiobookPlayerCore = ({
     [content],
   );
 
+  /**
+   * The one line the reader has looped outside the dynamic loop: the transcript
+   * the loop button is repeating, or the single transcript starred with the
+   * repeat button beside it. Its own times are what the bar needs to become that
+   * line and nothing else.
+   *
+   * Only a single line counts. A longer run of starred transcripts is a section
+   * — the reader would loop it with the section picker — and a section is not
+   * something the bar takes over on its own.
+   */
+  const lineLoop = useMemo(() => {
+    const timed =
+      loop ??
+      (dynamicLoop.selectionCount === 1 ? dynamicLoop.selectionRange : null);
+
+    if (!timed) {
+      return null;
+    }
+
+    const start = Math.max(0, Number(timed.start) || 0);
+    const end = Number(timed.end) || 0;
+
+    return end > start ? { start, end } : null;
+  }, [loop, dynamicLoop.selectionCount, dynamicLoop.selectionRange]);
+
   if (!content) {
     return;
   }
@@ -323,6 +348,7 @@ export const AudiobookPlayerCore = ({
               isPlaying={playing}
               contentId={content.id}
               dynamicLoop={dynamicLoop}
+              lineLoop={lineLoop}
             />
           </div>
         </AudiobookPlayerDock>

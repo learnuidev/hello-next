@@ -55,6 +55,7 @@ export const AudiobookPlayerBar = ({
   isPlaying,
   contentId,
   dynamicLoop,
+  lineLoop,
 }: {
   currentTime: number;
   duration: number;
@@ -71,6 +72,14 @@ export const AudiobookPlayerBar = ({
    * this object, and the bar is only its surface.
    */
   dynamicLoop?: DynamicLoop | null;
+  /**
+   * The one line the reader has looped from outside the dynamic loop: a
+   * transcript starred with the repeat button, or the line the loop button
+   * loops. It is the only thing playing, so it is the only thing the bar shows —
+   * exactly as a saved loop is. A section outranks it: while one is being picked
+   * or looped, the section is what the bar is for.
+   */
+  lineLoop?: { start: number; end: number } | null;
 }) => {
   const trackRef = useRef<HTMLDivElement>(null);
   const fillRef = useRef<HTMLDivElement>(null);
@@ -116,6 +125,15 @@ export const AudiobookPlayerBar = ({
    * bar shows it and nothing else, exactly the way a committed section does.
    */
   const quiet = !!range && dynamicLoop?.mode === "quiet";
+  /**
+   * The one line looped from outside the dynamic loop — starred with the repeat
+   * button beside it, or set by a tap on the loop button. A section outranks it:
+   * opening one stands the line loop down, so the two are never claiming the bar
+   * at the same time.
+   */
+  const lineLooped = !!lineLoop && (!dynamicLoop || dynamicLoop.mode === "off");
+  /** The stretch the bar is pinned to, when a loop owns it. */
+  const solo = lineLooped ? lineLoop : range;
 
   // Read by the frame loop, which must not be resubscribed when the section
   // moves a handle's width.
@@ -136,19 +154,21 @@ export const AudiobookPlayerBar = ({
    * section's own timeline — a fifteen second loop spread across the full width
    * is a hundred times easier to read, and to scrub inside, than fifteen seconds
    * crammed into a sixtieth of the track. A saved loop running quietly is no
-   * different: it is the only thing playing, so it is the only thing shown.
-   * Change puts the whole recording back.
+   * different: it is the only thing playing, so it is the only thing shown. So
+   * is a single line looped on its own — the whole book of it is no use when one
+   * line is what keeps coming round. Change, or turning the loop off, puts the
+   * whole recording back.
    */
   const view = useMemo(() => {
-    if (range && (looping || quiet)) {
-      return { start: range.start, end: range.end };
+    if (solo && (looping || quiet || lineLooped)) {
+      return { start: solo.start, end: solo.end };
     }
 
     return { start: 0, end: safeDuration };
-  }, [looping, quiet, range, safeDuration]);
+  }, [lineLooped, looping, quiet, safeDuration, solo]);
 
   const viewSpan = Math.max(view.end - view.start, 0.001);
-  const zoomed = looping || quiet;
+  const zoomed = looping || quiet || lineLooped;
 
   const timeRef = useSmoothPlayhead({
     playerRef,
@@ -342,9 +362,9 @@ export const AudiobookPlayerBar = ({
       <div className="relative flex items-center gap-3 sm:gap-4">
 
         {/* The section's own bounds, once the track has become the section. */}
-        {zoomed && range && (
+        {zoomed && solo && (
           <span className="shrink-0 text-[10px] font-medium tabular-nums opacity-45">
-            {formatTime(range.start)}
+            {formatTime(solo.start)}
           </span>
         )}
 
@@ -352,9 +372,7 @@ export const AudiobookPlayerBar = ({
           ref={trackRef}
           role="slider"
           tabIndex={0}
-          aria-label={
-            zoomed ? "Seek within the looped section" : "Seek"
-          }
+          aria-label={zoomed ? "Seek within the looped section" : "Seek"}
           aria-valuemin={Math.round(zoomed ? view.start : 0)}
           aria-valuemax={Math.round(view.end)}
           aria-valuenow={Math.round(previewTime ?? currentTime ?? 0)}
@@ -424,8 +442,11 @@ export const AudiobookPlayerBar = ({
               ref={fillRef}
               className={cn(
                 "absolute inset-y-0 left-0 w-full origin-left",
+                // A soloed line keeps the loop button's own rose: it is the old
+                // single line loop, not a section, and it must not read as one.
                 zoomed
-                  ? (accent?.solid ?? "bg-indigo-500")
+                  ? (accent?.solid ??
+                    (lineLooped ? "bg-rose-500" : "bg-indigo-500"))
                   : "bg-black/80 dark:bg-white",
               )}
               style={{ transform: "scaleX(0)" }}
@@ -521,9 +542,9 @@ export const AudiobookPlayerBar = ({
           )}
         </div>
 
-        {zoomed && range && (
+        {zoomed && solo && (
           <span className="shrink-0 text-[10px] font-medium tabular-nums opacity-45">
-            {formatTime(range.end)}
+            {formatTime(solo.end)}
           </span>
         )}
       </div>

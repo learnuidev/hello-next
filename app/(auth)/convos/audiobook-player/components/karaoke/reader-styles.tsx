@@ -68,17 +68,18 @@ export const ReaderStyles = () => (
   /* One text scale for everything that can be resized.
      Each surface keeps its own base size and multiplies it by --r-scale, set
      from the font size control on the view's container, so one control moves
-     the reader, the paragraph view and the sing-along lyric together. */
+     the reader, the paragraph view and the sing-along lyric together.
+
+     The paragraph view keeps no base size of its own: it sizes a line exactly
+     the way the read view sizes the same line — .mn-r-text-char when it is read
+     word by word, and the size CharacterItem already carries otherwise — so
+     turning read mode on and off inside it never resizes the page. */
   .mn-r-text-char {
     font-size: calc(1.5rem * var(--r-scale, 1));
   }
 
   .mn-r-text-base {
     font-size: calc(1rem * var(--r-scale, 1));
-  }
-
-  .mn-r-text-paragraph {
-    font-size: calc(1.25rem * var(--r-scale, 1));
   }
 
   .mn-r-text-guide {

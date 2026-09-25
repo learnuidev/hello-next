@@ -1,6 +1,7 @@
 "use client";
 
 import { EnglishTopView } from "@/app/(auth)/convos/audiobook-player/components/english-top-view";
+import { getSelectedText } from "@/app/review/review-cloze-content/utils/get-selected-text";
 import { CharacterItem } from "@/components/_select-character/character-item";
 import { useReadModeState } from "@/components/read-mode-button";
 import { usePlayerViewModeStore } from "@/components/youtube-page/player-view-mode-store";
@@ -10,7 +11,8 @@ import { ContentTranscription, IContent } from "@/domain/content/content.api";
 import { useListContentUnknownsQuery } from "@/domain/content-unknowns/use-list-content-unknowns.query";
 import { isCharacterPartOfWordMatch } from "@/lib/content-bookmark";
 import { cn } from "@/lib/utils";
-import { memo, useCallback, useMemo } from "react";
+import { Fragment, memo, useCallback, useMemo } from "react";
+import { useCharacterMenuBarStore } from "../hooks/use-character-menu-bar";
 import { findActiveLineIndex, useFollowStage } from "../hooks/use-follow-stage";
 import type { DynamicLoop } from "../hooks/use-dynamic-loop";
 import { useReadModeSweep } from "../hooks/use-read-mode-sweep";
@@ -233,6 +235,7 @@ const ParagraphSentence = memo(function ParagraphSentence({
   blur,
   contentUnknowns,
   readMode,
+  isSelecting,
   lang,
   contentId,
   timeRef,
@@ -252,6 +255,11 @@ const ParagraphSentence = memo(function ParagraphSentence({
    * keeps this view's own shape: a tile of characters.
    */
   readMode: boolean;
+  /**
+   * While a section is being picked, a tap on the text belongs to the picker:
+   * it grows the section instead of looking a character up.
+   */
+  isSelecting: boolean;
   lang: string;
   contentId: string;
   timeRef: React.MutableRefObject<number> | null;
@@ -271,6 +279,33 @@ const ParagraphSentence = memo(function ParagraphSentence({
     timeRef,
     timings,
   });
+
+  const setShowMenuBar = useCharacterMenuBarStore(
+    (state) => state.setShowMenuBar,
+  );
+
+  // Only the sentence holding the word being looked up re-renders when a
+  // character is tapped: with a whole book on the sheet, subscribing to the
+  // selection itself would re-render every sentence of it on every tap.
+  const glyphTexts = useMemo(
+    () => new Set(glyphs.map((glyph) => glyph.text)),
+    [glyphs],
+  );
+
+  const selected = useCharacterMenuBarStore((state) =>
+    state.show && glyphTexts.has(state.text) ? state.text : null,
+  );
+
+  /**
+   * The read view's own sizing rule, on the same lines it applies it to: a line
+   * read word by word is drawn at the reader's character size, and any other
+   * line keeps the size `CharacterItem` gives it. Turning read mode on and off
+   * therefore never resizes the page it was turned on in.
+   */
+  const textClassName =
+    transcription?.lang === "zh" && Number(transcription?.words?.length) > 0
+      ? "mn-r-text-char"
+      : "";
 
   // The transcription being read is painted like the input itself; every other
   // one keeps the quieter colour.
@@ -311,9 +346,10 @@ const ParagraphSentence = memo(function ParagraphSentence({
         // belongs to has a timing. A unit with no timing does not fill at all.
         const fills = sweeping && glyph.unit >= 0 && !!timings[glyph.unit];
 
-        return (
+        const isSelected = !!selected && selected === glyph.text;
+
+        const character = (
           <CharacterItem
-            key={glyph.key}
             character={glyph.text}
             sweepSlot={
               fills
@@ -321,13 +357,53 @@ const ParagraphSentence = memo(function ParagraphSentence({
                 : undefined
             }
             className={cn(
-              "mn-r-text-paragraph",
+              textClassName,
               containsUnknownStyles(!!containsInUnknown),
               containsInUnknown && "font-light",
               sentenceClassName,
+              // The word being looked up is marked the way the read view marks
+              // it, so a tap leaves a visible trace on the page.
+              isSelected && "dark:bg-emerald-600 bg-emerald-300",
               fills && "mn-r-sweep",
             )}
           />
+        );
+
+        // Whitespace carries nothing to look up, so it stays plain text.
+        if (glyph.unit < 0) {
+          return <Fragment key={glyph.key}>{character}</Fragment>;
+        }
+
+        return (
+          <span
+            key={glyph.key}
+            onClick={(event) => {
+              // While a section is being picked the tap is the picker's: it
+              // grows the section around the sentence it landed on.
+              if (isSelecting) {
+                return;
+              }
+
+              // Otherwise a character opens the dictionary — the same look-up
+              // the read view's own lines open — and it never moves the
+              // playhead: looking a word up is not a seek.
+              event.stopPropagation();
+
+              const selectedText = getSelectedText();
+              const text =
+                selectedText && selectedText?.length < 36
+                  ? selectedText
+                  : glyph.text;
+
+              setShowMenuBar({
+                text,
+                position: { x: event.clientX, y: event.clientY },
+                startTime: transcription?.start ?? null,
+              });
+            }}
+          >
+            {character}
+          </span>
         );
       })}
     </span>
@@ -424,6 +500,10 @@ export const ParaView = ({
   // follows the playhead once playback begins.
   const focusIndex = isIntro ? 0 : activeIndex;
 
+  // While a section is being picked, a tap on the text grows the section rather
+  // than opening the dictionary — see `handleSeek` below.
+  const isSelecting = dynamicLoop?.mode === "selecting";
+
   const handleSeek = useCallback(
     (transcription: any) => {
       // While a section is being chosen a tap on a sentence grows the section
@@ -498,6 +578,7 @@ export const ParaView = ({
                           blur={stageBlurFilter(index - focusIndex)}
                           contentUnknowns={contentUnknowns}
                           readMode={readMode}
+                          isSelecting={isSelecting}
                           lang={content?.lang}
                           contentId={content?.id}
                           timeRef={timeRef}

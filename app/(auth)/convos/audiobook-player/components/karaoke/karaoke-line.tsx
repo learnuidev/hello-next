@@ -3,6 +3,7 @@
 import { cn } from "@/lib/utils";
 import { memo, useEffect, useLayoutEffect, useRef } from "react";
 import { KaraokeChunk } from "./karaoke-data";
+import { stageBlurFilter } from "./stage-tuning";
 import {
   applySweepFrame,
   createSweepRuntime,
@@ -91,9 +92,12 @@ export const KaraokeLine = memo(
     // Past lines recede further than upcoming ones, which stay readable so you
     // can see what is coming — how Apple Music Sing layers its lyrics.
     //
-    // Only opacity and transform are animated: both are composited, while
-    // animating `filter: blur()` here re-rasterises every line of the sheet on
-    // every line change and makes the whole thing stutter.
+    // Only opacity and transform are *animated*: both are composited, while a
+    // blur that animates re-rasterises the sheet on every line change and makes
+    // the whole thing stutter. The blur below is a plain, never-transitioned
+    // filter per line: the sheet curves away from the line being sung, one step
+    // per line of distance, and every line past the last step shares one value
+    // so only the lines around the singer are re-rasterised.
     const opacity = isActive
       ? 1
       : isPast
@@ -210,6 +214,7 @@ export const KaraokeLine = memo(
         style={{
           opacity,
           transform: `scale(${scale})`,
+          filter: stageBlurFilter(distance),
         }}
       >
         <div

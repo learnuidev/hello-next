@@ -20,6 +20,10 @@
  *    stage hides its scrollbar, refuses the browser's own scroll anchoring (the
  *    follow loop owns the position) and fades its top and bottom edges so lines
  *    arrive and leave the anchor instead of being cut off.
+ *
+ * The out-of-focus blur of the other lines is *not* here: it changes with how
+ * far each line sits from the one being read, which is a per-line value and so
+ * lives with the stage that computes it (`stage-tuning.ts`).
  */
 
 /** How much of a character's own colour survives until it is read. */

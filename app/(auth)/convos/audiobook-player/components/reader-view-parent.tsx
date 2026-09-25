@@ -9,6 +9,7 @@ import { findActiveLineIndex, useFollowStage } from "../hooks/use-follow-stage";
 import { useSmoothPlayhead } from "../hooks/use-smooth-playhead";
 import { useTranscriptionHighlight } from "../hooks/use-transcription-highlight";
 import { ReaderStyles } from "./karaoke/reader-styles";
+import { stageBlurFilter } from "./karaoke/stage-tuning";
 import { ReaderParagraphLine, ReaderTextLine } from "./reader-line";
 
 /**
@@ -97,6 +98,12 @@ export const ReaderViewParent = ({
   const visible = lines.slice(mounted.start, mounted.end);
   const isIntro = activeIndex < 0;
 
+  // Before the first sentence starts nothing is being read, so the focus rests
+  // on the first line: the sheet opens readable and in focus, and as playback
+  // begins the blur follows the playhead one line at a time instead of
+  // appearing across the whole book at once.
+  const focusIndex = isIntro ? 0 : activeIndex;
+
   if (lines.length === 0) {
     return (
       <div className={cn("px-4 pb-24", "max-w-4xl", isVideoHidden ? "mx-auto" : "")}>
@@ -137,12 +144,16 @@ export const ReaderViewParent = ({
             const key = transcription?.id || `${index}`;
 
             // The stage reads its own markup: which line this is, and which one
-            // the audio is on, is what the follow loop anchors to.
+            // the audio is on, is what the follow loop anchors to. The blur is
+            // the page falling away from the line being read — a step per line,
+            // and the same value for every line past the last step, so a line
+            // change only rewrites the lines around the playhead.
             return (
               <div
                 key={key}
                 data-r-line={index}
                 data-r-line-active={isActive ? "1" : undefined}
+                style={{ filter: stageBlurFilter(index - focusIndex) }}
               >
                 {readMode ? (
                   <ReaderTextLine

@@ -39,3 +39,32 @@ export const STAGE_INTRO_ANCHOR = 0.55;
  */
 export const STAGE_TOP_SPACER = 0.62;
 export const STAGE_BOTTOM_SPACER = 0.5;
+
+/**
+ * How far out of focus a line is, by how far it sits from the line being read:
+ * the page curves away instead of snapping from sharp to blurred.
+ *
+ * A line one away is barely soft, and the blur grows a step per line until it
+ * is capped — the cap matters twice over. It is what stops a line at the far
+ * end of a book from being a grey smear, and it is what keeps this cheap: every
+ * line further than the last step keeps the *same* string, so a line change
+ * only rewrites the dozen lines around the playhead instead of the whole sheet.
+ */
+const BLUR_BY_DISTANCE = [0, 0.9, 1.8, 2.7, 3.6, 4.5, 5];
+
+/** Distance in `filter` terms; 0 means in focus. */
+export const stageBlur = (distance: number) => {
+  const steps = Math.min(
+    Math.abs(distance),
+    BLUR_BY_DISTANCE.length - 1,
+  );
+
+  return BLUR_BY_DISTANCE[steps];
+};
+
+/** The `filter` a line wears at this distance — `undefined` when in focus. */
+export const stageBlurFilter = (distance: number) => {
+  const blur = stageBlur(distance);
+
+  return blur > 0 ? `blur(${blur}px)` : undefined;
+};

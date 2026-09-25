@@ -9,6 +9,7 @@ import { useIsSmall } from "@/components/youtube-page/utils/use-is-small";
 import { IContent } from "@/domain/content/content.api";
 import { cn } from "@/lib/utils";
 import ReactPlayer from "react-player";
+import { useMemo } from "react";
 import { isVideoUrl } from "../utils/is-video-url";
 import { isYoutube } from "../utils/is-youtube";
 import { AllTranscriptionsEditor } from "./components/all-transcriptions-editor";
@@ -22,6 +23,7 @@ import { ReaderViewParent } from "./components/reader-view-parent";
 import { TranscriptListView } from "./components/transcript-list-view";
 import { useAudioBookState } from "./hooks/use-audiobook-state";
 import { getCoverPhotoUrl } from "@/libs/utils/get-cover-photo-url";
+import { toContentToCollect } from "@/domain/content-collections/to-content-to-collect";
 
 export const AudiobookPlayerCore = ({
   content,
@@ -69,6 +71,13 @@ export const AudiobookPlayerCore = ({
 
   const isSmall = useIsSmall();
   const isVideoHidden = usePlayerViewModeStore((state) => state.isVideoHidden);
+
+  // What a playlist would remember about this content, for the singleton view's
+  // star — the same snapshot the settings menu saves.
+  const contentToCollect = useMemo(
+    () => toContentToCollect(content),
+    [content],
+  );
 
   if (!content) {
     return;
@@ -226,6 +235,7 @@ export const AudiobookPlayerCore = ({
               ) : viewMode === "karaoke" ? (
                 <div className="col-span-12 mx-auto w-full max-w-6xl">
                   <AppleKaraokeView
+                    contentToCollect={contentToCollect}
                     transcriptions={content.transcriptions}
                     fallbackTranscription={currentTranscription}
                     lang={content?.lang}

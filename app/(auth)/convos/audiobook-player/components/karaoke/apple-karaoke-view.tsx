@@ -1,9 +1,11 @@
 "use client";
 
 import { isNonRomanLang } from "@/components/_select-character/utils/is-non-roman-lang";
+import { StarContentButton } from "@/components/content-collections/star-content-button";
 import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
 import { useChinglishState } from "@/components/settings-dialog/use-chinglish-state";
 import { Icons } from "@/components/ui/icons.v2";
+import { ContentToCollect } from "@/domain/content-collections/content-collections.types";
 import { cn } from "@/lib/utils";
 import { useTheme } from "next-themes";
 import {
@@ -42,8 +44,14 @@ type AppleKaraokeViewProps = {
   compact?: boolean;
   className?: string;
   seekAndPlay?: (time: number) => void;
+  /** Kept for callers: the sheet's own transport gave its corner to the star. */
   onPlay?: () => void;
   onPause?: () => void;
+  /**
+   * The content being played, as a collection remembers it. When it is missing
+   * (the standalone playground, say) the star is simply not rendered.
+   */
+  contentToCollect?: ContentToCollect | null;
 };
 
 /** Lines kept mounted around the active one — long books stay cheap. */
@@ -135,8 +143,7 @@ export function AppleKaraokeView({
   compact = false,
   className,
   seekAndPlay,
-  onPlay,
-  onPause,
+  contentToCollect,
 }: AppleKaraokeViewProps) {
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
@@ -875,21 +882,23 @@ export function AppleKaraokeView({
         </button>
       )}
 
-      {/* Transport, so the view works before the auto-hiding dock comes back */}
-      <div
-        className={cn(
-          "absolute bottom-3 right-4 z-30 flex items-center gap-2 transition-opacity duration-300",
-          isPlaying && "opacity-0 group-hover:opacity-100",
-        )}
-      >
-        <button
-          onClick={() => (isPlaying ? onPause?.() : onPlay?.())}
-          className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-black/25 text-sm backdrop-blur-md transition hover:bg-black/40"
-          style={{ color: isDark ? "#fff" : "#0b0b0f" }}
+      {/* Star the content into a playlist without leaving the sheet — the
+          player's own transport sits in the dock below. Fades out while the
+          audio is playing, like the transport it replaces, so the sheet is
+          nothing but lyrics until you reach for it. */}
+      {contentToCollect?.contentId && (
+        <div
+          className={cn(
+            "absolute bottom-3 right-4 z-30 flex items-center gap-2 transition-opacity duration-300",
+            isPlaying && "opacity-0 group-hover:opacity-100",
+          )}
         >
-          {isPlaying ? <Icons.pause /> : <Icons.play />}
-        </button>
-      </div>
+          <StarContentButton
+            content={contentToCollect}
+            className="border border-white/15 bg-black/25 text-lg backdrop-blur-md hover:bg-black/40"
+          />
+        </div>
+      )}
     </div>
   );
 }

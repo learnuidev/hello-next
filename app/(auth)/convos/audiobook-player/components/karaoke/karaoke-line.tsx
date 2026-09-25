@@ -240,14 +240,15 @@ export const KaraokeLine = memo(
                   <span
                     className="whitespace-nowrap font-normal"
                     style={{
-                      // Only the line being sung shows its guide. Hidden with
-                      // `visibility`, never unmounted: the box keeps the height
-                      // the scroll maths measures, so lines above and below stay
-                      // exactly where they are as the guide comes and goes.
+                      // Every line carries its guide, not just the one being
+                      // sung — the lines you are not on are out of focus, which
+                      // is what keeps the page readable without hiding what is
+                      // coming. Laid out for every line, always: the box never
+                      // changes height, so the scroll maths measures the same
+                      // sheet whatever is being sung.
                       opacity: 0.7,
                       fontSize: romanFontSize,
                       lineHeight: 1.5,
-                      visibility: isActive ? "visible" : "hidden",
                     }}
                   >
                     {token.roman || "\u00A0"}
@@ -269,7 +270,7 @@ export const KaraokeLine = memo(
 
         {showTranslation && translation && (
           <div
-            className="mx-auto mt-2 line-clamp-2 max-w-3xl px-2 text-center transition-opacity duration-500"
+            className="mx-auto mt-2 line-clamp-2 max-w-3xl px-2 text-center"
             style={{
               fontSize: Math.max(
                 fontSize * TRANSLATION_SCALE,
@@ -279,10 +280,9 @@ export const KaraokeLine = memo(
               ),
               lineHeight: 1.5,
               color: "var(--k-muted)",
-              // Same rule as the roman guide: only the sung line carries the
-              // English / chinglish, and it is hidden rather than removed so the
-              // reserved space survives.
-              visibility: isActive ? "visible" : "hidden",
+              // Same rule as the roman guide: the English / chinglish belongs to
+              // every line, and the out-of-focus blur — not hiding it — is what
+              // keeps the line being sung in front.
             }}
           >
             {translation}

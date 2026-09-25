@@ -28,6 +28,12 @@ export const STAGE_MANUAL_SCROLL_GRACE = 4000;
 export const STAGE_ANCHOR = 0.36;
 
 /**
+ * Desktop parks it higher still. The stage is far taller there, so lifting the
+ * line being read leaves that much more of the page below it in view.
+ */
+export const DESKTOP_STAGE_ANCHOR = 0.3;
+
+/**
  * ...and where the first line waits before the audio reaches it, lower down so
  * the count-in has the top of the stage to itself.
  */

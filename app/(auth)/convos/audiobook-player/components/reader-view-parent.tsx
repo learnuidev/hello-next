@@ -1,5 +1,6 @@
 import { EnglishTopView } from "@/app/(auth)/convos/audiobook-player/components/english-top-view";
 import { useReadModeState } from "@/components/read-mode-button";
+import { useIsSmall } from "@/components/youtube-page/utils/use-is-small";
 import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
 import { useListContentUnknownsQuery } from "@/domain/content-unknowns/use-list-content-unknowns.query";
 import { ContentTranscription, IContent } from "@/domain/content/content.api";
@@ -9,6 +10,7 @@ import { findActiveLineIndex, useFollowStage } from "../hooks/use-follow-stage";
 import { useSmoothPlayhead } from "../hooks/use-smooth-playhead";
 import { useTranscriptionHighlight } from "../hooks/use-transcription-highlight";
 import { ReaderStyles } from "./karaoke/reader-styles";
+import { DESKTOP_STAGE_ANCHOR, STAGE_ANCHOR } from "./karaoke/stage-tuning";
 import { stageBlurFilter } from "./karaoke/stage-tuning";
 import { ReaderParagraphLine, ReaderTextLine } from "./reader-line";
 
@@ -47,6 +49,8 @@ export const ReaderViewParent = ({
 
   const { readMode } = useReadModeState();
 
+  const isSmall = useIsSmall();
+
   const { isFocusMode, activeClassName } = useTranscriptionHighlight({
     background: "dark:bg-[rgb(9,10,11)]",
   });
@@ -83,6 +87,9 @@ export const ReaderViewParent = ({
     bookKey: content?.id || "",
     total: lines.length,
     activeIndex,
+    // A taller stage has more room to show what is coming, so the line being
+    // read sits a little higher on a desktop screen.
+    anchor: isSmall ? STAGE_ANCHOR : DESKTOP_STAGE_ANCHOR,
   });
 
   // Read mode reads along with the audio, so it needs the same high resolution

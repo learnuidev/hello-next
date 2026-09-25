@@ -3,6 +3,7 @@
 import { EnglishTopView } from "@/app/(auth)/convos/audiobook-player/components/english-top-view";
 import { CharacterItem } from "@/components/_select-character/character-item";
 import { usePlayerViewModeStore } from "@/components/youtube-page/player-view-mode-store";
+import { useIsSmall } from "@/components/youtube-page/utils/use-is-small";
 import { smartSplit } from "@/components/youtube-page/utils/smart-split";
 import { ContentTranscription, IContent } from "@/domain/content/content.api";
 import { useListContentUnknownsQuery } from "@/domain/content-unknowns/use-list-content-unknowns.query";
@@ -15,7 +16,11 @@ import { useSmoothPlayhead } from "../hooks/use-smooth-playhead";
 import { useTranscriptionHighlight } from "../hooks/use-transcription-highlight";
 import { containsUnknownStyles } from "../utils/contains-unknown-styles";
 import { ReaderStyles } from "./karaoke/reader-styles";
-import { stageBlurFilter } from "./karaoke/stage-tuning";
+import {
+  DESKTOP_STAGE_ANCHOR,
+  STAGE_ANCHOR,
+  stageBlurFilter,
+} from "./karaoke/stage-tuning";
 import { SweepTiming } from "./karaoke/sweep";
 
 /**
@@ -322,6 +327,8 @@ export const ParaView = ({
 }) => {
   const isVideoHidden = usePlayerViewModeStore((state) => state.isVideoHidden);
 
+  const isSmall = useIsSmall();
+
   const { data: contentUnknowns } = useListContentUnknownsQuery(content.id);
 
   const { activeClassName } = useTranscriptionHighlight({
@@ -360,6 +367,9 @@ export const ParaView = ({
     bookKey: content?.id || "",
     total: lines.length,
     activeIndex,
+    // A taller stage has more room to show what is coming, so the sentence
+    // being read sits a little higher on a desktop screen.
+    anchor: isSmall ? STAGE_ANCHOR : DESKTOP_STAGE_ANCHOR,
   });
 
   // The same high resolution playhead the read view's sheet uses: `currentTime`

@@ -252,9 +252,9 @@ export const AudiobookPlayerCore = ({
               ) : viewMode === "reader" ? (
                 <div
                   className={cn(
-                    "sm:mt-32",
+                    "sm:mt-16",
                     isVideoHidden
-                      ? "col-span-12 mx-auto max-w-4xl sm:mt-32 mt-16"
+                      ? "col-span-12 mx-auto max-w-4xl sm:mt-16 mt-16"
                       : "",
                   )}
                 >
@@ -288,7 +288,7 @@ export const AudiobookPlayerCore = ({
                 <div
                   className={cn(
                     isVideoHidden ? "col-span-12 mx-auto max-w-4xl" : "",
-                    "sm:mt-32 mt-8",
+                    "sm:mt-16 mt-8",
                   )}
                 >
                   <ParaView

@@ -40,12 +40,18 @@ export const DynamicLoopFill = ({
   dynamicLoop,
   view,
   playedRef,
+  accent,
 }: {
   dynamicLoop: DynamicLoop;
   /** The stretch of recording the track is showing. */
   view: { start: number; end: number };
   /** Written by the bar's frame loop: how far into the section we are. */
   playedRef?: React.MutableRefObject<HTMLDivElement | null>;
+  /**
+   * The colour of the saved loop being looped, when there is one: a section you
+   * named should be the one you can pick out of the scrubber at a glance.
+   */
+  accent?: { gradient: string; glow: string } | null;
 }) => {
   const range = dynamicLoop.range;
   /** Looping a committed section: the track *is* the section. */
@@ -105,7 +111,11 @@ export const DynamicLoopFill = ({
       />
 
       <div
-        className="absolute inset-y-0 overflow-hidden rounded-full bg-gradient-to-r from-indigo-500 to-violet-500 shadow-[0_0_12px_rgba(99,102,241,0.5)]"
+        className={cn(
+          "absolute inset-y-0 overflow-hidden rounded-full bg-gradient-to-r",
+          accent ? accent.gradient : "from-indigo-500 to-violet-500",
+          accent ? accent.glow : "shadow-[0_0_12px_rgba(99,102,241,0.5)]",
+        )}
         style={{ left: `${left}%`, width: `${width}%` }}
       >
         {/* How far through the section the playhead has got. */}

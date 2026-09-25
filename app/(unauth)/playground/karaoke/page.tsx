@@ -345,6 +345,7 @@ export default function KaraokePlayground() {
 
   const player = useFakePlayer(startAt, paused);
 
+
   // The dynamic loop, driven by the same fake player: hold the loop button for
   // a second to pick a section, hold it again to go back.
   const dynamicLoop = useDynamicLoop({
@@ -497,6 +498,7 @@ export default function KaraokePlayground() {
           playerRef={player.playerRef}
           isPlaying={player.isPlaying}
           handleSeekChange={(value) => player.seek(value[0])}
+          contentId="playground"
           dynamicLoop={dynamicLoop}
         />
       </div>

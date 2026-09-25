@@ -26,32 +26,32 @@ export function AudioBookPlayerControls({
   const [collectionDialogContent, setCollectionDialogContent] =
     useState<ContentToCollect | null>(null);
 
-  // The loop button. Tapping it loops what the reader has chosen: the
-  // transcripts they starred with the repeat button beside them, which is the
-  // entire reason for starring them. Without a selection it keeps its old
-  // meaning — loop the line I am on — and a one second hold opens the section
-  // picker, or leaves the loop and takes the playhead back where it was.
+  // The loop button. A tap is what it has always been — loop the line I am on —
+  // and a one second hold is the only way into the dynamic loop, and the way out
+  // of it again. Nothing a tap does may open that strip: it carries the section
+  // picker, the saved loops and the naming, and none of that belongs on screen
+  // for someone who just wanted to loop a line.
+  //
+  // A loop the reader starred with the repeat button beside a transcript is a
+  // different thing entirely and keeps looping on its own, as it always has. The
+  // tap leaves that selection alone either way.
   const handleLoopTap = () => {
-    if (!dynamicLoop) {
-      setLoop((current: any) => (current ? null : currentTranscription.id));
-      return;
-    }
-
-    if (dynamicLoop.mode === "selecting") {
+    if (dynamicLoop?.mode === "selecting") {
       // Choosing a section: the tap is the "keep it" button.
       dynamicLoop.commit();
       return;
     }
 
-    if (dynamicLoop.mode === "active") {
+    if (dynamicLoop?.mode === "active") {
       // Looping already: the tap reopens the picker.
       dynamicLoop.edit();
       return;
     }
 
-    // The starred transcripts, as a section, right now. The selection is left
-    // alone: it is the reader's, and it is what makes the loop repeatable.
-    if (dynamicLoop.loopSelection()) {
+    if (dynamicLoop?.mode === "quiet") {
+      // A saved loop running quietly in the regular view: the tap switches it
+      // off, and the playhead carries on from where it had got to.
+      dynamicLoop.stop();
       return;
     }
 

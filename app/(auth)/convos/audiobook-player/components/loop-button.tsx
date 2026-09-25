@@ -49,12 +49,16 @@ export const LoopButton = ({
   className?: string;
 }) => {
   const dynamic = mode !== "off";
-  const tone: HoldRingTone = dynamic ? "stop" : "start";
+  const quiet = mode === "quiet";
+  const tone: HoldRingTone = dynamic && !quiet ? "stop" : "start";
 
   const { progressRef, holding, burst, handlers } = useHoldGesture({
     holdMs: dynamic ? HOLD_TO_STOP_MS : HOLD_TO_START_MS,
     holdDisabled: !dynamic && !canLoop,
-    onComplete: dynamic ? onExit : onEnter,
+    // A quiet section has not been "unlocked" yet: holding it opens the picker
+    // on it, which is the only way to change or save it. A section already being
+    // edited or looped is left by holding, which puts the playhead back.
+    onComplete: dynamic && !quiet ? onExit : onEnter,
     onTap,
   });
 
@@ -87,26 +91,30 @@ export const LoopButton = ({
   }`;
 
   const hint = holding
-    ? dynamic
+    ? dynamic && !quiet
       ? "Keep holding to go back"
       : "Keep holding to pick a section"
-    : mode === "selecting"
+    : quiet
+      ? "Looping this section · tap to stop"
+      : mode === "selecting"
       ? "Drag the handles · tap lines to extend"
       : mode === "active"
         ? "Looping this section · hold to go back"
         : selectionCount > 0
-          ? `Tap to loop ${starred}`
+          ? `Hold 1s to loop and name ${starred}`
           : canLoop
             ? "Hold 1s to loop a section"
             : "Loop this line";
 
   const label =
-    mode === "selecting"
+    quiet
+      ? "Looping a saved section. Tap to stop, or press and hold to change it."
+      : mode === "selecting"
       ? "Choosing a loop section. Press and hold to go back where you were."
       : mode === "active"
         ? "Looping a section. Tap to change it, press and hold to go back where you were."
         : selectionCount > 0
-          ? `Loop the ${starred} you starred. Press and hold to choose the section by hand.`
+          ? `Your ${starred} are looping. Press and hold for a second to loop them as a section you can name and save.`
           : canLoop
             ? "Loop this line. Press and hold for a second to loop a section."
             : "Loop this line.";
@@ -138,9 +146,12 @@ export const LoopButton = ({
         <Icons.loop
           className={cn(
             "relative text-xl transition-colors duration-200",
-            mode === "selecting" || mode === "active"
+            // Any section at all — picked, committed, or looping quietly in the
+            // regular view — wears the dynamic loop's colour. The rose is the
+            // old single line loop, and only that.
+            dynamic
               ? "text-indigo-500 drop-shadow-[0_0_6px_rgba(99,102,241,0.55)]"
-              : mode === "off" && lineLoop
+              : lineLoop
                 ? "text-rose-500"
                 : "text-gray-500 group-hover/loop:text-gray-800 dark:group-hover/loop:text-gray-200",
           )}

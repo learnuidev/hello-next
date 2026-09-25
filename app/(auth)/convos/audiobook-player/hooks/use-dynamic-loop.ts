@@ -62,7 +62,12 @@ const LINE_SLACK = 0.02;
  */
 const END_HANDLE_TAIL_SECONDS = 0.35;
 
-export type DynamicLoopMode = "off" | "selecting" | "active";
+/**
+ * `quiet` is a section looping with the player left alone: no picker, no strip,
+ * no zoomed bar — a saved loop you tapped from the middle of a chapter and want
+ * to hear again, not a section you are editing.
+ */
+export type DynamicLoopMode = "off" | "quiet" | "selecting" | "active";
 
 export type LoopBoundary = "start" | "end";
 
@@ -92,11 +97,8 @@ export type DynamicLoop = {
   canLoop: boolean;
   /** How many transcripts the reader has starred (via the repeat button). */
   selectionCount: number;
-  /**
-   * Loop the starred transcripts, as one section. Returns false when nothing is
-   * starred — the caller then falls back to whatever it did before.
-   */
-  loopSelection: () => boolean;
+  /** Load a saved loop and loop it. False when it cannot be honoured. */
+  playSavedLoop: (saved: { start: number; end: number }) => boolean;
   /** Where the playhead was when the section was opened. */
   returnPosition: number | null;
   /** Open the section picker (the loop button's one second hold). */
@@ -107,6 +109,11 @@ export type DynamicLoop = {
   edit: () => void;
   /** Drop the loop and go back to where the playhead was. */
   exit: () => void;
+  /**
+   * Drop the loop and stay exactly where you are, still playing. Turning a loop
+   * off is not a move: it should carry on from where it had got to.
+   */
+  stop: () => void;
   /** Listen to the section from its start. */
   preview: () => void;
   /** The transport's play/pause, which previews the section while picking. */
@@ -483,10 +490,11 @@ export const useDynamicLoop = ({
     const time = readTime();
     const line = lineAtTime(time) ?? nearestLine(time) ?? lines[0];
 
-    // Starred transcripts are what the reader has already chosen, so the picker
-    // opens on them; without any, it opens on the line being played, which is
-    // always a real section — one line — rather than an empty range.
+    // Whatever is already looping is what the picker opens on — the quiet
+    // section, the starred transcripts, or failing both the line being played,
+    // which is always a real section — one line — rather than an empty range.
     const seeded =
+      rangeRef.current ??
       selectionRange ??
       (line
         ? {
@@ -524,26 +532,89 @@ export const useDynamicLoop = ({
    * section the picker would open on, committed and playing. Nothing is
    * cleared — the selection stays, ready to be looped again or changed.
    */
-  const loopSelection = useCallback((): boolean => {
-    if (!canLoop || !selectionRange) {
-      return false;
-    }
+  /** Loops a section that is already known: from its top, right now. */
+  const playRange = useCallback(
+    (section: DynamicLoopRange) => {
+      const time = readTime();
 
-    const time = readTime();
+      returnRef.current = { time, playing: playingRef.current };
+      setReturnPosition(time);
+      applyRange(section);
+      setMode("active");
+      onEnterRef.current?.();
+      // From the top of the section: you asked to loop it, so you hear all of
+      // it — and playback is asked for explicitly, the way the transcript list
+      // view loops, because a seek on its own can leave a player stopped.
+      seek(section.start);
+      play();
+      onCommitRef.current?.();
 
-    returnRef.current = { time, playing: playingRef.current };
-    setReturnPosition(time);
-    applyRange(selectionRange);
-    setMode("active");
-    onEnterRef.current?.();
-    // From the top of the first starred transcript: you asked to loop these, so
-    // you hear all of them.
-    seek(selectionRange.start);
-    play();
-    onCommitRef.current?.();
+      return true;
+    },
+    [applyRange, play, readTime, seek],
+  );
 
-    return true;
-  }, [applyRange, canLoop, play, readTime, seek, selectionRange]);
+  /**
+   * Loads a saved loop and starts looping it.
+   *
+   * Its own boundaries are honoured exactly as they were saved; only the line
+   * numbers are worked out again, because the transcriptions may have been re-cut
+   * since, and the wrong line numbers would only mislabel the section.
+   */
+  const playSavedLoop = useCallback(
+    (saved: { start: number; end: number }): boolean => {
+      if (!canLoop) {
+        return false;
+      }
+
+      // Quiet unless the picker is actually open. Clicking a saved loop while
+      // one is already looping quietly must switch the loop, not escalate into
+      // the dynamic view — the only way in there is holding the loop button.
+      const quiet = mode === "off" || mode === "quiet";
+
+      const limit = duration > 0 ? duration : saved.end;
+      const start = Math.max(0, Math.min(saved.start, limit));
+      const end = Math.min(
+        limit,
+        Math.max(saved.end, start + MIN_SECTION_SECONDS),
+      );
+
+      if (!(end > start)) {
+        return false;
+      }
+
+      const section = {
+        start,
+        end,
+        startIndex: indexForTime(start, 0),
+        endIndex: indexForTime(Math.max(start, end - LINE_SLACK), 0),
+      };
+
+      // From the regular view, tapping a saved loop loops it and nothing else:
+      // the player you were looking at stays exactly as it was, with the section
+      // marked on it. Only from inside the dynamic loop does it take over the
+      // bar and the strip, because there it already has them.
+      if (quiet) {
+        const time = readTime();
+
+        returnRef.current = { time, playing: playingRef.current };
+        setReturnPosition(time);
+        applyRange(section);
+        setMode("quiet");
+        onEnterRef.current?.();
+        seek(section.start);
+        play();
+        onCommitRef.current?.();
+
+        return true;
+      }
+
+      playRange(section);
+
+      return true;
+    },
+    [applyRange, canLoop, duration, indexForTime, mode, play, playRange, readTime, seek],
+  );
 
   const commit = useCallback(() => {
     const current = rangeRef.current;
@@ -594,6 +665,22 @@ export const useDynamicLoop = ({
     returnRef.current = null;
     onExitRef.current?.();
   }, [applyRange, duration, pause, play, seek]);
+
+  /**
+   * The other way out of a section: no seek, no change of transport state — the
+   * playhead simply carries on from wherever the loop had reached. This is what
+   * switching a loop off means, as opposed to leaving it, which puts you back
+   * where you started.
+   */
+  const stop = useCallback(() => {
+    // Cleared first, and synchronously: the frame loop reads the ref, so nothing
+    // can send the playhead back to the top in the gap before the next render.
+    applyRange(null);
+    setMode("off");
+    setReturnPosition(null);
+    returnRef.current = null;
+    onExitRef.current?.();
+  }, [applyRange]);
 
   const preview = useCallback(() => {
     const current = rangeRef.current;
@@ -1036,12 +1123,13 @@ export const useDynamicLoop = ({
       lines,
       canLoop,
       selectionCount,
-      loopSelection,
+      playSavedLoop,
       returnPosition,
       begin,
       commit,
       edit,
       exit,
+      stop,
       preview,
       togglePreview,
       setBoundary,
@@ -1055,12 +1143,13 @@ export const useDynamicLoop = ({
       lines,
       canLoop,
       selectionCount,
-      loopSelection,
+      playSavedLoop,
       returnPosition,
       begin,
       commit,
       edit,
       exit,
+      stop,
       preview,
       togglePreview,
       setBoundary,

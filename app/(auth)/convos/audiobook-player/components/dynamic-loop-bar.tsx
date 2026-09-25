@@ -3,7 +3,10 @@
 import { Icons } from "@/components/ui/icons.v2";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
+import { useState } from "react";
 import type { DynamicLoop } from "../hooks/use-dynamic-loop";
+import { useSavedLoopsStore } from "../stores/use-saved-loops-store";
+import { LoopNameField } from "./loop-name-field";
 
 /**
  * The one line above the scrubber that owns the dynamic loop.
@@ -12,6 +15,9 @@ import type { DynamicLoop } from "../hooks/use-dynamic-loop";
  * one or two things you can do with it. Everything else about the section is
  * already on the scrubber: the band shows where it is, and the handle bubbles
  * say exactly when. Nothing here repeats any of that.
+ *
+ * Saving is the exception: a loop worth looping twice is worth naming, so the
+ * name is asked for in place, written and selected, the way a DAW asks for it.
  */
 
 const transcripts = (count: number) =>
@@ -29,24 +35,40 @@ const QUIET_PILL = cn(
 export const DynamicLoopBar = ({
   dynamicLoop,
   isPlaying,
+  contentId,
   dimmed = false,
 }: {
   dynamicLoop: DynamicLoop;
   isPlaying?: boolean;
+  /** Which content the loops are saved against. */
+  contentId?: string;
   /**
    * True while a handle is being dragged. The strip steps back then, so the time
    * bubble that follows the handle is the only thing being read.
    */
   dimmed?: boolean;
 }) => {
-  const { mode, range } = dynamicLoop;
-  const open = mode !== "off" && !!range;
+  const { mode, range, lines } = dynamicLoop;
+  // A section looping quietly in the regular view has nothing to show here: the
+  // strip is the picker, and nobody asked to pick anything.
+  const open = (mode === "selecting" || mode === "active") && !!range;
   const selecting = mode === "selecting";
   const count = range ? Math.max(1, range.endIndex - range.startIndex + 1) : 0;
 
+  const saveLoop = useSavedLoopsStore((state) => state.saveLoop);
+  const [naming, setNaming] = useState(false);
+
+  // A name to start from: the first line of the section says what it is far
+  // better than "Loop 3" does, and it is already selected if you disagree.
+  const suggested = (() => {
+    const first = range ? lines[range.startIndex]?.text?.trim() : "";
+
+    return first ? first.slice(0, 26) : "Untitled loop";
+  })();
+
   return (
     <AnimatePresence initial={false}>
-      {open && (
+      {open && range && (
         <motion.div
           key="dynamic-loop"
           initial={{ height: 0, opacity: 0 }}
@@ -60,7 +82,7 @@ export const DynamicLoopBar = ({
         >
           <div
             className={cn(
-              "flex items-center gap-3 px-4 pb-2 transition-opacity duration-200 sm:px-8",
+              "flex flex-wrap items-center gap-3 px-4 pb-2 transition-opacity duration-200 sm:px-8 sm:pb-8",
               dimmed ? "opacity-25" : "opacity-100",
             )}
           >
@@ -115,6 +137,39 @@ export const DynamicLoopBar = ({
                   Change
                 </button>
               )}
+
+              {/* Save belongs to the picker: it is what you do with a section
+                  you have just chosen, and the Change button is how you get
+                  back to choosing one. A section already looping has nothing
+                  new to save until you change it. */}
+              {selecting &&
+                (naming ? (
+                  <LoopNameField
+                    initial={suggested}
+                    onCommit={(name) => {
+                      saveLoop({
+                        contentId: contentId || "unknown",
+                        name,
+                        start: range.start,
+                        end: range.end,
+                        startIndex: range.startIndex,
+                        endIndex: range.endIndex,
+                      });
+                      setNaming(false);
+                    }}
+                    onCancel={() => setNaming(false)}
+                  />
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => setNaming(true)}
+                    aria-label="Save this loop"
+                    className={QUIET_PILL}
+                  >
+                    <Icons.bookmark className="text-[10px]" />
+                    Save
+                  </button>
+                ))}
             </span>
           </div>
         </motion.div>

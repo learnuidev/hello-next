@@ -321,6 +321,7 @@ export const AudiobookPlayerCore = ({
               transcriptions={content.transcriptions}
               playerRef={playerRef}
               isPlaying={playing}
+              contentId={content.id}
               dynamicLoop={dynamicLoop}
             />
           </div>

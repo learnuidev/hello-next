@@ -6,6 +6,9 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSmoothPlayhead } from "../hooks/use-smooth-playhead";
 import type { DynamicLoop, LoopBoundary } from "../hooks/use-dynamic-loop";
 import { DynamicLoopBar } from "./dynamic-loop-bar";
+import { SavedLoopsOverlay } from "./saved-loops-row";
+import { useSavedLoopsStore } from "../stores/use-saved-loops-store";
+import { loopColor } from "../utils/loop-colors";
 import {
   DynamicLoopFill,
   DynamicLoopHandles,
@@ -50,6 +53,7 @@ export const AudiobookPlayerBar = ({
   transcriptions,
   playerRef,
   isPlaying,
+  contentId,
   dynamicLoop,
 }: {
   currentTime: number;
@@ -59,6 +63,8 @@ export const AudiobookPlayerBar = ({
   transcriptions?: any[];
   playerRef?: { current: any } | null;
   isPlaying?: boolean;
+  /** Which content the saved loops belong to. */
+  contentId?: string;
   /**
    * The dynamic loop, when the player has one. Everything the section picker
    * draws — the band, the two handles and the strip above the track — belongs to
@@ -78,6 +84,26 @@ export const AudiobookPlayerBar = ({
   const [draggingBoundary, setDraggingBoundary] = useState<LoopBoundary | null>(
     null,
   );
+
+  const savedLoops = useSavedLoopsStore((state) => state.loops);
+
+  // The section wears the colour of the saved loop it is, when it is one.
+  const accent = useMemo(() => {
+    const section = dynamicLoop?.range;
+
+    if (!section) {
+      return null;
+    }
+
+    const match = savedLoops.find(
+      (loop) =>
+        loop.contentId === contentId &&
+        Math.abs(loop.start - section.start) < 0.05 &&
+        Math.abs(loop.end - section.end) < 0.05,
+    );
+
+    return match ? loopColor(match.color) : null;
+  }, [contentId, dynamicLoop?.range, savedLoops]);
 
   const range = dynamicLoop?.range ?? null;
   /** Choosing the section: the whole recording, with handles on the band. */
@@ -285,11 +311,28 @@ export const AudiobookPlayerBar = ({
         <DynamicLoopBar
           dynamicLoop={dynamicLoop}
           isPlaying={isPlaying}
+          contentId={contentId}
           dimmed={!!draggingBoundary}
         />
       )}
 
-      <div className="flex items-center gap-3 sm:gap-4">
+      {/* The saved loops sit directly above their own ranges: each chip is
+          anchored over the stretch it names, in its own colour. Tapping one
+          loops it wherever the playhead happens to be. */}
+      {dynamicLoop && (
+        <SavedLoopsOverlay
+          contentId={contentId}
+          view={view}
+          toRatio={toRatio}
+          activeRange={dynamicLoop.range}
+          mode={dynamicLoop.mode}
+          onLoad={(loop) => dynamicLoop.playSavedLoop(loop)}
+          onStop={() => dynamicLoop.stop()}
+        />
+      )}
+
+      <div className="relative flex items-center gap-3 sm:gap-4">
+
         {/* The section's own bounds, once the track has become the section. */}
         {zoomed && range && (
           <span className="shrink-0 text-[10px] font-medium tabular-nums opacity-45">
@@ -373,7 +416,9 @@ export const AudiobookPlayerBar = ({
               ref={fillRef}
               className={cn(
                 "absolute inset-y-0 left-0 w-full origin-left",
-                zoomed ? "bg-indigo-500" : "bg-black/80 dark:bg-white",
+                zoomed
+                  ? (accent?.solid ?? "bg-indigo-500")
+                  : "bg-black/80 dark:bg-white",
               )}
               style={{ transform: "scaleX(0)" }}
             />
@@ -405,6 +450,7 @@ export const AudiobookPlayerBar = ({
                 dynamicLoop={dynamicLoop}
                 view={view}
                 playedRef={playedRef}
+                accent={accent}
               />
             )}
           </div>

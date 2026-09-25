@@ -2,11 +2,13 @@
 
 import { AppleKaraokeView } from "@/app/(auth)/convos/audiobook-player/components/karaoke/apple-karaoke-view";
 import { AudiobookPlayerBar } from "@/app/(auth)/convos/audiobook-player/components/audiobook-player-bar";
+import { LoopButton } from "@/app/(auth)/convos/audiobook-player/components/loop-button";
+import { useDynamicLoop } from "@/app/(auth)/convos/audiobook-player/hooks/use-dynamic-loop";
 import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
 import { useChinglishState } from "@/components/settings-dialog/use-chinglish-state";
 import { useTheme } from "next-themes";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, useCallback } from "react";
 
 /**
  * Standalone playground for the Apple-Music-Sing-style karaoke view.
@@ -275,21 +277,34 @@ const useFakePlayer = (startAt: number, startPaused = false) => {
     return () => clearInterval(id);
   }, []);
 
+  // Stable, like react-player's own ref callbacks: the dynamic loop holds on to
+  // these, and a new identity every render would resubscribe its frame loop.
+  const play = useCallback(() => setIsPlaying(true), []);
+  const pause = useCallback(() => setIsPlaying(false), []);
+
+  const seek = useCallback((time: number) => {
+    timeRef.current = time;
+    setCurrentTime(time);
+  }, []);
+
+  const seekAndPlay = useCallback(
+    (time: number) => {
+      seek(time);
+      play();
+    },
+    [play, seek],
+  );
+
   return {
     playerRef,
     currentTime,
     isPlaying,
-    play: () => setIsPlaying(true),
-    pause: () => setIsPlaying(false),
+    play,
+    pause,
     // Like react-player: the seek lands in the element immediately, but the
     // reported time only catches up on the next progress tick (~100ms).
-    seekAndPlay: (time: number) => {
-      timeRef.current = time;
-      setIsPlaying(true);
-    },
-    seek: (time: number) => {
-      timeRef.current = time;
-    },
+    seekAndPlay,
+    seek,
   };
 };
 
@@ -329,6 +344,19 @@ export default function KaraokePlayground() {
   }, [lang, cycles, unaligned]);
 
   const player = useFakePlayer(startAt, paused);
+
+  // The dynamic loop, driven by the same fake player: hold the loop button for
+  // a second to pick a section, hold it again to go back.
+  const dynamicLoop = useDynamicLoop({
+    transcriptions,
+    duration: barDuration,
+    currentTime: player.currentTime,
+    playing: player.isPlaying,
+    playerRef: player.playerRef,
+    seek: player.seek,
+    play: player.play,
+    pause: player.pause,
+  });
 
   const showPinyin = useBrightModeStore((state) => state.showPinyin);
   const setShowPinyin = useBrightModeStore((state) => state.setShowPinyin);
@@ -416,6 +444,31 @@ export default function KaraokePlayground() {
         </span>
       </div>
 
+      <div className="mb-4 flex flex-wrap items-center gap-3 text-sm">
+        <span className="text-xs uppercase tracking-widest opacity-50">
+          dynamic loop
+        </span>
+
+        <LoopButton
+          mode={dynamicLoop.mode}
+          lineLoop={false}
+          canLoop={dynamicLoop.canLoop}
+          onTap={() => {
+            if (dynamicLoop.mode === "selecting") {
+              dynamicLoop.commit();
+            } else if (dynamicLoop.mode === "active") {
+              dynamicLoop.edit();
+            }
+          }}
+          onEnter={dynamicLoop.begin}
+          onExit={dynamicLoop.exit}
+        />
+
+        <span className="text-xs opacity-50">
+          hold 1s to pick a section · tap to keep it · hold 1s to go back
+        </span>
+      </div>
+
       <AppleKaraokeView
         transcriptions={noPlayer ? undefined : transcriptions}
         fallbackTranscription={noPlayer ? transcriptions[0] : undefined}
@@ -428,6 +481,7 @@ export default function KaraokePlayground() {
         onPause={player.pause}
         compact={compact}
         coverUrl="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=800&q=60"
+        dynamicLoop={dynamicLoop}
       />
 
       {/* The player scrubber, on a recording much longer than the transcriptions
@@ -443,6 +497,7 @@ export default function KaraokePlayground() {
           playerRef={player.playerRef}
           isPlaying={player.isPlaying}
           handleSeekChange={(value) => player.seek(value[0])}
+          dynamicLoop={dynamicLoop}
         />
       </div>
     </div>

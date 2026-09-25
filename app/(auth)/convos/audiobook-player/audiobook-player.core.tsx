@@ -52,6 +52,7 @@ export const AudiobookPlayerCore = ({
     onReady,
     start,
     seek,
+    dynamicLoop,
   } = useAudioBookState(content);
 
   const isYoutubeOrVideo =
@@ -245,6 +246,7 @@ export const AudiobookPlayerCore = ({
                     seekAndPlay={seekAndPlay}
                     onPlay={play}
                     onPause={pause}
+                    dynamicLoop={dynamicLoop}
                   />
                 </div>
               ) : (
@@ -263,6 +265,7 @@ export const AudiobookPlayerCore = ({
                     seekAndPlay={seekAndPlay}
                     isPlaying={playing}
                     playerRef={playerRef}
+                    dynamicLoop={dynamicLoop}
                   />
                 </div>
               )}
@@ -308,6 +311,7 @@ export const AudiobookPlayerCore = ({
               isYoutubeOrVideo={isYoutubeOrVideo}
               contentId={content.id}
               content={content}
+              dynamicLoop={dynamicLoop}
             />
 
             <AudiobookPlayerBar
@@ -317,6 +321,7 @@ export const AudiobookPlayerCore = ({
               transcriptions={content.transcriptions}
               playerRef={playerRef}
               isPlaying={playing}
+              dynamicLoop={dynamicLoop}
             />
           </div>
         </AudiobookPlayerDock>

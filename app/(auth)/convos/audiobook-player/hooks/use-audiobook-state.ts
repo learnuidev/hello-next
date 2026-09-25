@@ -17,6 +17,7 @@ import { useSearchOnlyPinyinState } from "@/components/search-only-pinyin-button
 import { useRepeatHistoryStore } from "../../_play/use-repeat-history";
 import { ContentFormat } from "@/domain/content-v2/content-v2.types";
 import { isYoutube } from "../../utils/is-youtube";
+import { useDynamicLoop } from "./use-dynamic-loop";
 
 function isInputFieldHoc(handler: (event: KeyboardEvent) => void) {
   return (event: KeyboardEvent) => {
@@ -52,17 +53,21 @@ export const useAudioBookState = (content: IContent) => {
 
   const playerRef = useRef<any>(null);
 
+  // Optional like `play` / `pause`: the dynamic loop seeks from its own frame
+  // loop, which can run while the player is being swapped out.
   const seek = useCallback((time: number) => {
-    playerRef.current.seekTo(time, "seconds");
+    playerRef.current?.seekTo(time, "seconds");
   }, []);
 
   const play = useCallback(() => {
     playerRef.current?.player?.player?.play();
   }, []);
 
-  function pause() {
+  // Stable, like `play`: the dynamic loop holds on to these and a new identity
+  // every render would rebuild its whole API with it.
+  const pause = useCallback(() => {
     playerRef.current?.player?.player?.pause();
-  }
+  }, []);
 
   const seekAndPlay = useCallback(
     (time: number) => {
@@ -77,6 +82,31 @@ export const useAudioBookState = (content: IContent) => {
     () => content?.transcriptions || [],
     [content?.transcriptions],
   );
+
+  const setToggleLoops = usePlayerViewModeStore(
+    (state) => state.setToggleLoops,
+  );
+
+  // The dynamic loop: a section of the recording, chosen by hand and held open
+  // by the loop button. While it is on it owns the playhead — the single line
+  // loop stands down, because two loops fighting over one playhead is one too
+  // many.
+  const clearLineLoops = useCallback(() => {
+    setLoop(null);
+    setToggleLoops([]);
+  }, [setToggleLoops]);
+
+  const dynamicLoop = useDynamicLoop({
+    transcriptions,
+    duration,
+    currentTime,
+    playing,
+    playerRef,
+    seek,
+    play,
+    pause,
+    onEnter: clearLineLoops,
+  });
 
   const iContent: any = content;
 
@@ -222,12 +252,20 @@ export const useAudioBookState = (content: IContent) => {
   }, [currentTime, finalUrl, start]);
 
   const handlePlayPause = useCallback(() => {
+    // While a section is being chosen the transport is the section's own
+    // transport: play listens to it from the top, and the loop takes over from
+    // there. Pause is still pause.
+    if (dynamicLoop.mode === "selecting" && dynamicLoop.range) {
+      dynamicLoop.togglePreview();
+      return;
+    }
+
     if (!playing) {
       play();
     } else {
       pause();
     }
-  }, [play, playing]);
+  }, [dynamicLoop, pause, play, playing]);
 
   const { setReadMode, readMode } = useReadModeState();
 
@@ -294,13 +332,27 @@ export const useAudioBookState = (content: IContent) => {
       if (["l"]?.includes(event.key?.toLowerCase()) && !editMode) {
         event.preventDefault();
 
-        if (currentTranscription?.input) {
+        // The loop key follows the loop button: the same key does whatever
+        // tapping it would, and only falls back to the single line loop when
+        // there is no dynamic loop to talk to.
+        if (dynamicLoop.mode === "selecting") {
+          dynamicLoop.commit();
+        } else if (dynamicLoop.mode === "active") {
+          dynamicLoop.edit();
+        } else if (currentTranscription?.input) {
           if (loop) {
             setLoop(null);
           } else {
             setLoop(currentTranscription.id);
           }
         }
+      }
+
+      // Done choosing: keep the section and start looping it. Leaving the
+      // dynamic loop entirely is the loop button's own hold, deliberately.
+      if (event.key === "Escape" && !editMode && dynamicLoop.mode === "selecting") {
+        event.preventDefault();
+        dynamicLoop.commit();
       }
 
       if (event.code === "ArrowLeft" && !editMode) {
@@ -340,6 +392,7 @@ export const useAudioBookState = (content: IContent) => {
     audioUrl,
     handlePlayPause,
     toggleSearchPinyin,
+    dynamicLoop,
   ]);
 
   const debounceSeek = useDebouncedCallback((firstStart: number) => {
@@ -421,5 +474,6 @@ export const useAudioBookState = (content: IContent) => {
     isVideo,
     play,
     pause,
+    dynamicLoop,
   };
 };

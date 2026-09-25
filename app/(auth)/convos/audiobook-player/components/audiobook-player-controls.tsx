@@ -6,6 +6,7 @@ import { ContentSuggestionsDrawer } from "./content-suggestions-drawer";
 import { usePlayerViewModeStore } from "@/components/youtube-page/player-view-mode-store";
 import { AddToContentCollectionDialog } from "@/components/content-collections/add-to-content-collection-dialog";
 import { ContentToCollect } from "@/domain/content-collections/content-collections.types";
+import { LoopButton } from "./loop-button";
 
 export function AudioBookPlayerControls({
   loop,
@@ -20,6 +21,7 @@ export function AudioBookPlayerControls({
   isYoutubeOrVideo,
   contentId,
   content,
+  dynamicLoop,
 }: any) {
   const [contentDrawerOpen, setContentDrawerOpen] = useState(false);
   const [collectionDialogContent, setCollectionDialogContent] =
@@ -29,33 +31,62 @@ export function AudioBookPlayerControls({
     (state) => state.setToggleLoops,
   );
 
+  // The loop button. One tap still means what it always did — loop the line I
+  // am on — while a long press opens the dynamic loop, or leaves it and takes
+  // the playhead back where it was. `LoopButton` owns all of that.
+  const handleLoopTap = () => {
+    if (!dynamicLoop) {
+      setToggleLoops([]);
+      setLoop((current: any) => (current ? null : currentTranscription.id));
+      return;
+    }
+
+    if (dynamicLoop.mode === "selecting") {
+      // Choosing a section: the tap is the "keep it" button.
+      dynamicLoop.commit();
+      return;
+    }
+
+    if (dynamicLoop.mode === "active") {
+      // Looping already: the tap reopens the picker.
+      dynamicLoop.edit();
+      return;
+    }
+
+    setToggleLoops([]);
+    setLoop((current: any) => (current ? null : currentTranscription.id));
+  };
+
   return (
     <div className="p-0">
       <div className="flex flex-col sm:flex-row items-center justify-between sm:px-4 gap-3 sm:gap-16">
         <div></div>
         <div className="px-6 sm:px-8 flex items-center gap-4 rounded-full">
-          <button
-            onClick={() => {
-              setToggleLoops([]);
-              setLoop((loop: any) => {
-                if (loop) {
-                  return null;
-                }
-                return currentTranscription.id;
-              });
-            }}
-            className={cn(
-              "text-xl font-bold p-2",
-              "cursor-pointer",
-              loop ? "text-rose-500 font-bold" : "text-gray-600",
-            )}
-          >
-            {loop ? (
-              <Icons.loop className="text-rose-500" />
-            ) : (
-              <Icons.loop className="text-gray-600" />
-            )}
-          </button>
+          {dynamicLoop ? (
+            <LoopButton
+              mode={dynamicLoop.mode}
+              lineLoop={!!loop}
+              canLoop={dynamicLoop.canLoop}
+              onTap={handleLoopTap}
+              onEnter={dynamicLoop.begin}
+              onExit={dynamicLoop.exit}
+            />
+          ) : (
+            <button
+              onClick={handleLoopTap}
+              className={cn(
+                "text-xl font-bold p-2",
+                "cursor-pointer",
+                loop ? "text-rose-500 font-bold" : "text-gray-600",
+              )}
+            >
+              {loop ? (
+                <Icons.loop className="text-rose-500" />
+              ) : (
+                <Icons.loop className="text-gray-600" />
+              )}
+            </button>
+          )}
 
           <button onClick={seekBefore} className="p-2 rounded-full">
             <Icons.rotateLeft className="text-xl" />

@@ -30,6 +30,7 @@ import {
   STAGE_TOP_SPACER,
 } from "./stage-tuning";
 import { useFontScale } from "../../hooks/use-font-size";
+import type { DynamicLoop } from "../../hooks/use-dynamic-loop";
 import { useSmoothPlayhead } from "../../hooks/use-smooth-playhead";
 
 type AppleKaraokeViewProps = {
@@ -53,6 +54,12 @@ type AppleKaraokeViewProps = {
    * (the standalone playground, say) the star is simply not rendered.
    */
   contentToCollect?: ContentToCollect | null;
+  /**
+   * The section loop, when the player has one. While a section is being chosen
+   * the sheet doubles as the picker: a tap on a line grows the section to take
+   * it in.
+   */
+  dynamicLoop?: DynamicLoop | null;
 };
 
 /** Lines kept mounted around the active one — long books stay cheap. */
@@ -152,6 +159,7 @@ export function AppleKaraokeView({
   className,
   seekAndPlay,
   contentToCollect,
+  dynamicLoop,
 }: AppleKaraokeViewProps) {
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
@@ -667,6 +675,12 @@ export function AppleKaraokeView({
         return;
       }
 
+      // While a section is being chosen, a tap on a lyric line grows the
+      // section around it — the sheet doubles as the section picker.
+      if (dynamicLoop?.mode === "selecting") {
+        dynamicLoop.extendTo(time);
+      }
+
       seekAndPlay?.(time);
 
       // Move the playhead now instead of waiting for the next progress tick:
@@ -697,7 +711,7 @@ export function AppleKaraokeView({
 
       flashTimerRef.current = setTimeout(() => setFlashKey(null), 560);
     },
-    [seekAndPlay, timeRef],
+    [dynamicLoop, seekAndPlay, timeRef],
   );
 
   if (chunks.length === 0) {

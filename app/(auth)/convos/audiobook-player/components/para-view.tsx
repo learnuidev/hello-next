@@ -12,6 +12,7 @@ import { isCharacterPartOfWordMatch } from "@/lib/content-bookmark";
 import { cn } from "@/lib/utils";
 import { memo, useCallback, useMemo } from "react";
 import { findActiveLineIndex, useFollowStage } from "../hooks/use-follow-stage";
+import type { DynamicLoop } from "../hooks/use-dynamic-loop";
 import { useReadModeSweep } from "../hooks/use-read-mode-sweep";
 import { useFontScale } from "../hooks/use-font-size";
 import { useSmoothPlayhead } from "../hooks/use-smooth-playhead";
@@ -344,6 +345,7 @@ export const ParaView = ({
   isPlaying,
   seekAndPlay,
   playerRef,
+  dynamicLoop,
 }: {
   loop?: ContentTranscription;
   currentTranscription: ContentTranscription;
@@ -354,6 +356,8 @@ export const ParaView = ({
   seekAndPlay: (time: number) => void;
   /** react-player, used as the high resolution clock for the sweep. */
   playerRef?: { current: any } | null;
+  /** The section loop, when the player has one: a tap can grow it. */
+  dynamicLoop?: DynamicLoop | null;
 }) => {
   const isVideoHidden = usePlayerViewModeStore((state) => state.isVideoHidden);
 
@@ -422,13 +426,20 @@ export const ParaView = ({
 
   const handleSeek = useCallback(
     (transcription: any) => {
+      // While a section is being chosen a tap on a sentence grows the section
+      // around it, which is the fastest way to pick "from here to there" while
+      // reading along.
+      if (dynamicLoop?.mode === "selecting") {
+        dynamicLoop.extendTo(Number(transcription?.start) || 0);
+      }
+
       seekAndPlay(transcription?.start);
 
       if (loop) {
         setLoop(transcription?.id);
       }
     },
-    [loop, seekAndPlay, setLoop],
+    [dynamicLoop, loop, seekAndPlay, setLoop],
   );
 
   return (

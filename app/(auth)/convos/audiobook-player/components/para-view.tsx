@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 import { memo, useCallback, useMemo } from "react";
 import { findActiveLineIndex, useFollowStage } from "../hooks/use-follow-stage";
 import { useReadModeSweep } from "../hooks/use-read-mode-sweep";
+import { useFontScale } from "../hooks/use-font-size";
 import { useSmoothPlayhead } from "../hooks/use-smooth-playhead";
 import { useTranscriptionHighlight } from "../hooks/use-transcription-highlight";
 import { containsUnknownStyles } from "../utils/contains-unknown-styles";
@@ -281,7 +282,7 @@ const ParagraphSentence = memo(function ParagraphSentence({
       data-r-line={index}
       data-r-line-active={isActive ? "1" : undefined}
       style={{ filter: blur }}
-      className={cn("transition block py-1 px-1", sentenceClassName)}
+      className={cn("mn-r-tile transition block", sentenceClassName)}
       onClick={() => onSeek(transcription)}
     >
       {readMode ? (
@@ -319,7 +320,7 @@ const ParagraphSentence = memo(function ParagraphSentence({
                 : undefined
             }
             className={cn(
-              "text-xl",
+              "mn-r-text-paragraph",
               containsUnknownStyles(!!containsInUnknown),
               containsInUnknown && "font-light",
               sentenceClassName,
@@ -357,6 +358,9 @@ export const ParaView = ({
   const isVideoHidden = usePlayerViewModeStore((state) => state.isVideoHidden);
 
   const isSmall = useIsSmall();
+
+  // Every character on the sheet reads its size off this one number.
+  const rScale = useFontScale();
 
   // Read mode is the reader's own toggle, and it works here too: on, a sentence
   // is the read view's line; off, it is this view's own tile.
@@ -430,6 +434,7 @@ export const ParaView = ({
   return (
     <div
       className={cn("px-4 pb-24", "max-w-4xl", isVideoHidden ? "mx-auto" : "")}
+      style={{ "--r-scale": rScale } as React.CSSProperties}
     >
       <ReaderStyles />
 
@@ -451,7 +456,9 @@ export const ParaView = ({
           >
             <div style={{ height: topSpacer }} />
 
-            <div className="space-y-8" style={{ lineHeight: "32px" }}>
+            {/* A ratio rather than 32px, and a paragraph gap that comes with
+                the text size, so the page never crowds as it grows. */}
+            <div className="mn-r-paragraph-gap" style={{ lineHeight: 1.6 }}>
               {paragraphs.map((paragraph) => {
                 // Paragraphs arrive with the rest of the book, a pass at a
                 // time; one with nothing mounted yet is left out entirely

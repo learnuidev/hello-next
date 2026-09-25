@@ -67,7 +67,7 @@ export function ReaderView({
 }: CurrentTranscriptionProps) {
   const showEn = useBrightModeStore((state) => state.showEn);
 
-  const defautClassName = "mb-4  gap-0 space-y-0";
+  const defautClassName = "mn-r-line-gap  gap-0 space-y-0";
 
   // The line being read fills in as it is spoken — the same animation the
   // karaoke view runs — while every other line keeps its static highlight. The

@@ -159,8 +159,7 @@ export function ReaderViewChinese({
                     isActive
                       ? activeTextClassName
                       : "dark:text-gray-500 text-gray-800",
-                    "sm:text-sm",
-                    "text-[14px]",
+                    "mn-r-text-guide",
                     sweeping && "mn-r-sweep",
                   )}
                 >
@@ -192,8 +191,7 @@ export function ReaderViewChinese({
                         character={charItem}
                         sweepSlot={slot}
                         className={cn(
-                          "sm:!text-3xl font-light",
-                          "text-2xl",
+                          "mn-r-text-char font-light",
                           isSelected
                             ? "dark:bg-emerald-600 bg-emerald-300"
                             : "",

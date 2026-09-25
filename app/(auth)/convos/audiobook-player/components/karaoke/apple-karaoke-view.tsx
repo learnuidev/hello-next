@@ -29,6 +29,7 @@ import {
   STAGE_SPRING_STIFFNESS,
   STAGE_TOP_SPACER,
 } from "./stage-tuning";
+import { useFontScale } from "../../hooks/use-font-size";
 import { useSmoothPlayhead } from "../../hooks/use-smooth-playhead";
 
 type AppleKaraokeViewProps = {
@@ -151,6 +152,8 @@ export function AppleKaraokeView({
   const showEn = useBrightModeStore((state) => state.showEn);
   const showPinyin = useBrightModeStore((state) => state.showPinyin);
   const { showChinglish } = useChinglishState();
+
+  const textScale = useFontScale();
 
   const sourceTranscriptions = useMemo(() => {
     const list = (transcriptions || []).filter(Boolean);
@@ -719,6 +722,8 @@ export function AppleKaraokeView({
   const bottomSpacer = Math.max(stageHeight * STAGE_BOTTOM_SPACER, 0);
 
   const cssVars = {
+    // The sheet's own text scale, the same number the reader uses.
+    "--r-scale": textScale,
     "--k-sung": isDark ? "#ffffff" : "#0b0b0f",
     "--k-unsung": isDark ? "rgba(255,255,255,0.4)" : "rgba(11,11,15,0.34)",
     "--k-muted": isDark ? "rgba(255,255,255,0.62)" : "rgba(11,11,15,0.6)",

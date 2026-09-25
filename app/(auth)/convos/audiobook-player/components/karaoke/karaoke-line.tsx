@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { memo, useEffect, useLayoutEffect, useRef } from "react";
 import { KaraokeChunk } from "./karaoke-data";
 import { stageBlurFilter } from "./stage-tuning";
+import { useFontScale } from "../../hooks/use-font-size";
 import {
   applySweepFrame,
   createSweepRuntime,
@@ -89,6 +90,8 @@ export const KaraokeLine = memo(
 
     const distanceAbs = Math.abs(distance);
 
+    const textScale = useFontScale();
+
     // Past lines recede further than upcoming ones, which stay readable so you
     // can see what is coming — how Apple Music Sing layers its lyrics.
     //
@@ -110,7 +113,10 @@ export const KaraokeLine = memo(
         ? Math.max(0.78, 0.93 - distanceAbs * 0.014)
         : Math.max(0.82, 0.95 - distanceAbs * 0.012);
 
-    const fontSize = getFontSize(chunk.visibleLength, compact);
+    // The lyric is sized in JS rather than by classes — its base depends on how
+    // long the line is — so the reader's text size is multiplied in here. The
+    // guide and the translation are derived from the result, so they follow.
+    const fontSize = getFontSize(chunk.visibleLength, compact) * textScale;
 
     const hasRoman = showRoman && chunk.tokens.some((token) => !!token.roman);
 

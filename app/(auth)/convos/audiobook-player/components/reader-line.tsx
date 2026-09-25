@@ -85,11 +85,11 @@ export const ReaderParagraphLine = memo(function ReaderParagraphLine({
   );
 
   return (
-    <div className="leading-[3.25rem]">
+    <div className="mn-r-leading-line">
       {showPinyin && (
         <p
           className={cn(
-            "text-sm font-extralight",
+            "mn-r-text-guide font-extralight",
             // The reading above the transcription being read is painted with
             // the colour of that transcription, instead of the quieter grey it
             // wears above every other line.
@@ -135,7 +135,7 @@ export const ReaderParagraphLine = memo(function ReaderParagraphLine({
             >
               <CharacterItem
                 className={cn(
-                  "sm:!text-3xl text-2xl",
+                  "mn-r-text-char",
                   isActive
                     ? // `focus` mode paints each character with its tone
                       // colour, so the current transcription must not be forced

@@ -7,6 +7,7 @@ import { ContentTranscription, IContent } from "@/domain/content/content.api";
 import { cn } from "@/lib/utils";
 import { useMemo } from "react";
 import { findActiveLineIndex, useFollowStage } from "../hooks/use-follow-stage";
+import { useFontScale } from "../hooks/use-font-size";
 import { useSmoothPlayhead } from "../hooks/use-smooth-playhead";
 import { useTranscriptionHighlight } from "../hooks/use-transcription-highlight";
 import { ReaderStyles } from "./karaoke/reader-styles";
@@ -50,6 +51,9 @@ export const ReaderViewParent = ({
   const { readMode } = useReadModeState();
 
   const isSmall = useIsSmall();
+
+  // Every character on the sheet reads its size off this one number.
+  const rScale = useFontScale();
 
   const { isFocusMode, activeClassName } = useTranscriptionHighlight({
     background: "dark:bg-[rgb(9,10,11)]",
@@ -123,6 +127,7 @@ export const ReaderViewParent = ({
   return (
     <div
       className={cn("px-4 pb-24", "max-w-4xl", isVideoHidden ? "mx-auto" : "")}
+      style={{ "--r-scale": rScale } as React.CSSProperties}
     >
       <ReaderStyles />
 

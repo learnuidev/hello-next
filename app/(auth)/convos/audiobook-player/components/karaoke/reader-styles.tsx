@@ -65,6 +65,57 @@ export const ReaderStyles = () => (
     transition: none;
   }
 
+  /* One text scale for everything that can be resized.
+     Each surface keeps its own base size and multiplies it by --r-scale, set
+     from the font size control on the view's container, so one control moves
+     the reader, the paragraph view and the sing-along lyric together. */
+  .mn-r-text-char {
+    font-size: calc(1.5rem * var(--r-scale, 1));
+  }
+
+  .mn-r-text-base {
+    font-size: calc(1rem * var(--r-scale, 1));
+  }
+
+  .mn-r-text-paragraph {
+    font-size: calc(1.25rem * var(--r-scale, 1));
+  }
+
+  .mn-r-text-guide {
+    font-size: calc(0.875rem * var(--r-scale, 1));
+  }
+
+  /* The metrics that have to come with the text.
+     A line keeps its own leading, and the gaps between lines and between
+     paragraphs are part of the same scale — growing the text must never crowd
+     it, and shrinking it must not leave it swimming in space. Every one of
+     these is written so that it means exactly what it replaced at scale 1. */
+  .mn-r-leading-line {
+    line-height: calc(3.25rem * var(--r-scale, 1));
+  }
+
+  .mn-r-line-gap {
+    margin-bottom: calc(1rem * var(--r-scale, 1));
+  }
+
+  .mn-r-paragraph-gap > * + * {
+    margin-top: calc(2rem * var(--r-scale, 1));
+  }
+
+  .mn-r-tile {
+    padding: calc(0.25rem * var(--r-scale, 1));
+  }
+
+  @media (min-width: 640px) {
+    .mn-r-text-char {
+      font-size: calc(1.875rem * var(--r-scale, 1));
+    }
+
+    .mn-r-text-guide {
+      font-size: calc(1rem * var(--r-scale, 1));
+    }
+  }
+
   .mn-r-stage {
     /* The follow loop measures line positions against this element, so it has
        to be the offset parent. */

@@ -6,7 +6,6 @@ import { cn } from "@/lib/utils";
 import { useMemo } from "react";
 import { CurrentTranscriptionProps } from "../audiobook-player.types";
 import { useCharacterMenuBarStore } from "../hooks/use-character-menu-bar";
-import { useFontSizeStore } from "../hooks/use-font-size";
 import { useReadModeSweep } from "../hooks/use-read-mode-sweep";
 import { isCharacterPartOfWordMatch } from "@/lib/content-bookmark";
 import { containsUnknownStyles } from "../utils/contains-unknown-styles";
@@ -31,7 +30,6 @@ export function InputView({
   const setShowMenuBar = useCharacterMenuBarStore(
     (state) => state.setShowMenuBar,
   );
-  const fontSize = useFontSizeStore((state) => state.fontSize);
 
   const pieces: string[] = useMemo(
     () =>
@@ -92,7 +90,7 @@ export function InputView({
   let unit = 0;
 
   return (
-    <p ref={sweepRef} style={{ fontSize: `${fontSize}px` }}>
+    <p ref={sweepRef} className="mn-r-text-base">
       {pieces.map((item: any, idx: any) => {
         const containsInUnknown = contentUnknowns?.items?.find((val) => {
           return isCharacterPartOfWordMatch(

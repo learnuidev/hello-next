@@ -35,6 +35,17 @@ export const KaraokeStyles = () => (
       opacity 520ms cubic-bezier(0.22, 1, 0.36, 1),
       transform 640ms cubic-bezier(0.22, 1, 0.36, 1);
     border-radius: 20px;
+    /* The lyric is sized in JS; its own leading gaps are part of the same text
+       scale, so a bigger lyric is not crowded against the line above it. */
+    padding-top: calc(0.5rem * var(--r-scale, 1));
+    padding-bottom: calc(0.5rem * var(--r-scale, 1));
+  }
+
+  @media (min-width: 640px) {
+    .mn-k-line {
+      padding-top: calc(0.75rem * var(--r-scale, 1));
+      padding-bottom: calc(0.75rem * var(--r-scale, 1));
+    }
   }
 
   .mn-k-line-active {

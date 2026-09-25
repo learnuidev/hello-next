@@ -55,9 +55,10 @@ export const ReaderViewParent = ({
   // Every character on the sheet reads its size off this one number.
   const rScale = useFontScale();
 
-  const { isFocusMode, activeClassName } = useTranscriptionHighlight({
-    background: "dark:bg-[rgb(9,10,11)]",
-  });
+  const { isFocusMode, activeClassName, inactiveClassName } =
+    useTranscriptionHighlight({
+      background: "dark:bg-[rgb(9,10,11)]",
+    });
 
   // The book in play order: `content.transcriptions` is not guaranteed to be
   // sorted, and the sheet follows the audio through it in order.
@@ -115,11 +116,28 @@ export const ReaderViewParent = ({
   // appearing across the whole book at once.
   const focusIndex = isIntro ? 0 : activeIndex;
 
+  /**
+   * The line the English belongs to.
+   *
+   * Once a line has started it is the one this sheet holds as active — the one
+   * that started most recently, which survives the silences between sentences —
+   * and not the player's own `currentTranscription`, which is a strict test: the
+   * playhead has to be *inside* a line. Reading the English off that made it
+   * vanish for the length of every pause, while the line it belonged to was
+   * still the highlighted one on the page.
+   *
+   * Before the first line starts, nothing has been read and nothing is shown:
+   * the sheet opens blank, exactly as it always did, and the English arrives
+   * with the first line.
+   */
+  const englishTranscription =
+    activeIndex >= 0 ? lines[activeIndex] : currentTranscription;
+
   if (lines.length === 0) {
     return (
       <div className={cn("px-4 pb-24", "max-w-4xl", isVideoHidden ? "mx-auto" : "")}>
         <ReaderStyles />
-        <EnglishTopView currentTranscription={currentTranscription} />
+        <EnglishTopView currentTranscription={englishTranscription} />
       </div>
     );
   }
@@ -131,7 +149,7 @@ export const ReaderViewParent = ({
     >
       <ReaderStyles />
 
-      <EnglishTopView currentTranscription={currentTranscription} />
+      <EnglishTopView currentTranscription={englishTranscription} />
 
       <div className="relative">
         <div
@@ -160,6 +178,10 @@ export const ReaderViewParent = ({
             // the page falling away from the line being read — a step per line,
             // and the same value for every line past the last step, so a line
             // change only rewrites the lines around the playhead.
+            //
+            // Every other line wears the page's own tone — light on white, dark
+            // on black — so the sheet reads as one page with the line being read
+            // standing out of it, and the blur above settles the depth.
             return (
               <div
                 key={key}
@@ -171,7 +193,7 @@ export const ReaderViewParent = ({
                   <ReaderTextLine
                     transcription={transcription}
                     isActive={isActive}
-                    className={isActive ? activeClassName : "opacity-50"}
+                    className={isActive ? activeClassName : inactiveClassName}
                     lang={content?.lang}
                     contentId={content?.id}
                     timeRef={timeRef}
@@ -182,7 +204,7 @@ export const ReaderViewParent = ({
                     isActive={isActive}
                     isFocusMode={isFocusMode}
                     activeClassName={activeClassName}
-                    inactiveClassName="opacity-50"
+                    inactiveClassName={inactiveClassName}
                     contentUnknowns={contentUnknowns}
                     showPinyin={showPinyin}
                     lang={content?.lang}

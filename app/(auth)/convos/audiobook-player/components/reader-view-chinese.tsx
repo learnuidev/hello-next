@@ -152,13 +152,12 @@ export function ReaderViewChinese({
                   data-r-glyph={sweeping ? 0 : undefined}
                   data-r-glyphs={sweeping ? 1 : undefined}
                   className={cn(
-                    // The guide normally sits back in its own quieter grey, but
-                    // on the transcription being read it is painted with the
-                    // same colour as the characters under it — the colour the
-                    // input itself is being given.
-                    isActive
-                      ? activeTextClassName
-                      : "dark:text-gray-500 text-gray-800",
+                    // The reading is painted the way the input under it is
+                    // painted — on every line, not only the transcription being
+                    // read. It used to sit back in a quieter grey on the other
+                    // lines, but the sheet's blur already sets them apart, and
+                    // doing both left the page looking washed out.
+                    isActive ? activeTextClassName : "",
                     "mn-r-text-guide mn-r-guide-gap",
                     sweeping && "mn-r-sweep",
                   )}

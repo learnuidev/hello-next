@@ -75,6 +75,12 @@ export const ReaderParagraphLine = memo(function ReaderParagraphLine({
   /** `focus` mode paints each character with its tone colour. */
   isFocusMode: boolean;
   activeClassName: string;
+  /**
+   * What every other line wears: the page's own colour tone, so it sits back
+   * without going soft — light on white, dark on black — with the sheet's blur
+   * on top of it. `focus` mode mutes nothing, because there the tone colours are
+   * the reading.
+   */
   inactiveClassName: string;
   contentUnknowns: any;
   showPinyin: boolean;
@@ -90,10 +96,10 @@ export const ReaderParagraphLine = memo(function ReaderParagraphLine({
         <p
           className={cn(
             "mn-r-text-guide mn-r-guide-gap font-extralight",
-            // The reading above the transcription being read is painted with
-            // the colour of that transcription, instead of the quieter grey it
-            // wears above every other line.
-            isActive ? activeClassName : "text-gray-500",
+            // The reading belongs to the line it sits above, so it wears the
+            // same colour the line does: the line being read is painted with the
+            // colour of its transcription, every other one with the page's tone.
+            isActive ? activeClassName : inactiveClassName,
           )}
         >
           {transcription.pinyin || transcription?.roman}
@@ -143,7 +149,10 @@ export const ReaderParagraphLine = memo(function ReaderParagraphLine({
                       isFocusMode
                       ? ""
                       : "   !dark:text-white"
-                    : "dark:text-gray-500",
+                    : // The tone has to land here too, not only on the line
+                      // around it: `CharacterItem` paints every character itself,
+                      // and its own colour would win over an inherited one.
+                      inactiveClassName,
                   containsInUnknown && containsUnknownStyles(!!containsInUnknown),
                   "font-light",
                 )}

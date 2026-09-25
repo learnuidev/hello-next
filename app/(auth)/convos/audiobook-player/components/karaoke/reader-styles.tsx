@@ -12,9 +12,10 @@
  *    `karaoke-styles.tsx` does for a sung syllable. What differs is the colour:
  *    the reader's fill is built from `currentColor`, so a character keeps the
  *    colour it already has (its tone colour, its unknown-word styling) while it
- *    fills, and only *partly* damps the part that has not been read — the reader
- *    already fades every other line to 50% opacity, so a hard lyric-sheet dim
- *    would make the line being read look quieter than its neighbours.
+ *    fills, and only *partly* damps the part that has not been read, so the words
+ *    still to come stay readable while the fill travels over them. It is the
+ *    only thing in the reader that is toned down: the lines around the one being
+ *    read keep their colour and are set apart by the stage's blur alone.
  *
  * 2. The sheet. The reader scrolls itself the way the lyric sheet does: the
  *    stage hides its scrollbar, refuses the browser's own scroll anchoring (the

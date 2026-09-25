@@ -245,6 +245,12 @@ const ParagraphSentence = memo(function ParagraphSentence({
   index: number;
   isActive: boolean;
   activeClassName: string;
+  /**
+   * What every other sentence wears: the page's own colour tone, so it sits
+   * back without going soft — light on white, dark on black — with the stage's
+   * blur on top of it. `focus` mode mutes nothing, because there the tone
+   * colours are the reading.
+   */
   inactiveClassName: string;
   /** How far out of focus this sentence sits, as a `filter` value. */
   blur?: string;
@@ -448,7 +454,7 @@ export const ParaView = ({
 
   const { data: contentUnknowns } = useListContentUnknownsQuery(content.id);
 
-  const { activeClassName } = useTranscriptionHighlight({
+  const { activeClassName, inactiveClassName } = useTranscriptionHighlight({
     background: "dark:bg-[rgb(11,12,13)]",
   });
 
@@ -504,6 +510,23 @@ export const ParaView = ({
   // than opening the dictionary — see `handleSeek` below.
   const isSelecting = dynamicLoop?.mode === "selecting";
 
+  /**
+   * The line the English belongs to.
+   *
+   * Once a sentence has started it is the one this sheet holds as active — the
+   * one that started most recently, which survives the silences between
+   * sentences — and not the player's own `currentTranscription`, which is a
+   * strict test: the playhead has to be *inside* a line. Reading the English off
+   * that made it vanish for the length of every pause, while the sentence it
+   * belonged to was still the highlighted one on the page.
+   *
+   * Before the first sentence starts, nothing has been read and nothing is
+   * shown: the page opens blank, exactly as it always did, and the English
+   * arrives with the first line.
+   */
+  const englishTranscription =
+    activeIndex >= 0 ? lines[activeIndex] : currentTranscription;
+
   const handleSeek = useCallback(
     (transcription: any) => {
       // While a section is being chosen a tap on a sentence grows the section
@@ -529,7 +552,7 @@ export const ParaView = ({
     >
       <ReaderStyles />
 
-      <EnglishTopView currentTranscription={currentTranscription} />
+      <EnglishTopView currentTranscription={englishTranscription} />
 
       {lines.length > 0 && (
         <div className="relative">
@@ -574,7 +597,11 @@ export const ParaView = ({
                           index={index}
                           isActive={isActive}
                           activeClassName={activeClassName}
-                          inactiveClassName="opacity-50"
+                          // The tone for every other sentence — light on white,
+                          // dark on black — comes from the same hook as the
+                          // highlight, so the sheet reads as one page with the
+                          // sentence being read standing out of it.
+                          inactiveClassName={inactiveClassName}
                           blur={stageBlurFilter(index - focusIndex)}
                           contentUnknowns={contentUnknowns}
                           readMode={readMode}

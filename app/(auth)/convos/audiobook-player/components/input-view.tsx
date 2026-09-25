@@ -18,6 +18,7 @@ export function InputView({
   currentTranscription,
   seekAndPlay,
   containsChinglish,
+  className,
   contentId,
   currentTime = 0,
   isActive: activeProp,
@@ -133,6 +134,12 @@ export function InputView({
                 containsUnknownStyles(!!containsInUnknown),
                 containsInUnknown && "font-light text-3xl",
                 slot && "mn-r-sweep",
+                // The line's own colour, last: this view draws characters that
+                // carry their colour themselves, so the tone of a line that is
+                // not being read — or the highlight of the one that is — has to
+                // be handed to each of them rather than inherited from the line
+                // around them.
+                className,
               )}
             />
           </span>

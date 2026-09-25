@@ -129,6 +129,7 @@ export function ReaderView({
               containsChinglish={containsChinglish}
               currentTranscription={currentTranscription}
               seekAndPlay={seekAndPlay}
+              className={className}
               contentId={contentId}
               lang={lang}
               timeRef={timeRef}

@@ -4,7 +4,6 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react
 import {
   STAGE_ANCHOR,
   STAGE_BOTTOM_SPACER,
-  STAGE_INTRO_ANCHOR,
   STAGE_MANUAL_SCROLL_GRACE,
   STAGE_MAX_SCROLL_SPEED,
   STAGE_SPRING_DAMPING,
@@ -73,9 +72,13 @@ export const findActiveLineIndex = (lines: any[], time: number): number => {
  * it hands back the ref for the scroll stage, the spacers that let the first
  * and last line reach the anchor, the range of lines currently in the DOM, and
  * whether the sheet is still following the audio. The sheet then takes care of
- * itself: it glides on a spring so the line being read stays parked at
- * `STAGE_ANCHOR` of the stage, stands still while the reader scrolls by hand,
- * and picks up again when they stop.
+ * itself: it glides on a spring so the line being read stays parked at the
+ * anchor of the stage, stands still while the reader scrolls by hand, and picks
+ * up again when they stop.
+ *
+ * Before the first line starts there is no line being read, and the sheet does
+ * not sit anywhere else: the first line waits at that same anchor, so the page
+ * opens exactly as it will look when the reading reaches it.
  *
  * Every height that appears *above* the line being read — a batch of lines
  * arriving, a late font, a reflow — is measured and absorbed before the browser
@@ -249,8 +252,9 @@ export const useFollowStage = ({
     const active = stage.querySelector<HTMLElement>(
       `[${ACTIVE_LINE_ATTRIBUTE}="1"]`,
     );
-    // Before the first line starts there is nothing active yet: anchor the
-    // first line instead, so the sheet is positioned and waits for the audio.
+    // Before the first line starts there is nothing active yet: the first line
+    // waits in the sheet's place instead, so the sheet is positioned and ready
+    // for the audio.
     const target =
       active ??
       (activeIndex < 0
@@ -273,10 +277,10 @@ export const useFollowStage = ({
 
     measuredRef.current = { el: target, top };
 
-    const desired =
-      top +
-      target.offsetHeight / 2 -
-      stage.clientHeight * (activeIndex < 0 ? STAGE_INTRO_ANCHOR : anchor);
+    // The waiting line is parked at the very anchor the line being read is
+    // parked at, so the sheet opens exactly where it will be read: when the
+    // audio reaches that first line nothing moves, because it is already home.
+    const desired = top + target.offsetHeight / 2 - stage.clientHeight * anchor;
 
     desiredRef.current = desired;
 

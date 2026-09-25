@@ -28,14 +28,20 @@ export const STAGE_MANUAL_SCROLL_GRACE = 4000;
 export const STAGE_ANCHOR = 0.36;
 
 /**
- * Desktop parks it higher still. The stage is far taller there, so lifting the
- * line being read leaves that much more of the page below it in view.
+ * Desktop parks it higher still: near the top of the stage rather than above its
+ * middle. The stage is far taller there, so lifting the line being read leaves
+ * that much more of the page below it in view — and a desktop reader's eye sits
+ * high on the screen, not at its middle.
  */
-export const DESKTOP_STAGE_ANCHOR = 0.3;
+export const DESKTOP_STAGE_ANCHOR = 0.2;
 
 /**
- * ...and where the first line waits before the audio reaches it, lower down so
- * the count-in has the top of the stage to itself.
+ * Where the sing-along stage's first lyric waits before the audio reaches it,
+ * lower down so the count-in has the top of the stage to itself.
+ *
+ * The reader's sheet deliberately does not use this: it parks its first line at
+ * its own anchor, the same one the line being read is parked at, so the page
+ * opens where it will be read from.
  */
 export const STAGE_INTRO_ANCHOR = 0.55;
 

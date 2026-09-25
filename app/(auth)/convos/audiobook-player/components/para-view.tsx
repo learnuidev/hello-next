@@ -2,6 +2,7 @@
 
 import { EnglishTopView } from "@/app/(auth)/convos/audiobook-player/components/english-top-view";
 import { CharacterItem } from "@/components/_select-character/character-item";
+import { useReadModeState } from "@/components/read-mode-button";
 import { usePlayerViewModeStore } from "@/components/youtube-page/player-view-mode-store";
 import { useIsSmall } from "@/components/youtube-page/utils/use-is-small";
 import { smartSplit } from "@/components/youtube-page/utils/smart-split";
@@ -22,6 +23,7 @@ import {
   stageBlurFilter,
 } from "./karaoke/stage-tuning";
 import { SweepTiming } from "./karaoke/sweep";
+import { ReaderTextLine } from "./reader-line";
 
 /**
  * The paragraph view.
@@ -86,6 +88,9 @@ type ReadAlongGlyph = {
   /** Position in the sentence, for the unknown-word lookup. */
   index: number;
 };
+
+/** Read mode draws the sentence with the read view's line, so nothing here. */
+const NO_READ_ALONG = { timings: [] as (SweepTiming | null)[], glyphs: [] };
 
 const toTiming = (start: any, end: any): SweepTiming | null => {
   const from = Number(start);
@@ -225,6 +230,9 @@ const ParagraphSentence = memo(function ParagraphSentence({
   inactiveClassName,
   blur,
   contentUnknowns,
+  readMode,
+  lang,
+  contentId,
   timeRef,
   onSeek,
 }: {
@@ -236,18 +244,28 @@ const ParagraphSentence = memo(function ParagraphSentence({
   /** How far out of focus this sentence sits, as a `filter` value. */
   blur?: string;
   contentUnknowns: any;
+  /**
+   * With read mode on, a sentence is drawn by the read view's own line — word by
+   * word, with its guide, filling in as it is spoken. With it off, a sentence
+   * keeps this view's own shape: a tile of characters.
+   */
+  readMode: boolean;
+  lang: string;
+  contentId: string;
   timeRef: React.MutableRefObject<number> | null;
   onSeek: (transcription: any) => void;
 }) {
   const { timings, glyphs } = useMemo(
-    () => toReadAlong(transcription),
-    [transcription],
+    () => (readMode ? NO_READ_ALONG : toReadAlong(transcription)),
+    [readMode, transcription],
   );
 
-  const sweeping = isActive && !!timeRef;
+  // With read mode on the sentence's own line owns the fill, so this loop stays
+  // out of it rather than writing the same properties twice.
+  const sweeping = !readMode && isActive && !!timeRef;
 
   const sweepRef = useReadModeSweep<HTMLSpanElement>({
-    active: isActive,
+    active: sweeping,
     timeRef,
     timings,
   });
@@ -266,6 +284,17 @@ const ParagraphSentence = memo(function ParagraphSentence({
       className={cn("transition block py-1 px-1", sentenceClassName)}
       onClick={() => onSeek(transcription)}
     >
+      {readMode ? (
+        <ReaderTextLine
+          transcription={transcription}
+          isActive={isActive}
+          className={sentenceClassName}
+          lang={lang}
+          contentId={contentId}
+          timeRef={timeRef}
+        />
+      ) : null}
+
       {glyphs.map((glyph) => {
         const containsInUnknown = contentUnknowns?.items?.find((val: any) =>
           isCharacterPartOfWordMatch(
@@ -328,6 +357,10 @@ export const ParaView = ({
   const isVideoHidden = usePlayerViewModeStore((state) => state.isVideoHidden);
 
   const isSmall = useIsSmall();
+
+  // Read mode is the reader's own toggle, and it works here too: on, a sentence
+  // is the read view's line; off, it is this view's own tile.
+  const { readMode } = useReadModeState();
 
   const { data: contentUnknowns } = useListContentUnknownsQuery(content.id);
 
@@ -446,6 +479,9 @@ export const ParaView = ({
                           inactiveClassName="opacity-50"
                           blur={stageBlurFilter(index - focusIndex)}
                           contentUnknowns={contentUnknowns}
+                          readMode={readMode}
+                          lang={content?.lang}
+                          contentId={content?.id}
                           timeRef={timeRef}
                           onSeek={handleSeek}
                         />

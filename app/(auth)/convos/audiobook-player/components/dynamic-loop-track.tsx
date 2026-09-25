@@ -41,6 +41,7 @@ export const DynamicLoopFill = ({
   view,
   playedRef,
   accent,
+  zoomed,
 }: {
   dynamicLoop: DynamicLoop;
   /** The stretch of recording the track is showing. */
@@ -52,10 +53,16 @@ export const DynamicLoopFill = ({
    * named should be the one you can pick out of the scrubber at a glance.
    */
   accent?: { gradient: string; glow: string } | null;
+  /**
+   * True when the track *is* the section: a committed loop, or a saved one
+   * running quietly. Nothing outside the section is on screen then, so there is
+   * no band to draw around it and nothing outside it to dim.
+   */
+  zoomed?: boolean;
 }) => {
   const range = dynamicLoop.range;
   /** Looping a committed section: the track *is* the section. */
-  const zoomed = dynamicLoop.mode === "active";
+  const solo = zoomed ?? dynamicLoop.mode !== "selecting";
   const span = Math.max(view.end - view.start, 0.001);
 
   // The lines the section covers, so the marks and the snapping agree.
@@ -80,7 +87,7 @@ export const DynamicLoopFill = ({
   // Zoomed in, there is nothing to frame: no band to draw around the section and
   // nothing outside it to dim — the played fill is already the section's own
   // progress. Only the line marks are worth keeping.
-  if (zoomed) {
+  if (solo) {
     return (
       <>
         {ticks.map((line) => (

@@ -110,6 +110,12 @@ export const AudiobookPlayerBar = ({
   const editing = !!range && dynamicLoop?.mode === "selecting";
   /** Looping it: the bar *is* the section, from its start to its end. */
   const looping = !!range && dynamicLoop?.mode === "active";
+  /**
+   * A saved loop tapped from the middle of a chapter. It runs without the strip
+   * and without the handles — but it is still the one thing being played, so the
+   * bar shows it and nothing else, exactly the way a committed section does.
+   */
+  const quiet = !!range && dynamicLoop?.mode === "quiet";
 
   // Read by the frame loop, which must not be resubscribed when the section
   // moves a handle's width.
@@ -129,18 +135,20 @@ export const AudiobookPlayerBar = ({
    * Normally all of it. Once a section is committed the bar becomes that
    * section's own timeline — a fifteen second loop spread across the full width
    * is a hundred times easier to read, and to scrub inside, than fifteen seconds
-   * crammed into a sixtieth of the track. Change puts the whole recording back.
+   * crammed into a sixtieth of the track. A saved loop running quietly is no
+   * different: it is the only thing playing, so it is the only thing shown.
+   * Change puts the whole recording back.
    */
   const view = useMemo(() => {
-    if (looping && range) {
+    if (range && (looping || quiet)) {
       return { start: range.start, end: range.end };
     }
 
     return { start: 0, end: safeDuration };
-  }, [looping, range, safeDuration]);
+  }, [looping, quiet, range, safeDuration]);
 
   const viewSpan = Math.max(view.end - view.start, 0.001);
-  const zoomed = looping;
+  const zoomed = looping || quiet;
 
   const timeRef = useSmoothPlayhead({
     playerRef,
@@ -451,6 +459,7 @@ export const AudiobookPlayerBar = ({
                 view={view}
                 playedRef={playedRef}
                 accent={accent}
+                zoomed={zoomed}
               />
             )}
           </div>

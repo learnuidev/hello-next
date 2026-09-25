@@ -64,8 +64,9 @@ const END_HANDLE_TAIL_SECONDS = 0.35;
 
 /**
  * `quiet` is a section looping with the player left alone: no picker, no strip,
- * no zoomed bar — a saved loop you tapped from the middle of a chapter and want
- * to hear again, not a section you are editing.
+ * no handles — a saved loop you tapped from the middle of a chapter and want to
+ * hear again, not a section you are editing. The bar still shows that section and
+ * nothing else, because it is the only thing playing.
  */
 export type DynamicLoopMode = "off" | "quiet" | "selecting" | "active";
 
@@ -591,9 +592,9 @@ export const useDynamicLoop = ({
       };
 
       // From the regular view, tapping a saved loop loops it and nothing else:
-      // the player you were looking at stays exactly as it was, with the section
-      // marked on it. Only from inside the dynamic loop does it take over the
-      // bar and the strip, because there it already has them.
+      // no picker, no strip — but the bar becomes that loop, because it is now
+      // the only thing playing. Only from inside the dynamic loop does it also
+      // take over the strip, because there it already has it.
       if (quiet) {
         const time = readTime();
 

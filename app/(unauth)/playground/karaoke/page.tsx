@@ -459,6 +459,10 @@ export default function KaraokePlayground() {
               dynamicLoop.commit();
             } else if (dynamicLoop.mode === "active") {
               dynamicLoop.edit();
+            } else if (dynamicLoop.mode === "quiet") {
+              // A saved loop running quietly: the tap switches it off, exactly
+              // as it does in the player's own controls.
+              dynamicLoop.stop();
             }
           }}
           onEnter={dynamicLoop.begin}

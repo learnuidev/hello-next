@@ -110,6 +110,10 @@ export const ReaderViewParent = ({
                       );
                     }
 
+                    const isCurrentTranscription =
+                      transcription.start < currentTime &&
+                      transcription.end > currentTime;
+
                     return (
                       <div
                         key={JSON.stringify(transcription)}
@@ -118,7 +122,14 @@ export const ReaderViewParent = ({
                         {showPinyin && (
                           <p
                             className={cn(
-                              "text-sm font-extralight text-gray-500",
+                              "text-sm font-extralight",
+                              // The reading above the transcription being read
+                              // is painted with the colour of that
+                              // transcription, instead of the quieter grey it
+                              // wears above every other line.
+                              isCurrentTranscription
+                                ? activeClassName
+                                : "text-gray-500",
                             )}
                           >
                             {transcription.pinyin || transcription?.roman}
@@ -126,8 +137,7 @@ export const ReaderViewParent = ({
                         )}
                         <p
                           className={cn(
-                            transcription.start < currentTime &&
-                              transcription.end > currentTime
+                            isCurrentTranscription
                               ? activeClassName
                               : cn(`opacity-50`),
                           )}
@@ -170,8 +180,7 @@ export const ReaderViewParent = ({
                                 <CharacterItem
                                   className={cn(
                                     "sm:!text-3xl text-2xl",
-                                    transcription.start < currentTime &&
-                                      transcription.end > currentTime
+                                    isCurrentTranscription
                                       ? // `focus` mode paints each character with
                                         // its tone colour, so the current
                                         // transcription must not be forced white.

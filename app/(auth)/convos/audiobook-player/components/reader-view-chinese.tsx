@@ -13,6 +13,7 @@ import { useMemo } from "react";
 import { CurrentTranscriptionProps } from "../audiobook-player.types";
 import { useCharacterMenuBarStore } from "../hooks/use-character-menu-bar";
 import { useReadModeSweep } from "../hooks/use-read-mode-sweep";
+import { useTranscriptionHighlight } from "../hooks/use-transcription-highlight";
 import { containsUnknownStyles } from "../utils/contains-unknown-styles";
 import { SweepTiming } from "./karaoke/sweep";
 
@@ -69,6 +70,13 @@ export function ReaderViewChinese({
   );
 
   const sweepRef = useReadModeSweep({ active: isActive, timeRef, timings });
+
+  // The colour a transcription is painted with while it is the one being read.
+  // Only the text colour is wanted here — the block background belongs to the
+  // characters — so the reader's background is left out.
+  const { activeClassName: activeTextClassName } = useTranscriptionHighlight({
+    background: "",
+  });
 
   return (
     <div className={cn(defautClassName, className)}>
@@ -130,7 +138,13 @@ export function ReaderViewChinese({
                   data-r-glyph={sweeping ? 0 : undefined}
                   data-r-glyphs={sweeping ? 1 : undefined}
                   className={cn(
-                    "dark:text-gray-500 text-gray-800",
+                    // The guide normally sits back in its own quieter grey, but
+                    // on the transcription being read it is painted with the
+                    // same colour as the characters under it — the colour the
+                    // input itself is being given.
+                    isActive
+                      ? activeTextClassName
+                      : "dark:text-gray-500 text-gray-800",
                     "sm:text-sm",
                     "text-[14px]",
                     sweeping && "mn-r-sweep",

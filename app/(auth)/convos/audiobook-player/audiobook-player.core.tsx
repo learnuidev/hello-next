@@ -19,8 +19,6 @@ import { AudiobookPlayerDock } from "./components/audiobook-player-dock";
 import { CharacterMenuBar } from "./components/character-menu-bar";
 import { AppleKaraokeView } from "./components/karaoke/apple-karaoke-view";
 import { ParaView } from "./components/para-view";
-import { ReaderViewParent } from "./components/reader-view-parent";
-import { TranscriptListView } from "./components/transcript-list-view";
 import { useAudioBookState } from "./hooks/use-audiobook-state";
 import { getCoverPhotoUrl } from "@/libs/utils/get-cover-photo-url";
 import { toContentToCollect } from "@/domain/content-collections/to-content-to-collect";
@@ -249,41 +247,6 @@ export const AudiobookPlayerCore = ({
                     onPause={pause}
                   />
                 </div>
-              ) : viewMode === "reader" ? (
-                <div
-                  className={cn(
-                    "sm:mt-16",
-                    isVideoHidden
-                      ? "col-span-12 mx-auto max-w-4xl sm:mt-16 mt-16"
-                      : "",
-                  )}
-                >
-                  <div className={isVideoHidden ? "mx-auto max-w-4xl" : ""}>
-                    <ReaderViewParent
-                      content={content}
-                      currentTranscription={currentTranscription}
-                      currentTime={currentTime}
-                      isVideoHidden={isVideoHidden}
-                      isPlaying={playing}
-                      loop={loop}
-                      playerRef={playerRef}
-                    />
-                  </div>
-                </div>
-              ) : viewMode === "list" ? (
-                <div
-                  className={cn(
-                    isVideoHidden ? "col-span-12 mx-auto max-w-4xl" : "",
-                    "sm:mt-32 mt-8",
-                  )}
-                >
-                  <TranscriptListView
-                    content={content}
-                    contentId={content.id}
-                    currentTime={currentTime}
-                    playerRef={playerRef}
-                  />
-                </div>
               ) : (
                 <div
                   className={cn(
@@ -343,7 +306,6 @@ export const AudiobookPlayerCore = ({
               showEn={showEn}
               containsChinglish={containsChinglish}
               isYoutubeOrVideo={isYoutubeOrVideo}
-              isReaderView={viewMode === "reader"}
               contentId={content.id}
               content={content}
             />

@@ -3,6 +3,8 @@ import { useFontSizeStore } from "../hooks/use-font-size";
 export const FontSizeControls = () => {
   const { fontSize, increaseFontSize, decreaseFontSize } = useFontSizeStore();
 
+  console.log("fontSize", fontSize);
+
   return (
     <div className="flex items-center space-x-2">
       <button

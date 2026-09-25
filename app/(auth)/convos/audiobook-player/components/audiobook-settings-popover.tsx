@@ -50,7 +50,6 @@ export function AudioBookSettingsPopover({
   isYoutubeOrVideo,
   containsChinglish,
   showEn,
-  isReaderView,
   content,
   contentId,
   onAddToCollection,
@@ -58,7 +57,6 @@ export function AudioBookSettingsPopover({
   isYoutubeOrVideo: boolean;
   showEn: boolean;
   containsChinglish: boolean;
-  isReaderView: boolean;
   content?: any;
   contentId?: string;
   onAddToCollection?: (content: ContentToCollect) => void;
@@ -114,31 +112,11 @@ export function AudioBookSettingsPopover({
                 />
                 <ViewTypeButton
                   icon={Icons.bookOpen}
-                  label="Reader"
-                  active={viewMode === "reader"}
-                  onClick={() =>
-                    setViewMode((prev: any) =>
-                      prev === "reader" ? null : "reader",
-                    )
-                  }
-                />
-                <ViewTypeButton
-                  icon={Icons.paragraph}
                   label="Paragraph"
-                  active={viewMode === "para"}
+                  active={viewMode !== "karaoke"}
                   onClick={() =>
                     setViewMode((prev: any) =>
                       prev === "para" ? null : "para",
-                    )
-                  }
-                />
-                <ViewTypeButton
-                  icon={Icons.list}
-                  label="List"
-                  active={viewMode === "list"}
-                  onClick={() =>
-                    setViewMode((prev: any) =>
-                      prev === "list" ? null : "list",
                     )
                   }
                 />

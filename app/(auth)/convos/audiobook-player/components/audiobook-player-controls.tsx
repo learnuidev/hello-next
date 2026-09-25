@@ -18,7 +18,6 @@ export function AudioBookPlayerControls({
   showEn,
   containsChinglish,
   isYoutubeOrVideo,
-  isReaderView,
   contentId,
   content,
 }: any) {
@@ -85,7 +84,6 @@ export function AudioBookPlayerControls({
           </button>
 
           <AudioBookSettingsPopover
-            isReaderView={isReaderView}
             containsChinglish={containsChinglish}
             showEn={showEn}
             isYoutubeOrVideo={isYoutubeOrVideo}

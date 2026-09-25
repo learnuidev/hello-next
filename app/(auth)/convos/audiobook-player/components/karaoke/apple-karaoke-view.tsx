@@ -17,6 +17,16 @@ import {
 import { buildKaraokeChunks, findActiveChunkIndex } from "./karaoke-data";
 import { KaraokeLine } from "./karaoke-line";
 import { KaraokeStyles } from "./karaoke-styles";
+import {
+  STAGE_ANCHOR,
+  STAGE_BOTTOM_SPACER,
+  STAGE_INTRO_ANCHOR,
+  STAGE_MANUAL_SCROLL_GRACE,
+  STAGE_MAX_SCROLL_SPEED,
+  STAGE_SPRING_DAMPING,
+  STAGE_SPRING_STIFFNESS,
+  STAGE_TOP_SPACER,
+} from "./stage-tuning";
 import { useSmoothPlayhead } from "../../hooks/use-smooth-playhead";
 
 type AppleKaraokeViewProps = {
@@ -91,10 +101,10 @@ const WaitDots = ({
 );
 
 /** Spring that glides the sheet so the active line sits dead centre. */
-const SPRING_STIFFNESS = 90;
+const SPRING_STIFFNESS = STAGE_SPRING_STIFFNESS;
 /** Damped to critical: settles crisply instead of bouncing past the line. */
-const SPRING_DAMPING = 19;
-const MAX_SCROLL_SPEED = 1400;
+const SPRING_DAMPING = STAGE_SPRING_DAMPING;
+const MAX_SCROLL_SPEED = STAGE_MAX_SCROLL_SPEED;
 
 /**
  * After a tap the sheet is held perfectly still until the seek has settled.
@@ -108,7 +118,7 @@ const TAP_HOLD_MAX_MS = 700;
 const TAP_HOLD_STABLE_FRAMES = 3;
 
 /** How long manual scrolling wins before auto-follow takes over again. */
-const MANUAL_SCROLL_GRACE = 4000;
+const MANUAL_SCROLL_GRACE = STAGE_MANUAL_SCROLL_GRACE;
 
 /** While browsing by hand, the rendered range grows/slides in these steps. */
 const BROWSE_STEP = 30;
@@ -341,7 +351,8 @@ export function AppleKaraokeView({
     const stageHeight = stage.clientHeight;
     // The singing line sits above centre, so the lines still to come get the
     // space below it — and during the count-in it drops a little lower.
-    const anchor = isIntro ? stageHeight * 0.55 : stageHeight * 0.36;
+    const anchor =
+      stageHeight * (isIntro ? STAGE_INTRO_ANCHOR : STAGE_ANCHOR);
 
     desiredScrollRef.current =
       target.offsetTop + target.offsetHeight / 2 - anchor;
@@ -697,8 +708,8 @@ export function AppleKaraokeView({
   const isIntro = activeIndex < 0;
   // Room above the first line: the count-in parks it at 55% of the stage, so the
   // scroll range has to reach that far or the lyrics ride up under the dots.
-  const topSpacer = Math.max(stageHeight * 0.62, 0);
-  const bottomSpacer = Math.max(stageHeight / 2, 0);
+  const topSpacer = Math.max(stageHeight * STAGE_TOP_SPACER, 0);
+  const bottomSpacer = Math.max(stageHeight * STAGE_BOTTOM_SPACER, 0);
 
   const cssVars = {
     "--k-sung": isDark ? "#ffffff" : "#0b0b0f",

@@ -90,10 +90,14 @@ export function AudioBookSettingsPopover({
             <h4 className="font-bold leading-none">Player Settings</h4>
           </div>
           <div className="mt-4 space-y-8 pb-4">
-            <div className="flex items-center space-x-2 justify-between">
-              <Label htmlFor="video-visible">T. Size</Label>
-              <ActiveButtons isReaderView={isReaderView} />
-            </div>
+            {/* Reader mode puts the whole book on the sheet, so there is no
+                page size left to choose — only the other views slice by time. */}
+            {!isReaderView && (
+              <div className="flex items-center space-x-2 justify-between">
+                <Label htmlFor="video-visible">T. Size</Label>
+                <ActiveButtons />
+              </div>
+            )}
 
             <div className="flex items-center space-x-2 justify-between">
               <Label htmlFor="perc">PERC</Label>

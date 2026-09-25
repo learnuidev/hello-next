@@ -20,12 +20,18 @@ export function InputView({
   seekAndPlay,
   containsChinglish,
   contentId,
-  currentTime,
+  currentTime = 0,
+  isActive: activeProp,
   timeRef,
 }: CurrentTranscriptionProps) {
   const { data: contentUnknowns } = useListContentUnknownsQuery(contentId);
-  const { setShowMenuBar } = useCharacterMenuBarStore();
-  const { fontSize } = useFontSizeStore();
+  // Subscribed by selector: with the whole book on the reader's sheet, taking
+  // the store itself would re-render every line every time a character is
+  // tapped.
+  const setShowMenuBar = useCharacterMenuBarStore(
+    (state) => state.setShowMenuBar,
+  );
+  const fontSize = useFontSizeStore((state) => state.fontSize);
 
   const pieces: string[] = useMemo(
     () =>
@@ -67,11 +73,12 @@ export function InputView({
     });
   }, [pieces, currentTranscription?.start, currentTranscription?.end]);
 
-  // The same test the reader uses to paint the line being read, so the fill and
-  // the highlight can never disagree.
+  // The reader sheet hands the active line down so the fill and the highlight
+  // can never disagree; the start/end test is the fallback for other callers.
   const isActive =
-    currentTranscription?.start < currentTime &&
-    currentTranscription?.end > currentTime;
+    activeProp ??
+    (currentTranscription?.start < currentTime &&
+      currentTranscription?.end > currentTime);
 
   const sweepRef = useReadModeSweep<HTMLParagraphElement>({
     active: isActive,

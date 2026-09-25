@@ -1,5 +1,4 @@
 import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
-import { useFontSizeStore } from "../hooks/use-font-size";
 
 import { nonHanYuChars } from "@/app/nmm/nmm-utils/filter-non-hanyu";
 import { getSelectedText } from "@/app/review/review-cloze-content/utils/get-selected-text";
@@ -23,7 +22,8 @@ const isSpacePiece = (text: string) => /^\s*$/.test(text);
 export function ReaderViewChinese({
   currentTranscription,
   className,
-  currentTime,
+  currentTime = 0,
+  isActive: activeProp,
   seekAndPlay,
   data,
   contentId,
@@ -42,19 +42,33 @@ export function ReaderViewChinese({
   const defautClassName = "gap-0 space-y-0";
 
   const showPinyin = useBrightModeStore((state) => state.showPinyin);
-  const { fontSize } = useFontSizeStore();
 
-  const { text: selected } = useCharacterMenuBarStore();
+  // Only the line holding the selected word re-renders when a character is
+  // tapped: with a whole book on the sheet, subscribing to the selection itself
+  // would re-render every line of it on every tap.
+  const wordTexts = useMemo(
+    () => new Set((data || []).map((item) => item?.hanzi || item?.input)),
+    [data],
+  );
 
-  const { setShowMenuBar } = useCharacterMenuBarStore();
+  const selected = useCharacterMenuBarStore((state) =>
+    wordTexts.has(state.text) ? state.text : null,
+  );
+
+  const setShowMenuBar = useCharacterMenuBarStore(
+    (state) => state.setShowMenuBar,
+  );
 
   // const isLong = currentTranscription?.input?.length > 60;
 
   // The line being read fills in as it is spoken — the same animation the
-  // karaoke view runs — while every other line keeps its static highlight.
+  // karaoke view runs — while every other line keeps its static highlight. The
+  // sheet that renders the whole book decides which line that is; the start/end
+  // test is the fallback for callers showing a single transcription.
   const isActive =
-    currentTranscription?.start < currentTime &&
-    currentTranscription?.end > currentTime;
+    activeProp ??
+    (currentTranscription?.start < currentTime &&
+      currentTranscription?.end > currentTime);
 
   const timings = useMemo<(SweepTiming | null)[]>(
     () =>

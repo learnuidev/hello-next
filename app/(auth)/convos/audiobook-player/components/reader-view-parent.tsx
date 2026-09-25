@@ -1,23 +1,27 @@
 import { EnglishTopView } from "@/app/(auth)/convos/audiobook-player/components/english-top-view";
-import { getSelectedText } from "@/app/review/review-cloze-content/utils/get-selected-text";
-import { CharacterItem } from "@/components/_select-character/character-item";
 import { useReadModeState } from "@/components/read-mode-button";
 import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
-import { smartSplit } from "@/components/youtube-page/utils/smart-split";
-import { useIsSmall } from "@/components/youtube-page/utils/use-is-small";
 import { useListContentUnknownsQuery } from "@/domain/content-unknowns/use-list-content-unknowns.query";
 import { ContentTranscription, IContent } from "@/domain/content/content.api";
-import { isCharacterPartOfWordMatch } from "@/lib/content-bookmark";
 import { cn } from "@/lib/utils";
-import { useCharacterMenuBarStore } from "../hooks/use-character-menu-bar";
-import { useFontSizeStore } from "../hooks/use-font-size";
-import { useGetGroupedTranscriptions } from "../hooks/use-get-grouped-transcriptions";
+import { useMemo } from "react";
+import { findActiveLineIndex, useFollowStage } from "../hooks/use-follow-stage";
 import { useSmoothPlayhead } from "../hooks/use-smooth-playhead";
 import { useTranscriptionHighlight } from "../hooks/use-transcription-highlight";
-import { ReaderView } from "./reader-view";
-import { ReaderSweepStyles } from "./karaoke/reader-sweep-styles";
-import { containsUnknownStyles } from "../utils/contains-unknown-styles";
+import { ReaderStyles } from "./karaoke/reader-styles";
+import { ReaderParagraphLine, ReaderTextLine } from "./reader-line";
 
+/**
+ * The reader.
+ *
+ * The whole book goes on one sheet — never a one, two or four sentence page —
+ * and the sheet scrolls itself the way the sing-along view does: the line being
+ * read is parked at a fixed height in the stage and the text glides past it.
+ *
+ * Lines around the playhead are mounted first and the rest of the book follows
+ * in passes, because a book is long enough that building all of it before the
+ * first paint would stall the audio playing behind it.
+ */
 export const ReaderViewParent = ({
   loop,
   content,
@@ -37,25 +41,52 @@ export const ReaderViewParent = ({
   playerRef?: { current: any } | null;
 }) => {
   const showPinyin = useBrightModeStore((state) => state.showPinyin);
-  const { fontSize } = useFontSizeStore();
 
   const { data: contentUnknowns } = useListContentUnknownsQuery(content.id);
 
-  const { setShowMenuBar } = useCharacterMenuBarStore();
+  const { readMode } = useReadModeState();
 
-  const group = useGetGroupedTranscriptions({
-    groupBy: "length",
-    loop,
-    currentTime,
-    content,
+  const { isFocusMode, activeClassName } = useTranscriptionHighlight({
+    background: "dark:bg-[rgb(9,10,11)]",
   });
 
-  const { readMode } = useReadModeState();
+  // The book in play order: `content.transcriptions` is not guaranteed to be
+  // sorted, and the sheet follows the audio through it in order.
+  const lines = useMemo(
+    () =>
+      (content?.transcriptions || [])
+        .filter(Boolean)
+        .slice()
+        .sort(
+          (a: any, b: any) => (Number(a?.start) || 0) - (Number(b?.start) || 0),
+        ),
+    [content?.transcriptions],
+  );
+
+  // The line the audio is on: the one that started most recently, which is the
+  // sing-along rule — it holds through the silences between sentences.
+  const activeIndex = useMemo(
+    () => findActiveLineIndex(lines, currentTime),
+    [lines, currentTime],
+  );
+
+  const {
+    stageRef,
+    topSpacer,
+    bottomSpacer,
+    mounted,
+    following,
+    onManualScroll,
+    resumeFollowing,
+  } = useFollowStage({
+    bookKey: content?.id || "",
+    total: lines.length,
+    activeIndex,
+  });
 
   // Read mode reads along with the audio, so it needs the same high resolution
   // playhead the karaoke view uses: `currentTime` only arrives every 100ms,
-  // which is what makes a fill step instead of glide. Nothing else in this view
-  // animates, so the clock is only started while read mode is on.
+  // which is what makes a fill step instead of glide.
   const timeRef = useSmoothPlayhead({
     playerRef,
     currentTime,
@@ -63,151 +94,94 @@ export const ReaderViewParent = ({
     enabled: readMode,
   });
 
-  const isSmall = useIsSmall();
+  const visible = lines.slice(mounted.start, mounted.end);
+  const isIntro = activeIndex < 0;
 
-  const { isFocusMode, activeClassName } = useTranscriptionHighlight({
-    background: "dark:bg-[rgb(9,10,11)]",
-  });
-
-  const containsChinglish = !!content.transcriptions?.[0]?.chinglish;
+  if (lines.length === 0) {
+    return (
+      <div className={cn("px-4 pb-24", "max-w-4xl", isVideoHidden ? "mx-auto" : "")}>
+        <ReaderStyles />
+        <EnglishTopView currentTranscription={currentTranscription} />
+      </div>
+    );
+  }
 
   return (
     <div
       className={cn("px-4 pb-24", "max-w-4xl", isVideoHidden ? "mx-auto" : "")}
     >
-      {/* Only used by the read-mode lines below: the fill, the swell and the
-          glow of the character being read. */}
-      <ReaderSweepStyles />
+      <ReaderStyles />
 
       <EnglishTopView currentTranscription={currentTranscription} />
 
-      <div className="">
-        <div>
-          <div>
-            <div className="">
-              <div className="text-sm sm:text-2xl gap-4">
-                <div className="">
-                  {group?.map((transcription: ContentTranscription) => {
-                    if (readMode) {
-                      return (
-                        <ReaderView
-                          key={JSON.stringify(transcription)}
-                          currentTime={currentTime}
-                          hideEnglish
-                          currentTranscription={transcription}
-                          containsChinglish={false}
-                          className={cn(
-                            transcription.start < currentTime &&
-                              transcription.end > currentTime
-                              ? activeClassName
-                              : cn(`opacity-50`),
-                            // : "dark:text-white text-black",
-                          )}
-                          contentId={content?.id}
-                          lang={content?.lang}
-                          timeRef={timeRef}
-                        />
-                      );
-                    }
+      <div className="relative">
+        <div
+          ref={stageRef}
+          onWheel={onManualScroll}
+          onTouchStart={onManualScroll}
+          onPointerDown={onManualScroll}
+          className={cn(
+            "mn-r-stage overflow-y-auto overscroll-contain",
+            // Roomier on desktop, the way the sing-along sheet sizes itself: a
+            // compact stage beside the video, a proper one without it.
+            isVideoHidden
+              ? "h-[58vh] min-h-[400px] max-h-[640px] sm:h-[76vh] sm:min-h-[520px] sm:max-h-[900px]"
+              : "h-[46vh] min-h-[300px] max-h-[420px] sm:h-[56vh] sm:max-h-[560px]",
+          )}
+        >
+          <div style={{ height: topSpacer }} />
 
-                    const isCurrentTranscription =
-                      transcription.start < currentTime &&
-                      transcription.end > currentTime;
+          {visible.map((transcription: any, offset: number) => {
+            const index = mounted.start + offset;
+            const isActive = index === activeIndex;
+            const key = transcription?.id || `${index}`;
 
-                    return (
-                      <div
-                        key={JSON.stringify(transcription)}
-                        className="leading-[3.25rem]"
-                      >
-                        {showPinyin && (
-                          <p
-                            className={cn(
-                              "text-sm font-extralight",
-                              // The reading above the transcription being read
-                              // is painted with the colour of that
-                              // transcription, instead of the quieter grey it
-                              // wears above every other line.
-                              isCurrentTranscription
-                                ? activeClassName
-                                : "text-gray-500",
-                            )}
-                          >
-                            {transcription.pinyin || transcription?.roman}
-                          </p>
-                        )}
-                        <p
-                          className={cn(
-                            isCurrentTranscription
-                              ? activeClassName
-                              : cn(`opacity-50`),
-                          )}
-                        >
-                          {smartSplit({
-                            input: transcription?.input,
-                            lang: transcription?.lang,
-                          })?.map((item: any, idx: any) => {
-                            const containsInUnknown =
-                              contentUnknowns?.items?.find((val) => {
-                                return isCharacterPartOfWordMatch(
-                                  transcription?.input,
-                                  val?.input,
-                                  item,
-                                  idx,
-                                );
-                              });
-                            return (
-                              <span
-                                key={`${item}-pinin-view-${idx}`}
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  const selectedText = getSelectedText();
-
-                                  const text =
-                                    selectedText && selectedText?.length < 36
-                                      ? selectedText
-                                      : item;
-
-                                  setShowMenuBar({
-                                    text,
-                                    position: {
-                                      x: e.clientX,
-                                      y: e.clientY,
-                                    },
-                                    startTime: transcription?.start ?? null,
-                                  });
-                                }}
-                              >
-                                <CharacterItem
-                                  className={cn(
-                                    "sm:!text-3xl text-2xl",
-                                    isCurrentTranscription
-                                      ? // `focus` mode paints each character with
-                                        // its tone colour, so the current
-                                        // transcription must not be forced white.
-                                        isFocusMode
-                                        ? ""
-                                        : "   !dark:text-white"
-                                      : "dark:text-gray-500",
-                                    containsInUnknown &&
-                                      containsUnknownStyles(
-                                        !!containsInUnknown,
-                                      ),
-                                    "font-light",
-                                  )}
-                                  character={item}
-                                />
-                              </span>
-                            );
-                          })}
-                        </p>
-                      </div>
-                    );
-                  })}
-                </div>
+            // The stage reads its own markup: which line this is, and which one
+            // the audio is on, is what the follow loop anchors to.
+            return (
+              <div
+                key={key}
+                data-r-line={index}
+                data-r-line-active={isActive ? "1" : undefined}
+              >
+                {readMode ? (
+                  <ReaderTextLine
+                    transcription={transcription}
+                    isActive={isActive}
+                    className={isActive ? activeClassName : "opacity-50"}
+                    lang={content?.lang}
+                    contentId={content?.id}
+                    timeRef={timeRef}
+                  />
+                ) : (
+                  <ReaderParagraphLine
+                    transcription={transcription}
+                    isActive={isActive}
+                    isFocusMode={isFocusMode}
+                    activeClassName={activeClassName}
+                    inactiveClassName="opacity-50"
+                    contentUnknowns={contentUnknowns}
+                    showPinyin={showPinyin}
+                    lang={content?.lang}
+                  />
+                )}
               </div>
-            </div>
-          </div>
+            );
+          })}
+
+          <div style={{ height: bottomSpacer }} />
         </div>
+
+        {/* The sheet follows the audio on its own; this is the way back after
+            reading ahead or behind by hand. */}
+        {!isIntro && !following && (
+          <button
+            onClick={resumeFollowing}
+            className="absolute bottom-4 left-1/2 z-30 -translate-x-1/2 rounded-full border border-black/10 bg-white/70 px-3 py-1.5 text-xs text-black backdrop-blur-md transition hover:bg-white dark:border-white/15 dark:bg-black/35 dark:text-white dark:hover:bg-black/50"
+          >
+            Back to current line
+          </button>
+        )}
       </div>
     </div>
   );

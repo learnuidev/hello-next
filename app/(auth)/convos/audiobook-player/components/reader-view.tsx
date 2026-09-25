@@ -54,8 +54,9 @@ const RomanGuide = ({
 };
 
 export function ReaderView({
-  currentTime,
+  currentTime = 0,
   hideEnglish = false,
+  isActive: activeProp,
   currentTranscription,
   seekAndPlay,
   containsChinglish,
@@ -69,10 +70,13 @@ export function ReaderView({
   const defautClassName = "mb-4  gap-0 space-y-0";
 
   // The line being read fills in as it is spoken — the same animation the
-  // karaoke view runs — while every other line keeps its static highlight.
+  // karaoke view runs — while every other line keeps its static highlight. The
+  // sheet that renders the whole book decides which line that is; the start/end
+  // test is the fallback for callers showing a single transcription.
   const isActive =
-    currentTranscription?.start < currentTime &&
-    currentTranscription?.end > currentTime;
+    activeProp ??
+    (currentTranscription?.start < currentTime &&
+      currentTranscription?.end > currentTime);
 
   const lineTiming = useMemo<SweepTiming | null>(() => {
     const start = Number(currentTranscription?.start);
@@ -95,6 +99,7 @@ export function ReaderView({
         {currentTranscription?.lang === "zh" && currentTranscription?.words ? (
           <ReaderViewChinese
             currentTime={currentTime}
+            isActive={isActive}
             className={className}
             data={currentTranscription?.words || []}
             containsChinglish={containsChinglish}
@@ -120,6 +125,7 @@ export function ReaderView({
             ) : null}
             <InputView
               currentTime={currentTime}
+              isActive={isActive}
               containsChinglish={containsChinglish}
               currentTranscription={currentTranscription}
               seekAndPlay={seekAndPlay}

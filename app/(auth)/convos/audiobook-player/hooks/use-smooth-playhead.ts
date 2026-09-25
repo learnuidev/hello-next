@@ -10,6 +10,11 @@ type SmoothPlayheadOptions = {
   /** Current time pushed by react-player (~10 updates/second). */
   currentTime: number;
   isPlaying: boolean;
+  /**
+   * Set false when nothing on screen animates at 60fps: the clock still tracks
+   * the reported time, but it does not run a frame loop of its own.
+   */
+  enabled?: boolean;
 };
 
 /**
@@ -28,6 +33,7 @@ export const useSmoothPlayhead = ({
   playerRef,
   currentTime,
   isPlaying,
+  enabled = true,
 }: SmoothPlayheadOptions) => {
   const timeRef = useRef<number>(currentTime || 0);
   const propsRef = useRef({
@@ -45,6 +51,14 @@ export const useSmoothPlayhead = ({
   }, [currentTime, isPlaying]);
 
   useEffect(() => {
+    if (!enabled) {
+      // Stay honest about where the audio is, so re-enabling the clock starts
+      // from the right place instead of easing over the gap.
+      timeRef.current = propsRef.current.time;
+
+      return;
+    }
+
     let frame = 0;
     let last = performance.now();
 
@@ -115,7 +129,7 @@ export const useSmoothPlayhead = ({
     frame = requestAnimationFrame(tick);
 
     return () => cancelAnimationFrame(frame);
-  }, [playerRef]);
+  }, [playerRef, enabled]);
 
   return timeRef;
 };

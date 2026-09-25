@@ -3,6 +3,13 @@
 import { cn } from "@/lib/utils";
 import { memo, useEffect, useLayoutEffect, useRef } from "react";
 import { KaraokeChunk } from "./karaoke-data";
+import {
+  applySweepFrame,
+  createSweepRuntime,
+  getSweepProgress,
+  releaseSweep,
+  SweepTarget,
+} from "./sweep";
 
 type KaraokeLineProps = {
   chunk: KaraokeChunk;
@@ -130,87 +137,56 @@ export const KaraokeLine = memo(
     }, [isActive, isPast, chunk.key]);
 
     // The live sweep: one requestAnimationFrame loop, for the active line only.
+    // Whitespace carries no glyph, so it is never animated — and never counted,
+    // which keeps the frame maths indexed by animatable token.
     useEffect(() => {
       if (!isActive) {
         return;
       }
 
+      const slots: { start: number; end: number; el: HTMLSpanElement }[] = [];
+
+      chunk.tokens.forEach((token, index) => {
+        const el = tokenRefs.current[index];
+
+        if (!el || token.isSpace) {
+          return;
+        }
+
+        slots.push({ start: token.start, end: token.end, el });
+      });
+
+      if (slots.length === 0) {
+        return;
+      }
+
+      const targets: SweepTarget[] = slots.map((slot) => ({
+        el: slot.el,
+        progress: 0,
+      }));
+      const runtime = createSweepRuntime(slots.length);
+
       let frame = 0;
-      const tokens = tokenRefs.current;
-      const pops = new Float32Array(chunk.tokens.length);
-      const lastProgress = new Float32Array(chunk.tokens.length).fill(-1);
-      const lastPop = new Float32Array(chunk.tokens.length).fill(-1);
-      const willChange = new Uint8Array(chunk.tokens.length);
 
       const loop = () => {
         frame = requestAnimationFrame(loop);
 
         const time = timeRef.current;
 
-        for (let index = 0; index < chunk.tokens.length; index++) {
-          const token = chunk.tokens[index];
-          const el = tokens[index];
+        for (let index = 0; index < slots.length; index++) {
+          const slot = slots[index];
 
-          if (!el || token.isSpace) {
-            continue;
-          }
-
-          const duration = Math.max(token.end - token.start, 0.001);
-
-          let progress: number;
-
-          if (time <= token.start) {
-            progress = 0;
-          } else if (time >= token.end) {
-            progress = 1;
-          } else {
-            progress = (time - token.start) / duration;
-          }
-
-          const roundedProgress = Math.round(progress * 400) / 400;
-
-          if (roundedProgress !== lastProgress[index]) {
-            lastProgress[index] = roundedProgress;
-            el.style.setProperty("--p", `${roundedProgress}`);
-          }
-
-          // The syllable you are on swells very slightly, then settles. The
-          // approach is slow (≈250ms) and the release even slower, so the
-          // character never snaps back the moment it is sung.
-          const popTarget = progress > 0 && progress < 1 ? 1 : 0;
-          const approach = popTarget > pops[index] ? 0.085 : 0.055;
-
-          pops[index] += (popTarget - pops[index]) * approach;
-
-          const pop = pops[index] < 0.004 ? 0 : pops[index];
-          const roundedPop = Math.round(pop * 100) / 100;
-
-          if (roundedPop !== lastPop[index]) {
-            lastPop[index] = roundedPop;
-            el.style.setProperty("--pop", `${roundedPop}`);
-          }
-
-          // Promote only the syllable that is actually moving, so the sheet
-          // keeps one or two composited layers instead of hundreds.
-          const promoted = roundedPop > 0 ? 1 : 0;
-
-          if (promoted !== willChange[index]) {
-            willChange[index] = promoted;
-            el.style.willChange = promoted ? "transform" : "";
-          }
+          targets[index].progress = getSweepProgress(time, slot.start, slot.end);
         }
+
+        applySweepFrame(targets, runtime);
       };
 
       frame = requestAnimationFrame(loop);
 
       return () => {
         cancelAnimationFrame(frame);
-
-        tokens.forEach((el) => {
-          if (el) {
-            el.style.willChange = "";
-          }
-        });
+        releaseSweep(targets);
       };
     }, [isActive, chunk.tokens, timeRef]);
 

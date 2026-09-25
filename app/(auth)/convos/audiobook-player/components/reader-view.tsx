@@ -2,10 +2,56 @@ import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode
 
 import { isNonRomanLang } from "@/components/_select-character/utils/is-non-roman-lang";
 import { cn } from "@/lib/utils";
+import { useMemo } from "react";
 import { CurrentTranscriptionProps } from "../audiobook-player.types";
+import { useReadModeSweep } from "../hooks/use-read-mode-sweep";
 import { EnglishTopView } from "./english-top-view";
 import { InputView } from "./input-view";
 import { ReaderViewChinese } from "./reader-view-chinese";
+import { SweepTiming } from "./karaoke/sweep";
+
+/**
+ * The romanisation of a line that is read whole rather than word by word.
+ *
+ * It is the only guide on such a line, so it fills with the line itself — one
+ * reading, one box — which keeps the pronunciation and the characters under it
+ * lighting up together.
+ */
+const RomanGuide = ({
+  text,
+  active,
+  timeRef,
+  timing,
+}: {
+  text?: string;
+  active: boolean;
+  timeRef?: React.MutableRefObject<number> | null;
+  timing: SweepTiming | null;
+}) => {
+  const sweeping = active && !!timeRef && !!timing;
+
+  const sweepRef = useReadModeSweep<HTMLParagraphElement>({
+    active,
+    timeRef,
+    timings: [timing],
+  });
+
+  if (!text) {
+    return null;
+  }
+
+  return (
+    <p
+      ref={sweepRef}
+      data-r-word={sweeping ? 0 : undefined}
+      data-r-glyph={sweeping ? 0 : undefined}
+      data-r-glyphs={sweeping ? 1 : undefined}
+      className={cn(sweeping && "mn-r-sweep")}
+    >
+      {text}
+    </p>
+  );
+};
 
 export function ReaderView({
   currentTime,
@@ -16,10 +62,26 @@ export function ReaderView({
   className,
   contentId,
   lang,
+  timeRef,
 }: CurrentTranscriptionProps) {
   const showEn = useBrightModeStore((state) => state.showEn);
 
   const defautClassName = "mb-4  gap-0 space-y-0";
+
+  // The line being read fills in as it is spoken — the same animation the
+  // karaoke view runs — while every other line keeps its static highlight.
+  const isActive =
+    currentTranscription?.start < currentTime &&
+    currentTranscription?.end > currentTime;
+
+  const lineTiming = useMemo<SweepTiming | null>(() => {
+    const start = Number(currentTranscription?.start);
+    const end = Number(currentTranscription?.end);
+
+    return Number.isFinite(start) && Number.isFinite(end) && end > start
+      ? { start, end }
+      : null;
+  }, [currentTranscription?.start, currentTranscription?.end]);
 
   return (
     <div>
@@ -40,15 +102,21 @@ export function ReaderView({
             seekAndPlay={seekAndPlay}
             contentId={contentId}
             lang={lang}
+            timeRef={timeRef}
           />
         ) : (
           <div className={cn(defautClassName, className)}>
             {isNonRomanLang(currentTranscription?.lang) ? (
-              <p>
-                {currentTranscription?.lang === "zh"
-                  ? currentTranscription?.pinyin
-                  : currentTranscription?.roman}
-              </p>
+              <RomanGuide
+                active={isActive}
+                timeRef={timeRef}
+                timing={lineTiming}
+                text={
+                  currentTranscription?.lang === "zh"
+                    ? currentTranscription?.pinyin
+                    : currentTranscription?.roman
+                }
+              />
             ) : null}
             <InputView
               currentTime={currentTime}
@@ -57,6 +125,7 @@ export function ReaderView({
               seekAndPlay={seekAndPlay}
               contentId={contentId}
               lang={lang}
+              timeRef={timeRef}
             />
           </div>
         )}

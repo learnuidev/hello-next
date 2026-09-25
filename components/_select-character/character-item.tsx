@@ -15,6 +15,16 @@ interface ICharacterItem {
   onClick?: () => void;
   hanzis?: string[];
   style?: any;
+  /**
+   * Where this character sits in the word being read.
+   *
+   * The read-along sweep of the reader view is driven straight from the DOM:
+   * a frame loop writes the fill of the character being spoken onto the element
+   * that carries the glyph, and that has to be this one, because this is the
+   * element holding the character's own colour. These markers are how the loop
+   * finds its way back here — see `use-read-mode-sweep`.
+   */
+  sweepSlot?: { word: number; glyph: number; glyphs: number };
 }
 
 function calculatePopularityColor(comp: any) {
@@ -42,6 +52,7 @@ export const CharacterItem = ({
   disableForgotten,
   hanzis,
   style,
+  sweepSlot,
 }: ICharacterItem) => {
   const { data: learnedCharacters2, isLoading: isCharactersLoading } =
     useListCharactersMapQuery({
@@ -103,6 +114,9 @@ export const CharacterItem = ({
         className,
       )}
       style={style}
+      data-r-word={sweepSlot?.word}
+      data-r-glyph={sweepSlot?.glyph}
+      data-r-glyphs={sweepSlot?.glyphs}
     >
       {character}
     </span>

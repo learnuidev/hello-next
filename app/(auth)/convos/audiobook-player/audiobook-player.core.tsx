@@ -256,6 +256,7 @@ export const AudiobookPlayerCore = ({
                       isVideoHidden={isVideoHidden}
                       isPlaying={playing}
                       loop={loop}
+                      playerRef={playerRef}
                     />
                   </div>
                 </div>

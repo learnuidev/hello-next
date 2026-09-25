@@ -12,8 +12,10 @@ import { cn } from "@/lib/utils";
 import { useCharacterMenuBarStore } from "../hooks/use-character-menu-bar";
 import { useFontSizeStore } from "../hooks/use-font-size";
 import { useGetGroupedTranscriptions } from "../hooks/use-get-grouped-transcriptions";
+import { useSmoothPlayhead } from "../hooks/use-smooth-playhead";
 import { useTranscriptionHighlight } from "../hooks/use-transcription-highlight";
 import { ReaderView } from "./reader-view";
+import { ReaderSweepStyles } from "./karaoke/reader-sweep-styles";
 import { containsUnknownStyles } from "../utils/contains-unknown-styles";
 
 export const ReaderViewParent = ({
@@ -23,6 +25,7 @@ export const ReaderViewParent = ({
   currentTime,
   isVideoHidden,
   isPlaying,
+  playerRef,
 }: {
   currentTranscription: ContentTranscription;
   content: IContent;
@@ -30,6 +33,8 @@ export const ReaderViewParent = ({
   isPlaying: boolean;
   isVideoHidden: boolean;
   loop?: ContentTranscription;
+  /** react-player, used as the high resolution clock for the sweep. */
+  playerRef?: { current: any } | null;
 }) => {
   const showPinyin = useBrightModeStore((state) => state.showPinyin);
   const { fontSize } = useFontSizeStore();
@@ -47,6 +52,17 @@ export const ReaderViewParent = ({
 
   const { readMode } = useReadModeState();
 
+  // Read mode reads along with the audio, so it needs the same high resolution
+  // playhead the karaoke view uses: `currentTime` only arrives every 100ms,
+  // which is what makes a fill step instead of glide. Nothing else in this view
+  // animates, so the clock is only started while read mode is on.
+  const timeRef = useSmoothPlayhead({
+    playerRef,
+    currentTime,
+    isPlaying,
+    enabled: readMode,
+  });
+
   const isSmall = useIsSmall();
 
   const { isFocusMode, activeClassName } = useTranscriptionHighlight({
@@ -59,6 +75,10 @@ export const ReaderViewParent = ({
     <div
       className={cn("px-4 pb-24", "max-w-4xl", isVideoHidden ? "mx-auto" : "")}
     >
+      {/* Only used by the read-mode lines below: the fill, the swell and the
+          glow of the character being read. */}
+      <ReaderSweepStyles />
+
       <EnglishTopView currentTranscription={currentTranscription} />
 
       <div className="">
@@ -85,6 +105,7 @@ export const ReaderViewParent = ({
                           )}
                           contentId={content?.id}
                           lang={content?.lang}
+                          timeRef={timeRef}
                         />
                       );
                     }

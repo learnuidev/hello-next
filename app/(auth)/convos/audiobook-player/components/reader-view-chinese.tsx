@@ -9,9 +9,15 @@ import { useListContentUnknownsQuery } from "@/domain/content-unknowns/use-list-
 import { isCharacterPartOfWordMatch } from "@/lib/content-bookmark";
 import { formatRoman } from "@/lib/format-roman";
 import { cn } from "@/lib/utils";
+import { useMemo } from "react";
 import { CurrentTranscriptionProps } from "../audiobook-player.types";
 import { useCharacterMenuBarStore } from "../hooks/use-character-menu-bar";
+import { useReadModeSweep } from "../hooks/use-read-mode-sweep";
 import { containsUnknownStyles } from "../utils/contains-unknown-styles";
+import { SweepTiming } from "./karaoke/sweep";
+
+/** Whitespace carries no glyph, so it never takes part in the sweep. */
+const isSpacePiece = (text: string) => /^\s*$/.test(text);
 
 export function ReaderViewChinese({
   currentTranscription,
@@ -20,6 +26,7 @@ export function ReaderViewChinese({
   seekAndPlay,
   data,
   contentId,
+  timeRef,
 }: CurrentTranscriptionProps & {
   data: {
     input: string;
@@ -42,12 +49,51 @@ export function ReaderViewChinese({
 
   // const isLong = currentTranscription?.input?.length > 60;
 
+  // The line being read fills in as it is spoken — the same animation the
+  // karaoke view runs — while every other line keeps its static highlight.
+  const isActive =
+    currentTranscription?.start < currentTime &&
+    currentTranscription?.end > currentTime;
+
+  const timings = useMemo<(SweepTiming | null)[]>(
+    () =>
+      (data || []).map((item) => {
+        const start = Number(item?.start);
+        const end = Number(item?.end);
+
+        return Number.isFinite(start) && Number.isFinite(end) && end > start
+          ? { start, end }
+          : null;
+      }),
+    [data],
+  );
+
+  const sweepRef = useReadModeSweep({ active: isActive, timeRef, timings });
+
   return (
     <div className={cn(defautClassName, className)}>
-      <div className={cn(defautClassName, className, "text-base/10")}>
+      <div
+        ref={sweepRef}
+        className={cn(defautClassName, className, "text-base/10")}
+      >
         {data?.map((item, idx) => {
           const isSelected =
             selected && selected === (item?.hanzi || item?.input);
+
+          const pieces: string[] =
+            smartSplit({
+              input: item?.hanzi || item?.input,
+              lang: currentTranscription?.lang,
+            }) || [];
+
+          // A word is usually more than one character and the reader paints
+          // each character on its own (every character carries its own tone
+          // colour), so the word's sweep is shared out between them: the fill
+          // still travels across the word instead of every character lighting
+          // up at once.
+          const glyphs = pieces.filter((piece) => !isSpacePiece(piece)).length;
+          const sweeping = isActive && !!timeRef && !!timings[idx];
+          let glyph = 0;
 
           return (
             <span
@@ -77,10 +123,17 @@ export function ReaderViewChinese({
             >
               {showPinyin && (
                 <span
+                  // The guide fills with the word it belongs to: one reading,
+                  // one box, so it sweeps across the whole word rather than
+                  // splitting itself between the characters below.
+                  data-r-word={sweeping ? idx : undefined}
+                  data-r-glyph={sweeping ? 0 : undefined}
+                  data-r-glyphs={sweeping ? 1 : undefined}
                   className={cn(
                     "dark:text-gray-500 text-gray-800",
                     "sm:text-sm",
                     "text-[14px]",
+                    sweeping && "mn-r-sweep",
                   )}
                 >
                   {formatRoman(item)}
@@ -88,10 +141,7 @@ export function ReaderViewChinese({
               )}
 
               <span>
-                {smartSplit({
-                  input: item?.hanzi || item?.input,
-                  lang: currentTranscription?.lang,
-                })?.map((charItem: any, charIdx: any) => {
+                {pieces.map((charItem: any, charIdx: any) => {
                   const containsInUnknown = contentUnknowns?.items?.find(
                     (val) => {
                       return isCharacterPartOfWordMatch(
@@ -103,10 +153,16 @@ export function ReaderViewChinese({
                     },
                   );
 
+                  const slot =
+                    sweeping && !isSpacePiece(charItem)
+                      ? { word: idx, glyph: glyph++, glyphs }
+                      : undefined;
+
                   return (
                     <span key={`${charItem}-pinin-view-${charIdx}`}>
                       <CharacterItem
                         character={charItem}
+                        sweepSlot={slot}
                         className={cn(
                           "sm:!text-3xl font-light",
                           "text-2xl",
@@ -115,10 +171,14 @@ export function ReaderViewChinese({
                             : "",
                           !isSelected &&
                             containsUnknownStyles(!!containsInUnknown),
-                          currentTime > item?.start &&
-                            currentTime < item?.end &&
-                            !nonHanYuChars.includes(charItem) &&
-                            "underline underline-offset-8",
+                          // The sweep *is* the highlight of the word being
+                          // read, so it stands in for the static underline.
+                          sweeping
+                            ? slot && "mn-r-sweep"
+                            : currentTime > item?.start &&
+                                currentTime < item?.end &&
+                                !nonHanYuChars.includes(charItem) &&
+                                "underline underline-offset-8",
                           className,
                         )}
                       />

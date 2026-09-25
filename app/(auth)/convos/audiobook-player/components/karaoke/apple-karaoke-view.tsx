@@ -61,8 +61,15 @@ const WINDOW_AFTER = 22;
 const WINDOW_SIZE = WINDOW_BEFORE + WINDOW_AFTER;
 const WINDOW_STEP = 4;
 
-/** Below this the break is too short to be worth counting down. */
-const GAP_DOTS_MIN_WAIT = 2.2;
+/**
+ * How long a wait has to be before it is counted down.
+ *
+ * The dots are a count-in, not decoration: they are for the waits long enough
+ * that a listener would otherwise wonder whether the audio had stalled — a
+ * lead-in before the first line, or a real break in the middle of a book.
+ * Anything shorter would only flash past.
+ */
+const WAIT_DOTS_MIN_WAIT = 10;
 
 /**
  * The three dots count the wait down instead of just pulsing: each third of it
@@ -263,7 +270,7 @@ export function AppleKaraokeView({
       // disappear before the wait it is counting down was even over.
       const gap =
         !!next &&
-        next.start - chunks[index].end > GAP_DOTS_MIN_WAIT &&
+        next.start - chunks[index].end > WAIT_DOTS_MIN_WAIT &&
         time > chunks[index].end + 0.35;
 
       if (gap !== inGapRef.current) {
@@ -716,6 +723,10 @@ export function AppleKaraokeView({
     showPinyin &&
     (isNonRomanLang(lang) || chunks.some((chunk) => chunk.hasRoman));
   const isIntro = activeIndex < 0;
+  // A lead-in is only worth counting down if it is a long one; a line that
+  // starts a second in would just make the dots flash.
+  const showsIntroDots =
+    isIntro && Number(chunks?.[0]?.start) > WAIT_DOTS_MIN_WAIT;
   // Room above the first line: the count-in parks it at 55% of the stage, so the
   // scroll range has to reach that far or the lyrics ride up under the dots.
   const topSpacer = Math.max(stageHeight * STAGE_TOP_SPACER, 0);
@@ -830,7 +841,11 @@ export function AppleKaraokeView({
               {showsGapDots && (
                 <WaitDots
                   filled={filledDots}
-                  containerClassName="gap-1 py-1"
+                  // No height of its own: the count-in to the next line sits on
+                  // the seam between the two lines, inside the padding they
+                  // already carry, instead of pushing the sheet down and back
+                  // up every time a break starts and ends.
+                  containerClassName="h-0 gap-1"
                   dotClassName="h-1.5 w-1.5"
                   activeColor={
                     isDark ? "rgba(255,255,255,0.85)" : "rgba(11,11,15,0.7)"
@@ -864,7 +879,7 @@ export function AppleKaraokeView({
 
       {/* Count-in: three dots counting down the wait, in the space the lyrics
           will not use yet */}
-      {isIntro && (
+      {showsIntroDots && (
         <WaitDots
           filled={filledDots}
           containerClassName="pointer-events-none absolute inset-x-0 top-[9%] z-20 gap-2"

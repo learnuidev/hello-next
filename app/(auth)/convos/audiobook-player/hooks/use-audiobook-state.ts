@@ -83,21 +83,25 @@ export const useAudioBookState = (content: IContent) => {
     [content?.transcriptions],
   );
 
-  const setToggleLoops = usePlayerViewModeStore(
-    (state) => state.setToggleLoops,
+  // The transcripts the reader starred with the repeat button beside them.
+  // These are the section: they are what the loop button loops.
+  const _toggleLoops = usePlayerViewModeStore((state) => state.toggleLoops);
+  const toggleLoops = useMemo(
+    () => _toggleLoops?.filter((loop: any) => loop?.contentId === content.id),
+    [_toggleLoops, content.id],
   );
 
-  // The dynamic loop: a section of the recording, chosen by hand and held open
-  // by the loop button. While it is on it owns the playhead — the single line
-  // loop stands down, because two loops fighting over one playhead is one too
-  // many.
+  // The dynamic loop: the section of the recording being looped. While it is on
+  // it owns the playhead — the single line loop stands down, because two loops
+  // fighting over one playhead is one too many. The selected transcripts are
+  // left exactly where they are: they are the reader's choice, not ours.
   const clearLineLoops = useCallback(() => {
     setLoop(null);
-    setToggleLoops([]);
-  }, [setToggleLoops]);
+  }, [setLoop]);
 
   const dynamicLoop = useDynamicLoop({
     transcriptions,
+    selection: toggleLoops,
     duration,
     currentTime,
     playing,
@@ -106,6 +110,10 @@ export const useAudioBookState = (content: IContent) => {
     play,
     pause,
     onEnter: clearLineLoops,
+    // Committing a section starts it playing: say so at once rather than
+    // waiting for the player to report it, so the transport never disagrees
+    // with the audio it just started.
+    onCommit: () => setPlaying(true),
   });
 
   const iContent: any = content;
@@ -275,13 +283,6 @@ export const useAudioBookState = (content: IContent) => {
 
   const audioUrl = content?.audio;
 
-  const _toggleLoops = usePlayerViewModeStore((state) => state.toggleLoops);
-  const toggleLoops = useMemo(
-    () =>
-      _toggleLoops?.filter((loop: any) => loop?.contentId === content.id),
-    [_toggleLoops, content.id],
-  );
-
   const editMode = useContentEditStore((state) => state.editMode);
 
   const setShowPinyin = useBrightModeStore((state) => state.setShowPinyin);
@@ -423,6 +424,14 @@ export const useAudioBookState = (content: IContent) => {
   }, [currentTime, transcriptions, loop, debounceSeek]);
 
   useEffect(() => {
+    // Once the section is committed the frame loop owns the wrap, and this
+    // coarse 10Hz check would only fight it. Before that — the reader has
+    // starred transcripts but not started the section — this is what loops
+    // them, exactly as it always did.
+    if (dynamicLoop.mode !== "off") {
+      return;
+    }
+
     if (toggleLoops?.length) {
       const lastEnd = Math.max(...toggleLoops?.map((x: any) => x?.end));
       const firstStart = Math.min(...toggleLoops?.map((x: any) => x?.start));
@@ -431,7 +440,7 @@ export const useAudioBookState = (content: IContent) => {
         debounceSeek(firstStart);
       }
     }
-  }, [currentTime, toggleLoops, debounceSeek]);
+  }, [currentTime, toggleLoops, debounceSeek, dynamicLoop.mode]);
 
   useEffect(() => {
     if (isReady) {

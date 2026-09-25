@@ -3,7 +3,6 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { AudioBookSettingsPopover } from "./audiobook-settings-popover";
 import { ContentSuggestionsDrawer } from "./content-suggestions-drawer";
-import { usePlayerViewModeStore } from "@/components/youtube-page/player-view-mode-store";
 import { AddToContentCollectionDialog } from "@/components/content-collections/add-to-content-collection-dialog";
 import { ContentToCollect } from "@/domain/content-collections/content-collections.types";
 import { LoopButton } from "./loop-button";
@@ -27,16 +26,13 @@ export function AudioBookPlayerControls({
   const [collectionDialogContent, setCollectionDialogContent] =
     useState<ContentToCollect | null>(null);
 
-  const setToggleLoops = usePlayerViewModeStore(
-    (state) => state.setToggleLoops,
-  );
-
-  // The loop button. One tap still means what it always did — loop the line I
-  // am on — while a long press opens the dynamic loop, or leaves it and takes
-  // the playhead back where it was. `LoopButton` owns all of that.
+  // The loop button. Tapping it loops what the reader has chosen: the
+  // transcripts they starred with the repeat button beside them, which is the
+  // entire reason for starring them. Without a selection it keeps its old
+  // meaning — loop the line I am on — and a one second hold opens the section
+  // picker, or leaves the loop and takes the playhead back where it was.
   const handleLoopTap = () => {
     if (!dynamicLoop) {
-      setToggleLoops([]);
       setLoop((current: any) => (current ? null : currentTranscription.id));
       return;
     }
@@ -53,7 +49,12 @@ export function AudioBookPlayerControls({
       return;
     }
 
-    setToggleLoops([]);
+    // The starred transcripts, as a section, right now. The selection is left
+    // alone: it is the reader's, and it is what makes the loop repeatable.
+    if (dynamicLoop.loopSelection()) {
+      return;
+    }
+
     setLoop((current: any) => (current ? null : currentTranscription.id));
   };
 
@@ -65,8 +66,9 @@ export function AudioBookPlayerControls({
           {dynamicLoop ? (
             <LoopButton
               mode={dynamicLoop.mode}
-              lineLoop={!!loop}
+              lineLoop={!!loop || dynamicLoop.selectionCount > 0}
               canLoop={dynamicLoop.canLoop}
+              selectionCount={dynamicLoop.selectionCount}
               onTap={handleLoopTap}
               onEnter={dynamicLoop.begin}
               onExit={dynamicLoop.exit}

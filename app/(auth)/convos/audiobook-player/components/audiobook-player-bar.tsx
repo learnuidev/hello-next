@@ -80,17 +80,41 @@ export const AudiobookPlayerBar = ({
   );
 
   const range = dynamicLoop?.range ?? null;
-  const pickingSection = !!range && dynamicLoop?.mode !== "off";
+  /** Choosing the section: the whole recording, with handles on the band. */
+  const editing = !!range && dynamicLoop?.mode === "selecting";
+  /** Looping it: the bar *is* the section, from its start to its end. */
+  const looping = !!range && dynamicLoop?.mode === "active";
 
   // Read by the frame loop, which must not be resubscribed when the section
   // moves a handle's width.
   const sectionRef = useRef<{ start: number; end: number } | null>(null);
+  /** The last time the frame loop drew, for spotting a wrap back to the top. */
+  const drawnRef = useRef(0);
 
   useEffect(() => {
     sectionRef.current = range ? { start: range.start, end: range.end } : null;
   }, [range?.start, range?.end, range]);
 
   const safeDuration = duration > 0 ? duration : 0;
+
+  /**
+   * The stretch of recording the scrubber represents.
+   *
+   * Normally all of it. Once a section is committed the bar becomes that
+   * section's own timeline — a fifteen second loop spread across the full width
+   * is a hundred times easier to read, and to scrub inside, than fifteen seconds
+   * crammed into a sixtieth of the track. Change puts the whole recording back.
+   */
+  const view = useMemo(() => {
+    if (looping && range) {
+      return { start: range.start, end: range.end };
+    }
+
+    return { start: 0, end: safeDuration };
+  }, [looping, range, safeDuration]);
+
+  const viewSpan = Math.max(view.end - view.start, 0.001);
+  const zoomed = looping;
 
   const timeRef = useSmoothPlayhead({
     playerRef,
@@ -100,35 +124,57 @@ export const AudiobookPlayerBar = ({
 
   const { contentRanges, emptyRanges, firstStart } = useMemo(() => {
     if (!safeDuration) {
-      return { contentRanges: [] as Range[], emptyRanges: [] as Range[], firstStart: 0 };
+      return {
+        contentRanges: [] as Range[],
+        emptyRanges: [] as Range[],
+        firstStart: 0,
+      };
     }
 
-    const content = toRanges(transcriptions, safeDuration);
-    const empty: Range[] = [];
-    let cursor = 0;
+    // Everything the track knows is clipped to what it is showing, so a zoomed
+    // section keeps its own silences and its own start marker.
+    const content = toRanges(transcriptions, safeDuration)
+      .map((span) => ({
+        start: Math.max(span.start, view.start),
+        end: Math.min(span.end, view.end),
+      }))
+      .filter((span) => span.end > span.start);
 
-    content.forEach((range) => {
-      if (range.start - cursor >= EMPTY_GAP_SECONDS) {
-        empty.push({ start: cursor, end: range.start });
+    const empty: Range[] = [];
+    let cursor = view.start;
+
+    content.forEach((span) => {
+      if (span.start - cursor >= EMPTY_GAP_SECONDS) {
+        empty.push({ start: cursor, end: span.start });
       }
 
-      cursor = Math.max(cursor, range.end);
+      cursor = Math.max(cursor, span.end);
     });
 
-    if (safeDuration - cursor >= EMPTY_GAP_SECONDS) {
-      empty.push({ start: cursor, end: safeDuration });
+    if (view.end - cursor >= EMPTY_GAP_SECONDS) {
+      empty.push({ start: cursor, end: view.end });
     }
+
+    const first = content[0]?.start ?? 0;
 
     return {
       contentRanges: content,
       emptyRanges: empty,
-      firstStart: content[0]?.start ?? 0,
+      // Only worth a marker when there is a real silence before the first line.
+      firstStart: first > view.start + 0.5 ? first : 0,
     };
-  }, [transcriptions, safeDuration]);
+  }, [transcriptions, safeDuration, view.start, view.end]);
 
   const ratioToTime = useCallback(
-    (ratio: number) => Math.max(0, Math.min(ratio, 1)) * safeDuration,
-    [safeDuration],
+    (ratio: number) =>
+      view.start + Math.max(0, Math.min(ratio, 1)) * viewSpan,
+    [view.start, viewSpan],
+  );
+
+  /** Where a moment sits inside what the track is showing (0 → 1). */
+  const toRatio = useCallback(
+    (time: number) => Math.max(0, Math.min((time - view.start) / viewSpan, 1)),
+    [view.start, viewSpan],
   );
 
   const ratioFromEvent = useCallback((clientX: number) => {
@@ -152,9 +198,30 @@ export const AudiobookPlayerBar = ({
         return;
       }
 
+      // Where the playhead is, read from the player itself: a wrap back to the
+      // top of a loop has to land in a single frame, and the smoothed playhead
+      // would otherwise glide backwards across the section it just left.
+      let time = timeRef.current;
+
+      try {
+        const raw = playerRef?.current?.getCurrentTime?.();
+
+        if (
+          typeof raw === "number" &&
+          Number.isFinite(raw) &&
+          raw < drawnRef.current - 0.15
+        ) {
+          time = raw;
+        }
+      } catch (err) {
+        // A player mid-swap; the smoothed playhead will do.
+      }
+
+      drawnRef.current = time;
+
       const ratio = Math.max(
         0,
-        Math.min((dragRatioRef.current ?? timeRef.current) / safeDuration, 1),
+        Math.min(dragRatioRef.current ?? toRatio(time), 1),
       );
 
       if (fillRef.current) {
@@ -167,18 +234,16 @@ export const AudiobookPlayerBar = ({
         ).toFixed(2)}px, -50%, 0)`;
       }
 
-      // How far through the looped section the playhead has got.
+      // How far through the looped section the playhead has got, while the
+      // whole recording is on screen and the section is only part of it.
       const section = sectionRef.current;
 
-      if (playedRef.current && section) {
+      if (playedRef.current && section && !zoomed) {
         const span = section.end - section.start;
 
         const played =
           span > 0
-            ? Math.max(
-                0,
-                Math.min((timeRef.current - section.start) / span, 1),
-              )
+            ? Math.max(0, Math.min((time - section.start) / span, 1))
             : 0;
 
         playedRef.current.style.transform = `scaleX(${played.toFixed(5)})`;
@@ -188,7 +253,7 @@ export const AudiobookPlayerBar = ({
     frame = requestAnimationFrame(loop);
 
     return () => cancelAnimationFrame(frame);
-  }, [safeDuration, timeRef]);
+  }, [safeDuration, timeRef, toRatio, playerRef, zoomed]);
 
   // ── Drag to scrub; the seek is committed on release ───────────────────────
   // Pointer capture (rather than window listeners) keeps this correct even for
@@ -224,14 +289,23 @@ export const AudiobookPlayerBar = ({
         />
       )}
 
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-3 sm:gap-4">
+        {/* The section's own bounds, once the track has become the section. */}
+        {zoomed && range && (
+          <span className="shrink-0 text-[10px] font-medium tabular-nums opacity-45">
+            {formatTime(range.start)}
+          </span>
+        )}
+
         <div
           ref={trackRef}
           role="slider"
           tabIndex={0}
-          aria-label="Seek"
-          aria-valuemin={0}
-          aria-valuemax={Math.round(safeDuration)}
+          aria-label={
+            zoomed ? "Seek within the looped section" : "Seek"
+          }
+          aria-valuemin={Math.round(zoomed ? view.start : 0)}
+          aria-valuemax={Math.round(view.end)}
           aria-valuenow={Math.round(previewTime ?? currentTime ?? 0)}
           onPointerDown={(event) => {
             event.currentTarget.setPointerCapture?.(event.pointerId);
@@ -267,14 +341,16 @@ export const AudiobookPlayerBar = ({
             }
           }}
           onKeyDown={(event) => {
-            const step = event.shiftKey ? 10 : 5;
+            // Stepping is scaled to what is on screen: five seconds is a nudge
+            // of a whole book and half of a short section.
+            const scale = safeDuration > 0 ? viewSpan / safeDuration : 1;
+            const step = (event.shiftKey ? 10 : 5) * scale;
+            const from = previewTime ?? currentTime ?? view.start;
 
             if (event.key === "ArrowRight") {
-              handleSeekChange([
-                Math.min((currentTime || 0) + step, safeDuration),
-              ]);
+              handleSeekChange([Math.min(from + step, view.end)]);
             } else if (event.key === "ArrowLeft") {
-              handleSeekChange([Math.max((currentTime || 0) - step, 0)]);
+              handleSeekChange([Math.max(from - step, view.start)]);
             } else {
               return;
             }
@@ -283,46 +359,51 @@ export const AudiobookPlayerBar = ({
           }}
           className="group relative w-full cursor-pointer touch-none select-none py-2"
         >
-          {/* Track — the whole recording. It thickens while a section is being
-              chosen, the way a scrubber grows into a range editor. */}
+          {/* Track — what the bar is showing. It thickens while a section is
+              being chosen, the way a scrubber grows into a range editor. */}
           <div
             className={cn(
               "relative w-full overflow-hidden rounded-full bg-black/10 transition-[height] duration-200 dark:bg-white/[0.14]",
-              pickingSection ? "h-2.5" : "h-1.5 group-hover:h-2",
+              editing ? "h-2.5" : "h-1.5 group-hover:h-2",
             )}
           >
-            {/* Played portion */}
+            {/* Played portion. Inside a committed loop it wears the loop's own
+                colour, because everything on this track *is* the loop. */}
             <div
               ref={fillRef}
-              className="absolute inset-y-0 left-0 w-full origin-left bg-black/80 dark:bg-white"
+              className={cn(
+                "absolute inset-y-0 left-0 w-full origin-left",
+                zoomed ? "bg-indigo-500" : "bg-black/80 dark:bg-white",
+              )}
               style={{ transform: "scaleX(0)" }}
             />
 
             {/* Nothing to hear here — punched through whatever is underneath */}
-            {emptyRanges.map((range) => (
+            {emptyRanges.map((span) => (
               <div
-                key={`empty-${range.start}`}
+                key={`empty-${span.start}`}
                 className="absolute inset-y-0 bg-white/75 dark:bg-black/40"
                 style={{
-                  left: `${(range.start / safeDuration) * 100}%`,
-                  width: `${((range.end - range.start) / safeDuration) * 100}%`,
+                  left: `${toRatio(span.start) * 100}%`,
+                  width: `${((span.end - span.start) / viewSpan) * 100}%`,
                 }}
               />
             ))}
 
             {/* Where the audio actually starts */}
-            {firstStart > 0.5 && (
+            {firstStart > view.start + 0.5 && (
               <div
                 className="absolute -inset-y-1 w-[2px] rounded-full bg-black/30 dark:bg-white/50"
-                style={{ left: `${(firstStart / safeDuration) * 100}%` }}
+                style={{ left: `${toRatio(firstStart) * 100}%` }}
               />
             )}
 
-            {/* The looped section, drawn over everything the track knows. */}
+            {/* The looped section: a band inside the whole recording, or the
+                marks of its own lines once the track has become the section. */}
             {dynamicLoop && (
               <DynamicLoopFill
                 dynamicLoop={dynamicLoop}
-                duration={safeDuration}
+                view={view}
                 playedRef={playedRef}
               />
             )}
@@ -384,6 +465,12 @@ export const AudiobookPlayerBar = ({
             </div>
           )}
         </div>
+
+        {zoomed && range && (
+          <span className="shrink-0 text-[10px] font-medium tabular-nums opacity-45">
+            {formatTime(range.end)}
+          </span>
+        )}
       </div>
     </div>
   );

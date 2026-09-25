@@ -38,32 +38,58 @@ const labelAlignment = (ratio: number) => {
 
 export const DynamicLoopFill = ({
   dynamicLoop,
-  duration,
+  view,
   playedRef,
 }: {
   dynamicLoop: DynamicLoop;
-  duration: number;
+  /** The stretch of recording the track is showing. */
+  view: { start: number; end: number };
   /** Written by the bar's frame loop: how far into the section we are. */
   playedRef?: React.MutableRefObject<HTMLDivElement | null>;
 }) => {
   const range = dynamicLoop.range;
+  /** Looping a committed section: the track *is* the section. */
+  const zoomed = dynamicLoop.mode === "active";
+  const span = Math.max(view.end - view.start, 0.001);
 
+  // The lines the section covers, so the marks and the snapping agree.
   const ticks = useMemo(() => {
     if (!range) {
       return [];
     }
 
     return dynamicLoop.lines
-      .filter((line) => line.start > range.start + 0.05 && line.start < range.end)
+      .filter(
+        (line) => line.start > range.start + 0.05 && line.start < range.end,
+      )
       .slice(0, MAX_TICKS);
   }, [dynamicLoop.lines, range]);
 
-  if (!range || duration <= 0) {
+  if (!range || view.end <= view.start) {
     return null;
   }
 
-  const left = (range.start / duration) * 100;
-  const width = ((range.end - range.start) / duration) * 100;
+  const tickLeft = (start: number) => `${((start - view.start) / span) * 100}%`;
+
+  // Zoomed in, there is nothing to frame: no band to draw around the section and
+  // nothing outside it to dim — the played fill is already the section's own
+  // progress. Only the line marks are worth keeping.
+  if (zoomed) {
+    return (
+      <>
+        {ticks.map((line) => (
+          <span
+            key={line.id ?? line.index}
+            className="absolute inset-y-0 w-px bg-black/15 dark:bg-white/25"
+            style={{ left: tickLeft(line.start) }}
+          />
+        ))}
+      </>
+    );
+  }
+
+  const left = ((range.start - view.start) / span) * 100;
+  const width = ((range.end - range.start) / span) * 100;
 
   return (
     <>
@@ -89,7 +115,6 @@ export const DynamicLoopFill = ({
           style={{ transform: "scaleX(0)" }}
         />
 
-        {/* The lines the section covers, so the marks and the snapping agree. */}
         {ticks.map((line) => (
           <span
             key={line.id ?? line.index}

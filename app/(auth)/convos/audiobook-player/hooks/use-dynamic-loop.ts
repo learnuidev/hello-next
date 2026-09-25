@@ -33,11 +33,24 @@ export const HOLD_TO_START_MS = 1000;
 /** This long, while it is on, and you are taken back where you were. */
 export const HOLD_TO_STOP_MS = 1000;
 
-/** How long a wrap is left alone: a seek is not instant, and re-seeking inside
- * the same one would machine-gun the audio. */
-const WRAP_SETTLE_MS = 240;
+/** How close to its own start a wrap counts as landed. */
+const WRAP_LAND_SLACK = 0.4;
+/** If a wrap has not landed by now the player needs a nudge. */
+const WRAP_TIMEOUT_MS = 1200;
 /** A jump in the clock this big is a seek, not playback. */
 const SEEK_JUMP_SECONDS = 0.9;
+/** A clock that has not moved for this long is not playing, whatever else says. */
+const STILL_MS = 400;
+/**
+ * How long after a wrap the coarse loop is held off, so the two layers cannot
+ * send the playhead back twice for the same crossing.
+ */
+const WRAP_GUARD_MS = 400;
+/**
+ * How long the precise clocks have to have been quiet before the coarse one is
+ * believed. Longer than a frame, shorter than a progress tick.
+ */
+const COARSE_GRACE_MS = 250;
 /** The two boundaries may never touch: a shorter section is not a loop. */
 const MIN_SECTION_SECONDS = 0.4;
 /** Slack when asking which line a moment belongs to. */
@@ -77,6 +90,13 @@ export type DynamicLoop = {
   lines: DynamicLoopLine[];
   /** False when the content has no timings yet, or the player is not ready. */
   canLoop: boolean;
+  /** How many transcripts the reader has starred (via the repeat button). */
+  selectionCount: number;
+  /**
+   * Loop the starred transcripts, as one section. Returns false when nothing is
+   * starred — the caller then falls back to whatever it did before.
+   */
+  loopSelection: () => boolean;
   /** Where the playhead was when the section was opened. */
   returnPosition: number | null;
   /** Open the section picker (the loop button's one second hold). */
@@ -115,6 +135,7 @@ const distanceToLine = (line: DynamicLoopLine, time: number) => {
 
 export const useDynamicLoop = ({
   transcriptions,
+  selection,
   duration,
   currentTime,
   playing,
@@ -124,6 +145,7 @@ export const useDynamicLoop = ({
   pause,
   onEnter,
   onExit,
+  onCommit,
 }: {
   transcriptions?: any[];
   duration: number;
@@ -134,9 +156,16 @@ export const useDynamicLoop = ({
   play: () => void;
   pause: () => void;
   /** Called when the section picker opens, so the single line loop can stand down. */
+  /** The transcripts the reader has starred: the section to loop. */
+  selection?: any[];
   onEnter?: () => void;
   /** Called once the playhead is back where it was. */
   onExit?: () => void;
+  /**
+   * Called when a section is committed and playback is started for it, so the
+   * transport can show "playing" without waiting to be told by the player.
+   */
+  onCommit?: () => void;
 }): DynamicLoop => {
   const [mode, setMode] = useState<DynamicLoopMode>("off");
   const [range, setRange] = useState<DynamicLoopRange | null>(null);
@@ -171,12 +200,57 @@ export const useDynamicLoop = ({
 
   const canLoop = duration > 0 && lines.length > 0;
 
+  /**
+   * The starred transcripts, as the section they describe.
+   *
+   * This is the reader's own selection — the repeat button beside a transcript
+   * — and it is the section the loop button loops. Matching is by start time
+   * because a starred line and the timed line it came from are the same line,
+   * even when one of them has been clipped to the length of the file.
+   */
+  const selectionStarts = useMemo(
+    () =>
+      (selection || [])
+        .map((line: any) => Number(line?.start))
+        .filter((start) => Number.isFinite(start)),
+    [selection],
+  );
+
+  const selectionRange = useMemo((): DynamicLoopRange | null => {
+    if (selectionStarts.length === 0 || lines.length === 0) {
+      return null;
+    }
+
+    const starred = lines.filter((line) =>
+      selectionStarts.some((start) => Math.abs(start - line.start) < 0.05),
+    );
+
+    if (starred.length === 0) {
+      return null;
+    }
+
+    const startIndex = starred[0].index;
+    const endIndex = starred[starred.length - 1].index;
+
+    return {
+      start: lines[startIndex].start,
+      end: lines[endIndex].end,
+      startIndex,
+      endIndex,
+    };
+  }, [lines, selectionStarts]);
+
+  const selectionCount = selectionRange
+    ? selectionRange.endIndex - selectionRange.startIndex + 1
+    : 0;
+
   const rangeRef = useRef<DynamicLoopRange | null>(range);
   const playingRef = useRef(playing);
   const timeRef = useRef(currentTime);
   const returnRef = useRef<{ time: number; playing: boolean } | null>(null);
   const onEnterRef = useRef(onEnter);
   const onExitRef = useRef(onExit);
+  const onCommitRef = useRef(onCommit);
 
   /**
    * Every change of section goes through here so the ref is written *now*,
@@ -200,7 +274,8 @@ export const useDynamicLoop = ({
   useEffect(() => {
     onEnterRef.current = onEnter;
     onExitRef.current = onExit;
-  }, [onEnter, onExit]);
+    onCommitRef.current = onCommit;
+  }, [onEnter, onExit, onCommit]);
 
   /** The player's own clock when it has one, the reported time otherwise. */
   const readTime = useCallback(() => {
@@ -215,6 +290,38 @@ export const useDynamicLoop = ({
     }
 
     return timeRef.current || 0;
+  }, [playerRef]);
+
+  /**
+   * The media element itself, when there is one to be had.
+   *
+   * `getInternalPlayer` is react-player's own door to it; the nested
+   * `player.player` is the same element one layer in. The loop asks this element
+   * for its clock, its `paused`, and writes its `currentTime` directly — because
+   * that is what is actually playing, and none of it can drift out of step the
+   * way a copy of the state can. A player with no element behind it (a YouTube
+   * embed, say) answers null.
+   */
+  const getMedia = useCallback((): HTMLMediaElement | null => {
+    const candidates = [
+      () => playerRef?.current?.getInternalPlayer?.("player"),
+      () => playerRef?.current?.getInternalPlayer?.(),
+      () => playerRef?.current?.player?.player,
+    ];
+
+    for (const candidate of candidates) {
+      try {
+        const media = candidate();
+
+        if (media && typeof media.currentTime === "number") {
+          return media as HTMLMediaElement;
+        }
+      } catch (err) {
+        // Try the next shape.
+      }
+    }
+
+    return null;
   }, [playerRef]);
 
   /** Index of the last line that starts at or before `time` (-1 before them all). */
@@ -376,23 +483,67 @@ export const useDynamicLoop = ({
     const time = readTime();
     const line = lineAtTime(time) ?? nearestLine(time) ?? lines[0];
 
-    if (!line) {
+    // Starred transcripts are what the reader has already chosen, so the picker
+    // opens on them; without any, it opens on the line being played, which is
+    // always a real section — one line — rather than an empty range.
+    const seeded =
+      selectionRange ??
+      (line
+        ? {
+            start: line.start,
+            end: line.end,
+            startIndex: line.index,
+            endIndex: line.index,
+          }
+        : null);
+
+    if (!seeded) {
       return;
     }
 
     returnRef.current = { time, playing: playingRef.current };
     setReturnPosition(time);
-    // Opening on the line being played means the picker always starts from a
-    // real section — one line — instead of an empty range to build up from.
-    applyRange({
-      start: line.start,
-      end: line.end,
-      startIndex: line.index,
-      endIndex: line.index,
-    });
+    applyRange(seeded);
     setMode("selecting");
     onEnterRef.current?.();
-  }, [applyRange, canLoop, lineAtTime, lines, nearestLine, readTime]);
+  }, [
+    applyRange,
+    canLoop,
+    lineAtTime,
+    lines,
+    nearestLine,
+    readTime,
+    selectionRange,
+  ]);
+
+  /**
+   * Loop the starred transcripts, now.
+   *
+   * Starring a transcript with the repeat button beside it *is* choosing a
+   * section, so this is what a tap on the loop button does with them: the same
+   * section the picker would open on, committed and playing. Nothing is
+   * cleared — the selection stays, ready to be looped again or changed.
+   */
+  const loopSelection = useCallback((): boolean => {
+    if (!canLoop || !selectionRange) {
+      return false;
+    }
+
+    const time = readTime();
+
+    returnRef.current = { time, playing: playingRef.current };
+    setReturnPosition(time);
+    applyRange(selectionRange);
+    setMode("active");
+    onEnterRef.current?.();
+    // From the top of the first starred transcript: you asked to loop these, so
+    // you hear all of them.
+    seek(selectionRange.start);
+    play();
+    onCommitRef.current?.();
+
+    return true;
+  }, [applyRange, canLoop, play, readTime, seek, selectionRange]);
 
   const commit = useCallback(() => {
     const current = rangeRef.current;
@@ -405,6 +556,7 @@ export const useDynamicLoop = ({
     // From the top: you asked to loop a section, so you hear all of it.
     seek(current.start);
     play();
+    onCommitRef.current?.();
   }, [play, seek]);
 
   const edit = useCallback(() => {
@@ -554,89 +706,328 @@ export const useDynamicLoop = ({
   );
 
   // ── The wrap itself ───────────────────────────────────────────────────────
-  // Deliberately keyed on the mode alone: the section is read from the ref, so
-  // dragging a handle across a line boundary does not restart the clock.
+  // Three clocks, one decision. The element's own `timeupdate` and the frame
+  // clock are the precise pair; react-player's progress tick is the coarse one
+  // that keeps the loop honest in a background tab, where requestAnimationFrame
+  // is throttled to a standstill and `timeupdate` slows down — and listening to
+  // an audiobook in a background tab is the whole point of an audiobook.
+  //
+  // The element is also the authority: its clock, its `paused`, and its
+  // `currentTime` written directly, with no player object in between.
+  const watchRef = useRef<{
+    /** What the state belongs to; a different section starts a different state. */
+    key: string;
+    last: number;
+    lastMovedAt: number;
+    /** Time of the last reading from a clock that cannot be stale. */
+    preciseAt: number;
+    inside: boolean;
+    /** A wrap that has been asked for and not yet seen on the clock. */
+    wrapping: boolean;
+    wrapDeadline: number;
+    endedAt: number;
+  } | null>(null);
+
+  /** The live decision, handed to whichever clock fires. */
+  const enforceRef = useRef<((time: number, coarse?: boolean) => void) | null>(
+    null,
+  );
+
+  /** When the playhead was last sent back to the top of the section. */
+  const lastWrapAtRef = useRef(0);
+
+  /**
+   * Sends the playhead back to the start of the section, and asks for playback.
+   *
+   * The seek goes through the player exactly the way the transcript list view has
+   * always done it — that is the path that is known to work — and `play()` is
+   * called *unconditionally* afterwards. A seek on its own can leave a player
+   * stopped where it was, which is what "the audio stops at the end of the loop"
+   * was: it never came back.
+   */
+  const wrapToStart = useCallback(
+    (start: number) => {
+      lastWrapAtRef.current = performance.now();
+      seek(start);
+
+      // If the element did not take the seek, write it directly as well.
+      const media = getMedia();
+
+      if (media) {
+        try {
+          if (Math.abs(media.currentTime - start) > 0.5) {
+            media.currentTime = start;
+          }
+        } catch (err) {
+          // The player's own seek is all we have.
+        }
+      }
+
+      play();
+    },
+    [getMedia, play, seek],
+  );
+
+  /**
+   * The loop the transcript list view has always used, kept as the guarantee.
+   *
+   * Every time the player reports a position past the end of the section, the
+   * playhead goes back to its start. Ten times a second is coarse, but it is
+   * driven by the player's own progress ticks — which keep coming whatever the
+   * tab is doing and whatever the element looks like — and it is the exact
+   * mechanism that loops the starred transcripts in the list view today.
+   *
+   * It deliberately does not ask whether the audio is playing: the reported time
+   * only moves when it is, and asking is how a loop ends up gated behind a flag
+   * that lies. It also does not ask which mode the section is in — a section is
+   * being looped the moment it exists, whether it is being previewed from the
+   * picker or committed and left to run, exactly as starred transcripts loop in
+   * the list view.
+   */
   useEffect(() => {
-    if (mode === "off" || !rangeRef.current) {
+    if (mode === "off" || !range) {
       return;
     }
 
+    if (currentTime <= range.end) {
+      return;
+    }
+
+    // The precise engine has just wrapped; do not wrap it a second time.
+    if (performance.now() - lastWrapAtRef.current < WRAP_GUARD_MS) {
+      return;
+    }
+
+    wrapToStart(range.start);
+  }, [currentTime, mode, range, wrapToStart]);
+
+  useEffect(() => {
+    if (mode === "off") {
+      return;
+    }
+
+    const section = rangeRef.current;
+
+    if (!section) {
+      return;
+    }
+
+    const key = `${mode}:${section.start}:${section.end}`;
+
+    if (!watchRef.current || watchRef.current.key !== key) {
+      const now = performance.now();
+      const time = readTime();
+
+      watchRef.current = {
+        key,
+        last: time,
+        lastMovedAt: now,
+        preciseAt: now,
+        inside: time >= section.start && time < section.end,
+        wrapping: false,
+        wrapDeadline: 0,
+        endedAt: 0,
+      };
+    }
+
     let frame = 0;
-    let last = readTime();
-    let inside = last >= rangeRef.current.start && last < rangeRef.current.end;
-    let settleUntil = 0;
+    /** The element the listeners are on, so it can be followed when it changes. */
+    let attached: HTMLMediaElement | null = null;
 
-    const wrap = () => {
-      const section = rangeRef.current;
+    const wrap = (state: NonNullable<typeof watchRef.current>, now: number) => {
+      const current = rangeRef.current;
 
-      if (!section) {
+      if (!current) {
         return;
       }
 
-      settleUntil = performance.now() + WRAP_SETTLE_MS;
-      inside = true;
-      last = section.start;
-      seek(section.start);
+      state.wrapping = true;
+      state.wrapDeadline = now + WRAP_TIMEOUT_MS;
+      state.inside = true;
+      state.last = current.start;
+      wrapToStart(current.start);
     };
+
+    const enforce = (time: number, coarse = false) => {
+      const state = watchRef.current;
+
+      if (!state) {
+        return;
+      }
+
+      const now = performance.now();
+      const current = rangeRef.current;
+
+      // The section was dropped under us — the playhead is free again.
+      if (!current) {
+        return;
+      }
+
+      // The precise clocks are alive, so the coarse one stays out of the way.
+      if (coarse && now - state.preciseAt < COARSE_GRACE_MS) {
+        return;
+      }
+
+      if (!coarse) {
+        state.preciseAt = now;
+      }
+
+      const media = getMedia();
+
+      if (Math.abs(time - state.last) > 0.001) {
+        state.lastMovedAt = now;
+      }
+
+      // The element decides whether the section should be running at all; a
+      // player that cannot be asked is judged by whether its clock is moving,
+      // which is the only thing a loop actually cares about.
+      const running = media ? !media.paused : now - state.lastMovedAt < STILL_MS;
+
+      // Playing out the end of the file stops the element outright, and a
+      // section that ends there would otherwise never come round again.
+      if (media?.ended) {
+        if (now - state.endedAt > WRAP_TIMEOUT_MS) {
+          state.endedAt = now;
+          state.last = time;
+          wrap(state, now);
+        }
+
+        return;
+      }
+
+      // Stopped: the loop is only a place on the timeline, never a seek.
+      if (!running) {
+        state.wrapping = false;
+        state.inside = time >= current.start && time < current.end;
+        state.last = time;
+        return;
+      }
+
+      // Waiting for a wrap to land. One wrap is one seek however long the player
+      // takes to honour it — asking again every frame is what makes a loop
+      // stutter at its own boundary instead of looping over it. Landing is
+      // judged on the element's clock, which is why any clock can release this.
+      if (state.wrapping) {
+        const actual = media ? media.currentTime : time;
+
+        const landed =
+          actual <= current.start + WRAP_LAND_SLACK ||
+          actual < state.last - SEEK_JUMP_SECONDS;
+
+        if (landed) {
+          state.wrapping = false;
+          state.inside = true;
+          state.last = actual;
+          return;
+        }
+
+        // The seek went through and nothing came of it: ask for playback too.
+        if (now > state.wrapDeadline) {
+          state.wrapping = false;
+          play();
+        }
+
+        state.last = time;
+        return;
+      }
+
+      const sought = Math.abs(time - state.last) > SEEK_JUMP_SECONDS;
+
+      state.last = time;
+
+      if (sought) {
+        state.inside = time >= current.start && time < current.end;
+
+        // A committed loop owns the playhead: landing after it sends you back to
+        // its head, while landing before it simply plays into the section.
+        if (mode === "active" && time >= current.end) {
+          wrap(state, now);
+        }
+
+        return;
+      }
+
+      if (time >= current.end) {
+        // While the section is still being chosen only a listening pass wraps:
+        // seeking away to audition something else must not be yanked back.
+        if (mode === "active" || state.inside) {
+          wrap(state, now);
+        }
+
+        return;
+      }
+
+      state.inside = time >= current.start;
+    };
+
+    enforceRef.current = enforce;
+
+    /** A reading taken from the element: never stale, whatever the tab is doing. */
+    const onElementReading = () => {
+      const media = getMedia();
+
+      if (media) {
+        enforce(media.currentTime);
+      }
+    };
+
+    const attach = () => {
+      const media = getMedia();
+
+      if (!media || media === attached) {
+        return;
+      }
+
+      if (attached) {
+        attached.removeEventListener("timeupdate", onElementReading);
+        attached.removeEventListener("seeked", onElementReading);
+        attached.removeEventListener("ended", onElementReading);
+      }
+
+      attached = media;
+      media.addEventListener("timeupdate", onElementReading);
+      media.addEventListener("seeked", onElementReading);
+      media.addEventListener("ended", onElementReading);
+    };
+
+    attach();
+
+    const attachTimer = setInterval(attach, 500);
 
     const tick = () => {
       frame = requestAnimationFrame(tick);
 
-      const now = performance.now();
-      const section = rangeRef.current;
-      const time = readTime();
+      const media = getMedia();
 
-      // The section was dropped under us — the playhead is free again.
-      if (!section) {
-        return;
-      }
-
-      // Paused, the loop is only a place on the timeline.
-      if (!playingRef.current) {
-        last = time;
-        inside = time >= section.start && time < section.end;
-        return;
-      }
-
-      // The seek we just asked for has not landed yet.
-      if (now < settleUntil) {
-        last = time;
-        return;
-      }
-
-      const sought = Math.abs(time - last) > SEEK_JUMP_SECONDS;
-
-      last = time;
-
-      if (sought) {
-        inside = time >= section.start && time < section.end;
-
-        // A committed loop owns the playhead: landing after it sends you back to
-        // its head, while landing before it simply plays into the section.
-        if (mode === "active" && time >= section.end) {
-          wrap();
-        }
-
-        return;
-      }
-
-      if (time >= section.end) {
-        // While the section is still being chosen only a listening pass wraps:
-        // seeking away to audition something else must not be yanked back.
-        if (mode === "active" || inside) {
-          wrap();
-        }
-
-        return;
-      }
-
-      inside = time >= section.start;
+      enforce(media ? media.currentTime : readTime());
     };
 
     frame = requestAnimationFrame(tick);
 
-    return () => cancelAnimationFrame(frame);
-  }, [mode, readTime, seek]);
+    return () => {
+      cancelAnimationFrame(frame);
+      clearInterval(attachTimer);
+
+      enforceRef.current = null;
+
+      if (attached) {
+        attached.removeEventListener("timeupdate", onElementReading);
+        attached.removeEventListener("seeked", onElementReading);
+        attached.removeEventListener("ended", onElementReading);
+      }
+    };
+  }, [getMedia, mode, play, readTime, wrapToStart]);
+
+  // react-player reports its position ten times a second through its own timer,
+  // and unlike a frame clock that timer keeps running in a background tab. It is
+  // the safety net the frame loop cannot be.
+  useEffect(() => {
+    if (mode === "off") {
+      return;
+    }
+
+    enforceRef.current?.(currentTime, true);
+  }, [currentTime, mode]);
 
   return useMemo(
     () => ({
@@ -644,6 +1035,8 @@ export const useDynamicLoop = ({
       range,
       lines,
       canLoop,
+      selectionCount,
+      loopSelection,
       returnPosition,
       begin,
       commit,
@@ -661,6 +1054,8 @@ export const useDynamicLoop = ({
       range,
       lines,
       canLoop,
+      selectionCount,
+      loopSelection,
       returnPosition,
       begin,
       commit,

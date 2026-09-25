@@ -30,16 +30,19 @@ export const LoopButton = ({
   mode,
   lineLoop,
   canLoop,
+  selectionCount = 0,
   onTap,
   onEnter,
   onExit,
   className,
 }: {
   mode: DynamicLoopMode;
-  /** The single line loop the player has always had. */
+  /** The single line loop the player has always had, or starred transcripts. */
   lineLoop: boolean;
   /** False until the content has timings and the player is ready. */
   canLoop: boolean;
+  /** How many transcripts the reader has starred. */
+  selectionCount?: number;
   onTap: () => void;
   onEnter: () => void;
   onExit: () => void;
@@ -79,6 +82,10 @@ export const LoopButton = ({
     return () => clearTimeout(timer);
   }, [mode]);
 
+  const starred = `${selectionCount} transcript${
+    selectionCount === 1 ? "" : "s"
+  }`;
+
   const hint = holding
     ? dynamic
       ? "Keep holding to go back"
@@ -87,18 +94,22 @@ export const LoopButton = ({
       ? "Drag the handles · tap lines to extend"
       : mode === "active"
         ? "Looping this section · hold to go back"
-        : canLoop
-          ? "Hold 1s to loop a section"
-          : "Loop this line";
+        : selectionCount > 0
+          ? `Tap to loop ${starred}`
+          : canLoop
+            ? "Hold 1s to loop a section"
+            : "Loop this line";
 
   const label =
     mode === "selecting"
       ? "Choosing a loop section. Press and hold to go back where you were."
       : mode === "active"
         ? "Looping a section. Tap to change it, press and hold to go back where you were."
-        : canLoop
-          ? "Loop this line. Press and hold for a second to loop a section."
-          : "Loop this line.";
+        : selectionCount > 0
+          ? `Loop the ${starred} you starred. Press and hold to choose the section by hand.`
+          : canLoop
+            ? "Loop this line. Press and hold for a second to loop a section."
+            : "Loop this line.";
 
   const showHint = holding || lingering;
 

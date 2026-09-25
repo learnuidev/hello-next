@@ -299,6 +299,7 @@ export const AudiobookPlayerCore = ({
                     currentTime={currentTime}
                     seekAndPlay={seekAndPlay}
                     isPlaying={playing}
+                    playerRef={playerRef}
                   />
                 </div>
               )}

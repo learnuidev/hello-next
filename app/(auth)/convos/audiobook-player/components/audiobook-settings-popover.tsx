@@ -20,7 +20,6 @@ import { ContentEditButton } from "@/components/youtube-page/content-edit-button
 import { usePlayerViewModeStore } from "@/components/youtube-page/player-view-mode-store";
 import { StarIconButton } from "@/components/content-collections/star-content-button";
 import { ContentToCollect } from "@/domain/content-collections/content-collections.types";
-import { ActiveButtons } from "./active-buttons";
 import { FontSizeControls } from "./font-size-controls";
 
 function ViewTypeButton({
@@ -90,15 +89,6 @@ export function AudioBookSettingsPopover({
             <h4 className="font-bold leading-none">Player Settings</h4>
           </div>
           <div className="mt-4 space-y-8 pb-4">
-            {/* Reader mode puts the whole book on the sheet, so there is no
-                page size left to choose — only the other views slice by time. */}
-            {!isReaderView && (
-              <div className="flex items-center space-x-2 justify-between">
-                <Label htmlFor="video-visible">T. Size</Label>
-                <ActiveButtons />
-              </div>
-            )}
-
             <div className="flex items-center space-x-2 justify-between">
               <Label htmlFor="perc">PERC</Label>
               <div className="flex gap-8 rounded-full">

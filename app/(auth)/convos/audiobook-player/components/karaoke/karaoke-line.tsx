@@ -186,7 +186,11 @@ export const KaraokeLine = memo(
         for (let index = 0; index < slots.length; index++) {
           const slot = slots[index];
 
-          targets[index].progress = getSweepProgress(time, slot.start, slot.end);
+          targets[index].progress = getSweepProgress(
+            time,
+            slot.start,
+            slot.end,
+          );
         }
 
         applySweepFrame(targets, runtime);
@@ -206,9 +210,13 @@ export const KaraokeLine = memo(
         data-k-active={isActive ? "1" : undefined}
         onClick={(event) => {
           const tokenStart = (event.target as HTMLElement)?.dataset?.kStart;
-          const parsed = tokenStart !== undefined ? parseFloat(tokenStart) : NaN;
+          const parsed =
+            tokenStart !== undefined ? parseFloat(tokenStart) : NaN;
 
-          onSeekToken(Number.isFinite(parsed) ? parsed : chunk.start, chunk.key);
+          onSeekToken(
+            Number.isFinite(parsed) ? parsed : chunk.start,
+            chunk.key,
+          );
         }}
         className={cn(
           // Vertical rhythm lives in padding (never margins): the scroll maths
@@ -276,7 +284,9 @@ export const KaraokeLine = memo(
 
         {showTranslation && translation && (
           <div
-            className="mx-auto mt-2 line-clamp-2 max-w-3xl px-2 text-center"
+            className={cn(
+              "mx-auto mt-2 line-clamp-2 max-w-3xl px-2 text-center font-bold",
+            )}
             style={{
               fontSize: Math.max(
                 fontSize * TRANSLATION_SCALE,
@@ -285,10 +295,12 @@ export const KaraokeLine = memo(
                   : TRANSLATION_MIN_SIZE.focus,
               ),
               lineHeight: 1.5,
-              color: "var(--k-muted)",
-              // Same rule as the roman guide: the English / chinglish belongs to
-              // every line, and the out-of-focus blur — not hiding it — is what
-              // keeps the line being sung in front.
+              // The English belongs to every line — the out-of-focus blur, not
+              // hiding it, is what keeps the line being sung in front — but on
+              // the line being sung it is painted with the same colour as the
+              // input it is a translation of, rather than sitting back in the
+              // muted tone the other lines wear.
+              color: isActive ? "var(--k-sung)" : "var(--k-muted)",
             }}
           >
             {translation}

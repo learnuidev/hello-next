@@ -25,7 +25,11 @@ import { useReaderTranslateAnswer } from "../hooks/use-reader-translate";
  * are moving around, fading away once the pointer goes idle, back on the next
  * movement, and it never takes a click while it is out of the way.
  */
-export const ReaderSideDock = ({ showTranslate }: { showTranslate: boolean }) => {
+export const ReaderSideDock = ({
+  showTranslate,
+}: {
+  showTranslate: boolean;
+}) => {
   const showEn = useBrightModeStore((state) => state.showEn);
   const setShowEn = useBrightModeStore((state) => state.setShowEn);
   const { showChinglish, setShowChinglish } = useChinglishState();
@@ -41,51 +45,50 @@ export const ReaderSideDock = ({ showTranslate }: { showTranslate: boolean }) =>
             {/* Nothing to switch between until the line has come back
                 translated. English and chinglish are two readings of the same
                 translation, so they take turns in the one slot. */}
-            {showTranslate && !!translation && (
-              <>
-                <button
-                  title="Chinglish"
-                  onClick={() => {
-                    const next = !showChinglish;
 
-                    setShowChinglish(next);
+            <>
+              <button
+                title="Chinglish"
+                onClick={() => {
+                  const next = !showChinglish;
 
-                    if (next) {
-                      setShowEn(false);
-                    }
-                  }}
-                  className={cn(
-                    "transition text-xl",
-                    showChinglish
-                      ? "text-gray-800 dark:text-white"
-                      : "text-gray-500 hover:text-rose-400 dark:hover:text-white",
-                  )}
-                >
-                  C
-                </button>
+                  setShowChinglish(next);
 
-                <button
-                  title="English"
-                  onClick={() => {
-                    const next = !showEn;
+                  if (next) {
+                    setShowEn(false);
+                  }
+                }}
+                className={cn(
+                  "transition text-xl",
+                  showChinglish && !showEn
+                    ? "text-gray-800 dark:text-white"
+                    : "text-gray-300 dark:text-gray-500 hover:text-rose-400 dark:hover:text-white",
+                )}
+              >
+                C
+              </button>
 
-                    setShowEn(next);
+              <button
+                title="English"
+                onClick={() => {
+                  const next = !showEn;
 
-                    if (next) {
-                      setShowChinglish(false);
-                    }
-                  }}
-                  className={cn(
-                    "transition text-xl",
-                    showEn
-                      ? "text-gray-800 dark:text-white"
-                      : "text-gray-500 hover:text-rose-400 dark:hover:text-white",
-                  )}
-                >
-                  E
-                </button>
-              </>
-            )}
+                  setShowEn(next);
+
+                  if (next) {
+                    setShowChinglish(false);
+                  }
+                }}
+                className={cn(
+                  "transition text-xl",
+                  showEn && !showChinglish
+                    ? "text-gray-800 dark:text-white"
+                    : "text-gray-300 dark:text-gray-500 hover:text-rose-400 dark:hover:text-white",
+                )}
+              >
+                E
+              </button>
+            </>
 
             <PinyinButton className="text-xl" />
             <ReadModeButton className="text-xl" />

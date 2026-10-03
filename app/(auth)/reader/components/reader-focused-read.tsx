@@ -119,9 +119,10 @@ export const ReaderFocusedRead = ({
    * hold that, and the rows end up crowding one another, which is why the
    * leading grows with both switches.
    *
-   * The reading's leading is in `rem` rather than a ratio because the stack is
-   * a fixed size while the text it sits in steps up a size at `sm`: a ratio
-   * would give the large text the same air as the small and no more.
+   * The reading's leading is in `rem` rather than a ratio because the reading
+   * is a fixed stack: the length that clears it is the same whatever size the
+   * words are. It steps up at `sm` to stay ahead of the plain line, which the
+   * bigger text sets taller on its own.
    */
   const lineSpacing = showReadings
     ? "leading-[3.6rem] sm:leading-[4.5rem]"

@@ -4,7 +4,7 @@ import {
   ListDiscoveryResponse,
   useListDiscoveryMutation,
 } from "@/domain/sentence/use-list-discovery-query";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { create } from "zustand";
 
 /** A line of the text, and the language it is in. */
@@ -16,127 +16,102 @@ export interface ReaderLine {
 /**
  * Translation in the reader.
  *
- * The lookup is a mutation and the Translate button in the dock is the only
- * thing that fires it: a line going by asks for nothing. `/v1/list-discovery`
- * is the app's own way of asking what a sentence means, and the answer is kept
- * here together with the line it is about — the button that asks lives in the
- * dock while the line it is asking about lives in the view, so the line has to
- * be carried across, and a translation can never be shown against a line other
- * than the one it was asked about.
+ * The line on screen is asked about as it arrives. `/v1/list-discovery` is the
+ * app's own way of asking what a sentence means, and while reading line by line
+ * the reader wants to know for every line it puts in the middle of the frame —
+ * so there is nothing to press: the translation is simply there by the time the
+ * eye is ready for it.
+ *
+ * The lookups are mutations rather than queries (see `useListDiscoveryMutation`)
+ * because they are asked for by an event — the line changing — and never by a
+ * mount. Each answer is kept against the line it was asked about, so going back
+ * through a text shows what the server already said instead of asking it again
+ * for a sentence it has already read.
  */
 export const useReaderTranslateStore = create((set: any) => ({
   /** The line on screen, put here by the view. */
   activeLine: null as ReaderLine | null,
-  /** The answer, and the line it belongs to. */
-  translation: null as ListDiscoveryResponse | null,
-  translatedContent: "",
+  /** Every answer we have been given, by the line it is about. */
+  answers: {} as Record<string, ListDiscoveryResponse>,
 
-  /**
-   * A new line is a new question. The answer that was on the table was the last
-   * line's, so it goes away with it — and with it goes the fact that this line
-   * has been asked about, which is what brings the Translate button back.
-   */
-  setActiveLine: (activeLine: ReaderLine | null) =>
+  setActiveLine: (activeLine: ReaderLine | null) => set({ activeLine }),
+
+  remember: (content: string, answer: ListDiscoveryResponse) =>
     set((state: any) => ({
-      activeLine,
-      ...(activeLine?.content === state.translatedContent
-        ? {}
-        : { translation: null, translatedContent: "" }),
+      answers: { ...state.answers, [content]: answer },
     })),
-
-  setTranslation: (
-    content: string,
-    translation: ListDiscoveryResponse | null,
-  ) => set({ translatedContent: content, translation }),
 }));
 
 /**
- * The view half of it: the line on screen is published as it changes — so the
- * dock's button knows what it would be asking about — and the translation
- * handed back is that line's, or nothing at all.
- *
- * Nothing is asked of the server here. That is the button's job.
+ * The view half: the line on screen is published as it changes, asked about on
+ * its own, and the answer handed back — never another line's.
  */
 export const useReaderTranslation = ({ content, lang }: ReaderLine) => {
   const setActiveLine = useReaderTranslateStore(
     (state: any) => state.setActiveLine,
   );
-  const translation = useReaderTranslateStore(
-    (state: any) => state.translation,
-  );
-  const translatedContent = useReaderTranslateStore(
-    (state: any) => state.translatedContent,
-  );
+  const remember = useReaderTranslateStore((state: any) => state.remember);
+  const answers = useReaderTranslateStore((state: any) => state.answers);
+
+  // Lines asked about and not yet answered: coming back to a line whose lookup
+  // is still in the air should not ask a second time.
+  const inFlight = useRef<Set<string>>(new Set());
+
+  const { mutate } = useListDiscoveryMutation({ retry: 2 });
 
   useEffect(() => {
     setActiveLine(content ? { content, lang } : null);
   }, [content, lang, setActiveLine]);
 
+  /**
+   * The lookup itself, on the line that is on screen.
+   *
+   * It is skipped when the answer is already known, and when this line's answer
+   * is still on its way — stepping back and forth through a text should cost
+   * nothing. A failed lookup is deliberately not retried from here: the effect
+   * runs because the line changed, and a failure does not change the line, so
+   * there is no loop to get into — stepping away and back asks again.
+   */
+  useEffect(() => {
+    if (!content || answers[content] || inFlight.current.has(content)) {
+      return;
+    }
+
+    inFlight.current.add(content);
+
+    mutate(
+      { content, lang },
+      {
+        onSuccess: (answer) => {
+          remember(content, answer);
+        },
+        onSettled: () => {
+          inFlight.current.delete(content);
+        },
+      },
+    );
+  }, [content, lang, answers, mutate, remember]);
+
   return {
-    translation: translatedContent === content ? translation : null,
+    translation: answers[content] || null,
   };
 };
 
 /**
- * The button half: the Translate button of the dock, and the only place the
- * lookup is ever asked for.
+ * The dock half: the answer for whatever line the view has put on screen.
  *
- * One click asks about the line on screen. The button is there to make the
- * request, so a successful discovery takes it away — the translation is on the
- * table and the C and E switches are what you work with from then on, until
- * the next line puts the question back.
+ * The dock does not ask for anything — asking belongs to the view, which is the
+ * one that knows what the line is. It only needs to know whether a translation
+ * has arrived, because that is what hands over the C (chinglish) and E
+ * (english) switches, which are that translation's own.
  */
-export const useReaderTranslateButton = () => {
-  const activeLine = useReaderTranslateStore((state: any) => state.activeLine);
-  const translation = useReaderTranslateStore(
-    (state: any) => state.translation,
+export const useReaderTranslateAnswer = () => {
+  const activeLine = useReaderTranslateStore(
+    (state: any) => state.activeLine,
   );
-  const translatedContent = useReaderTranslateStore(
-    (state: any) => state.translatedContent,
-  );
-  const setTranslation = useReaderTranslateStore(
-    (state: any) => state.setTranslation,
-  );
-
-  const { mutate, isPending, variables } = useListDiscoveryMutation();
-
-  // What is on the table is this line's answer, and only this line's. This is
-  // what a successful discovery looks like.
-  const translated =
-    !!translation &&
-    !!activeLine?.content &&
-    translatedContent === activeLine.content;
-
-  const translateLine = () => {
-    const line = activeLine;
-
-    if (!line?.content) {
-      return;
-    }
-
-    mutate(line, {
-      onSuccess: (data) => {
-        // If the reader has moved on while the answer was on its way, the
-        // answer belongs to a line that is no longer on screen: it is dropped
-        // rather than put on the table as this line's meaning.
-        if (
-          useReaderTranslateStore.getState().activeLine?.content !== line.content
-        ) {
-          return;
-        }
-
-        setTranslation(line.content, data);
-      },
-    });
-  };
+  const answers = useReaderTranslateStore((state: any) => state.answers);
 
   return {
-    // Nothing to translate is nothing to show: the dock keeps the button while
-    // there is no answer for the line on screen.
-    translation: translated ? translation : null,
-    // Asking is the only thing the button can be doing: an answer that has
-    // landed takes the button away, so the spinner never outlives it either.
-    isLoading: isPending && variables?.content === activeLine?.content,
-    translateLine,
+    translation: answers[activeLine?.content] || null,
   };
 };

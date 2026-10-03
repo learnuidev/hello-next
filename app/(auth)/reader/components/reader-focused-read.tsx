@@ -1,35 +1,43 @@
 "use client";
 
-import { CharacterItem } from "@/components/_select-character/character-item";
 import { useReadModeState } from "@/components/read-mode-button";
 import { useChinglishState } from "@/components/settings-dialog/use-chinglish-state";
 import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
 import { Icons } from "@/components/ui/icons.v2";
 import { cn } from "@/lib/utils";
-import { Fragment, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { useReaderStore } from "../hooks/use-reader-store";
 import { useReaderTranslation } from "../hooks/use-reader-translate";
 import { getReaderPinyin } from "../utils/get-reader-pinyin";
 import { isHanCharacter } from "../utils/is-han-character";
-import { ReaderMiniDictionary } from "./reader-mini-dictionary";
-import { segmentReaderWords } from "../utils/segment-reader-text";
+import { ReaderWord, segmentReaderWords } from "../utils/segment-reader-text";
 import { splitReaderSentences } from "../utils/split-reader-sentences";
+import { ReaderCharacter, useReaderCharacterMaps } from "./reader-character";
+import { ReaderMiniDictionary } from "./reader-mini-dictionary";
 
 /**
- * Focused read: one sentence at a time, big and centred, with the sentence
- * before and after it sitting quietly around it so the eye never has to hunt
- * for the next line.
+ * Focused read: one line at a time, big and centred, in a stage of its own.
+ *
+ * Nothing else of the text is on the page. The line before and the line after
+ * are not dimmed around it, nothing moves between lines, nothing fades: the
+ * reader gets the line they are on, and stepping replaces it.
+ *
+ * What also does not move is everything around the line. The stage holds a
+ * height of its own, so the progress bar above it and the arrows and buttons
+ * below it stay exactly where they are, whether the line is short or long — a
+ * view whose controls jump about as the text changes length is a view you have
+ * to chase.
  *
  * The words are the interactive part: tapping them picks them out (the same
  * selection read mode uses) and the bar below files the pick — or the whole
- * line — into the reading list. Left/right arrows step through the text.
+ * line — into the reading list. The arrows and the keyboard step through the
+ * text. The line in the middle is asked about as it arrives, so its translation
+ * is usually there by the time the reader wants it.
  *
- * Read mode works here too: switched on, every word carries its reading.
- * "Show parent" drops the whole text in underneath with the line you are on
- * lit up, the way dynocloze does. Characters are drawn by the app's own
- * `CharacterItem`, so what you have learned wears its colour here as well, and
- * the line you stop on is remembered per text.
+ * Read mode spaces the words out and pinyin hangs a reading over every one of
+ * them; characters come from the reader's own character maps rather than a
+ * `CharacterItem` each, and the line you stop on is remembered per text.
  */
 export const ReaderFocusedRead = ({
   readerItemId,
@@ -111,13 +119,18 @@ export const ReaderFocusedRead = ({
     return readingsByWord;
   }, [words, showReadings]);
 
+  // Only the line on screen is drawn, but it is drawn character by character
+  // with the colours they have learned: two maps fetched once, rather than a
+  // subscription per glyph. See `reader-character`.
+  const characterMaps = useReaderCharacterMaps();
+
   /**
-   * The line on screen is taller than its text once the reader switches things
-   * on: read mode spaces the words out, and a reading stacks a second line on
-   * top of every one of them — a 14px reading over a 20–24px word, so a row is
-   * a good forty pixels deep. A line-height meant for the words alone will not
-   * hold that, and the rows end up crowding one another, which is why the
-   * leading grows with both switches.
+   * The line is taller than its text once the reader switches things on: read
+   * mode spaces the words out, and a reading stacks a second line on top of
+   * every one of them — a 14px reading over a 20–24px word, so a row is a good
+   * forty pixels deep. A line-height meant for the words alone will not hold
+   * that, and the rows end up crowding one another, which is why the leading
+   * grows with both switches.
    *
    * The reading's leading is in `rem` rather than a ratio because the reading
    * is a fixed stack: the length that clears it is the same whatever size the
@@ -130,9 +143,8 @@ export const ReaderFocusedRead = ({
       ? "leading-loose"
       : "leading-relaxed";
 
-  // The line on screen is published as it changes, but the server is asked
-  // nothing until the Translate button is clicked — and the answer handed back
-  // is this line's, never the last line's.
+  // The line in the middle of the stage is asked about as it arrives, and the
+  // answer handed back is this line's, never the last line's.
   const { translation } = useReaderTranslation({
     content: currentSentence,
     lang,
@@ -157,6 +169,102 @@ export const ReaderFocusedRead = ({
 
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [currentIndex, lastIndex]);
+
+  /**
+   * One word of the line: the characters with the colours they have learned, and
+   * the reading over them when pinyin is on.
+   */
+  const renderWord = (word: ReaderWord, key: string) => {
+    if (!word.isWordLike || !word.text.trim()) {
+      return <span key={key}>{word.text}</span>;
+    }
+
+    // The highlight belongs to what the dictionary is open on, so every word of
+    // it wears the mark — a tapped word, or every word of a run of text that
+    // was dragged over.
+    const selected =
+      !!tappedWord &&
+      (tappedWord.text === word.text || tappedWord.text.includes(word.text));
+
+    const pickableWord = (
+      <span
+        key={key}
+        title="Tap to pick this word"
+        onClick={(event) => {
+          // A tap on a word is the word's, not the line's.
+          event.stopPropagation();
+
+          // A highlight wins over the word under the pointer: clicking a run of
+          // text that is already lit up keeps the run, it does not shrink it to
+          // the word that was clicked.
+          const highlighted = window.getSelection()?.toString().trim();
+
+          setTappedWord(
+            highlighted
+              ? { text: highlighted, key: "" }
+              : { text: word.text, key },
+          );
+        }}
+        className={cn(
+          "rounded transition cursor-pointer",
+          // With a reading above it the word becomes a little ruby stack. The
+          // stack is sized to the glyph rather than to the line, which is what
+          // pulls the pinyin down onto the character: a line-height borrowed
+          // from the big paragraph around it would float the reading a good ten
+          // pixels away.
+          showReadings
+            ? "px-1 text-xl lg:text-2xl leading-tight"
+            : readMode
+              ? "px-1"
+              : "",
+          selected
+            ? "bg-rose-500/20 text-rose-400"
+            : "hover:text-rose-400",
+        )}
+      >
+        {/* Each character carries its own learned state; latin letters have
+            none, so they stay plain text. */}
+        {Array.from(word.text).map((character, characterIndex) =>
+          isHanCharacter(character) ? (
+            <ReaderCharacter
+              key={`${key}-${characterIndex}`}
+              character={character}
+              maps={characterMaps}
+            />
+          ) : (
+            <span key={`${key}-${characterIndex}`}>{character}</span>
+          ),
+        )}
+      </span>
+    );
+
+    if (!showReadings) {
+      return pickableWord;
+    }
+
+    return (
+      <span key={key} className="inline-flex flex-col items-center align-top">
+        {/* Snug against the character: the box is sized to the reading rather
+            than to the line, because `leading-none` text in a taller box leaves
+            all of its slack underneath — and that slack, plus a margin on top
+            of it, is what used to hold the reading a good three pixels off the
+            word. A little air stays wanted, since tone marks are drawn above
+            the x-height and should not sit on the hanzi below.
+
+            And the reading is not a footnote: it is part of the line rather
+            than commentary on the word, so it carries the text colour with the
+            glyphs — black on white, where the characters are black and there is
+            nothing darker to go. On black it steps down from their white to a
+            soft grey, so the reading sits beside the word instead of shouting
+            over it. */}
+        <span className="text-xs text-black dark:text-gray-400 leading-none h-3.5 whitespace-nowrap">
+          {readings.get(word.text) || ""}
+        </span>
+
+        {pickableWord}
+      </span>
+    );
+  };
 
   if (!sentences.length) {
     return (
@@ -183,131 +291,39 @@ export const ReaderFocusedRead = ({
         />
       </div>
 
-      <div className="mt-20 text-center">
-        <p className="text-lg font-extralight text-gray-600 dark:text-gray-700 min-h-[3rem]">
-          {sentences[currentIndex - 1] || ""}
-        </p>
-
+      {/* The stage: a height of its own, with the line centred in it, so the
+          arrows and the buttons under it never move — a line that runs to three
+          rows leaves them exactly where a line of one row leaves them. */}
+      <div className="mt-20 flex min-h-[14rem] flex-col justify-center text-center sm:min-h-[18rem]">
         <p
           onMouseUp={lookUpSelection}
           className={cn(
-            "my-16 text-2xl sm:text-4xl font-light",
+            "text-2xl sm:text-4xl font-light text-black dark:text-white",
             lineSpacing,
           )}
         >
-          {words.map((word, wordIndex) => {
-            const key = `${currentIndex}:${wordIndex}`;
-
-            if (!word.isWordLike || !word.text.trim()) {
-              return <span key={key}>{word.text}</span>;
-            }
-
-            // The highlight belongs to what the dictionary is open on, so
-            // every word of it wears the mark — a tapped word, or every word
-            // of a run of text that was dragged over.
-            const selected =
-              !!tappedWord &&
-              (tappedWord.text === word.text ||
-                tappedWord.text.includes(word.text));
-
-            const pickableWord = (
-              <span
-                title="Tap to pick this word"
-                onClick={() => {
-                  // A highlight wins over the word under the pointer: clicking
-                  // a run of text that is already lit up keeps the run, it
-                  // does not shrink it to the word that was clicked.
-                  const highlighted = window.getSelection()?.toString().trim();
-
-                  setTappedWord(
-                    highlighted ? { text: highlighted, key: "" } : { text: word.text, key },
-                  );
-                }}
-                className={cn(
-                  "rounded transition cursor-pointer",
-                  // With a reading above it the word becomes a little ruby
-                  // stack. The stack is sized to the glyph rather than to the
-                  // line, which is what pulls the pinyin down onto the
-                  // character: a line-height borrowed from the big paragraph
-                  // around it would float the reading a good ten pixels away.
-                  showReadings
-                    ? "px-1 text-xl lg:text-2xl leading-tight"
-                    : readMode
-                      ? "px-1"
-                      : "",
-                  selected
-                    ? "bg-rose-500/20 text-rose-400"
-                    : "hover:text-rose-400",
-                )}
-              >
-                {/* Each character carries its own learned state; latin letters
-                    have none, so they stay plain text. */}
-                {Array.from(word.text).map((character, characterIndex) =>
-                  isHanCharacter(character) ? (
-                    <CharacterItem
-                      key={`${key}-${characterIndex}`}
-                      character={character}
-                    />
-                  ) : (
-                    <span key={`${key}-${characterIndex}`}>{character}</span>
-                  ),
-                )}
-              </span>
-            );
-
-            if (!showReadings) {
-              return <Fragment key={key}>{pickableWord}</Fragment>;
-            }
-
-            return (
-              <span
-                key={key}
-                className="inline-flex flex-col items-center align-top"
-              >
-                {/* Snug against the character: the box is sized to the reading
-                    rather than to the line, because `leading-none` text in a
-                    taller box leaves all of its slack underneath — and that
-                    slack, plus a margin on top of it, is what used to hold the
-                    reading a good three pixels off the word. A little air stays
-                    wanted, since tone marks are drawn above the x-height and
-                    should not sit on the hanzi below.
-
-                    And the reading is not a footnote: it is part of the line
-                    rather than commentary on the word, so it carries the text
-                    colour with the glyphs — black on white, where the
-                    characters are black and there is nothing darker to go. On
-                    black it steps down from their white to a soft grey, so the
-                    reading sits beside the word instead of shouting over it. */}
-                <span className="text-xs text-black dark:text-gray-400 leading-none h-3.5 whitespace-nowrap">
-                  {readings.get(word.text) || ""}
-                </span>
-
-                {pickableWord}
-              </span>
-            );
-          })}
+          {words.map((word, wordIndex) =>
+            renderWord(word, `${currentIndex}:${wordIndex}`),
+          )}
         </p>
 
+        {/* The translation belongs to the line it is of, the way a translation
+            sits under a lyric — and being inside the stage is what keeps the
+            controls below from moving when one arrives. */}
         {(showEn || showChinglish) && !!translation && (
-          <div className="mb-16 px-4">
-            <p
-              className={cn(
-                "text-lg text-gray-600 dark:text-gray-400",
-                showChinglish && translation.chinglish
-                  ? "font-light italic"
-                  : "font-light",
-              )}
-            >
-              {showChinglish && translation.chinglish
-                ? translation.chinglish
-                : translation.en}
-            </p>
-          </div>
+          <p
+            className={cn(
+              "mx-auto mt-4 max-w-2xl text-lg text-gray-600 dark:text-gray-400",
+              showChinglish && translation.chinglish
+                ? "font-light italic"
+                : "font-light",
+            )}
+          >
+            {showChinglish && translation.chinglish
+              ? translation.chinglish
+              : translation.en}
+          </p>
         )}
-
-        <p className="text-lg font-extralight text-gray-600 dark:text-gray-700 min-h-[3rem]">
-          {sentences[currentIndex + 1] || ""}
-        </p>
       </div>
 
       <div className="flex justify-center items-center mt-20 gap-16 text-2xl">

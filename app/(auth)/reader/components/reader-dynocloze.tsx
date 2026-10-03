@@ -150,8 +150,8 @@ export const ReaderDynocloze = ({
     [showPinyin, currentSentence],
   );
 
-  // Same section, same question: Translate asks about the line on screen, and
-  // only when it is clicked.
+  // Same section, same question: the line on screen is what gets asked about,
+  // as soon as it is the line on screen.
   const { translation } = useReaderTranslation({
     content: currentSentence,
     lang,

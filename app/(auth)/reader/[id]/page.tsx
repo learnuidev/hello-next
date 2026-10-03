@@ -6,7 +6,7 @@ import { Icons } from "@/components/ui/icons.v2";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { ReaderDynocloze } from "../components/reader-dynocloze";
 import { ReaderDock } from "../components/reader-dock";
@@ -27,7 +27,10 @@ import {
 } from "../reader.types";
 import { countReaderCharacters } from "../utils/count-reader-characters";
 import { detectReaderLang } from "../utils/detect-reader-lang";
-import { findReaderLineAtWord } from "../utils/find-reader-line";
+import {
+  findReaderLineAtOffset,
+  findReaderLineAtWord,
+} from "../utils/find-reader-line";
 import { formatReaderDate } from "../utils/format-reader-date";
 import {
   ReaderSelection,
@@ -78,6 +81,10 @@ export default function ReaderText() {
     line: ReaderSnippetLine | null;
   } | null>(null);
 
+  // The read view's plain text, for the one thing that needs to look at the page
+  // rather than at the text: where a highlight starts.
+  const readTextRef = useRef<HTMLParagraphElement | null>(null);
+
   // A pick belongs to the line it was made on: moving to another view (or
   // another text) starts from a clean selection, and the dictionary closes with
   // it — it is open on a word of the view that is going away.
@@ -121,8 +128,72 @@ export default function ReaderText() {
     setSavedNotice(true);
   };
 
+  /**
+   * The line a picked word sits in, as the read view counts it.
+   *
+   * A pick in the read view is only a word: which line of the text it was in is
+   * worked out from where it sits — the paragraph it is in, and which word of
+   * that paragraph it is — and comes back as the line focused read steps
+   * through, so a word saved out of either view opens on the same line.
+   */
+  const lineOfPick = (picked: ReaderSelection) => {
+    if (!item) {
+      return undefined;
+    }
+
+    const [paragraphIndex, wordIndex] = picked.key.split(":").map(Number);
+
+    return (
+      findReaderLineAtWord({
+        text: item.text,
+        lang,
+        paragraphIndex,
+        wordIndex,
+      }) ?? undefined
+    );
+  };
+
+  /**
+   * The line a highlighted piece of the read view starts in.
+   *
+   * With read mode off the text is one run of characters rather than words, so
+   * there is no word to count and no tap to read: the highlight itself says
+   * where it starts, and that character offset is what finds the line — the same
+   * line, counted the same way, as a word tapped with read mode on.
+   */
+  const lineOfHighlight = () => {
+    const paragraph = readTextRef.current;
+    const selection = window.getSelection();
+    const range = selection?.rangeCount ? selection.getRangeAt(0) : null;
+
+    // Only a highlight inside the text counts: a reader who dragged from the
+    // title down has given us a start we cannot place.
+    if (!item || !paragraph || !range || !paragraph.contains(range.startContainer)) {
+      return null;
+    }
+
+    const offset =
+      range.startContainer.nodeType === Node.TEXT_NODE
+        ? range.startOffset
+        : Array.from(range.startContainer.childNodes)
+            .slice(0, range.startOffset)
+            .reduce((total, node) => total + (node.textContent?.length || 0), 0);
+
+    return findReaderLineAtOffset({ text: item.text, lang, offset });
+  };
+
   const saveSelection = () => {
-    saveSnippet(joinReaderSelection(selection, lang));
+    // A pick is saved where it begins: with a single word picked that is plainly
+    // the line it was picked in, and with several it is the line the first of
+    // them was picked in — which is where the snippet starts in the text.
+    const first = [...selection].sort(
+      (first, second) => first.order - second.order,
+    )[0];
+
+    saveSnippet(
+      joinReaderSelection(selection, lang),
+      first ? lineOfPick(first) : undefined,
+    );
     setSelection([]);
   };
 
@@ -223,31 +294,23 @@ export default function ReaderText() {
                   return;
                 }
 
-                const [paragraphIndex, wordIndex] = picked.key
-                  .split(":")
-                  .map(Number);
-
                 setReadTap({
                   word: picked.text,
-                  line: findReaderLineAtWord({
-                    text: item.text,
-                    lang,
-                    paragraphIndex,
-                    wordIndex,
-                  }),
+                  line: lineOfPick(picked) ?? null,
                 });
               }}
               className="mt-12 mb-32 text-lg font-extralight leading-9 text-gray-800 dark:text-gray-200"
             />
           ) : (
             <p
+              ref={readTextRef}
               // Without read mode there are no segmented words to tap, so the
               // highlight is the way in — the same way it is in focused read.
               onMouseUp={() => {
                 const highlighted = window.getSelection()?.toString().trim();
 
                 if (highlighted) {
-                  setReadTap({ word: highlighted, line: null });
+                  setReadTap({ word: highlighted, line: lineOfHighlight() });
                 }
               }}
               className="mt-12 mb-32 whitespace-pre-wrap break-words text-lg font-extralight leading-9 text-gray-800 dark:text-gray-200"

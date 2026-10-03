@@ -12,11 +12,7 @@ import { useReaderStore } from "../hooks/use-reader-store";
 import { useReaderTranslation } from "../hooks/use-reader-translate";
 import { getReaderPinyin } from "../utils/get-reader-pinyin";
 import { isHanCharacter } from "../utils/is-han-character";
-import {
-  ReaderSelection,
-  isReaderSelected,
-  toggleReaderSelection,
-} from "../utils/reader-selection";
+import { ReaderMiniDictionary } from "./reader-mini-dictionary";
 import { segmentReaderWords } from "../utils/segment-reader-text";
 import { splitReaderSentences } from "../utils/split-reader-sentences";
 
@@ -37,17 +33,15 @@ import { splitReaderSentences } from "../utils/split-reader-sentences";
  */
 export const ReaderFocusedRead = ({
   readerItemId,
+  readerItemTitle,
   text,
   lang,
-  selection,
-  onSelectionChange,
   onSaveSnippet,
 }: {
   readerItemId: string;
+  readerItemTitle: string;
   text: string;
   lang: string;
-  selection: ReaderSelection[];
-  onSelectionChange: (selection: ReaderSelection[]) => void;
   onSaveSnippet: (text: string) => void;
 }) => {
   const sentences = useMemo(
@@ -66,6 +60,25 @@ export const ReaderFocusedRead = ({
   const { showChinglish } = useChinglishState();
 
   const [showParent, setShowParent] = useState(false);
+  // The word the mini dictionary is open on.
+  const [tappedWord, setTappedWord] = useState<{
+    text: string;
+    key: string;
+  } | null>(null);
+
+  /**
+   * Whatever is highlighted in the line is what the dictionary opens on: a
+   * word tapped, or a run of text dragged over with the mouse. The highlight
+   * is the source of truth, so the dictionary can never be showing something
+   * other than what is lit up.
+   */
+  const lookUpSelection = () => {
+    const highlighted = window.getSelection()?.toString().trim();
+
+    if (highlighted) {
+      setTappedWord({ text: highlighted, key: "" });
+    }
+  };
 
   const lastIndex = Math.max(sentences.length - 1, 0);
 
@@ -97,10 +110,6 @@ export const ReaderFocusedRead = ({
 
     return readingsByWord;
   }, [words, showReadings]);
-
-  const selectedInLine = selection.filter((selected) =>
-    selected.key.startsWith(`${currentIndex}:`),
-  );
 
   // Asked for the line on screen, once Translate has been pressed.
   const { translation } = useReaderTranslation({
@@ -158,7 +167,10 @@ export const ReaderFocusedRead = ({
           {sentences[currentIndex - 1] || ""}
         </p>
 
-        <p className="my-16 text-2xl sm:text-4xl font-light leading-relaxed">
+        <p
+          onMouseUp={lookUpSelection}
+          className="my-16 text-2xl sm:text-4xl font-light leading-relaxed"
+        >
           {words.map((word, wordIndex) => {
             const key = `${currentIndex}:${wordIndex}`;
 
@@ -166,18 +178,25 @@ export const ReaderFocusedRead = ({
               return <span key={key}>{word.text}</span>;
             }
 
-            const selected = isReaderSelected(selection, key);
+            // The highlight belongs to what the dictionary is open on, so
+            // every word of it wears the mark — a tapped word, or every word
+            // of a run of text that was dragged over.
+            const selected =
+              !!tappedWord &&
+              (tappedWord.text === word.text ||
+                tappedWord.text.includes(word.text));
 
             const pickableWord = (
               <span
                 title="Tap to pick this word"
                 onClick={() => {
-                  onSelectionChange(
-                    toggleReaderSelection(selection, {
-                      key,
-                      text: word.text,
-                      order: currentIndex * 10000 + wordIndex,
-                    }),
+                  // A highlight wins over the word under the pointer: clicking
+                  // a run of text that is already lit up keeps the run, it
+                  // does not shrink it to the word that was clicked.
+                  const highlighted = window.getSelection()?.toString().trim();
+
+                  setTappedWord(
+                    highlighted ? { text: highlighted, key: "" } : { text: word.text, key },
                   );
                 }}
                 className={cn(
@@ -300,22 +319,23 @@ export const ReaderFocusedRead = ({
           {showParent ? "Hide parent" : "Show parent"}
         </button>
 
-        {selectedInLine.length > 0 && (
-          <button
-            className="hover:text-rose-400 transition"
-            onClick={() => {
-              onSelectionChange(
-                selection.filter(
-                  (selected) => !selected.key.startsWith(`${currentIndex}:`),
-                ),
-              );
-            }}
-          >
-            <Icons.xMark className="mr-2" />
-            <span>Clear picks</span>
-          </button>
-        )}
       </div>
+
+      {!!tappedWord && (
+        <ReaderMiniDictionary
+          readerItemId={readerItemId}
+          readerItemTitle={readerItemTitle}
+          text={text}
+          lang={lang}
+          selected={tappedWord.text}
+          onClose={() => {
+            setTappedWord(null);
+          }}
+          onGoToSentence={(sentenceIndex) => {
+            setIndex(sentenceIndex);
+          }}
+        />
+      )}
 
       {showParent && (
         <div className="text-center mt-12">

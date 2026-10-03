@@ -9,6 +9,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useChinglishState } from "@/components/settings-dialog/use-chinglish-state";
 import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
 
+import { ReaderMiniDictionary } from "./reader-mini-dictionary";
 import { useReaderStore } from "../hooks/use-reader-store";
 import { useReaderTranslation } from "../hooks/use-reader-translate";
 import { getReaderPinyin } from "../utils/get-reader-pinyin";
@@ -31,10 +32,12 @@ interface ReaderClozeResponse {
  */
 export const ReaderDynocloze = ({
   readerItemId,
+  readerItemTitle,
   text,
   lang,
 }: {
   readerItemId: string;
+  readerItemTitle: string;
   text: string;
   lang: string;
 }) => {
@@ -64,6 +67,17 @@ export const ReaderDynocloze = ({
   const [wordIndex, setWordIndex] = useState(0);
   const [response, setResponse] = useState<ReaderClozeResponse | null>(null);
   const [showParent, setShowParent] = useState(false);
+  // The word the mini dictionary is open on — the same one the sentence marks.
+  const [tappedWord, setTappedWord] = useState<string | null>(null);
+
+  /** The highlight in the sentence is what the dictionary opens on. */
+  const lookUpSelection = () => {
+    const highlighted = window.getSelection()?.toString().trim();
+
+    if (highlighted) {
+      setTappedWord(highlighted);
+    }
+  };
   // The app's pinyin preference, shared with the rest of the reader (and with
   // the character grids elsewhere) rather than a switch of its own.
   const showPinyin = useBrightModeStore((state) => state.showPinyin);
@@ -191,8 +205,48 @@ export const ReaderDynocloze = ({
       </div>
 
       <div className="text-center mt-12">
-        <p className="text-2xl sm:text-3xl font-light leading-relaxed whitespace-pre-wrap">
-          {sentenceWithBlank}
+        <p
+          onMouseUp={lookUpSelection}
+          className="text-2xl sm:text-3xl font-light leading-relaxed whitespace-pre-wrap"
+        >
+          {segments.map((segment, index) => {
+            const blanked = index === targetWord?.index;
+
+            if (!segment.isWordLike || !segment.text.trim()) {
+              return (
+                <span key={`segment-${index}`}>
+                  {blanked ? "__".repeat(segment.text.length) : segment.text}
+                </span>
+              );
+            }
+
+            // Tapping a word here opens the same dictionary the reading view
+            // has, on that word.
+            const highlighted =
+              !!tappedWord &&
+              (tappedWord === segment.text || tappedWord.includes(segment.text));
+
+            return (
+              <span
+                key={`segment-${index}`}
+                title="Tap to look this word up"
+                onClick={() => {
+                  // The highlight keeps precedence over the word clicked.
+                  const highlighted = window.getSelection()?.toString().trim();
+
+                  setTappedWord(highlighted || segment.text);
+                }}
+                className={cn(
+                  "rounded transition cursor-pointer",
+                  highlighted
+                    ? "bg-rose-500/20 text-rose-400"
+                    : "hover:text-rose-400",
+                )}
+              >
+                {blanked ? "__".repeat(segment.text.length) : segment.text}
+              </span>
+            );
+          })}
         </p>
 
         {showPinyin && !!pinyin && (
@@ -319,6 +373,22 @@ export const ReaderDynocloze = ({
           {learnMode === "timeline" ? <Icons.timeline /> : <Icons.shuffle />}
         </button>
       </div>
+
+      {!!tappedWord && (
+        <ReaderMiniDictionary
+          readerItemId={readerItemId}
+          readerItemTitle={readerItemTitle}
+          text={text}
+          lang={lang}
+          selected={tappedWord}
+          onClose={() => {
+            setTappedWord(null);
+          }}
+          onGoToSentence={(sentenceIndex) => {
+            goToSentence(sentenceIndex);
+          }}
+        />
+      )}
 
       {showParent && (
         <div className="text-center mt-12">

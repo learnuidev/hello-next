@@ -190,6 +190,7 @@ export default function ReaderText() {
           <div className="mb-32">
             <ReaderDynocloze
               readerItemId={item.id}
+              readerItemTitle={item.title}
               text={item.text}
               lang={lang}
             />
@@ -200,10 +201,9 @@ export default function ReaderText() {
           <div className="mb-32">
             <ReaderFocusedRead
               readerItemId={item.id}
+              readerItemTitle={item.title}
               text={item.text}
               lang={lang}
-              selection={selection}
-              onSelectionChange={setSelection}
               onSaveSnippet={saveSnippet}
             />
           </div>

@@ -2,6 +2,7 @@
 
 import { Nothing } from "@/app/nmm/nothing";
 import { Icons } from "@/components/ui/icons.v2";
+import { getNmmLink } from "@/libs/utils/get-nmm-link";
 import Link from "next/link";
 
 import { ReaderSnippet } from "../reader.types";
@@ -42,9 +43,14 @@ export const ReaderReadingList = ({
 
       {snippets.map((snippet) => (
         <div key={snippet.id} className="group">
-          <p className="text-lg font-extralight whitespace-pre-wrap">
+          {/* The word itself is the way into nmm, the way it is everywhere
+              else in the app. */}
+          <Link
+            href={getNmmLink({ id: snippet.text, lang: "zh" })}
+            className="text-lg font-extralight whitespace-pre-wrap hover:text-rose-400 transition"
+          >
             {snippet.text}
-          </p>
+          </Link>
 
           <div className="flex justify-between items-center mt-2">
             <p className="text-xs text-gray-500 font-light">
@@ -58,10 +64,9 @@ export const ReaderReadingList = ({
               </Link>
             </p>
 
-            {/* Double click, matching how diary entries are removed. */}
             <button
-              title="Double click to delete"
-              onDoubleClick={() => {
+              title="Take off the reading list"
+              onClick={() => {
                 onDelete(snippet.id);
               }}
               className="text-gray-500 hover:text-rose-400 transition text-sm"

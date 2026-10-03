@@ -3,7 +3,7 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
-import { ReaderItem } from "../reader.types";
+import { ReaderItem, ReaderSnippet } from "../reader.types";
 import { generateReaderId } from "../utils/reader-id";
 
 /**
@@ -39,9 +39,66 @@ export const useReaderStore = create(
         return item;
       },
 
+      /** Deletes a text, along with the snippets saved out of it. */
       deleteItem: (id: string) => {
         set({
           items: get().items.filter((item: ReaderItem) => item.id !== id),
+          readingList: (get().readingList || []).filter(
+            (snippet: ReaderSnippet) => snippet.readerItemId !== id,
+          ),
+        });
+      },
+
+      /**
+       * The reading list: words and lines saved out of a text while reading it.
+       */
+      readingList: [] as ReaderSnippet[],
+
+      /** Saves a snippet, keeping the reading list newest first and free of duplicates. */
+      saveToReadingList: ({
+        text,
+        readerItemId,
+        readerItemTitle,
+      }: {
+        text: string;
+        readerItemId: string;
+        readerItemTitle: string;
+      }) => {
+        const trimmed = text.trim();
+
+        if (!trimmed) {
+          return null;
+        }
+
+        const existing: ReaderSnippet[] = get().readingList || [];
+
+        const alreadySaved = existing.find(
+          (snippet) =>
+            snippet.text === trimmed && snippet.readerItemId === readerItemId,
+        );
+
+        if (alreadySaved) {
+          return alreadySaved;
+        }
+
+        const snippet: ReaderSnippet = {
+          id: generateReaderId(),
+          text: trimmed,
+          readerItemId,
+          readerItemTitle,
+          createdAt: Date.now(),
+        };
+
+        set({ readingList: [snippet, ...existing] });
+
+        return snippet;
+      },
+
+      removeFromReadingList: (id: string) => {
+        set({
+          readingList: (get().readingList || []).filter(
+            (snippet: ReaderSnippet) => snippet.id !== id,
+          ),
         });
       },
     }),

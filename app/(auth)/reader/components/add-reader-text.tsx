@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { useReaderStore } from "../hooks/use-reader-store";
+import { useReaderViewModeStore } from "../hooks/use-reader-view-mode";
 import { countReaderWords } from "../utils/count-reader-words";
 
 /**
@@ -16,6 +17,7 @@ import { countReaderWords } from "../utils/count-reader-words";
 export const AddReaderText = ({ onClose }: { onClose: () => void }) => {
   const router = useRouter();
   const addItem = useReaderStore((state) => state.addItem);
+  const setViewMode = useReaderViewModeStore((state) => state.setViewMode);
 
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
@@ -29,12 +31,16 @@ export const AddReaderText = ({ onClose }: { onClose: () => void }) => {
 
     const item = addItem({ title, text });
 
+    // A text just saved is opened to be read, whatever view the last text was
+    // left in.
+    setViewMode("read");
+
     onClose();
     router.push(`/reader/${item.id}`);
   };
 
   return (
-    <div className="max-w-3xl m-auto px-4 md:px-12">
+    <div className="w-full max-w-screen-2xl m-auto px-4 md:px-12 lg:px-20">
       <div className="flex justify-between items-center mt-12 mb-8">
         <p className="uppercase text-xs tracking-wider text-gray-400">
           New text

@@ -3,6 +3,7 @@
 import { Nothing } from "@/app/nmm/nothing";
 import { useReadModeState } from "@/components/read-mode-button";
 import { Icons } from "@/components/ui/icons.v2";
+import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
@@ -88,7 +89,7 @@ export default function ReaderText() {
   if (!hasMounted) {
     return (
       <main>
-        <div className="w-full max-w-screen-2xl m-auto px-4 md:px-12 lg:px-20 mt-16" />
+        <div className="max-w-3xl m-auto px-4 md:px-12 mt-16" />
       </main>
     );
   }
@@ -96,7 +97,7 @@ export default function ReaderText() {
   if (!item) {
     return (
       <main>
-        <div className="w-full max-w-screen-2xl m-auto px-4 md:px-12 lg:px-20">
+        <div className="max-w-3xl m-auto px-4 md:px-12">
           <Nothing icon={Icons.bookOpen} message="This text is not here">
             <Link
               href="/reader"
@@ -113,7 +114,16 @@ export default function ReaderText() {
 
   return (
     <main>
-      <div className="w-full max-w-screen-2xl m-auto px-4 md:px-12 lg:px-20">
+      {/* Reading stays at a comfortable measure; the insights view is the one
+          that wants the whole width, the way a lesson's analytics does. */}
+      <div
+        className={cn(
+          "m-auto px-4 md:px-12",
+          viewMode === "stats"
+            ? "w-full max-w-screen-2xl lg:px-20"
+            : "max-w-3xl",
+        )}
+      >
         <div className="mt-12 flex justify-between items-center">
           <Link
             href="/reader"

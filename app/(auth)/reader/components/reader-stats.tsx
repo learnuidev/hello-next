@@ -1,5 +1,7 @@
 "use client";
 
+import { CharacterItem } from "@/components/_select-character/character-item";
+import { HanziLink } from "@/components/hanzi-link";
 import { NmmListContainerAll } from "@/components/nmm-list-container-all";
 import { Icons } from "@/components/ui/icons.v2";
 import {
@@ -28,39 +30,28 @@ const MAX_TILES = 120;
 const MAX_ROWS = 100;
 
 /**
- * One character (or word) of the text, laid out like the tiles of a lesson's
- * analytics in nmm: its reading above, the character itself, how often the text
- * uses it — and a link into nmm to look it up.
+ * One character (or word) of the text, in the shape nmm gives one: the app's
+ * own `HanziLink`, so a character wears the colour of what it is to you —
+ * learned, forgotten or still unknown — with its reading above it (when the
+ * reader asks for readings), how often this text uses it, and a way into nmm.
  */
 const ReaderStatsTile = ({
   item,
-  pinyin,
   lang,
-  className,
 }: {
   item: ReaderFrequencyItem;
-  pinyin?: string;
   lang: string;
-  className?: string;
 }) => (
-  <div className="p-2 md:p-3 flex flex-col items-center justify-center">
-    <p className="text-xs text-gray-400 dark:text-gray-600 w-28 text-center truncate h-4">
-      {pinyin || ""}
-    </p>
-
-    <Link
-      href={getNmmLink({ id: item.input, lang })}
-      className={cn(
-        "text-center transition w-28 truncate text-gray-700 dark:text-gray-300 hover:text-rose-400 dark:hover:text-white",
-        className,
-      )}
-    >
-      {item.input}
-      <sub className="text-xs pl-[2px] text-gray-400 dark:text-gray-600">
-        {item.frequency}
-      </sub>
-    </Link>
-  </div>
+  <HanziLink
+    character={{
+      hanzi: item.input,
+      input: item.input,
+      pinyin: getReaderPinyin(item.input),
+      lang,
+    }}
+    frequency={item.frequency}
+    lang={lang}
+  />
 );
 
 /** The same thing as a row, the way nmm lists its words. */
@@ -93,7 +84,13 @@ const ReaderStatsRow = ({
                 itemIsLong ? "text-lg" : "text-2xl sm:text-4xl",
               )}
             >
-              {item.input}
+              <CharacterItem
+                className={cn(
+                  "truncate",
+                  itemIsLong ? "text-lg" : "!text-2xl sm:!text-4xl",
+                )}
+                character={item.input}
+              />
             </span>
 
             {!pinyinGoesAbove && !!pinyin && (
@@ -195,12 +192,14 @@ export const ReaderStats = ({ text, lang }: { text: string; lang: string }) => {
 
           <h2 className="text-xl sm:text-3xl my-4 font-extralight text-gray-500 dark:text-gray-300 space-x-2">
             <span className="text-yellow-500">{stats.uniqueWords}</span>
+            {" "}
             <span className="text-sm md:text-xl">unique </span>
           </h2>
 
           <h2 className="text-xl sm:text-3xl my-4 font-extralight text-gray-500 dark:text-gray-300 space-x-2">
             {stats.sentences}
-            <span className="text-sm md:text-xl ml-1">sentences </span>
+            {" "}
+            <span className="text-sm md:text-xl">sentences </span>
           </h2>
         </div>
 
@@ -209,6 +208,7 @@ export const ReaderStats = ({ text, lang }: { text: string; lang: string }) => {
             <span>
               <Icons.seedling />
             </span>
+            {" "}
             <span className="text-gray-300">{stats.uniqueCharacters}</span>
           </h2>
         </div>
@@ -304,13 +304,7 @@ export const ReaderStats = ({ text, lang }: { text: string; lang: string }) => {
       ) : isGrid ? (
         <NmmListContainerAll className="md:mx-0 mb-32">
           {visibleItems.map((item) => (
-            <ReaderStatsTile
-              key={item.input}
-              item={item}
-              pinyin={pinyinByInput.get(item.input)}
-              lang={lang}
-              className={viewType === "word" ? "!text-xl" : "text-2xl"}
-            />
+            <ReaderStatsTile key={item.input} item={item} lang={lang} />
           ))}
         </NmmListContainerAll>
       ) : (

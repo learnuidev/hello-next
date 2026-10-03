@@ -40,7 +40,7 @@ export const AddReaderText = ({ onClose }: { onClose: () => void }) => {
   };
 
   return (
-    <div className="w-full max-w-screen-2xl m-auto px-4 md:px-12 lg:px-20">
+    <div className="max-w-3xl m-auto px-4 md:px-12">
       <div className="flex justify-between items-center mt-12 mb-8">
         <p className="uppercase text-xs tracking-wider text-gray-400">
           New text

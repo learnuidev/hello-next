@@ -18,7 +18,11 @@ export const Authenticated = (props: any) => {
 
   const isSearchBarOpen = useSearchState((state) => state.isSearchBarOpen);
 
-  if (whiteListUrls.includes(routeName)) {
+  // TEMP: also let nested reader routes through, remove me
+  if (
+    whiteListUrls.includes(routeName) ||
+    whiteListUrls.some((url) => routeName.startsWith(`${url}/`))
+  ) {
     return <>{props.children}</>;
   }
 

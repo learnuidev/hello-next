@@ -86,6 +86,12 @@ export default function AppsPage() {
     },
 
     {
+      href: "/reader",
+      title: "Reader",
+      Icon: Icons.reader,
+    },
+
+    {
       href: "/web",
       title: "Web 4.0",
       Icon: Icons.browser,

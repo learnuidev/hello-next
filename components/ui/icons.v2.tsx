@@ -152,6 +152,7 @@ import {
 } from "@fortawesome/pro-thin-svg-icons";
 
 import {
+  faBookOpenReader as faBookOpenReaderDT,
   faBookSpells as faBookSpellsDT,
   faBullseyeArrow as faBullseyeArrowDT,
   faBullseye as faBullseyeDT,
@@ -347,6 +348,7 @@ export const Icons = {
   connectDevelop: createFAIcon(faConnectdevelop),
   glassesRoundDT: createFAIcon(faGlassesRoundDT as any),
   bookSpellsDT: createFAIcon(faBookSpellsDT as any),
+  reader: createFAIcon(faBookOpenReaderDT as any),
   google: createFAIcon(faGoogle),
   track: createFAIcon(faRadar),
   italic: createFAIcon(faItalic),

@@ -116,21 +116,14 @@ export const ReaderFocusedRead = ({
 
     let step = 0;
 
-    return text.split(/\r?\n/).map((line) => {
-      const sentences = splitReaderSentences(line, lang).map((sentence) => ({
+    return text.split(/\r?\n/).map((line) => ({
+      line,
+      sentences: splitReaderSentences(line, lang).map((sentence) => ({
         sentence,
         step: step++,
-      }));
-
-      return {
-        line,
-        sentences,
-        words: readMode
-          ? sentences.map((entry) => segmentReaderWords(entry.sentence, lang))
-          : [],
-      };
-    });
-  }, [showParent, text, lang, readMode]);
+      })),
+    }));
+  }, [showParent, text, lang]);
 
   // Readings only mean something for a Chinese text, and they are their own
   // switch: read mode spaces the words out, pinyin hangs the reading off them.
@@ -143,27 +136,14 @@ export const ReaderFocusedRead = ({
       return readingsByWord;
     }
 
-    // The line in the stage, and the parent's lines when it is open: pinyin-pro
-    // is asked once per distinct word either way.
-    const collect = (lineWords: ReaderWord[]) => {
-      lineWords.forEach((word) => {
-        if (
-          word.isWordLike &&
-          word.text.trim() &&
-          !readingsByWord.has(word.text)
-        ) {
-          readingsByWord.set(word.text, getReaderPinyin(word.text));
-        }
-      });
-    };
-
-    collect(words);
-    parentParagraphs.forEach((paragraph) =>
-      paragraph.words.forEach(collect),
-    );
+    words.forEach((word) => {
+      if (word.isWordLike && word.text.trim()) {
+        readingsByWord.set(word.text, getReaderPinyin(word.text));
+      }
+    });
 
     return readingsByWord;
-  }, [words, parentParagraphs, showReadings]);
+  }, [words, showReadings]);
 
   // Only the line on screen is drawn, but it is drawn character by character
   // with the colours they have learned: two maps fetched once, rather than a
@@ -217,14 +197,10 @@ export const ReaderFocusedRead = ({
   }, [currentIndex, lastIndex]);
 
   /**
-   * One word: the characters with the colours they have learned, and the reading
-   * over them when pinyin is on.
-   *
-   * `pickable` is what makes a word a target of its own — the line in the stage
-   * hands its words to the dictionary. The parent passes `false`, because there a
-   * tap belongs to the line it lands in: that is how the reader gets back to it.
+   * One word of the line: the characters with the colours they have learned, and
+   * the reading over them when pinyin is on.
    */
-  const renderWord = (word: ReaderWord, key: string, pickable = true) => {
+  const renderWord = (word: ReaderWord, key: string) => {
     if (!word.isWordLike || !word.text.trim()) {
       return <span key={key}>{word.text}</span>;
     }
@@ -233,35 +209,30 @@ export const ReaderFocusedRead = ({
     // it wears the mark — a tapped word, or every word of a run of text that
     // was dragged over.
     const selected =
-      pickable &&
       !!tappedWord &&
       (tappedWord.text === word.text || tappedWord.text.includes(word.text));
 
     const pickableWord = (
       <span
         key={key}
-        title={pickable ? "Tap to pick this word" : undefined}
-        onClick={
-          pickable
-            ? (event) => {
-                // A tap on a word is the word's, not the line's.
-                event.stopPropagation();
+        title="Tap to pick this word"
+        onClick={(event) => {
+          // A tap on a word is the word's, not the line's.
+          event.stopPropagation();
 
-                // A highlight wins over the word under the pointer: clicking a
-                // run of text that is already lit up keeps the run, it does not
-                // shrink it to the word that was clicked.
-                const highlighted = window.getSelection()?.toString().trim();
+          // A highlight wins over the word under the pointer: clicking a run of
+          // text that is already lit up keeps the run, it does not shrink it to
+          // the word that was clicked.
+          const highlighted = window.getSelection()?.toString().trim();
 
-                setTappedWord(
-                  highlighted
-                    ? { text: highlighted, key: "" }
-                    : { text: word.text, key },
-                );
-              }
-            : undefined
-        }
+          setTappedWord(
+            highlighted
+              ? { text: highlighted, key: "" }
+              : { text: word.text, key },
+          );
+        }}
         className={cn(
-          "rounded transition",
+          "rounded transition cursor-pointer",
           // With a reading above it the word becomes a little ruby stack. The
           // stack is sized to the glyph rather than to the line, which is what
           // pulls the pinyin down onto the character: a line-height borrowed
@@ -272,11 +243,7 @@ export const ReaderFocusedRead = ({
             : readMode
               ? "px-1"
               : "",
-          pickable
-            ? selected
-              ? "bg-rose-500/20 text-rose-400"
-              : "cursor-pointer hover:text-rose-400"
-            : "",
+          selected ? "bg-rose-500/20 text-rose-400" : "hover:text-rose-400",
         )}
       >
         {/* Each character carries its own learned state; latin letters have
@@ -350,8 +317,14 @@ export const ReaderFocusedRead = ({
 
       {/* The stage: a height of its own, with the line centred in it, so the
           arrows and the buttons under it never move — a line that runs to three
-          rows leaves them exactly where a line of one row leaves them. */}
-      <div className="mt-20 flex min-h-[14rem] flex-col justify-center text-center sm:min-h-[18rem]">
+          rows leaves them exactly where a line of one row leaves them.
+
+          It is also sticky. Reading the parent means scrolling down past the
+          line you are on, and a reader who has to scroll back up to find it has
+          lost their place: the stage holds the top of the screen instead, with
+          a background of its own so the text passes underneath it rather than
+          through it. */}
+      <div className="sticky top-0 z-20 mt-20 flex min-h-[14rem] flex-col justify-center bg-white text-center dark:bg-[rgb(9,10,11)] sm:min-h-[18rem]">
         <p
           onMouseUp={lookUpSelection}
           className={cn(
@@ -448,14 +421,15 @@ export const ReaderFocusedRead = ({
 
       {showParent && (
         /*
-          The parent is the text the way the read tab draws it — the same measure,
-          weight and leading, the same paragraphs with the blank lines kept as
-          gaps, and in read mode the same segmented words carrying their readings
-          over them — rather than a wall of small sentences with the shape of the
-          text flattened out of it. What it keeps of its own is that it is
-          clickable: a tap on a line moves the reading position to that line, and
-          the line being read is the one at full strength while the rest wait in
-          the dim.
+          The parent is the text as it was written: the read tab's measure,
+          weight and leading, paragraph per line with the blank lines kept as
+          gaps. Read mode and pinyin are deliberately not applied to it — the
+          readings belong to the line in the stage, and the parent is there to be
+          read as a whole and to be pointed at.
+
+          What it keeps of its own is that it is clickable: a tap on a line moves
+          the reading position to that line, and the line being read is the one at
+          full strength while the rest wait in the dim.
         */
         <div className="mt-12 text-lg font-extralight leading-9 text-gray-800 dark:text-gray-200">
           {parentParagraphs.map((paragraph, paragraphIndex) => {
@@ -470,16 +444,9 @@ export const ReaderFocusedRead = ({
             return (
               <p
                 key={`paragraph-${paragraphIndex}`}
-                className={cn(
-                  "whitespace-pre-wrap",
-                  // The read tab's own rule for a text that carries readings:
-                  // every word is a stack about forty pixels tall, so the rows
-                  // need a line to match or a reading sits on the hanzi of the
-                  // row above.
-                  showReadings && "leading-[3.6rem]",
-                )}
+                className="whitespace-pre-wrap"
               >
-                {paragraph.sentences.map(({ sentence, step }, sentenceIndex) => (
+                {paragraph.sentences.map(({ sentence, step }) => (
                   <span
                     key={`${paragraphIndex}-${step}`}
                     title="Go to this line"
@@ -494,11 +461,7 @@ export const ReaderFocusedRead = ({
                       step === currentIndex ? "" : "opacity-50 hover:opacity-90",
                     )}
                   >
-                    {readMode
-                      ? paragraph.words[sentenceIndex].map((word, wordIndex) =>
-                          renderWord(word, `${step}:${wordIndex}`, false),
-                        )
-                      : sentence}
+                    {sentence}
                   </span>
                 ))}
               </p>

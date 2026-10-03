@@ -111,7 +111,9 @@ export const ReaderFocusedRead = ({
     return readingsByWord;
   }, [words, showReadings]);
 
-  // Asked for the line on screen, once Translate has been pressed.
+  // The line on screen is published as it changes, but the server is asked
+  // nothing until the Translate button is clicked — and the answer handed back
+  // is this line's, never the last line's.
   const { translation } = useReaderTranslation({
     content: currentSentence,
     lang,

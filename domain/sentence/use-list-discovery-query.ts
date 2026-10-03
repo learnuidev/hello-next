@@ -1,6 +1,6 @@
 "use client";
 
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { useCurrentAuthUser } from "../auth/auth.queries";
 
@@ -73,5 +73,29 @@ export function useListDiscoveryQuery(
     refetchOnFocus: false,
     refetchOnMount: false,
     refetchOnReconnect: false,
+  });
+}
+
+/**
+ * The same lookup, as a mutation: it goes off when it is called and at no
+ * other time.
+ *
+ * A query is the right shape for something the view always wants — the
+ * meaning of the sentence on screen — because react-query keeps it in step by
+ * itself. It is the wrong shape for a lookup that is asked for by hand: a
+ * query keyed by the content runs the moment something mounts with that
+ * content, and every new key runs again, whether or not anyone wanted it. The
+ * reader's Translate button is a request, so it is a mutation.
+ */
+export function useListDiscoveryMutation(options = {} as any) {
+  const { data: authUser } = useCurrentAuthUser({});
+
+  return useMutation<ListDiscoveryResponse, Error, ListDiscoveryParams>({
+    mutationFn: (params: ListDiscoveryParams) =>
+      listDiscovery(params, {
+        Authorization: authUser?.jwt,
+      }),
+
+    ...options,
   });
 }

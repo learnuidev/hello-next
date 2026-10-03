@@ -5,7 +5,7 @@ import { useReadModeState } from "@/components/read-mode-button";
 import { Icons } from "@/components/ui/icons.v2";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 
 import { ReaderDynocloze } from "../components/reader-dynocloze";
@@ -17,7 +17,12 @@ import { ReaderSegmentedText } from "../components/reader-segmented-text";
 import { ReaderStats } from "../components/reader-stats";
 import { useHasMounted } from "../hooks/use-has-mounted";
 import { useReaderStore } from "../hooks/use-reader-store";
-import { useReaderViewModeStore } from "../hooks/use-reader-view-mode";
+import {
+  ReaderViewMode,
+  defaultReaderViewMode,
+  getReaderViewHref,
+  isReaderViewMode,
+} from "../reader.types";
 import { countReaderWords } from "../utils/count-reader-words";
 import { detectReaderLang } from "../utils/detect-reader-lang";
 import { formatReaderDate } from "../utils/format-reader-date";
@@ -39,8 +44,13 @@ export default function ReaderText() {
     (state) => state.removeFromReadingList,
   );
 
-  const viewMode = useReaderViewModeStore((state) => state.viewMode);
-  const setViewMode = useReaderViewModeStore((state) => state.setViewMode);
+  // The tab lives in the url: `/reader/:id` is focused read, `?view=insights`
+  // the insights, and so on. Nothing else remembers which one is showing.
+  const searchParams = useSearchParams();
+  const viewParam = searchParams?.get("view");
+  const viewMode: ReaderViewMode = isReaderViewMode(viewParam)
+    ? viewParam
+    : defaultReaderViewMode;
 
   const { readMode } = useReadModeState();
 
@@ -120,7 +130,7 @@ export default function ReaderText() {
       <div
         className={cn(
           "m-auto px-4 md:px-12",
-          viewMode === "stats"
+          viewMode === "insights"
             ? "w-full max-w-screen-2xl lg:px-20"
             : "max-w-3xl",
         )}
@@ -149,7 +159,7 @@ export default function ReaderText() {
 
         {viewMode !== "focused" &&
           viewMode !== "dynocloze" &&
-          viewMode !== "stats" && (
+          viewMode !== "insights" && (
             <>
               <h1 className="text-3xl font-bold mt-10">{item.title}</h1>
 
@@ -178,7 +188,11 @@ export default function ReaderText() {
 
         {viewMode === "dynocloze" && (
           <div className="mb-32">
-            <ReaderDynocloze text={item.text} lang={lang} />
+            <ReaderDynocloze
+              readerItemId={item.id}
+              text={item.text}
+              lang={lang}
+            />
           </div>
         )}
 
@@ -195,11 +209,11 @@ export default function ReaderText() {
           </div>
         )}
 
-        {viewMode === "stats" && (
+        {viewMode === "insights" && (
           <ReaderStats key={item.id} text={item.text} lang={lang} />
         )}
 
-        {viewMode === "list" && (
+        {viewMode === "reading-list" && (
           <ReaderReadingList
             snippets={readingList || []}
             onDelete={(snippetId) => {
@@ -212,8 +226,8 @@ export default function ReaderText() {
       <ReaderSideDock />
 
       <ReaderDock
+        readerItemId={item.id}
         viewMode={viewMode}
-        onViewModeChange={setViewMode}
         selectionCount={selection.length}
         onSaveSelection={saveSelection}
       />
@@ -222,14 +236,13 @@ export default function ReaderText() {
         <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 flex items-center bg-gray-50 dark:bg-black border border-gray-200 dark:border-gray-800 rounded-full px-6 py-3 text-xs shadow-2xl shadow-zinc-900">
           <Icons.bookmarkSolid className="text-rose-400 mr-2" />
           <span>Saved to your reading list</span>
-          <button
-            onClick={() => {
-              setViewMode("list");
-            }}
+          <Link
+            href={getReaderViewHref(item.id, "reading-list")}
+            scroll={false}
             className="ml-6 uppercase tracking-wider text-gray-400 hover:text-rose-400 transition"
           >
             View
-          </button>
+          </Link>
         </div>
       )}
     </main>

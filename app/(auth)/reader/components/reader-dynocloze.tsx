@@ -4,10 +4,11 @@ import { getRandomWords } from "@/app/review/review-cloze/utils/get-random-words
 import { shuffleArray } from "@/app/review/review-cloze/utils/shuffle-array";
 import { Icons } from "@/components/ui/icons.v2";
 import { cn } from "@/lib/utils";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
 
+import { useReaderStore } from "../hooks/use-reader-store";
 import { getReaderPinyin } from "../utils/get-reader-pinyin";
 import { getReaderWords, segmentReaderWords } from "../utils/segment-reader-text";
 import { splitReaderSentences } from "../utils/split-reader-sentences";
@@ -27,9 +28,11 @@ interface ReaderClozeResponse {
  * the pinyin is read with pinyin-pro. Nothing is fetched.
  */
 export const ReaderDynocloze = ({
+  readerItemId,
   text,
   lang,
 }: {
+  readerItemId: string;
   text: string;
   lang: string;
 }) => {
@@ -38,7 +41,24 @@ export const ReaderDynocloze = ({
     [text, lang],
   );
 
-  const [sentenceIndex, setSentenceIndex] = useState(0);
+  // Focused read and dynocloze work through the same section of the text, so
+  // they share the position: leave the text on sentence five in one and the
+  // other opens on sentence five too.
+  const readingPositions = useReaderStore((state) => state.readingPositions);
+  const setReadingPosition = useReaderStore(
+    (state) => state.setReadingPosition,
+  );
+
+  const [sentenceIndex, setSentenceIndex] = useState(
+    readingPositions?.[readerItemId] || 0,
+  );
+
+  const lastSentenceIndex = Math.max(sentences.length - 1, 0);
+  const currentSentenceIndex = Math.min(sentenceIndex, lastSentenceIndex);
+
+  useEffect(() => {
+    setReadingPosition(readerItemId, currentSentenceIndex);
+  }, [readerItemId, currentSentenceIndex, setReadingPosition]);
   const [wordIndex, setWordIndex] = useState(0);
   const [response, setResponse] = useState<ReaderClozeResponse | null>(null);
   const [showParent, setShowParent] = useState(false);
@@ -48,7 +68,7 @@ export const ReaderDynocloze = ({
   const setShowPinyin = useBrightModeStore((state) => state.setShowPinyin);
   const [learnMode, setLearnMode] = useState<ReaderLearnMode>("timeline");
 
-  const currentSentence = sentences[sentenceIndex] || "";
+  const currentSentence = sentences[currentSentenceIndex] || "";
 
   const segments = useMemo(
     () => segmentReaderWords(currentSentence, lang),
@@ -147,7 +167,7 @@ export const ReaderDynocloze = ({
       <div className="flex justify-between items-center text-xs uppercase tracking-wider text-gray-500">
         <p>
           <span>Sentence </span>
-          <span>{sentenceIndex + 1}</span>
+          <span>{currentSentenceIndex + 1}</span>
           <span> / </span>
           <span>{sentences.length}</span>
         </p>
@@ -211,11 +231,13 @@ export const ReaderDynocloze = ({
 
       <div className="flex justify-center items-center mt-12 gap-12 text-2xl">
         <button
-          disabled={sentenceIndex === 0}
+          disabled={currentSentenceIndex === 0}
           onClick={() => {
-            goToSentence(sentenceIndex - 1);
+            goToSentence(currentSentenceIndex - 1);
           }}
-          className={sentenceIndex === 0 ? "text-gray-700" : "text-gray-400"}
+          className={
+            currentSentenceIndex === 0 ? "text-gray-700" : "text-gray-400"
+          }
         >
           <Icons.arrowLeft />
         </button>
@@ -225,12 +247,12 @@ export const ReaderDynocloze = ({
         </button>
 
         <button
-          disabled={sentenceIndex >= sentences.length - 1}
+          disabled={currentSentenceIndex >= sentences.length - 1}
           onClick={() => {
-            goToSentence(sentenceIndex + 1);
+            goToSentence(currentSentenceIndex + 1);
           }}
           className={
-            sentenceIndex >= sentences.length - 1
+            currentSentenceIndex >= sentences.length - 1
               ? "text-gray-700"
               : "text-gray-400"
           }
@@ -284,7 +306,7 @@ export const ReaderDynocloze = ({
                 }}
                 className={cn(
                   "cursor-pointer transition mr-1",
-                  index === sentenceIndex
+                  index === currentSentenceIndex
                     ? "text-gray-900 dark:text-white"
                     : "text-gray-400 dark:text-gray-700 hover:text-rose-400",
                 )}

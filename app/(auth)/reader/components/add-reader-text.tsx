@@ -7,7 +7,6 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { useReaderStore } from "../hooks/use-reader-store";
-import { useReaderViewModeStore } from "../hooks/use-reader-view-mode";
 import { countReaderWords } from "../utils/count-reader-words";
 
 /**
@@ -17,7 +16,6 @@ import { countReaderWords } from "../utils/count-reader-words";
 export const AddReaderText = ({ onClose }: { onClose: () => void }) => {
   const router = useRouter();
   const addItem = useReaderStore((state) => state.addItem);
-  const setViewMode = useReaderViewModeStore((state) => state.setViewMode);
 
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
@@ -31,10 +29,8 @@ export const AddReaderText = ({ onClose }: { onClose: () => void }) => {
 
     const item = addItem({ title, text });
 
-    // A text just saved is opened to be read, whatever view the last text was
-    // left in.
-    setViewMode("read");
-
+    // Its plain url is the reading view, so a text just saved opens to be read,
+    // whatever tab the last text was left on.
     onClose();
     router.push(`/reader/${item.id}`);
   };

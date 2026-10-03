@@ -27,10 +27,44 @@ export interface ReaderSnippet {
   createdAt: number;
 }
 
-/** The views a reader text can be read in. */
+/**
+ * The views a reader text can be opened in.
+ *
+ * The URL is what decides which one is showing — `/reader/:id` is focused read,
+ * `/reader/:id?view=insights` the insights, and so on — so a view can be linked
+ * to, bookmarked and gone back to with the browser's own back button.
+ */
 export type ReaderViewMode =
   | "read"
   | "dynocloze"
   | "focused"
-  | "stats"
-  | "list";
+  | "insights"
+  | "reading-list";
+
+export const readerViewModes: ReaderViewMode[] = [
+  "read",
+  "dynocloze",
+  "focused",
+  "insights",
+  "reading-list",
+];
+
+export const isReaderViewMode = (
+  value?: string | null,
+): value is ReaderViewMode =>
+  !!value && (readerViewModes as string[]).includes(value);
+
+/**
+ * Opening a text lands in focused read: one line at a time is the way to read
+ * a pasted text, and the other views are a click away.
+ */
+export const defaultReaderViewMode: ReaderViewMode = "focused";
+
+/** The default view is the plain URL; every other view says so in the query. */
+export const getReaderViewHref = (
+  readerItemId: string,
+  viewMode: ReaderViewMode,
+) =>
+  viewMode === defaultReaderViewMode
+    ? `/reader/${readerItemId}`
+    : `/reader/${readerItemId}?view=${viewMode}`;

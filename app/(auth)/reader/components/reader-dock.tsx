@@ -5,14 +5,14 @@ import { Icons } from "@/components/ui/icons.v2";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
-import { ReaderViewMode } from "../reader.types";
+import { ReaderViewMode, getReaderViewHref } from "../reader.types";
 
 const VIEW_MODES: { id: ReaderViewMode; title: string; Icon: any }[] = [
   { id: "read", title: "Read", Icon: Icons.bookOpen },
   { id: "dynocloze", title: "Dynocloze", Icon: Icons.play },
   { id: "focused", title: "Focused read", Icon: Icons.glassesRound },
-  { id: "stats", title: "Stats", Icon: Icons.chartColumn },
-  { id: "list", title: "Reading list", Icon: Icons.bookmark },
+  { id: "insights", title: "Insights", Icon: Icons.chartColumn },
+  { id: "reading-list", title: "Reading list", Icon: Icons.bookmark },
 ];
 
 /**
@@ -25,13 +25,13 @@ const VIEW_MODES: { id: ReaderViewMode; title: string; Icon: any }[] = [
  * pinyin live in their own dock on the right, see `ReaderSideDock`.
  */
 export const ReaderDock = ({
+  readerItemId,
   viewMode,
-  onViewModeChange,
   selectionCount,
   onSaveSelection,
 }: {
+  readerItemId: string;
   viewMode: ReaderViewMode;
-  onViewModeChange: (viewMode: ReaderViewMode) => void;
   selectionCount: number;
   onSaveSelection: () => void;
 }) => {
@@ -49,12 +49,11 @@ export const ReaderDock = ({
             </Link>
 
             {VIEW_MODES.map(({ id, title, Icon }) => (
-              <button
+              <Link
                 key={id}
+                href={getReaderViewHref(readerItemId, id)}
                 title={title}
-                onClick={() => {
-                  onViewModeChange(id);
-                }}
+                scroll={false}
                 className={cn(
                   "transition text-xl",
                   viewMode === id
@@ -63,7 +62,7 @@ export const ReaderDock = ({
                 )}
               >
                 <Icon />
-              </button>
+              </Link>
             ))}
 
             {selectionCount > 0 && (

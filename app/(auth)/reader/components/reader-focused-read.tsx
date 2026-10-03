@@ -111,6 +111,24 @@ export const ReaderFocusedRead = ({
     return readingsByWord;
   }, [words, showReadings]);
 
+  /**
+   * The line on screen is taller than its text once the reader switches things
+   * on: read mode spaces the words out, and a reading stacks a second line on
+   * top of every one of them — a 14px reading over a 20–24px word, so a row is
+   * a good forty pixels deep. A line-height meant for the words alone will not
+   * hold that, and the rows end up crowding one another, which is why the
+   * leading grows with both switches.
+   *
+   * The reading's leading is in `rem` rather than a ratio because the stack is
+   * a fixed size while the text it sits in steps up a size at `sm`: a ratio
+   * would give the large text the same air as the small and no more.
+   */
+  const lineSpacing = showReadings
+    ? "leading-[3.6rem] sm:leading-[4.5rem]"
+    : readMode
+      ? "leading-loose"
+      : "leading-relaxed";
+
   // The line on screen is published as it changes, but the server is asked
   // nothing until the Translate button is clicked — and the answer handed back
   // is this line's, never the last line's.
@@ -171,7 +189,10 @@ export const ReaderFocusedRead = ({
 
         <p
           onMouseUp={lookUpSelection}
-          className="my-16 text-2xl sm:text-4xl font-light leading-relaxed"
+          className={cn(
+            "my-16 text-2xl sm:text-4xl font-light",
+            lineSpacing,
+          )}
         >
           {words.map((word, wordIndex) => {
             const key = `${currentIndex}:${wordIndex}`;
@@ -242,10 +263,20 @@ export const ReaderFocusedRead = ({
                 key={key}
                 className="inline-flex flex-col items-center align-top"
               >
-                {/* Snug against the character, but the reading keeps a little
-                    air: tone marks are drawn above the x-height and would
-                    otherwise sit on the hanzi below. */}
-                <span className="text-xs text-gray-400 dark:text-gray-600 leading-none h-4 mb-[3px] whitespace-nowrap">
+                {/* Snug against the character: the box is sized to the reading
+                    rather than to the line, because `leading-none` text in a
+                    taller box leaves all of its slack underneath — and that
+                    slack, plus a margin on top of it, is what used to hold the
+                    reading a good three pixels off the word. A little air stays
+                    wanted, since tone marks are drawn above the x-height and
+                    should not sit on the hanzi below.
+
+                    And the reading is not a footnote: it is part of the line,
+                    so it wears the same colour as the characters it hangs off
+                    — black on white, white on black, the way the glyphs
+                    themselves are drawn — rather than a grey that reads as
+                    commentary on the word. */}
+                <span className="text-xs text-black dark:text-white leading-none h-3.5 whitespace-nowrap">
                   {readings.get(word.text) || ""}
                 </span>
 

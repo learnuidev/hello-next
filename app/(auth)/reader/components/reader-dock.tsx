@@ -1,6 +1,5 @@
 "use client";
 
-import { ReadModeButton } from "@/components/read-mode-button";
 import { TheDock } from "@/components/the-dock";
 import { Icons } from "@/components/ui/icons.v2";
 import { cn } from "@/lib/utils";
@@ -10,8 +9,8 @@ import { ReaderViewMode } from "../reader.types";
 
 const VIEW_MODES: { id: ReaderViewMode; title: string; Icon: any }[] = [
   { id: "read", title: "Read", Icon: Icons.bookOpen },
-  { id: "dynocloze", title: "Dynocloze", Icon: Icons.cloze },
-  { id: "focused", title: "Focused read", Icon: Icons.typeWriter },
+  { id: "dynocloze", title: "Dynocloze", Icon: Icons.play },
+  { id: "focused", title: "Focused read", Icon: Icons.glassesRound },
   { id: "stats", title: "Stats", Icon: Icons.chartColumn },
   { id: "list", title: "Reading list", Icon: Icons.bookmark },
 ];
@@ -21,8 +20,9 @@ const VIEW_MODES: { id: ReaderViewMode; title: string; Icon: any }[] = [
  * fades and sinks away once the pointer goes idle and comes back on the next
  * movement (see `TheDock`).
  *
- * It carries the views of a text, the read mode toggle and — once something has
- * been picked out of the text — the button that files it into the reading list.
+ * It carries the views of a text, and — once something has been picked out of
+ * the text — the button that files it into the reading list. Read mode and
+ * pinyin live in their own dock on the right, see `ReaderSideDock`.
  */
 export const ReaderDock = ({
   viewMode,
@@ -77,7 +77,6 @@ export const ReaderDock = ({
               </button>
             )}
 
-            <ReadModeButton className="text-xl" />
           </div>
 
           <span className="absolute -bottom-0 left-[1.125rem] h-px w-[calc(100%-2.25rem)] bg-gradient-to-r from-emerald-400/0 via-emerald-400/90 to-emerald-400/0 transition-opacity duration-500 group-hover:opacity-40" />

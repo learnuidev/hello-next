@@ -12,6 +12,7 @@ import { ReaderDynocloze } from "../components/reader-dynocloze";
 import { ReaderDock } from "../components/reader-dock";
 import { ReaderFocusedRead } from "../components/reader-focused-read";
 import { ReaderReadingList } from "../components/reader-reading-list";
+import { ReaderSideDock } from "../components/reader-side-dock";
 import { ReaderSegmentedText } from "../components/reader-segmented-text";
 import { ReaderStats } from "../components/reader-stats";
 import { useHasMounted } from "../hooks/use-has-mounted";
@@ -124,29 +125,41 @@ export default function ReaderText() {
             : "max-w-3xl",
         )}
       >
-        <div className="mt-12 flex justify-between items-center">
-          <Link
-            href="/reader"
-            className="uppercase text-xs tracking-wider text-gray-400 hover:text-rose-400 dark:hover:text-white transition"
-          >
-            <Icons.back className="mr-2 text-xs" />
-            <span>Reader</span>
-          </Link>
+        {/* The working views get out of the way: focused read is only the line
+            you are on, and dynocloze and the insights are their own screens —
+            the title and the saved-at line belong to the reading view. The way
+            back to the library is in the bar at the bottom. */}
+        {viewMode !== "focused" && (
+          <div className="mt-12 flex justify-between items-center">
+            <Link
+              href="/reader"
+              className="uppercase text-xs tracking-wider text-gray-400 hover:text-rose-400 dark:hover:text-white transition"
+            >
+              <Icons.back className="mr-2 text-xs" />
+              <span>Reader</span>
+            </Link>
 
-          {readMode && (
-            <p className="uppercase text-[11px] tracking-wider text-gray-500">
-              Read mode
-            </p>
+            {readMode && (
+              <p className="uppercase text-[11px] tracking-wider text-gray-500">
+                Read mode
+              </p>
+            )}
+          </div>
+        )}
+
+        {viewMode !== "focused" &&
+          viewMode !== "dynocloze" &&
+          viewMode !== "stats" && (
+            <>
+              <h1 className="text-3xl font-bold mt-10">{item.title}</h1>
+
+              <p className="text-xs text-gray-500 font-light mt-3 uppercase tracking-wider">
+                <span>{formatReaderDate(item.createdAt)}</span>
+                <span> · </span>
+                <span>{countReaderWords(item.text)} words</span>
+              </p>
+            </>
           )}
-        </div>
-
-        <h1 className="text-3xl font-bold mt-10">{item.title}</h1>
-
-        <p className="text-xs text-gray-500 font-light mt-3 uppercase tracking-wider">
-          <span>{formatReaderDate(item.createdAt)}</span>
-          <span> · </span>
-          <span>{countReaderWords(item.text)} words</span>
-        </p>
 
         {viewMode === "read" &&
           (readMode ? (
@@ -172,6 +185,7 @@ export default function ReaderText() {
         {viewMode === "focused" && (
           <div className="mb-32">
             <ReaderFocusedRead
+              readerItemId={item.id}
               text={item.text}
               lang={lang}
               selection={selection}
@@ -194,6 +208,8 @@ export default function ReaderText() {
           />
         )}
       </div>
+
+      <ReaderSideDock />
 
       <ReaderDock
         viewMode={viewMode}

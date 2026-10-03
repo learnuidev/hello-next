@@ -44,35 +44,32 @@ function calculatePopularityColor(comp: any) {
   return "text-gray-200";
 }
 
-export const CharacterItem = ({
-  onClick,
+/**
+ * The colouring rules of a character glyph, as a plain function.
+ *
+ * `CharacterItem` looks its own character up, which is fine for a grid of a few
+ * dozen but ruinous for a whole text: every instance subscribes to five more
+ * hooks, so a thousand-word article spends seconds in subscriptions alone.
+ * Views that draw a lot of characters fetch the maps once and call this
+ * instead, and the colours come out the same.
+ */
+export const getCharacterGlyphClassName = ({
   character,
+  learnedChar,
+  comp,
+  currentMode,
   className,
-  disableClass,
-  disableForgotten,
-  hanzis,
-  style,
-  sweepSlot,
-}: ICharacterItem) => {
-  const { data: learnedCharacters2, isLoading: isCharactersLoading } =
-    useListCharactersMapQuery({
-      from: "character-item",
-      hanzis: hanzis,
-    });
-
-  const { data: components, isLoading: isComponentsLoading } =
-    useListComponentsMapQuery();
-
-  const { currentMode } = usePreviewMode();
-
-  const brightMode = currentMode?.current === "focus";
-
-  const learnedChar = learnedCharacters2?.[character];
-
-  const comp = components?.[character];
-
+}: {
+  character: string;
+  learnedChar?: any;
+  comp?: any;
+  /** `usePreviewMode().currentMode.current` — "normal", "focus" or "melanin". */
+  currentMode?: string;
+  className?: string;
+}) => {
+  const brightMode = currentMode === "focus";
+  const commonCharacterMode = currentMode === "melanin";
   const hasHskword = comp?.hskWords > 0;
-
   const popularityColor = calculatePopularityColor(comp);
 
   const color = calculateColor({
@@ -84,7 +81,48 @@ export const CharacterItem = ({
     tone: learnedChar?.tone_level || comp?.tone_level,
   });
 
-  const commonCharacterMode = currentMode?.current === "melanin";
+  return cn(
+    "lg:text-2xl text-xl transition lowercase font-light",
+
+    commonCharacterMode && hasHskword
+      ? popularityColor
+      : isChinesePunctuation(character)
+        ? "dark:text-white text-black"
+        : "",
+
+    brightMode &&
+      (learnedChar?.status === "forgotten"
+        ? `text-gray-300 dark:text-gray-800 ${hoverColor}`
+        : `${color} ${hoverColor}`),
+
+    currentMode === "normal" && `dark:text-white text-black ${hoverColor}`,
+
+    className,
+  );
+};
+
+export const CharacterItem = ({
+  onClick,
+  character,
+  className: customClassName,
+  disableClass,
+  disableForgotten,
+  hanzis,
+  style,
+  sweepSlot,
+}: ICharacterItem) => {
+  const { data: learnedCharacters2 } = useListCharactersMapQuery({
+    from: "character-item",
+    hanzis: hanzis,
+  });
+
+  const { data: components } = useListComponentsMapQuery();
+
+  const { currentMode } = usePreviewMode();
+
+  const learnedChar = learnedCharacters2?.[character];
+
+  const comp = components?.[character];
 
   return (
     <span
@@ -94,25 +132,13 @@ export const CharacterItem = ({
         }
       }}
       key={`${character}`}
-      className={cn(
-        "lg:text-2xl text-xl transition lowercase font-light",
-
-        commonCharacterMode && hasHskword
-          ? popularityColor
-          : isChinesePunctuation(character)
-            ? "dark:text-white text-black"
-            : "",
-
-        brightMode &&
-          (learnedChar?.status === "forgotten"
-            ? `text-gray-300 dark:text-gray-800 ${hoverColor}`
-            : `${color} ${hoverColor}`),
-
-        currentMode.current === "normal" &&
-          `dark:text-white text-black ${hoverColor}`,
-
-        className,
-      )}
+      className={getCharacterGlyphClassName({
+        character,
+        learnedChar,
+        comp,
+        currentMode: currentMode?.current,
+        className: customClassName,
+      })}
       style={style}
       data-r-word={sweepSlot?.word}
       data-r-glyph={sweepSlot?.glyph}

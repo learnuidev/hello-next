@@ -1,9 +1,15 @@
 "use client";
 
+import { CharacterItem } from "@/components/_select-character/character-item";
+import { useReadModeState } from "@/components/read-mode-button";
+import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
 import { Icons } from "@/components/ui/icons.v2";
 import { cn } from "@/lib/utils";
-import { useEffect, useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 
+import { useReaderStore } from "../hooks/use-reader-store";
+import { getReaderPinyin } from "../utils/get-reader-pinyin";
+import { isHanCharacter } from "../utils/is-han-character";
 import {
   ReaderSelection,
   isReaderSelected,
@@ -20,14 +26,22 @@ import { splitReaderSentences } from "../utils/split-reader-sentences";
  * The words are the interactive part: tapping them picks them out (the same
  * selection read mode uses) and the bar below files the pick — or the whole
  * line — into the reading list. Left/right arrows step through the text.
+ *
+ * Read mode works here too: switched on, every word carries its reading.
+ * "Show parent" drops the whole text in underneath with the line you are on
+ * lit up, the way dynocloze does. Characters are drawn by the app's own
+ * `CharacterItem`, so what you have learned wears its colour here as well, and
+ * the line you stop on is remembered per text.
  */
 export const ReaderFocusedRead = ({
+  readerItemId,
   text,
   lang,
   selection,
   onSelectionChange,
   onSaveSnippet,
 }: {
+  readerItemId: string;
   text: string;
   lang: string;
   selection: ReaderSelection[];
@@ -39,8 +53,19 @@ export const ReaderFocusedRead = ({
     [text, lang],
   );
 
-  const [index, setIndex] = useState(0);
+  const readingPositions = useReaderStore((state) => state.readingPositions);
+  const setReadingPosition = useReaderStore(
+    (state) => state.setReadingPosition,
+  );
+
+  const { readMode } = useReadModeState();
+  const showPinyin = useBrightModeStore((state) => state.showPinyin);
+
+  const [showParent, setShowParent] = useState(false);
+
   const lastIndex = Math.max(sentences.length - 1, 0);
+
+  const [index, setIndex] = useState(readingPositions?.[readerItemId] || 0);
   const currentIndex = Math.min(index, lastIndex);
 
   const currentSentence = sentences[currentIndex] || "";
@@ -49,9 +74,33 @@ export const ReaderFocusedRead = ({
     [currentSentence, lang],
   );
 
+  // Readings only mean something for a Chinese text, and they are their own
+  // switch: read mode spaces the words out, pinyin hangs the reading off them.
+  const showReadings = showPinyin && lang === "zh";
+
+  const readings = useMemo(() => {
+    const readingsByWord = new Map<string, string>();
+
+    if (!showReadings) {
+      return readingsByWord;
+    }
+
+    words.forEach((word) => {
+      if (word.isWordLike && word.text.trim()) {
+        readingsByWord.set(word.text, getReaderPinyin(word.text));
+      }
+    });
+
+    return readingsByWord;
+  }, [words, showReadings]);
+
   const selectedInLine = selection.filter((selected) =>
     selected.key.startsWith(`${currentIndex}:`),
   );
+
+  useEffect(() => {
+    setReadingPosition(readerItemId, currentIndex);
+  }, [readerItemId, currentIndex, setReadingPosition]);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -109,9 +158,8 @@ export const ReaderFocusedRead = ({
 
             const selected = isReaderSelected(selection, key);
 
-            return (
+            const pickableWord = (
               <span
-                key={key}
                 title="Tap to pick this word"
                 onClick={() => {
                   onSelectionChange(
@@ -123,13 +171,54 @@ export const ReaderFocusedRead = ({
                   );
                 }}
                 className={cn(
-                  "rounded px-1 transition cursor-pointer",
+                  "rounded transition cursor-pointer",
+                  // With a reading above it the word becomes a little ruby
+                  // stack. The stack is sized to the glyph rather than to the
+                  // line, which is what pulls the pinyin down onto the
+                  // character: a line-height borrowed from the big paragraph
+                  // around it would float the reading a good ten pixels away.
+                  showReadings
+                    ? "px-1 text-xl lg:text-2xl leading-tight"
+                    : readMode
+                      ? "px-1"
+                      : "",
                   selected
                     ? "bg-rose-500/20 text-rose-400"
                     : "hover:text-rose-400",
                 )}
               >
-                {word.text}
+                {/* Each character carries its own learned state; latin letters
+                    have none, so they stay plain text. */}
+                {Array.from(word.text).map((character, characterIndex) =>
+                  isHanCharacter(character) ? (
+                    <CharacterItem
+                      key={`${key}-${characterIndex}`}
+                      character={character}
+                    />
+                  ) : (
+                    <span key={`${key}-${characterIndex}`}>{character}</span>
+                  ),
+                )}
+              </span>
+            );
+
+            if (!showReadings) {
+              return <Fragment key={key}>{pickableWord}</Fragment>;
+            }
+
+            return (
+              <span
+                key={key}
+                className="inline-flex flex-col items-center align-top"
+              >
+                {/* Snug against the character, but the reading keeps a little
+                    air: tone marks are drawn above the x-height and would
+                    otherwise sit on the hanzi below. */}
+                <span className="text-xs text-gray-400 dark:text-gray-600 leading-none h-4 mb-[3px] whitespace-nowrap">
+                  {readings.get(word.text) || ""}
+                </span>
+
+                {pickableWord}
               </span>
             );
           })}
@@ -142,25 +231,23 @@ export const ReaderFocusedRead = ({
 
       <div className="flex justify-center items-center mt-20 gap-16 text-2xl">
         <button
+          title="Previous line"
           disabled={currentIndex === 0}
           onClick={() => {
             setIndex(Math.max(currentIndex - 1, 0));
           }}
-          className={
-            currentIndex === 0 ? "text-gray-700" : "text-gray-400"
-          }
+          className={currentIndex === 0 ? "text-gray-700" : "text-gray-400"}
         >
           <Icons.arrowLeft />
         </button>
 
         <button
+          title="Next line"
           disabled={currentIndex >= lastIndex}
           onClick={() => {
             setIndex(Math.min(currentIndex + 1, lastIndex));
           }}
-          className={
-            currentIndex >= lastIndex ? "text-gray-700" : "text-gray-400"
-          }
+          className={currentIndex >= lastIndex ? "text-gray-700" : "text-gray-400"}
         >
           <Icons.arrowRight />
         </button>
@@ -175,6 +262,15 @@ export const ReaderFocusedRead = ({
         >
           <Icons.bookmark className="mr-2" />
           <span>Save this line</span>
+        </button>
+
+        <button
+          className="hover:text-rose-400 transition"
+          onClick={() => {
+            setShowParent(!showParent);
+          }}
+        >
+          {showParent ? "Hide parent" : "Show parent"}
         </button>
 
         {selectedInLine.length > 0 && (
@@ -194,10 +290,28 @@ export const ReaderFocusedRead = ({
         )}
       </div>
 
-      <p className="text-center text-[11px] text-gray-600 dark:text-gray-700 mt-10">
-        Tap words to pick them, then save them with the bookmark in the bar
-        below · ← → to move between lines
-      </p>
+      {showParent && (
+        <div className="text-center mt-12">
+          <p className="text-sm leading-8">
+            {sentences.map((sentence, sentenceIndex) => (
+              <span
+                key={`${sentence}-${sentenceIndex}`}
+                onClick={() => {
+                  setIndex(sentenceIndex);
+                }}
+                className={cn(
+                  "cursor-pointer transition mr-1",
+                  sentenceIndex === currentIndex
+                    ? "text-gray-900 dark:text-white"
+                    : "text-gray-400 dark:text-gray-700 hover:text-rose-400",
+                )}
+              >
+                {sentence}
+              </span>
+            ))}
+          </p>
+        </div>
+      )}
     </div>
   );
 };

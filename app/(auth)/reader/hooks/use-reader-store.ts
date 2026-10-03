@@ -41,12 +41,34 @@ export const useReaderStore = create(
 
       /** Deletes a text, along with the snippets saved out of it. */
       deleteItem: (id: string) => {
+        const positions: Record<string, number> = { ...(get().readingPositions || {}) };
+        delete positions[id];
+
         set({
           items: get().items.filter((item: ReaderItem) => item.id !== id),
           readingList: (get().readingList || []).filter(
             (snippet: ReaderSnippet) => snippet.readerItemId !== id,
           ),
+          readingPositions: positions,
         });
+      },
+
+      /**
+       * Where focused read was left in each text, by text id, so opening a text
+       * again carries on at the line you stopped at.
+       */
+      readingPositions: {} as Record<string, number>,
+
+      setReadingPosition: (readerItemId: string, sentenceIndex: number) => {
+        const positions: Record<string, number> = get().readingPositions || {};
+
+        // Writing the same line back is what a re-render would otherwise do
+        // forever, so it stops here.
+        if (positions[readerItemId] === sentenceIndex) {
+          return;
+        }
+
+        set({ readingPositions: { ...positions, [readerItemId]: sentenceIndex } });
       },
 
       /**

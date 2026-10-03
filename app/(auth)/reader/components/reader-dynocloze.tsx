@@ -6,6 +6,8 @@ import { Icons } from "@/components/ui/icons.v2";
 import { cn } from "@/lib/utils";
 import { useMemo, useState } from "react";
 
+import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
+
 import { getReaderPinyin } from "../utils/get-reader-pinyin";
 import { getReaderWords, segmentReaderWords } from "../utils/segment-reader-text";
 import { splitReaderSentences } from "../utils/split-reader-sentences";
@@ -40,7 +42,10 @@ export const ReaderDynocloze = ({
   const [wordIndex, setWordIndex] = useState(0);
   const [response, setResponse] = useState<ReaderClozeResponse | null>(null);
   const [showParent, setShowParent] = useState(false);
-  const [showPinyin, setShowPinyin] = useState(false);
+  // The app's pinyin preference, shared with the rest of the reader (and with
+  // the character grids elsewhere) rather than a switch of its own.
+  const showPinyin = useBrightModeStore((state) => state.showPinyin);
+  const setShowPinyin = useBrightModeStore((state) => state.setShowPinyin);
   const [learnMode, setLearnMode] = useState<ReaderLearnMode>("timeline");
 
   const currentSentence = sentences[sentenceIndex] || "";

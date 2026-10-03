@@ -19,15 +19,14 @@ import { useMemo } from "react";
 import {
   ReaderStatsDisplayMode,
   ReaderStatsFrequencySort,
+  ReaderStatsLearnStatus,
   ReaderStatsViewType,
+  matchesReaderLearnStatus,
   useReaderStatsSettings,
 } from "../hooks/use-reader-stats-settings";
+import { useReaderCharacterMaps } from "./reader-character";
 import { getReaderPinyin } from "../utils/get-reader-pinyin";
 import { ReaderFrequencyItem, getReaderStats } from "../utils/get-reader-stats";
-
-/** Nothing worth scrolling past a few screens of tiles or rows. */
-const MAX_TILES = 120;
-const MAX_ROWS = 100;
 
 /**
  * One character (or word) of the text, in the shape nmm gives one: the app's
@@ -136,12 +135,36 @@ export const ReaderStats = ({ text, lang }: { text: string; lang: string }) => {
   const setFrequencySort = useReaderStatsSettings(
     (state) => state.setFrequencySort,
   );
+  const learnStatus = useReaderStatsSettings((state) => state.learnStatus) as
+    | ReaderStatsLearnStatus
+    | undefined;
+  const setLearnStatus = useReaderStatsSettings(
+    (state) => state.setLearnStatus,
+  );
+
+  // What the app already knows about these characters: it drives both the
+  // "new" count of the banner and the learned / not learned filter.
+  const { learnedCharacters } = useReaderCharacterMaps();
+
+  /** Characters of this text the app has no record of yet — what is new to you. */
+  const newCharacters = useMemo(
+    () =>
+      stats.charactersByFrequency.filter(
+        (item) => !learnedCharacters?.[item.input],
+      ).length,
+    [stats.charactersByFrequency, learnedCharacters],
+  );
 
   const sortedItems = useMemo(() => {
     const items =
       viewType === "word"
         ? stats.wordsByFrequency
-        : stats.charactersByFrequency;
+        : stats.charactersByFrequency.filter((item) =>
+            matchesReaderLearnStatus(
+              learnedCharacters?.[item.input],
+              learnStatus || "all",
+            ),
+          );
 
     if (frequencySort === "most") {
       return [...items].sort(
@@ -157,12 +180,9 @@ export const ReaderStats = ({ text, lang }: { text: string; lang: string }) => {
 
     // "As they appear": the order the counting kept, i.e. the text's own.
     return items;
-  }, [stats, viewType, frequencySort]);
+  }, [stats, viewType, frequencySort, learnStatus, learnedCharacters]);
 
-  const visibleItems = sortedItems.slice(
-    0,
-    displayMode === "list" ? MAX_ROWS : MAX_TILES,
-  );
+  const visibleItems = sortedItems;
 
   // Readings are local (pinyin-pro) and only make sense for a Chinese text.
   const pinyinByInput = useMemo(() => {
@@ -203,13 +223,19 @@ export const ReaderStats = ({ text, lang }: { text: string; lang: string }) => {
           </h2>
         </div>
 
-        <div className="flex space-x-2 sm:space-x-8">
+        <div className="flex space-x-4 sm:space-x-8">
           <h2 className="text-lg sm:text-3xl my-4 font-extralight text-gray-500 dark:text-gray-300 space-x-2">
             <span>
               <Icons.seedling />
             </span>
             {" "}
             <span className="text-gray-300">{stats.uniqueCharacters}</span>
+          </h2>
+
+          <h2 className="text-lg sm:text-3xl my-4 font-extralight text-gray-500 dark:text-gray-300 space-x-2">
+            <span className="text-yellow-500">{newCharacters}</span>
+            {" "}
+            <span className="text-sm md:text-xl">new</span>
           </h2>
         </div>
       </div>
@@ -246,6 +272,26 @@ export const ReaderStats = ({ text, lang }: { text: string; lang: string }) => {
         </div>
 
         <div className="flex gap-8 flex-wrap">
+          {viewType !== "word" && (
+            <Select
+              value={learnStatus || "all"}
+              onValueChange={(value) => {
+                setLearnStatus(value as ReaderStatsLearnStatus);
+              }}
+            >
+              <SelectTrigger className="w-[160px]">
+                <SelectValue placeholder="Learned" />
+              </SelectTrigger>
+
+              <SelectContent>
+                <SelectItem value="all">All characters</SelectItem>
+                <SelectItem value="learned">Learned</SelectItem>
+                <SelectItem value="unlearned">Not learned</SelectItem>
+                <SelectItem value="forgotten">Forgotten</SelectItem>
+              </SelectContent>
+            </Select>
+          )}
+
           <Select
             value={frequencySort || "most"}
             onValueChange={(value) => {
@@ -299,7 +345,9 @@ export const ReaderStats = ({ text, lang }: { text: string; lang: string }) => {
 
       {visibleItems.length === 0 ? (
         <p className="my-16 text-center text-gray-500 font-extralight">
-          There is nothing to count in this text.
+          {viewType !== "word" && (learnStatus || "all") !== "all"
+            ? "No characters match this filter."
+            : "There is nothing to count in this text."}
         </p>
       ) : isGrid ? (
         <NmmListContainerAll className="md:mx-0 mb-32">
@@ -318,15 +366,6 @@ export const ReaderStats = ({ text, lang }: { text: string; lang: string }) => {
             />
           ))}
         </section>
-      )}
-
-      {sortedItems.length > visibleItems.length && (
-        <p className="text-center text-xs text-gray-500 pb-16">
-          <span>Showing the first </span>
-          <span>{visibleItems.length}</span>
-          <span> of </span>
-          <span>{sortedItems.length}</span>
-        </p>
       )}
     </div>
   );

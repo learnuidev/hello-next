@@ -15,6 +15,20 @@ export interface ReaderItem {
 }
 
 /**
+ * Where in a text a saved piece came from: which line it was taken out of, and
+ * the line itself.
+ *
+ * A word saved out of a long text is a word with a place — the reading list can
+ * show what was being said when the reader stopped to keep it, and offer the way
+ * back to that line.
+ */
+export interface ReaderSnippetLine {
+  /** The step the line is in the text, counted from zero. */
+  lineIndex: number;
+  line: string;
+}
+
+/**
  * A piece of a text the reader kept: words or a line picked while reading,
  * waiting to be gone through again (or looked up in nmm).
  */
@@ -24,6 +38,13 @@ export interface ReaderSnippet {
   /** The text it was saved from, so the list can point back at it. */
   readerItemId: string;
   readerItemTitle: string;
+  /**
+   * The line it was saved from. Missing when the piece was picked across more
+   * than one line — a run of words selected in the read view belongs to no
+   * single line — and missing from anything saved before the reading list kept
+   * the reference.
+   */
+  line?: ReaderSnippetLine;
   createdAt: number;
 }
 

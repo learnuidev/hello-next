@@ -3,7 +3,7 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
-import { ReaderItem, ReaderSnippet } from "../reader.types";
+import { ReaderItem, ReaderSnippet, ReaderSnippetLine } from "../reader.types";
 import { generateReaderId } from "../utils/reader-id";
 
 /**
@@ -81,10 +81,13 @@ export const useReaderStore = create(
         text,
         readerItemId,
         readerItemTitle,
+        line,
       }: {
         text: string;
         readerItemId: string;
         readerItemTitle: string;
+        /** The line it was taken out of, when it was taken out of one. */
+        line?: ReaderSnippetLine;
       }) => {
         const trimmed = text.trim();
 
@@ -96,7 +99,12 @@ export const useReaderStore = create(
 
         const alreadySaved = existing.find(
           (snippet) =>
-            snippet.text === trimmed && snippet.readerItemId === readerItemId,
+            snippet.text === trimmed &&
+            snippet.readerItemId === readerItemId &&
+            // The line is part of what was saved, not decoration on it: the
+            // same word kept out of another line is another thing to come back
+            // to, and it carries its own way back.
+            snippet.line?.lineIndex === line?.lineIndex,
         );
 
         if (alreadySaved) {
@@ -108,6 +116,7 @@ export const useReaderStore = create(
           text: trimmed,
           readerItemId,
           readerItemTitle,
+          ...(line ? { line } : {}),
           createdAt: Date.now(),
         };
 

@@ -384,6 +384,11 @@ export const ReaderDynocloze = ({
           text={text}
           lang={lang}
           selected={tappedWord}
+          // The word is saved with the line it was tapped in.
+          line={{
+            lineIndex: currentSentenceIndex,
+            line: currentSentence,
+          }}
           onClose={() => {
             setTappedWord(null);
           }}

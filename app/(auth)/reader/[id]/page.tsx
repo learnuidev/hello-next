@@ -18,6 +18,7 @@ import { ReaderStats } from "../components/reader-stats";
 import { useHasMounted } from "../hooks/use-has-mounted";
 import { useReaderStore } from "../hooks/use-reader-store";
 import {
+  ReaderSnippetLine,
   ReaderViewMode,
   defaultReaderViewMode,
   getReaderViewHref,
@@ -78,7 +79,12 @@ export default function ReaderText() {
 
   const lang = useMemo(() => detectReaderLang(item?.text || ""), [item?.text]);
 
-  const saveSnippet = (text: string) => {
+  /**
+   * Files a piece of the text into the reading list, with the line it came out
+   * of when the view knows it: a word or a line is worth coming back to on the
+   * page it was said on, not floating loose.
+   */
+  const saveSnippet = (text: string, line?: ReaderSnippetLine) => {
     if (!item || !text.trim()) {
       return;
     }
@@ -87,6 +93,7 @@ export default function ReaderText() {
       text,
       readerItemId: item.id,
       readerItemTitle: item.title,
+      ...(line ? { line } : {}),
     });
 
     setSavedNotice(true);

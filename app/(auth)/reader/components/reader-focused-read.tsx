@@ -15,6 +15,7 @@ import { ReaderWord, segmentReaderWords } from "../utils/segment-reader-text";
 import { splitReaderSentences } from "../utils/split-reader-sentences";
 import { ReaderCharacter, useReaderCharacterMaps } from "./reader-character";
 import { ReaderMiniDictionary } from "./reader-mini-dictionary";
+import { ReaderSnippetLine } from "../reader.types";
 
 /**
  * Focused read: one line at a time, big and centred, in a stage of its own.
@@ -50,7 +51,7 @@ export const ReaderFocusedRead = ({
   readerItemTitle: string;
   text: string;
   lang: string;
-  onSaveSnippet: (text: string) => void;
+  onSaveSnippet: (text: string, line?: ReaderSnippetLine) => void;
 }) => {
   const sentences = useMemo(
     () => splitReaderSentences(text, lang),
@@ -386,7 +387,12 @@ export const ReaderFocusedRead = ({
         <button
           className="hover:text-rose-400 transition"
           onClick={() => {
-            onSaveSnippet(currentSentence);
+            // A line is saved with itself as the line it came from: the reading
+            // list can point back at the page it was cut out of.
+            onSaveSnippet(currentSentence, {
+              lineIndex: currentIndex,
+              line: currentSentence,
+            });
           }}
         >
           <Icons.bookmark className="mr-2" />
@@ -410,6 +416,8 @@ export const ReaderFocusedRead = ({
           text={text}
           lang={lang}
           selected={tappedWord.text}
+          // The word is saved with the line it was tapped in.
+          line={{ lineIndex: currentIndex, line: currentSentence }}
           onClose={() => {
             setTappedWord(null);
           }}

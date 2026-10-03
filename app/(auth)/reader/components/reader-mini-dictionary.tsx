@@ -10,6 +10,8 @@ import Link from "next/link";
 import { useMemo } from "react";
 
 import { useReaderStore } from "../hooks/use-reader-store";
+import { ReaderSnippetLine } from "../reader.types";
+import { highlightReaderWord } from "../utils/highlight-reader-word";
 import { splitReaderSentences } from "../utils/split-reader-sentences";
 
 /**
@@ -27,6 +29,7 @@ export const ReaderMiniDictionary = ({
   text,
   lang,
   selected,
+  line,
   onClose,
   onGoToSentence,
 }: {
@@ -36,6 +39,11 @@ export const ReaderMiniDictionary = ({
   lang: string;
   /** The word that was tapped. */
   selected: string;
+  /**
+   * The line the word was tapped in. Saved with the word, so the reading list
+   * can say where it came from instead of leaving it as a word with no place.
+   */
+  line?: ReaderSnippetLine;
   onClose: () => void;
   onGoToSentence: (sentenceIndex: number) => void;
 }) => {
@@ -62,9 +70,13 @@ export const ReaderMiniDictionary = ({
     [text, lang, selected],
   );
 
+  // The bookmark is the bookmark of this word on this line: the same word kept
+  // out of another line is another entry, and this one has its own state.
   const savedSnippet = (readingList || []).find(
     (snippet) =>
-      snippet.text === selected && snippet.readerItemId === readerItemId,
+      snippet.text === selected &&
+      snippet.readerItemId === readerItemId &&
+      snippet.line?.lineIndex === line?.lineIndex,
   );
 
   const toggleBookmark = () => {
@@ -77,6 +89,7 @@ export const ReaderMiniDictionary = ({
       text: selected,
       readerItemId,
       readerItemTitle,
+      ...(line ? { line } : {}),
     });
   };
 
@@ -150,7 +163,7 @@ export const ReaderMiniDictionary = ({
               }}
               className="block text-left text-gray-600 dark:text-gray-400 hover:text-rose-400 transition"
             >
-              {highlightWord(sentence, selected)}
+              {highlightReaderWord(sentence, selected)}
             </button>
           ))}
 
@@ -163,20 +176,4 @@ export const ReaderMiniDictionary = ({
       </div>
     </div>
   );
-};
-
-/** The mention, with the word itself picked out. */
-const highlightWord = (sentence: string, word: string) => {
-  const parts = sentence.split(word);
-
-  return parts.map((part, index) => (
-    <span key={`${part}-${index}`}>
-      {part}
-      {index < parts.length - 1 && (
-        <span className="text-gray-900 dark:text-white font-semibold">
-          {word}
-        </span>
-      )}
-    </span>
-  ));
 };

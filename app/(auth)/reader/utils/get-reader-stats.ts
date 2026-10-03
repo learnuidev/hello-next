@@ -1,10 +1,6 @@
-import { filterNonHanYu } from "@/app/nmm/nmm-utils/filter-non-hanyu";
-
+import { getReaderCharacters } from "./count-reader-characters";
 import { getReaderWords } from "./segment-reader-text";
 import { splitReaderSentences } from "./split-reader-sentences";
-
-const HAN_PATTERN = /\p{Script=Han}/u;
-const ALPHANUMERIC_PATTERN = /[\p{L}\p{N}]/u;
 
 export interface ReaderFrequencyItem {
   input: string;
@@ -40,10 +36,7 @@ const countByFrequency = (items: string[]): ReaderFrequencyItem[] => {
 /**
  * Everything the stats view shows, computed locally from the text itself.
  *
- * Characters follow what nmm's insights count: Han characters only
- * (`filterNonHanYu` drops punctuation, digits and latin). A text with no Han
- * characters at all — an English article — would otherwise report zero, so it
- * falls back to counting letters and digits instead.
+ * Characters are `getReaderCharacters` — the reader's one definition of one.
  */
 export const getReaderStats = ({
   text,
@@ -53,13 +46,7 @@ export const getReaderStats = ({
   lang: string;
 }): ReaderStats => {
   const words = getReaderWords(text, lang);
-  const hasHan = HAN_PATTERN.test(text);
-
-  const characters = Array.from(text).filter((character) =>
-    hasHan
-      ? HAN_PATTERN.test(character) && filterNonHanYu(character)
-      : ALPHANUMERIC_PATTERN.test(character),
-  );
+  const characters = getReaderCharacters(text);
 
   const charactersByFrequency = countByFrequency(characters);
   const wordsByFrequency = countByFrequency(words);

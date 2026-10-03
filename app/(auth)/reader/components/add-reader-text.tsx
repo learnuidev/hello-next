@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { useReaderStore } from "../hooks/use-reader-store";
-import { countReaderWords } from "../utils/count-reader-words";
+import { countReaderCharacters } from "../utils/count-reader-characters";
 
 /**
  * The "+" flow: a title, a pasted body and a save button. Saving writes to the
@@ -76,8 +76,8 @@ export const AddReaderText = ({ onClose }: { onClose: () => void }) => {
 
       <div className="flex items-center justify-between mt-8 mb-32 border-t border-gray-100 dark:border-gray-900 pt-6">
         <p className="text-xs uppercase text-gray-500">
-          <span>{countReaderWords(text)}</span>
-          <span> words</span>
+          <span>{countReaderCharacters(text)}</span>
+          <span> characters</span>
         </p>
 
         <div className="flex items-center space-x-6">

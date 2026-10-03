@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 
 import { ReaderItem } from "../reader.types";
-import { countReaderWords } from "../utils/count-reader-words";
+import { countReaderCharacters } from "../utils/count-reader-characters";
 import { formatReaderDateShort } from "../utils/format-reader-date";
 
 export const ReaderListItem = ({
@@ -30,7 +30,7 @@ export const ReaderListItem = ({
         <p className="text-xs text-gray-500 font-light mt-1">
           <span>{formatReaderDateShort(item.createdAt)}</span>
           <span> · </span>
-          <span>{countReaderWords(item.text)} words</span>
+          <span>{countReaderCharacters(item.text)} characters</span>
         </p>
       </div>
 

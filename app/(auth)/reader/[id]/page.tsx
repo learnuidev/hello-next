@@ -5,12 +5,13 @@ import { useReadModeState } from "@/components/read-mode-button";
 import { Icons } from "@/components/ui/icons.v2";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 
 import { ReaderDynocloze } from "../components/reader-dynocloze";
 import { ReaderDock } from "../components/reader-dock";
 import { ReaderFocusedRead } from "../components/reader-focused-read";
+import { ReaderMiniDictionary } from "../components/reader-mini-dictionary";
 import { ReaderReadingList } from "../components/reader-reading-list";
 import { ReaderSideDock } from "../components/reader-side-dock";
 import { ReaderSegmentedText } from "../components/reader-segmented-text";
@@ -24,8 +25,9 @@ import {
   getReaderViewHref,
   isReaderViewMode,
 } from "../reader.types";
-import { countReaderWords } from "../utils/count-reader-words";
+import { countReaderCharacters } from "../utils/count-reader-characters";
 import { detectReaderLang } from "../utils/detect-reader-lang";
+import { findReaderLineAtWord } from "../utils/find-reader-line";
 import { formatReaderDate } from "../utils/format-reader-date";
 import {
   ReaderSelection,
@@ -44,6 +46,11 @@ export default function ReaderText() {
   const removeFromReadingList = useReaderStore(
     (state) => state.removeFromReadingList,
   );
+  const setReadingPosition = useReaderStore(
+    (state) => state.setReadingPosition,
+  );
+
+  const router = useRouter();
 
   // The tab lives in the url: `/reader/:id` is focused read, `?view=insights`
   // the insights, and so on. Nothing else remembers which one is showing.
@@ -57,11 +64,26 @@ export default function ReaderText() {
 
   const [selection, setSelection] = useState<ReaderSelection[]>([]);
   const [savedNotice, setSavedNotice] = useState(false);
+  /**
+   * The word tapped in the read view, and the line it was tapped in.
+   *
+   * The read view has no dictionary of its own — a tap there picks a word for
+   * the reading list — so the word it picks is handed to the same mini
+   * dictionary the other views use, which is where the meaning and the bookmark
+   * live. The line is worked out from where the word sits in the text, so a word
+   * saved out of the read view carries its place like any other.
+   */
+  const [readTap, setReadTap] = useState<{
+    word: string;
+    line: ReaderSnippetLine | null;
+  } | null>(null);
 
   // A pick belongs to the line it was made on: moving to another view (or
-  // another text) starts from a clean selection.
+  // another text) starts from a clean selection, and the dictionary closes with
+  // it — it is open on a word of the view that is going away.
   useEffect(() => {
     setSelection([]);
+    setReadTap(null);
   }, [id, viewMode]);
 
   // The "saved" confirmation takes itself away.
@@ -173,7 +195,7 @@ export default function ReaderText() {
               <p className="text-xs text-gray-500 font-light mt-3 uppercase tracking-wider">
                 <span>{formatReaderDate(item.createdAt)}</span>
                 <span> · </span>
-                <span>{countReaderWords(item.text)} words</span>
+                <span>{countReaderCharacters(item.text)} characters</span>
               </p>
             </>
           )}
@@ -184,11 +206,52 @@ export default function ReaderText() {
               text={item.text}
               lang={lang}
               selection={selection}
-              onSelectionChange={setSelection}
+              onSelectionChange={(nextSelection) => {
+                // Which word the tap added — a tap on a word that was already
+                // picked takes it off again, and then there is nothing to look
+                // up.
+                const picked = nextSelection.find(
+                  (candidate) =>
+                    !selection.some(
+                      (selected) => selected.key === candidate.key,
+                    ),
+                );
+
+                setSelection(nextSelection);
+
+                if (!picked) {
+                  return;
+                }
+
+                const [paragraphIndex, wordIndex] = picked.key
+                  .split(":")
+                  .map(Number);
+
+                setReadTap({
+                  word: picked.text,
+                  line: findReaderLineAtWord({
+                    text: item.text,
+                    lang,
+                    paragraphIndex,
+                    wordIndex,
+                  }),
+                });
+              }}
               className="mt-12 mb-32 text-lg font-extralight leading-9 text-gray-800 dark:text-gray-200"
             />
           ) : (
-            <p className="mt-12 mb-32 whitespace-pre-wrap break-words text-lg font-extralight leading-9 text-gray-800 dark:text-gray-200">
+            <p
+              // Without read mode there are no segmented words to tap, so the
+              // highlight is the way in — the same way it is in focused read.
+              onMouseUp={() => {
+                const highlighted = window.getSelection()?.toString().trim();
+
+                if (highlighted) {
+                  setReadTap({ word: highlighted, line: null });
+                }
+              }}
+              className="mt-12 mb-32 whitespace-pre-wrap break-words text-lg font-extralight leading-9 text-gray-800 dark:text-gray-200"
+            >
               {item.text}
             </p>
           ))}
@@ -233,6 +296,28 @@ export default function ReaderText() {
       <ReaderSideDock
         showTranslate={viewMode === "focused" || viewMode === "dynocloze"}
       />
+
+      {/* The read view's dictionary, on the word it picked. The other views keep
+          their own, next to the line they are showing. */}
+      {!!readTap && (
+        <ReaderMiniDictionary
+          readerItemId={item.id}
+          readerItemTitle={item.title}
+          text={item.text}
+          lang={lang}
+          selected={readTap.word}
+          {...(readTap.line ? { line: readTap.line } : {})}
+          onClose={() => {
+            setReadTap(null);
+          }}
+          onGoToSentence={(sentenceIndex) => {
+            // The read view is the whole text at once: a line is somewhere to go
+            // to, and focused read is the view that goes to it.
+            setReadingPosition(item.id, sentenceIndex);
+            router.push(getReaderViewHref(item.id, "focused"));
+          }}
+        />
+      )}
 
       <ReaderDock
         readerItemId={item.id}

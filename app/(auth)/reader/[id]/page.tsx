@@ -223,7 +223,9 @@ export default function ReaderText() {
         )}
       </div>
 
-      <ReaderSideDock />
+      <ReaderSideDock
+        showTranslate={viewMode === "focused" || viewMode === "dynocloze"}
+      />
 
       <ReaderDock
         readerItemId={item.id}

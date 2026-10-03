@@ -6,9 +6,11 @@ import { Icons } from "@/components/ui/icons.v2";
 import { cn } from "@/lib/utils";
 import { useEffect, useMemo, useState } from "react";
 
+import { useChinglishState } from "@/components/settings-dialog/use-chinglish-state";
 import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
 
 import { useReaderStore } from "../hooks/use-reader-store";
+import { useReaderTranslation } from "../hooks/use-reader-translate";
 import { getReaderPinyin } from "../utils/get-reader-pinyin";
 import { getReaderWords, segmentReaderWords } from "../utils/segment-reader-text";
 import { splitReaderSentences } from "../utils/split-reader-sentences";
@@ -66,6 +68,8 @@ export const ReaderDynocloze = ({
   // the character grids elsewhere) rather than a switch of its own.
   const showPinyin = useBrightModeStore((state) => state.showPinyin);
   const setShowPinyin = useBrightModeStore((state) => state.setShowPinyin);
+  const showEn = useBrightModeStore((state) => state.showEn);
+  const { showChinglish } = useChinglishState();
   const [learnMode, setLearnMode] = useState<ReaderLearnMode>("timeline");
 
   const currentSentence = sentences[currentSentenceIndex] || "";
@@ -132,6 +136,12 @@ export const ReaderDynocloze = ({
     [showPinyin, currentSentence],
   );
 
+  // Same section, same question: Translate asks about the line on screen.
+  const { translation } = useReaderTranslation({
+    content: currentSentence,
+    lang,
+  });
+
   const goToSentence = (nextIndex: number) => {
     setSentenceIndex(Math.max(0, Math.min(nextIndex, sentences.length - 1)));
     setWordIndex(0);
@@ -188,6 +198,21 @@ export const ReaderDynocloze = ({
         {showPinyin && !!pinyin && (
           <p className="mt-3 text-sm text-gray-500 font-extralight">
             {pinyin}
+          </p>
+        )}
+
+        {(showEn || showChinglish) && !!translation && (
+          <p
+            className={cn(
+              "mt-6 text-lg text-gray-600 dark:text-gray-400",
+              showChinglish && translation.chinglish
+                ? "font-light italic"
+                : "font-light",
+            )}
+          >
+            {showChinglish && translation.chinglish
+              ? translation.chinglish
+              : translation.en}
           </p>
         )}
       </div>

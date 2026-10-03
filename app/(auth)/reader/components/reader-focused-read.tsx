@@ -2,12 +2,14 @@
 
 import { CharacterItem } from "@/components/_select-character/character-item";
 import { useReadModeState } from "@/components/read-mode-button";
+import { useChinglishState } from "@/components/settings-dialog/use-chinglish-state";
 import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
 import { Icons } from "@/components/ui/icons.v2";
 import { cn } from "@/lib/utils";
 import { Fragment, useEffect, useMemo, useState } from "react";
 
 import { useReaderStore } from "../hooks/use-reader-store";
+import { useReaderTranslation } from "../hooks/use-reader-translate";
 import { getReaderPinyin } from "../utils/get-reader-pinyin";
 import { isHanCharacter } from "../utils/is-han-character";
 import {
@@ -60,6 +62,8 @@ export const ReaderFocusedRead = ({
 
   const { readMode } = useReadModeState();
   const showPinyin = useBrightModeStore((state) => state.showPinyin);
+  const showEn = useBrightModeStore((state) => state.showEn);
+  const { showChinglish } = useChinglishState();
 
   const [showParent, setShowParent] = useState(false);
 
@@ -97,6 +101,12 @@ export const ReaderFocusedRead = ({
   const selectedInLine = selection.filter((selected) =>
     selected.key.startsWith(`${currentIndex}:`),
   );
+
+  // Asked for the line on screen, once Translate has been pressed.
+  const { translation } = useReaderTranslation({
+    content: currentSentence,
+    lang,
+  });
 
   useEffect(() => {
     setReadingPosition(readerItemId, currentIndex);
@@ -223,6 +233,23 @@ export const ReaderFocusedRead = ({
             );
           })}
         </p>
+
+        {(showEn || showChinglish) && !!translation && (
+          <div className="mb-16 px-4">
+            <p
+              className={cn(
+                "text-lg text-gray-600 dark:text-gray-400",
+                showChinglish && translation.chinglish
+                  ? "font-light italic"
+                  : "font-light",
+              )}
+            >
+              {showChinglish && translation.chinglish
+                ? translation.chinglish
+                : translation.en}
+            </p>
+          </div>
+        )}
 
         <p className="text-lg font-extralight text-gray-600 dark:text-gray-700 min-h-[3rem]">
           {sentences[currentIndex + 1] || ""}

@@ -272,12 +272,13 @@ export const ReaderFocusedRead = ({
                     wanted, since tone marks are drawn above the x-height and
                     should not sit on the hanzi below.
 
-                    And the reading is not a footnote: it is part of the line,
-                    so it wears the same colour as the characters it hangs off
-                    — black on white, white on black, the way the glyphs
-                    themselves are drawn — rather than a grey that reads as
-                    commentary on the word. */}
-                <span className="text-xs text-black dark:text-white leading-none h-3.5 whitespace-nowrap">
+                    And the reading is not a footnote: it is part of the line
+                    rather than commentary on the word, so it carries the text
+                    colour with the glyphs — black on white, where the
+                    characters are black and there is nothing darker to go. On
+                    black it steps down from their white to a soft grey, so the
+                    reading sits beside the word instead of shouting over it. */}
+                <span className="text-xs text-black dark:text-gray-400 leading-none h-3.5 whitespace-nowrap">
                   {readings.get(word.text) || ""}
                 </span>
 

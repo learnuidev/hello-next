@@ -1,14 +1,14 @@
 "use client";
 
 import { useReadModeState } from "@/components/read-mode-button";
-import { useChinglishState } from "@/components/settings-dialog/use-chinglish-state";
 import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
+import { useChinglishState } from "@/components/settings-dialog/use-chinglish-state";
 import { Icons } from "@/components/ui/icons.v2";
 import { cn } from "@/lib/utils";
 import { useEffect, useMemo, useState } from "react";
 
+import { useListDiscoveryQuery } from "@/domain/sentence/use-list-discovery-query";
 import { useReaderStore } from "../hooks/use-reader-store";
-import { useReaderTranslation } from "../hooks/use-reader-translate";
 import { getReaderPinyin } from "../utils/get-reader-pinyin";
 import { isHanCharacter } from "../utils/is-han-character";
 import { ReaderWord, segmentReaderWords } from "../utils/segment-reader-text";
@@ -145,7 +145,7 @@ export const ReaderFocusedRead = ({
 
   // The line in the middle of the stage is asked about as it arrives, and the
   // answer handed back is this line's, never the last line's.
-  const { translation } = useReaderTranslation({
+  const { data: translation } = useListDiscoveryQuery({
     content: currentSentence,
     lang,
   });
@@ -217,9 +217,7 @@ export const ReaderFocusedRead = ({
             : readMode
               ? "px-1"
               : "",
-          selected
-            ? "bg-rose-500/20 text-rose-400"
-            : "hover:text-rose-400",
+          selected ? "bg-rose-500/20 text-rose-400" : "hover:text-rose-400",
         )}
       >
         {/* Each character carries its own learned state; latin letters have
@@ -344,7 +342,9 @@ export const ReaderFocusedRead = ({
           onClick={() => {
             setIndex(Math.min(currentIndex + 1, lastIndex));
           }}
-          className={currentIndex >= lastIndex ? "text-gray-700" : "text-gray-400"}
+          className={
+            currentIndex >= lastIndex ? "text-gray-700" : "text-gray-400"
+          }
         >
           <Icons.arrowRight />
         </button>
@@ -369,7 +369,6 @@ export const ReaderFocusedRead = ({
         >
           {showParent ? "Hide parent" : "Show parent"}
         </button>
-
       </div>
 
       {!!tappedWord && (

@@ -43,61 +43,6 @@ export const useReaderTranslateStore = create((set: any) => ({
 }));
 
 /**
- * The view half: the line on screen is published as it changes, asked about on
- * its own, and the answer handed back — never another line's.
- */
-export const useReaderTranslation = ({ content, lang }: ReaderLine) => {
-  const setActiveLine = useReaderTranslateStore(
-    (state: any) => state.setActiveLine,
-  );
-  const remember = useReaderTranslateStore((state: any) => state.remember);
-  const answers = useReaderTranslateStore((state: any) => state.answers);
-
-  // Lines asked about and not yet answered: coming back to a line whose lookup
-  // is still in the air should not ask a second time.
-  const inFlight = useRef<Set<string>>(new Set());
-
-  const { mutate } = useListDiscoveryMutation({ retry: 2 });
-
-  useEffect(() => {
-    setActiveLine(content ? { content, lang } : null);
-  }, [content, lang, setActiveLine]);
-
-  /**
-   * The lookup itself, on the line that is on screen.
-   *
-   * It is skipped when the answer is already known, and when this line's answer
-   * is still on its way — stepping back and forth through a text should cost
-   * nothing. A failed lookup is deliberately not retried from here: the effect
-   * runs because the line changed, and a failure does not change the line, so
-   * there is no loop to get into — stepping away and back asks again.
-   */
-  useEffect(() => {
-    if (!content || answers[content] || inFlight.current.has(content)) {
-      return;
-    }
-
-    inFlight.current.add(content);
-
-    mutate(
-      { content, lang },
-      {
-        onSuccess: (answer) => {
-          remember(content, answer);
-        },
-        onSettled: () => {
-          inFlight.current.delete(content);
-        },
-      },
-    );
-  }, [content, lang, answers, mutate, remember]);
-
-  return {
-    translation: answers[content] || null,
-  };
-};
-
-/**
  * The dock half: the answer for whatever line the view has put on screen.
  *
  * The dock does not ask for anything — asking belongs to the view, which is the
@@ -106,9 +51,7 @@ export const useReaderTranslation = ({ content, lang }: ReaderLine) => {
  * (english) switches, which are that translation's own.
  */
 export const useReaderTranslateAnswer = () => {
-  const activeLine = useReaderTranslateStore(
-    (state: any) => state.activeLine,
-  );
+  const activeLine = useReaderTranslateStore((state: any) => state.activeLine);
   const answers = useReaderTranslateStore((state: any) => state.answers);
 
   return {

@@ -6,15 +6,18 @@ import { Icons } from "@/components/ui/icons.v2";
 import { cn } from "@/lib/utils";
 import { useEffect, useMemo, useState } from "react";
 
-import { useChinglishState } from "@/components/settings-dialog/use-chinglish-state";
 import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
+import { useChinglishState } from "@/components/settings-dialog/use-chinglish-state";
 
-import { ReaderMiniDictionary } from "./reader-mini-dictionary";
+import { useListDiscoveryQuery } from "@/domain/sentence/use-list-discovery-query";
 import { useReaderStore } from "../hooks/use-reader-store";
-import { useReaderTranslation } from "../hooks/use-reader-translate";
 import { getReaderPinyin } from "../utils/get-reader-pinyin";
-import { getReaderWords, segmentReaderWords } from "../utils/segment-reader-text";
+import {
+  getReaderWords,
+  segmentReaderWords,
+} from "../utils/segment-reader-text";
 import { splitReaderSentences } from "../utils/split-reader-sentences";
+import { ReaderMiniDictionary } from "./reader-mini-dictionary";
 
 type ReaderLearnMode = "timeline" | "stocastic";
 
@@ -152,7 +155,7 @@ export const ReaderDynocloze = ({
 
   // Same section, same question: the line on screen is what gets asked about,
   // as soon as it is the line on screen.
-  const { translation } = useReaderTranslation({
+  const { data: translation } = useListDiscoveryQuery({
     content: currentSentence,
     lang,
   });
@@ -225,7 +228,8 @@ export const ReaderDynocloze = ({
             // has, on that word.
             const highlighted =
               !!tappedWord &&
-              (tappedWord === segment.text || tappedWord.includes(segment.text));
+              (tappedWord === segment.text ||
+                tappedWord.includes(segment.text));
 
             return (
               <span
@@ -251,9 +255,7 @@ export const ReaderDynocloze = ({
         </p>
 
         {showPinyin && !!pinyin && (
-          <p className="mt-3 text-sm text-gray-500 font-extralight">
-            {pinyin}
-          </p>
+          <p className="mt-3 text-sm text-gray-500 font-extralight">{pinyin}</p>
         )}
 
         {(showEn || showChinglish) && !!translation && (

@@ -31,6 +31,14 @@ export const ReaderListItem = ({
           <span>{formatReaderDateShort(item.createdAt)}</span>
           <span> · </span>
           <span>{countReaderCharacters(item.text)} characters</span>
+          {item.sourceUrl && (
+            <>
+              <span> · </span>
+              <span title={item.sourceUrl} className="text-gray-400">
+                from url
+              </span>
+            </>
+          )}
         </p>
       </div>
 

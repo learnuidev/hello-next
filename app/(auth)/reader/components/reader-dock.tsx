@@ -29,11 +29,13 @@ export const ReaderDock = ({
   viewMode,
   selectionCount,
   onSaveSelection,
+  onEdit,
 }: {
   readerItemId: string;
   viewMode: ReaderViewMode;
   selectionCount: number;
   onSaveSelection: () => void;
+  onEdit?: () => void;
 }) => {
   return (
     <TheDock className="bottom-2" innerClassName="sm:block">
@@ -73,6 +75,16 @@ export const ReaderDock = ({
               >
                 <Icons.bookmarkSolid />
                 <span className="ml-1 text-xs">{selectionCount}</span>
+              </button>
+            )}
+
+            {onEdit && (
+              <button
+                title="Edit this text"
+                onClick={onEdit}
+                className="text-gray-500 hover:text-rose-400 dark:hover:text-white transition text-xl"
+              >
+                <Icons.edit />
               </button>
             )}
 

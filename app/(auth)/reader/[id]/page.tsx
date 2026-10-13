@@ -2,6 +2,7 @@
 
 import { Nothing } from "@/app/nmm/nothing";
 import { useReadModeState } from "@/components/read-mode-button";
+import { FloatingNavbar } from "@/components/floating-navbar";
 import { Icons } from "@/components/ui/icons.v2";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
@@ -16,8 +17,10 @@ import { ReaderReadingList } from "../components/reader-reading-list";
 import { ReaderSideDock } from "../components/reader-side-dock";
 import { ReaderSegmentedText } from "../components/reader-segmented-text";
 import { ReaderStats } from "../components/reader-stats";
+import { AddReaderText } from "../components/add-reader-text";
 import { useHasMounted } from "../hooks/use-has-mounted";
 import { useReaderStore } from "../hooks/use-reader-store";
+import { useGetReaderItemQuery } from "@/domain/reader/use-get-reader-item";
 import {
   ReaderSnippetLine,
   ReaderViewMode,
@@ -43,7 +46,8 @@ export default function ReaderText() {
 
   const hasMounted = useHasMounted();
 
-  const items = useReaderStore((state) => state.items);
+  const { data: item, isLoading: itemLoading } = useGetReaderItemQuery(id);
+
   const readingList = useReaderStore((state) => state.readingList);
   const saveToReadingList = useReaderStore((state) => state.saveToReadingList);
   const removeFromReadingList = useReaderStore(
@@ -52,6 +56,8 @@ export default function ReaderText() {
   const setReadingPosition = useReaderStore(
     (state) => state.setReadingPosition,
   );
+
+  const [isEditing, setIsEditing] = useState(false);
 
   const router = useRouter();
 
@@ -103,8 +109,6 @@ export default function ReaderText() {
 
     return () => clearTimeout(timeout);
   }, [savedNotice]);
-
-  const item = items.find((readerItem) => readerItem.id === id);
 
   const lang = useMemo(() => detectReaderLang(item?.text || ""), [item?.text]);
 
@@ -205,6 +209,34 @@ export default function ReaderText() {
     );
   }
 
+  // The editor takes over the whole page, the same way the add flow does on the
+  // library page.
+  if (isEditing && item) {
+    return (
+      <main>
+        <AddReaderText
+          initialItem={item}
+          onClose={() => {
+            setIsEditing(false);
+          }}
+        />
+        <FloatingNavbar />
+      </main>
+    );
+  }
+
+  if (itemLoading) {
+    return (
+      <main>
+        <div className="max-w-3xl m-auto px-4 md:px-12 mt-16">
+          <p className="text-xs uppercase tracking-wider text-gray-500">
+            Loading…
+          </p>
+        </div>
+      </main>
+    );
+  }
+
   if (!item) {
     return (
       <main>
@@ -249,11 +281,24 @@ export default function ReaderText() {
               <span>Reader</span>
             </Link>
 
-            {readMode && (
-              <p className="uppercase text-[11px] tracking-wider text-gray-500">
-                Read mode
-              </p>
-            )}
+            <div className="flex items-center gap-6">
+              <button
+                onClick={() => {
+                  setIsEditing(true);
+                }}
+                title="Edit this text"
+                className="uppercase text-xs tracking-wider text-gray-400 hover:text-rose-400 dark:hover:text-white transition"
+              >
+                <Icons.edit className="mr-2 text-xs" />
+                <span>Edit</span>
+              </button>
+
+              {readMode && (
+                <p className="uppercase text-[11px] tracking-wider text-gray-500">
+                  Read mode
+                </p>
+              )}
+            </div>
           </div>
         )}
 
@@ -387,6 +432,9 @@ export default function ReaderText() {
         viewMode={viewMode}
         selectionCount={selection.length}
         onSaveSelection={saveSelection}
+        onEdit={() => {
+          setIsEditing(true);
+        }}
       />
 
       {savedNotice && (

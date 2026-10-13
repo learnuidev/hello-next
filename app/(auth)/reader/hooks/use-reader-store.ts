@@ -3,56 +3,22 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
-import { ReaderItem, ReaderSnippet, ReaderSnippetLine } from "../reader.types";
+import { ReaderSnippet, ReaderSnippetLine } from "../reader.types";
 import { generateReaderId } from "../utils/reader-id";
 
 /**
- * The reader library. Everything is kept in localStorage for now, so there is
- * no user id in the storage key — one browser, one library.
+ * The reader's local-only state.
+ *
+ * The texts themselves live on the server now (`domain/reader`), but two things
+ * stay in the browser because they are not records so much as the reader's own
+ * placemarks: where focused read was left in each text, and the reading list of
+ * words and lines picked out while reading. These were never going to be rows —
+ * they are a scroll position and a scrapbook — so they keep the same localStorage
+ * shape they always had, under a key of their own.
  */
 export const useReaderStore = create(
   persist(
     (set: any, get: any) => ({
-      items: [] as ReaderItem[],
-
-      /**
-       * Saves a text and returns the stored item (uuid and all), so the caller
-       * can navigate straight to `/reader/:id`.
-       */
-      addItem: ({ title, text }: { title: string; text: string }) => {
-        const existingItems: ReaderItem[] = get().items;
-
-        let id = generateReaderId();
-        while (existingItems.some((item) => item.id === id)) {
-          id = generateReaderId();
-        }
-
-        const item: ReaderItem = {
-          id,
-          title: title.trim(),
-          text: text.trim(),
-          createdAt: Date.now(),
-        };
-
-        set({ items: [item, ...existingItems] });
-
-        return item;
-      },
-
-      /** Deletes a text, along with the snippets saved out of it. */
-      deleteItem: (id: string) => {
-        const positions: Record<string, number> = { ...(get().readingPositions || {}) };
-        delete positions[id];
-
-        set({
-          items: get().items.filter((item: ReaderItem) => item.id !== id),
-          readingList: (get().readingList || []).filter(
-            (snippet: ReaderSnippet) => snippet.readerItemId !== id,
-          ),
-          readingPositions: positions,
-        });
-      },
-
       /**
        * Where focused read was left in each text, by text id, so opening a text
        * again carries on at the line you stopped at.
@@ -82,12 +48,15 @@ export const useReaderStore = create(
         readerItemId,
         readerItemTitle,
         line,
+        kind,
       }: {
         text: string;
         readerItemId: string;
         readerItemTitle: string;
         /** The line it was taken out of, when it was taken out of one. */
         line?: ReaderSnippetLine;
+        /** What it points back at; a reader text by default. */
+        kind?: "reader" | "convo";
       }) => {
         const trimmed = text.trim();
 
@@ -116,6 +85,7 @@ export const useReaderStore = create(
           text: trimmed,
           readerItemId,
           readerItemTitle,
+          kind: kind || "reader",
           ...(line ? { line } : {}),
           createdAt: Date.now(),
         };
@@ -134,7 +104,7 @@ export const useReaderStore = create(
       },
     }),
     {
-      name: "mandarino/reader-items",
+      name: "mandarino/reader-local-state",
       version: 1,
       storage: createJSONStorage(() => localStorage),
     },
@@ -142,7 +112,8 @@ export const useReaderStore = create(
 );
 
 /** Newest first — the order the reader list is shown in. */
-export const sortReaderItemsByCreatedAt = (items: ReaderItem[]) =>
-  [...items].sort((a, b) => b.createdAt - a.createdAt);
+export const sortReaderItemsByCreatedAt = <T extends { createdAt: number }>(
+  items: T[],
+) => [...items].sort((a, b) => b.createdAt - a.createdAt);
 
 export const READER_PAGE_SIZE = 10;

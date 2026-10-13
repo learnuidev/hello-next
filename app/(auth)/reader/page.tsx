@@ -13,24 +13,25 @@ import {
   getReaderRangeLabel,
   readerPageCount,
 } from "./components/reader-pagination";
-import { useHasMounted } from "./hooks/use-has-mounted";
+import { ReaderSyncBanner } from "./components/reader-sync-banner";
 import {
   READER_PAGE_SIZE,
   sortReaderItemsByCreatedAt,
-  useReaderStore,
 } from "./hooks/use-reader-store";
+import { useDeleteReaderItemMutation } from "@/domain/reader/use-delete-reader-item";
+import { useListReaderItemsQuery } from "@/domain/reader/use-list-reader-items";
 
 /**
  * The reader library: saved texts, newest first, ten at a time.
  *
- * Everything is local (localStorage) for now, so the page waits for the first
- * client render before showing anything (see `useHasMounted`).
+ * The texts live on the server now, so the page lists them straight from the
+ * reader API; search and paging are done in the browser over the fetched set.
  */
 export default function Reader() {
-  const hasMounted = useHasMounted();
+  const { data, isLoading } = useListReaderItemsQuery({ limit: 200 });
+  const deleteItem = useDeleteReaderItemMutation();
 
-  const items = useReaderStore((state) => state.items);
-  const deleteItem = useReaderStore((state) => state.deleteItem);
+  const items = data?.items || [];
 
   const [isAdding, setIsAdding] = useState(false);
   const [query, setQuery] = useState("");
@@ -70,6 +71,7 @@ export default function Reader() {
   }
 
   const hasSearch = query.trim().length > 0;
+  const hasItems = items.length > 0;
 
   return (
     <main>
@@ -91,6 +93,8 @@ export default function Reader() {
           </button>
         </div>
 
+        <ReaderSyncBanner />
+
         <div className="relative w-full mt-8">
           <Icons.magnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm" />
 
@@ -105,7 +109,7 @@ export default function Reader() {
           />
         </div>
 
-        {hasMounted && pageItems.length > 0 && (
+        {!isLoading && pageItems.length > 0 && (
           <p className="text-[11px] uppercase tracking-wider text-gray-500 mt-8">
             {getReaderRangeLabel({
               page: currentPage,
@@ -115,24 +119,27 @@ export default function Reader() {
           </p>
         )}
 
-        {/* Same mount gate as everything else on this page: the server knows
-            nothing about the localStorage library, so the rows can only appear
-            once the client has hydrated. */}
-        {hasMounted && (
+        {isLoading && (
+          <p className="text-xs uppercase tracking-wider text-gray-500 mt-8">
+            Loading your texts…
+          </p>
+        )}
+
+        {!isLoading && (
           <section className="mt-8 space-y-10 mb-32">
             {pageItems.map((item) => (
               <ReaderListItem
                 key={item.id}
                 item={item}
                 onDelete={(id) => {
-                  deleteItem(id);
+                  deleteItem.mutate(id);
                 }}
               />
             ))}
           </section>
         )}
 
-        {hasMounted && pageItems.length === 0 && hasSearch && (
+        {!isLoading && pageItems.length === 0 && hasSearch && (
           <Nothing message={`No texts match "${query.trim()}"`}>
             <button
               onClick={() => {
@@ -146,7 +153,7 @@ export default function Reader() {
           </Nothing>
         )}
 
-        {hasMounted && pageItems.length === 0 && !hasSearch && (
+        {!isLoading && pageItems.length === 0 && !hasSearch && !hasItems && (
           <Nothing
             icon={Icons.bookOpen}
             message="Nothing saved yet"
@@ -164,7 +171,7 @@ export default function Reader() {
           </Nothing>
         )}
 
-        {hasMounted && (
+        {!isLoading && (
           <ReaderPagination
             page={currentPage}
             totalPages={totalPages}

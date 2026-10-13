@@ -30,6 +30,7 @@ export const ReaderMiniDictionary = ({
   lang,
   selected,
   line,
+  kind,
   onClose,
   onGoToSentence,
 }: {
@@ -44,6 +45,8 @@ export const ReaderMiniDictionary = ({
    * can say where it came from instead of leaving it as a word with no place.
    */
   line?: ReaderSnippetLine;
+  /** What the snippet points back at; a reader text by default. */
+  kind?: "reader" | "convo";
   onClose: () => void;
   onGoToSentence: (sentenceIndex: number) => void;
 }) => {
@@ -90,6 +93,7 @@ export const ReaderMiniDictionary = ({
       readerItemId,
       readerItemTitle,
       ...(line ? { line } : {}),
+      kind: kind || "reader",
     });
   };
 

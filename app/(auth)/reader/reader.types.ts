@@ -1,17 +1,21 @@
 /**
  * A saved reader text.
  *
- * For now everything lives in localStorage (see `use-reader-store`), so the
- * whole entry has to be self contained — there is no server side record to
- * look anything up from.
+ * The source of truth is the reader API (`domain/reader`), which stores each
+ * text against its user; this shape mirrors that record so the reading surface
+ * can stay free of the transport details.
  */
 export interface ReaderItem {
   /** A uuid. Used as the React key and as the `/reader/:id` url segment. */
   id: string;
   title: string;
   text: string;
+  /** The url the text was parsed from, when it was added as a url. */
+  sourceUrl?: string;
   /** Timestamp of when the text was saved. The list is sorted by this. */
   createdAt: number;
+  /** Timestamp of the last edit. */
+  updatedAt?: number;
 }
 
 /**
@@ -39,6 +43,11 @@ export interface ReaderSnippet {
   readerItemId: string;
   readerItemTitle: string;
   /**
+   * What the snippet points back at: a saved reader text, or — when it was
+   * picked out of the reader view inside a convo — the convo itself.
+   */
+  kind?: "reader" | "convo";
+  /**
    * The line it was saved from. Missing when the piece was picked across more
    * than one line — a run of words selected in the read view belongs to no
    * single line — and missing from anything saved before the reading list kept
@@ -47,6 +56,12 @@ export interface ReaderSnippet {
   line?: ReaderSnippetLine;
   createdAt: number;
 }
+
+/** The link that opens the text a snippet came from, on the line it came from. */
+export const getReaderSnippetHref = (snippet: ReaderSnippet) =>
+  snippet.kind === "convo"
+    ? `/convos/${snippet.readerItemId}?view=reader`
+    : getReaderViewHref(snippet.readerItemId, "focused");
 
 /**
  * The views a reader text can be opened in.

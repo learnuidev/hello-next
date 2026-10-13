@@ -38,11 +38,13 @@ export const ReaderDynocloze = ({
   readerItemTitle,
   text,
   lang,
+  snippetKind,
 }: {
   readerItemId: string;
   readerItemTitle: string;
   text: string;
   lang: string;
+  snippetKind?: "reader" | "convo";
 }) => {
   const sentences = useMemo(
     () => splitReaderSentences(text, lang),
@@ -384,6 +386,7 @@ export const ReaderDynocloze = ({
           text={text}
           lang={lang}
           selected={tappedWord}
+          kind={snippetKind}
           // The word is saved with the line it was tapped in.
           line={{
             lineIndex: currentSentenceIndex,

@@ -6,40 +6,129 @@ import { Icons } from "@/components/ui/icons.v2";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-import { useReaderStore } from "../hooks/use-reader-store";
+import { useAddReaderItemMutation } from "@/domain/reader/use-add-reader-item";
+import { useParseUrlMutation } from "@/domain/reader/use-parse-url";
+import { useUpdateReaderItemMutation } from "@/domain/reader/use-update-reader-item";
+import { ReaderItem } from "../reader.types";
 import { countReaderCharacters } from "../utils/count-reader-characters";
 
+type InputMode = "text" | "url";
+
 /**
- * The "+" flow: a title, a pasted body and a save button. Saving writes to the
- * local reader library and opens the text straight away at `/reader/:id`.
+ * The add/edit flow of the reader.
+ *
+ * A text can be pasted, or a url can be given and the app will fetch it and pull
+ * the text out of the page. If the url cannot be read — a paywall, a bot check,
+ * a page with no article — the error is shown and the reader is offered the
+ * paste box to add the text by hand instead. The same editor edits an existing
+ * text when handed an `initialItem`.
  */
-export const AddReaderText = ({ onClose }: { onClose: () => void }) => {
+export const AddReaderText = ({
+  onClose,
+  initialItem,
+}: {
+  onClose: () => void;
+  initialItem?: ReaderItem;
+}) => {
   const router = useRouter();
-  const addItem = useReaderStore((state) => state.addItem);
+  const addItem = useAddReaderItemMutation();
+  const updateItem = useUpdateReaderItemMutation();
+  const parseUrl = useParseUrlMutation();
 
-  const [title, setTitle] = useState("");
-  const [text, setText] = useState("");
+  const isEditing = !!initialItem;
 
+  const [mode, setMode] = useState<InputMode>("text");
+  const [title, setTitle] = useState(initialItem?.title || "");
+  const [text, setText] = useState(initialItem?.text || "");
+  const [sourceUrl, setSourceUrl] = useState(initialItem?.sourceUrl || "");
+  const [urlInput, setUrlInput] = useState(initialItem?.sourceUrl || "");
+  const [parseError, setParseError] = useState<string | null>(null);
+
+  const saving = addItem.isPending || updateItem.isPending;
   const canSave = title.trim().length > 0 && text.trim().length > 0;
+
+  const handleFetched = ({
+    title: fetchedTitle,
+    text: fetchedText,
+  }: {
+    title: string;
+    text: string;
+  }) => {
+    // The fetched title only fills the field when there is nothing better; the
+    // reader's own title wins once they have typed one.
+    if (!title.trim() && fetchedTitle) {
+      setTitle(fetchedTitle);
+    }
+
+    setText(fetchedText);
+    setSourceUrl(urlInput);
+    setParseError(null);
+    // Show the extracted text to be read and edited before saving.
+    setMode("text");
+  };
+
+  const handleFetch = () => {
+    const trimmedUrl = urlInput.trim();
+
+    if (!trimmedUrl) {
+      setParseError("Enter a url first");
+      return;
+    }
+
+    setParseError(null);
+    parseUrl.mutate(trimmedUrl, {
+      onSuccess: handleFetched,
+      onError: (error) => {
+        setParseError(
+          error.message || "Could not read that url. Add the text manually.",
+        );
+        // The paste box is the fallback, so put the reader straight onto it.
+        setMode("text");
+      },
+    });
+  };
 
   const handleSave = () => {
     if (!canSave) {
       return;
     }
 
-    const item = addItem({ title, text });
+    if (isEditing && initialItem) {
+      updateItem.mutate(
+        {
+          id: initialItem.id,
+          title,
+          text,
+          sourceUrl: sourceUrl || undefined,
+        },
+        {
+          onSuccess: () => {
+            onClose();
+            router.refresh();
+          },
+        },
+      );
+      return;
+    }
 
-    // Its plain url is the reading view, so a text just saved opens to be read,
-    // whatever tab the last text was left on.
-    onClose();
-    router.push(`/reader/${item.id}`);
+    addItem.mutate(
+      { title, text, sourceUrl: sourceUrl || undefined },
+      {
+        onSuccess: (item) => {
+          // Its plain url is the reading view, so a text just saved opens to be
+          // read, whatever tab the last text was left on.
+          onClose();
+          router.push(`/reader/${item.id}`);
+        },
+      },
+    );
   };
 
   return (
     <div className="max-w-3xl m-auto px-4 md:px-12">
       <div className="flex justify-between items-center mt-12 mb-8">
         <p className="uppercase text-xs tracking-wider text-gray-400">
-          New text
+          {isEditing ? "Edit text" : "New text"}
         </p>
 
         <button
@@ -50,8 +139,89 @@ export const AddReaderText = ({ onClose }: { onClose: () => void }) => {
         </button>
       </div>
 
+      {/* Text or url: two ways in, one textarea out. */}
+      <div className="flex items-center gap-2 mb-6">
+        <button
+          onClick={() => {
+            setMode("text");
+            setParseError(null);
+          }}
+          className={`flex items-center gap-2 uppercase text-xs tracking-wider px-4 py-2 border-[1px] transition ${
+            mode === "text"
+              ? "text-gray-800 dark:text-white border-gray-400 dark:border-gray-600"
+              : "text-gray-400 border-gray-300 dark:border-gray-800 hover:text-rose-400"
+          }`}
+        >
+          <Icons.bookOpen className="text-base" />
+          <span>Paste text</span>
+        </button>
+
+        <button
+          onClick={() => {
+            setMode("url");
+            setParseError(null);
+          }}
+          className={`flex items-center gap-2 uppercase text-xs tracking-wider px-4 py-2 border-[1px] transition ${
+            mode === "url"
+              ? "text-gray-800 dark:text-white border-gray-400 dark:border-gray-600"
+              : "text-gray-400 border-gray-300 dark:border-gray-800 hover:text-rose-400"
+          }`}
+        >
+          <Icons.link className="text-base" />
+          <span>From a url</span>
+        </button>
+      </div>
+
+      {mode === "url" && (
+        <div className="mb-6">
+          <div className="flex flex-col sm:flex-row gap-3">
+            <Input
+              autoFocus
+              value={urlInput}
+              onChange={(event) => {
+                setUrlInput(event.target.value);
+              }}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  handleFetch();
+                }
+              }}
+              placeholder="https://…"
+              className="flex-1 rounded-full bg-transparent font-extralight"
+            />
+
+            <Button
+              disabled={parseUrl.isPending || !urlInput.trim()}
+              onClick={handleFetch}
+              className="uppercase text-xs tracking-wider"
+            >
+              {parseUrl.isPending ? (
+                <Icons.spinner className="mr-2 animate-spin" />
+              ) : (
+                <Icons.link className="mr-2" />
+              )}
+              Fetch text
+            </Button>
+          </div>
+
+          <p className="mt-2 text-xs text-gray-500">
+            The page will be fetched and its text pulled out for you to read and
+            edit.
+          </p>
+        </div>
+      )}
+
+      {parseError && (
+        <div className="mb-6 rounded-xl border border-rose-300/40 dark:border-rose-500/30 bg-rose-50/60 dark:bg-rose-950/20 px-5 py-4">
+          <p className="text-sm text-rose-500">{parseError}</p>
+          <p className="text-xs text-gray-500 mt-1">
+            Add the text manually below instead.
+          </p>
+        </div>
+      )}
+
       <Input
-        autoFocus
+        autoFocus={mode !== "url"}
         value={title}
         onChange={(event) => {
           setTitle(event.target.value);
@@ -78,6 +248,7 @@ export const AddReaderText = ({ onClose }: { onClose: () => void }) => {
         <p className="text-xs uppercase text-gray-500">
           <span>{countReaderCharacters(text)}</span>
           <span> characters</span>
+          {sourceUrl && <span className="ml-2 text-gray-400">· from url</span>}
         </p>
 
         <div className="flex items-center space-x-6">
@@ -89,12 +260,16 @@ export const AddReaderText = ({ onClose }: { onClose: () => void }) => {
           </button>
 
           <Button
-            disabled={!canSave}
+            disabled={!canSave || saving}
             onClick={handleSave}
             className="uppercase text-xs tracking-wider"
           >
-            <Icons.check className="mr-2" />
-            Save
+            {saving ? (
+              <Icons.spinner className="mr-2 animate-spin" />
+            ) : (
+              <Icons.check className="mr-2" />
+            )}
+            {isEditing ? "Save" : "Save"}
           </Button>
         </div>
       </div>

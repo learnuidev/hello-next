@@ -4,14 +4,12 @@ import { Nothing } from "@/app/nmm/nothing";
 import { Icons } from "@/components/ui/icons.v2";
 import { Input } from "@/components/ui/input";
 import { getNmmLink } from "@/libs/utils/get-nmm-link";
+import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
 import { useReaderStore } from "../hooks/use-reader-store";
-import {
-  ReaderSnippet,
-  getReaderViewHref,
-} from "../reader.types";
+import { ReaderSnippet, getReaderSnippetHref } from "../reader.types";
 import { formatReaderDateShort } from "../utils/format-reader-date";
 import { highlightReaderWord } from "../utils/highlight-reader-word";
 
@@ -40,6 +38,21 @@ export const ReaderReadingList = ({
 
   const [query, setQuery] = useState("");
   const [contentId, setContentId] = useState("all");
+  /**
+   * The entries whose line has been asked for, by snippet id.
+   *
+   * The line is the way back to where a piece was kept from, not part of what
+   * was kept: every entry showing its line makes the list twice as tall and half
+   * as scannable, so the line is opened by the line number and closed the same
+   * way.
+   */
+  const [openLines, setOpenLines] = useState<string[]>([]);
+
+  const toggleLine = (id: string) => {
+    setOpenLines((open) =>
+      open.includes(id) ? open.filter((entry) => entry !== id) : [...open, id],
+    );
+  };
 
   // The texts something was saved out of, in the order they first turn up.
   const contents = useMemo(() => {
@@ -153,71 +166,121 @@ export const ReaderReadingList = ({
       </div>
 
       <div className="mt-10 space-y-10">
-        {visibleSnippets.map((snippet) => (
-          <div key={snippet.id} className="group">
-            {/* The word itself is the way into nmm, the way it is everywhere
-                else in the app. */}
-            <Link
-              href={getNmmLink({ id: snippet.text, lang: "zh" })}
-              className="text-lg font-extralight whitespace-pre-wrap hover:text-rose-400 transition"
-            >
-              {snippet.text}
-            </Link>
+        {visibleSnippets.map((snippet) => {
+          const isLineOpen = openLines.includes(snippet.id);
 
-            {/* What it was saved from and where: the text, the line it is in,
-                and the line itself with the saved word picked out of it.
-
-                The whole of it is one link, and clicking any part of it —
-                including the line number — opens that text in focused read on
-                that line, which is the point of keeping the reference. */}
-            <div className="flex justify-between items-start gap-4 mt-2">
+          return (
+            <div key={snippet.id} className="group">
+              {/* The word itself is the way into nmm, the way it is everywhere
+                  else in the app. */}
               <Link
-                href={getReaderViewHref(snippet.readerItemId, "focused")}
-                onClick={() => {
-                  openAtLine(snippet);
-                }}
-                title="Open this text in focused read, on this line"
-                className="group block min-w-0"
+                href={getNmmLink({ id: snippet.text, lang: "zh" })}
+                className="text-lg font-extralight whitespace-pre-wrap hover:text-rose-400 transition"
               >
-                <p className="text-xs text-gray-500 font-light transition group-hover:text-rose-400">
-                  <span>{formatReaderDateShort(snippet.createdAt)}</span>
-                  <span> · </span>
-                  <span>{snippet.readerItemTitle}</span>
-
-                  {snippet.line && (
-                    <>
-                      <span> · </span>
-                      <span>line {snippet.line.lineIndex + 1}</span>
-                    </>
-                  )}
-                </p>
-
-                {/* The line is only worth repeating when it is not the snippet
-                    itself — a saved line is its own place — and the word it was
-                    saved as wears the reader's own mark inside it. */}
-                {snippet.line && snippet.line.line !== snippet.text && (
-                  <p className="mt-1 text-sm text-gray-600 dark:text-gray-400 font-light transition group-hover:text-rose-400">
-                    {highlightReaderWord(
-                      snippet.line.line,
-                      snippet.text,
-                      "rounded bg-rose-500/20 px-0.5 text-rose-400",
-                    )}
-                  </p>
-                )}
+                {snippet.text}
               </Link>
 
-              <button
-                title="Take off the reading list"
-                onClick={() => {
-                  onDelete(snippet.id);
-                }}
-                className="text-gray-500 hover:text-rose-400 transition text-sm"
-              >
-                <Icons.trash />
-              </button>
+              {/* What it was saved from and where. The line itself is folded away:
+                  the list is a list of what you kept, and the line is the way back
+                  to where you kept it from, so it is asked for rather than shown.
+                  The line number is what asks. */}
+              <div className="flex justify-between items-start gap-4 mt-2">
+                <div className="min-w-0">
+                  <p className="text-xs text-gray-500 font-light">
+                    <span>{formatReaderDateShort(snippet.createdAt)}</span>
+                    <span> · </span>
+                    <Link
+                      href={getReaderSnippetHref(snippet)}
+                      onClick={() => {
+                        openAtLine(snippet);
+                      }}
+                      title="Open this text in focused read"
+                      className="hover:text-rose-400 transition"
+                    >
+                      {snippet.readerItemTitle}
+                    </Link>
+
+                    {snippet.line && (
+                      <>
+                        <span> · </span>
+
+                        {snippet.line.line === snippet.text ? (
+                          // A saved line is its own place, so there is nothing
+                          // folded away to open: the line number goes there.
+                          <Link
+                            href={getReaderSnippetHref(snippet)}
+                            onClick={() => {
+                              openAtLine(snippet);
+                            }}
+                            title="Open this text in focused read, on this line"
+                            className="hover:text-rose-400 transition"
+                          >
+                            line {snippet.line.lineIndex + 1}
+                          </Link>
+                        ) : (
+                          <button
+                            type="button"
+                            aria-expanded={isLineOpen}
+                            title={
+                              isLineOpen
+                                ? "Hide the line this was saved from"
+                                : "Show the line this was saved from"
+                            }
+                            onClick={() => {
+                              toggleLine(snippet.id);
+                            }}
+                            className={cn(
+                              "transition",
+                              isLineOpen
+                                ? "text-gray-800 dark:text-white"
+                                : "hover:text-rose-400",
+                            )}
+                          >
+                            line {snippet.line.lineIndex + 1}
+                          </button>
+                        )}
+                      </>
+                    )}
+                  </p>
+
+                  {/* The line, once it has been asked for, with the word it was
+                      saved as wearing the reader's own mark. The line is the way
+                      back: it opens the text in focused read on that line. */}
+                  {isLineOpen &&
+                    snippet.line &&
+                    snippet.line.line !== snippet.text && (
+                      <Link
+                        href={getReaderSnippetHref(snippet)}
+                        onClick={() => {
+                          openAtLine(snippet);
+                        }}
+                        title="Open this text in focused read, on this line"
+                        className="group mt-2 block"
+                      >
+                        <span className="block text-sm text-gray-600 dark:text-gray-400 font-light transition group-hover:text-rose-400">
+                          {highlightReaderWord(
+                            snippet.line.line,
+                            snippet.text,
+                            "rounded bg-rose-500/20 px-0.5 text-rose-400",
+                          )}
+                        </span>
+                      </Link>
+                    )}
+                </div>
+
+                <button
+                  title="Take off the reading list"
+                  onClick={() => {
+                    onDelete(snippet.id);
+                  }}
+                  className="text-gray-500 hover:text-rose-400 transition text-sm"
+                >
+                  <Icons.trash />
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {!visibleSnippets.length && (

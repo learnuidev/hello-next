@@ -18,6 +18,7 @@ import { WithContentLoading } from "./[content-id]/with-content-loading";
 import { AI } from "./ai";
 import { AudiobookPlayer } from "./audiobook-player/audiobook-player";
 import { ContentSettings } from "./content-settings";
+import { ReaderContentView } from "./[content-id]/reader-view";
 
 // import { isVideoUrl } from "./utils/is-video-url";
 // import { isYoutube } from "./utils/is-youtube";
@@ -132,6 +133,10 @@ export const ConvoDetails = ({ contentId }: { contentId: string }) => {
         {/* </WithContentLoading> */}
       </>
     );
+  }
+
+  if (viewType === "reader") {
+    return <ReaderContentView contentId={contentId} />;
   }
 
   return (

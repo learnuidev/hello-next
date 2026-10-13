@@ -349,6 +349,15 @@ export const ReaderFocusedRead = ({
           a background of its own so the text passes underneath it rather than
           through it. */}
       <div className="sticky top-0 z-20 mt-20 flex min-h-[14rem] flex-col justify-center bg-white text-center dark:bg-[rgb(9,10,11)] sm:min-h-[18rem]">
+        {/* With read mode off, the reading is the whole line's regular pinyin —
+            the transcript's own when there is one — on a line of its own, above
+            the hanzi. */}
+        {showLinePinyin && !!linePinyin && (
+          <p className="mx-auto mb-3 max-w-2xl text-lg text-gray-500 dark:text-gray-500 font-light">
+            {linePinyin}
+          </p>
+        )}
+
         <p
           onMouseUp={lookUpSelection}
           className={cn(
@@ -360,14 +369,6 @@ export const ReaderFocusedRead = ({
             renderWord(word, `${currentIndex}:${wordIndex}`),
           )}
         </p>
-
-        {/* With read mode off, the reading is the whole line's regular pinyin —
-            the transcript's own when there is one — on a line of its own. */}
-        {showLinePinyin && !!linePinyin && (
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-gray-500 dark:text-gray-500 font-light">
-            {linePinyin}
-          </p>
-        )}
 
         {/* The translation belongs to the line it is of, the way a translation
             sits under a lyric — and being inside the stage is what keeps the

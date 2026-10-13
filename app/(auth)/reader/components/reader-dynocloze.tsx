@@ -219,6 +219,10 @@ export const ReaderDynocloze = ({
       </div>
 
       <div className="text-center mt-12">
+        {showPinyin && !!pinyin && (
+          <p className="mb-3 text-sm text-gray-500 font-extralight">{pinyin}</p>
+        )}
+
         <p
           onMouseUp={lookUpSelection}
           className="text-2xl sm:text-3xl font-light leading-relaxed whitespace-pre-wrap"
@@ -263,10 +267,6 @@ export const ReaderDynocloze = ({
             );
           })}
         </p>
-
-        {showPinyin && !!pinyin && (
-          <p className="mt-3 text-sm text-gray-500 font-extralight">{pinyin}</p>
-        )}
 
         {(showEn || showChinglish) && !!translation && (
           <div className="mt-6 space-y-1">

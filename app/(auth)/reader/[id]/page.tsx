@@ -16,8 +16,7 @@ import { ReaderMiniDictionary } from "../components/reader-mini-dictionary";
 import { ReaderReadingList } from "../components/reader-reading-list";
 import { ReaderSideDock } from "../components/reader-side-dock";
 import { ReaderSegmentedText } from "../components/reader-segmented-text";
-import { ReaderStats } from "../components/reader-stats";
-import { ReaderInteractionsPanel } from "../components/reader-interactions-panel";
+import { ReaderInsights } from "../components/reader-insights";
 import { AddReaderText } from "../components/add-reader-text";
 import { useHasMounted } from "../hooks/use-has-mounted";
 import { useReaderStore } from "../hooks/use-reader-store";
@@ -407,10 +406,7 @@ export default function ReaderText() {
         )}
 
         {viewMode === "insights" && (
-          <>
-            <ReaderStats key={item.id} text={item.text} lang={lang} />
-            <ReaderInteractionsPanel readerItemId={item.id} />
-          </>
+          <ReaderInsights readerItemId={item.id} text={item.text} lang={lang} />
         )}
 
         {viewMode === "reading-list" && (

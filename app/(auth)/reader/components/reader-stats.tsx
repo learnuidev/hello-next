@@ -210,6 +210,11 @@ export const ReaderStats = ({ text, lang }: { text: string; lang: string }) => {
             <span className="text-sm md:text-xl">total </span>
           </h2>
 
+          <h2 className="text-xl sm:text-3xl my-4 font-extralight text-gray-500 dark:text-gray-300">
+            {stats.totalCharacters}{" "}
+            <span className="text-sm md:text-xl">characters </span>
+          </h2>
+
           <h2 className="text-xl sm:text-3xl my-4 font-extralight text-gray-500 dark:text-gray-300 space-x-2">
             <span className="text-yellow-500">{stats.uniqueWords}</span>
             {" "}

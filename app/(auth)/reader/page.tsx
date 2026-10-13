@@ -9,6 +9,7 @@ import { useMemo, useState } from "react";
 import { AddReaderText } from "./components/add-reader-text";
 import { ReaderListItem } from "./components/reader-list-item";
 import { ReaderSyncBanner } from "./components/reader-sync-banner";
+import { ReaderBookmarksSyncBanner } from "./components/reader-bookmarks-sync-banner";
 import { sortReaderItemsByCreatedAt } from "./hooks/use-reader-store";
 import { useDeleteReaderItemMutation } from "@/domain/reader/use-delete-reader-item";
 import { useInfiniteListReaderItemsQuery } from "@/domain/reader/use-list-reader-items";
@@ -85,6 +86,8 @@ export default function Reader() {
         </div>
 
         <ReaderSyncBanner />
+
+        <ReaderBookmarksSyncBanner />
 
         <div className="relative w-full mt-8">
           <Icons.magnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm" />

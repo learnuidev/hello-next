@@ -4,8 +4,7 @@ import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
 import { ReaderDynocloze } from "@/app/(auth)/reader/components/reader-dynocloze";
 import { ReaderFocusedRead } from "@/app/(auth)/reader/components/reader-focused-read";
 import { ReaderSideDock } from "@/app/(auth)/reader/components/reader-side-dock";
-import { ReaderStats } from "@/app/(auth)/reader/components/reader-stats";
-import { ReaderInteractionsPanel } from "@/app/(auth)/reader/components/reader-interactions-panel";
+import { ReaderInsights } from "@/app/(auth)/reader/components/reader-insights";
 import { useReaderStore } from "@/app/(auth)/reader/hooks/use-reader-store";
 import { useReaderInteractionsSync } from "@/app/(auth)/reader/hooks/use-reader-interactions-sync";
 import { ReaderSnippetLine } from "@/app/(auth)/reader/reader.types";
@@ -184,10 +183,7 @@ export const ReaderContentView = ({ contentId }: { contentId: string }) => {
         )}
 
         {mode === "insights" && (
-          <>
-            <ReaderStats key={contentId} text={text} lang={lang} />
-            <ReaderInteractionsPanel readerItemId={contentId} />
-          </>
+          <ReaderInsights readerItemId={contentId} text={text} lang={lang} />
         )}
       </div>
 

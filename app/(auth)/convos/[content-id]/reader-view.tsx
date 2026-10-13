@@ -7,6 +7,7 @@ import { ReaderSideDock } from "@/app/(auth)/reader/components/reader-side-dock"
 import { ReaderStats } from "@/app/(auth)/reader/components/reader-stats";
 import { useReaderStore } from "@/app/(auth)/reader/hooks/use-reader-store";
 import { ReaderSnippetLine } from "@/app/(auth)/reader/reader.types";
+import { splitReaderSentences } from "@/app/(auth)/reader/utils/split-reader-sentences";
 import { Icons } from "@/components/ui/icons.v2";
 import { useGetContentQuery } from "@/domain/content/content.queries";
 import { cn } from "@/lib/utils";
@@ -48,6 +49,39 @@ export const ReaderContentView = ({ contentId }: { contentId: string }) => {
   );
 
   const lang = content?.lang || "zh";
+
+  // The transcript's own line pinyin, keyed by the sentence the reader splits
+  // out of it — so the reader can show the real reading rather than a pinyin-pro
+  // guess when read mode is off.
+  const linePinyinBySentence = useMemo(() => {
+    const bySentence = new Map<string, string>();
+
+    (content?.transcriptions || []).forEach((transcription: any) => {
+      const sentenceText = (
+        transcription?.input ||
+        transcription?.hanzi ||
+        ""
+      ).trim();
+      const pinyin = transcription?.pinyin || transcription?.roman || "";
+
+      if (!sentenceText) {
+        return;
+      }
+
+      splitReaderSentences(sentenceText, lang).forEach((sentence) => {
+        if (sentence && pinyin) {
+          bySentence.set(sentence, pinyin);
+        }
+      });
+    });
+
+    return bySentence;
+  }, [content, lang]);
+
+  const getLinePinyin = useMemo(
+    () => (sentence: string) => linePinyinBySentence.get(sentence) || "",
+    [linePinyinBySentence],
+  );
 
   const saveSnippet = (snippetText: string, line?: ReaderSnippetLine) => {
     if (!snippetText.trim()) {
@@ -121,6 +155,7 @@ export const ReaderContentView = ({ contentId }: { contentId: string }) => {
               lang={lang}
               onSaveSnippet={saveSnippet}
               snippetKind="convo"
+              getLinePinyin={getLinePinyin}
             />
           </div>
         )}
@@ -139,6 +174,7 @@ export const ReaderContentView = ({ contentId }: { contentId: string }) => {
               text={text}
               lang={lang}
               snippetKind="convo"
+              getLinePinyin={getLinePinyin}
             />
           </div>
         )}

@@ -39,12 +39,15 @@ export const ReaderDynocloze = ({
   text,
   lang,
   snippetKind,
+  getLinePinyin,
 }: {
   readerItemId: string;
   readerItemTitle: string;
   text: string;
   lang: string;
   snippetKind?: "reader" | "convo";
+  /** Whole-line pinyin from a richer source (a transcript), when available. */
+  getLinePinyin?: (sentence: string) => string;
 }) => {
   const sentences = useMemo(
     () => splitReaderSentences(text, lang),
@@ -151,8 +154,13 @@ export const ReaderDynocloze = ({
   }, [answer, wordPool]);
 
   const pinyin = useMemo(
-    () => (showPinyin ? getReaderPinyin(currentSentence) : ""),
-    [showPinyin, currentSentence],
+    () =>
+      showPinyin
+        ? getLinePinyin
+          ? getLinePinyin(currentSentence) || getReaderPinyin(currentSentence)
+          : getReaderPinyin(currentSentence)
+        : "",
+    [showPinyin, currentSentence, getLinePinyin],
   );
 
   // Same section, same question: the line on screen is what gets asked about,

@@ -47,6 +47,7 @@ export const ReaderFocusedRead = ({
   lang,
   onSaveSnippet,
   snippetKind,
+  getLinePinyin,
 }: {
   readerItemId: string;
   readerItemTitle: string;
@@ -54,6 +55,12 @@ export const ReaderFocusedRead = ({
   lang: string;
   onSaveSnippet: (text: string, line?: ReaderSnippetLine) => void;
   snippetKind?: "reader" | "convo";
+  /**
+   * The whole-line pinyin for a sentence, when it comes from somewhere richer
+   * than pinyin-pro — a convo's transcript, say. Used for the regular pinyin
+   * line when read mode is off; falls back to reading the sentence locally.
+   */
+  getLinePinyin?: (sentence: string) => string;
 }) => {
   const sentences = useMemo(
     () => splitReaderSentences(text, lang),
@@ -129,8 +136,10 @@ export const ReaderFocusedRead = ({
   }, [showParent, text, lang]);
 
   // Readings only mean something for a Chinese text, and they are their own
-  // switch: read mode spaces the words out, pinyin hangs the reading off them.
-  const showReadings = showPinyin && lang === "zh";
+  // switch: read mode spaces the words out and hangs a reading over each one,
+  // while plain mode shows the whole line's regular pinyin on its own line.
+  const showReadings = showPinyin && lang === "zh" && readMode;
+  const showLinePinyin = showPinyin && lang === "zh" && !readMode;
 
   const readings = useMemo(() => {
     const readingsByWord = new Map<string, string>();
@@ -147,6 +156,18 @@ export const ReaderFocusedRead = ({
 
     return readingsByWord;
   }, [words, showReadings]);
+
+  // The regular pinyin of the whole line: the transcript's own reading when one
+  // is supplied, pinyin-pro otherwise.
+  const linePinyin = useMemo(() => {
+    if (!showLinePinyin) {
+      return "";
+    }
+
+    return getLinePinyin
+      ? getLinePinyin(currentSentence) || getReaderPinyin(currentSentence)
+      : getReaderPinyin(currentSentence);
+  }, [showLinePinyin, currentSentence, getLinePinyin]);
 
   // Only the line on screen is drawn, but it is drawn character by character
   // with the colours they have learned: two maps fetched once, rather than a
@@ -339,6 +360,14 @@ export const ReaderFocusedRead = ({
             renderWord(word, `${currentIndex}:${wordIndex}`),
           )}
         </p>
+
+        {/* With read mode off, the reading is the whole line's regular pinyin —
+            the transcript's own when there is one — on a line of its own. */}
+        {showLinePinyin && !!linePinyin && (
+          <p className="mx-auto mt-4 max-w-2xl text-lg text-gray-500 dark:text-gray-500 font-light">
+            {linePinyin}
+          </p>
+        )}
 
         {/* The translation belongs to the line it is of, the way a translation
             sits under a lyric — and being inside the stage is what keeps the

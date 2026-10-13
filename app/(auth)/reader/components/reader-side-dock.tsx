@@ -42,25 +42,19 @@ export const ReaderSideDock = ({
       <AutoHideOnIdle hiddenOffset={0}>
         <div className="flex flex-col items-center px-3 py-5 bg-gray-50 dark:bg-black no-underline relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6">
           <div className="flex flex-col items-center space-y-6">
-            {/* Nothing to switch between until the line has come back
-                translated. English and chinglish are two readings of the same
-                translation, so they take turns in the one slot. */}
+            {/* English and chinglish are two readings of the same line, and both
+                can be on at once: english shows first, chinglish on its own
+                line below it. */}
 
             <>
               <button
                 title="Chinglish"
                 onClick={() => {
-                  const next = !showChinglish;
-
-                  setShowChinglish(next);
-
-                  if (next) {
-                    setShowEn(false);
-                  }
+                  setShowChinglish(!showChinglish);
                 }}
                 className={cn(
                   "transition text-xl",
-                  showChinglish && !showEn
+                  showChinglish
                     ? "text-gray-800 dark:text-white"
                     : "text-gray-300 dark:text-gray-500 hover:text-rose-400 dark:hover:text-white",
                 )}
@@ -71,17 +65,11 @@ export const ReaderSideDock = ({
               <button
                 title="English"
                 onClick={() => {
-                  const next = !showEn;
-
-                  setShowEn(next);
-
-                  if (next) {
-                    setShowChinglish(false);
-                  }
+                  setShowEn(!showEn);
                 }}
                 className={cn(
                   "transition text-xl",
-                  showEn && !showChinglish
+                  showEn
                     ? "text-gray-800 dark:text-white"
                     : "text-gray-300 dark:text-gray-500 hover:text-rose-400 dark:hover:text-white",
                 )}

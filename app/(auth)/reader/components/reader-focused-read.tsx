@@ -342,20 +342,23 @@ export const ReaderFocusedRead = ({
 
         {/* The translation belongs to the line it is of, the way a translation
             sits under a lyric — and being inside the stage is what keeps the
-            controls below from moving when one arrives. */}
+            controls below from moving when one arrives. English and chinglish
+            are two readings of the same line, so they stack rather than take
+            turns: chinglish appears on its own line under the english. */}
         {(showEn || showChinglish) && !!translation && (
-          <p
-            className={cn(
-              "mx-auto mt-4 max-w-2xl text-lg text-gray-600 dark:text-gray-400",
-              showChinglish && translation.chinglish
-                ? "font-light italic"
-                : "font-light",
+          <div className="mx-auto mt-4 max-w-2xl space-y-1">
+            {showEn && !!translation.en && (
+              <p className="text-lg text-gray-600 dark:text-gray-400 font-light">
+                {translation.en}
+              </p>
             )}
-          >
-            {showChinglish && translation.chinglish
-              ? translation.chinglish
-              : translation.en}
-          </p>
+
+            {showChinglish && !!translation.chinglish && (
+              <p className="text-base text-gray-500 dark:text-gray-500 font-light italic">
+                {translation.chinglish}
+              </p>
+            )}
+          </div>
         )}
       </div>
 

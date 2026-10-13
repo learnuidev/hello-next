@@ -261,18 +261,19 @@ export const ReaderDynocloze = ({
         )}
 
         {(showEn || showChinglish) && !!translation && (
-          <p
-            className={cn(
-              "mt-6 text-lg text-gray-600 dark:text-gray-400",
-              showChinglish && translation.chinglish
-                ? "font-light italic"
-                : "font-light",
+          <div className="mt-6 space-y-1">
+            {showEn && !!translation.en && (
+              <p className="text-lg text-gray-600 dark:text-gray-400 font-light">
+                {translation.en}
+              </p>
             )}
-          >
-            {showChinglish && translation.chinglish
-              ? translation.chinglish
-              : translation.en}
-          </p>
+
+            {showChinglish && !!translation.chinglish && (
+              <p className="text-base text-gray-500 dark:text-gray-500 font-light italic">
+                {translation.chinglish}
+              </p>
+            )}
+          </div>
         )}
       </div>
 

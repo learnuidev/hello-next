@@ -12,7 +12,7 @@ export const addReaderItem = async (
   const res = await fetch(`${siteConfig.contentApi}/v1/reader-items`, {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${opts?.Authorization}`,
+      Authorization: `${opts?.Authorization}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify(params),

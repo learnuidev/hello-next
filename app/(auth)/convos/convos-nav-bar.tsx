@@ -172,6 +172,20 @@ export const ConvosNavBar = () => {
           <Icons.microphone />
         </Link>
 
+        <Link
+          onClick={() => {
+            setViewType("reader");
+          }}
+          href={`/convos/${contentId}?view=reader`}
+          className={`transition ${
+            viewType === "reader"
+              ? "text-black dark:text-gray-200"
+              : "text-gray-200 dark:text-gray-600"
+          } hover:text-black dark:hover:text-white transition text-xl`}
+        >
+          <Icons.reader />
+        </Link>
+
         {content?.lang === "zh" && (
           <Link
             href={`/convos/${contentId}?view=write&start=${currentTime}`}

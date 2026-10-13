@@ -25,7 +25,7 @@ const listReaderItems = async (
     `${siteConfig.contentApi}/v1/reader-items?${queryParams.toString()}`,
     {
       headers: {
-        Authorization: `Bearer ${opts?.Authorization}`,
+        Authorization: `${opts?.Authorization}`,
       },
     },
   );
@@ -49,7 +49,6 @@ export function useListReaderItemsQuery(params: ListReaderItemsParams = {}) {
     },
     enabled: Boolean(authUser?.jwt),
     refetchOnWindowFocus: false,
-    refetchOnFocus: false,
     refetchOnMount: false,
     refetchOnReconnect: false,
   });

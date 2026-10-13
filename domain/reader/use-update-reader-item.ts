@@ -12,7 +12,7 @@ const updateReaderItem = async (
   const res = await fetch(`${siteConfig.contentApi}/v1/update-reader-item`, {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${opts?.Authorization}`,
+      Authorization: `${opts?.Authorization}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify(params),

@@ -269,7 +269,7 @@ export const AddReaderText = ({
             ) : (
               <Icons.check className="mr-2" />
             )}
-            {isEditing ? "Save" : "Save"}
+            {isEditing ? "Update" : "Save"}
           </Button>
         </div>
       </div>

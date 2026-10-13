@@ -13,7 +13,7 @@ const getReaderItem = async (
     `${siteConfig.contentApi}/v1/reader-items/${readerItemId}`,
     {
       headers: {
-        Authorization: `Bearer ${opts?.Authorization}`,
+        Authorization: `${opts?.Authorization}`,
       },
     },
   );
@@ -37,7 +37,6 @@ export function useGetReaderItemQuery(readerItemId: string) {
     },
     enabled: Boolean(authUser?.jwt) && Boolean(readerItemId),
     refetchOnWindowFocus: false,
-    refetchOnFocus: false,
     refetchOnMount: false,
     refetchOnReconnect: false,
   });

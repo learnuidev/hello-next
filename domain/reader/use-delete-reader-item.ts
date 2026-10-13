@@ -13,7 +13,7 @@ const deleteReaderItem = async (
     {
       method: "DELETE",
       headers: {
-        Authorization: `Bearer ${opts?.Authorization}`,
+        Authorization: `${opts?.Authorization}`,
       },
     },
   );

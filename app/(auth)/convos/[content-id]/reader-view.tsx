@@ -5,9 +5,7 @@ import { ReaderDynocloze } from "@/app/(auth)/reader/components/reader-dynocloze
 import { ReaderFocusedRead } from "@/app/(auth)/reader/components/reader-focused-read";
 import { ReaderSideDock } from "@/app/(auth)/reader/components/reader-side-dock";
 import { ReaderInsights } from "@/app/(auth)/reader/components/reader-insights";
-import { useReaderStore } from "@/app/(auth)/reader/hooks/use-reader-store";
 import { useReaderInteractionsSync } from "@/app/(auth)/reader/hooks/use-reader-interactions-sync";
-import { ReaderSnippetLine } from "@/app/(auth)/reader/reader.types";
 import { splitReaderSentences } from "@/app/(auth)/reader/utils/split-reader-sentences";
 import { Icons } from "@/components/ui/icons.v2";
 import { useGetContentQuery } from "@/domain/content/content.queries";
@@ -36,7 +34,6 @@ export const ReaderContentView = ({ contentId }: { contentId: string }) => {
 
   const [mode, setMode] = useState<ConvoReaderMode>("focused");
 
-  const saveToReadingList = useReaderStore((state) => state.saveToReadingList);
 
   useReaderInteractionsSync();
 
@@ -85,20 +82,6 @@ export const ReaderContentView = ({ contentId }: { contentId: string }) => {
     () => (sentence: string) => linePinyinBySentence.get(sentence) || "",
     [linePinyinBySentence],
   );
-
-  const saveSnippet = (snippetText: string, line?: ReaderSnippetLine) => {
-    if (!snippetText.trim()) {
-      return;
-    }
-
-    saveToReadingList({
-      text: snippetText,
-      readerItemId: contentId,
-      readerItemTitle: content?.title || "Convo",
-      kind: "convo",
-      ...(line ? { line } : {}),
-    });
-  };
 
   if (isLoading) {
     return (
@@ -156,7 +139,6 @@ export const ReaderContentView = ({ contentId }: { contentId: string }) => {
               readerItemTitle={content?.title || "Convo"}
               text={text}
               lang={lang}
-              onSaveSnippet={saveSnippet}
               snippetKind="convo"
               getLinePinyin={getLinePinyin}
             />
@@ -183,7 +165,12 @@ export const ReaderContentView = ({ contentId }: { contentId: string }) => {
         )}
 
         {mode === "insights" && (
-          <ReaderInsights readerItemId={contentId} text={text} lang={lang} />
+          <ReaderInsights
+            readerItemId={contentId}
+            text={text}
+            lang={lang}
+            kind="convo"
+          />
         )}
       </div>
 

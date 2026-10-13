@@ -16,7 +16,6 @@ import { ReaderWord, segmentReaderWords } from "../utils/segment-reader-text";
 import { splitReaderSentences } from "../utils/split-reader-sentences";
 import { ReaderCharacter, useReaderCharacterMaps } from "./reader-character";
 import { ReaderMiniDictionary } from "./reader-mini-dictionary";
-import { ReaderSnippetLine } from "../reader.types";
 
 /**
  * Focused read: one line at a time, big and centred, in a stage of its own.
@@ -46,15 +45,15 @@ export const ReaderFocusedRead = ({
   readerItemTitle,
   text,
   lang,
-  onSaveSnippet,
   snippetKind,
   getLinePinyin,
+  initialSentenceIndex,
+  onSaved,
 }: {
   readerItemId: string;
   readerItemTitle: string;
   text: string;
   lang: string;
-  onSaveSnippet: (text: string, line?: ReaderSnippetLine) => void;
   snippetKind?: "reader" | "convo";
   /**
    * The whole-line pinyin for a sentence, when it comes from somewhere richer
@@ -62,6 +61,13 @@ export const ReaderFocusedRead = ({
    * line when read mode is off; falls back to reading the sentence locally.
    */
   getLinePinyin?: (sentence: string) => string;
+  /**
+   * Opens on this sentence rather than where the text was last left — the way
+   * a link into a particular line of a text arrives.
+   */
+  initialSentenceIndex?: number;
+  /** Told when a line has been bookmarked, for the confirmation. */
+  onSaved?: () => void;
 }) => {
   const sentences = useMemo(
     () => splitReaderSentences(text, lang),
@@ -105,8 +111,23 @@ export const ReaderFocusedRead = ({
 
   const lastIndex = Math.max(sentences.length - 1, 0);
 
-  const [index, setIndex] = useState(readingPositions?.[readerItemId] || 0);
+  const [index, setIndex] = useState(
+    typeof initialSentenceIndex === "number"
+      ? initialSentenceIndex
+      : readingPositions?.[readerItemId] || 0,
+  );
   const currentIndex = Math.min(index, lastIndex);
+
+  // A link can send the reader to another sentence of the same text without the
+  // view remounting, so the position is applied when it changes too — not only
+  // when the component first draws.
+  useEffect(() => {
+    if (typeof initialSentenceIndex !== "number") {
+      return;
+    }
+
+    setIndex(initialSentenceIndex);
+  }, [initialSentenceIndex]);
 
   const currentSentence = sentences[currentIndex] || "";
   const words = useMemo(
@@ -427,15 +448,9 @@ export const ReaderFocusedRead = ({
         <button
           className="hover:text-rose-400 transition"
           onClick={() => {
-            // A line is saved with itself as the line it came from: the reading
-            // list can point back at the page it was cut out of.
-            onSaveSnippet(currentSentence, {
-              lineIndex: currentIndex,
-              line: currentSentence,
-            });
-
-            // And the line is bookmarked in the interactions ledger, so it shows
-            // (and syncs) in insights.
+            // The line is bookmarked in the interactions ledger — the one place
+            // words and lines you keep now live — so it shows (and syncs) in the
+            // insights tab.
             toggleSentenceBookmark({
               readerItemId,
               readerItemTitle,
@@ -446,6 +461,8 @@ export const ReaderFocusedRead = ({
               lineIndex: currentIndex,
               lang,
             });
+
+            onSaved?.();
           }}
         >
           <Icons.bookmark className="mr-2" />

@@ -22,9 +22,9 @@ export interface ReaderItem {
  * Where in a text a saved piece came from: which line it was taken out of, and
  * the line itself.
  *
- * A word saved out of a long text is a word with a place — the reading list can
- * show what was being said when the reader stopped to keep it, and offer the way
- * back to that line.
+ * A word kept out of a long text is a word with a place — the bookmark can show
+ * what was being said when the reader stopped to keep it, and offer the way back
+ * to that line.
  */
 export interface ReaderSnippetLine {
   /** The step the line is in the text, counted from zero. */
@@ -33,56 +33,22 @@ export interface ReaderSnippetLine {
 }
 
 /**
- * A piece of a text the reader kept: words or a line picked while reading,
- * waiting to be gone through again (or looked up in nmm).
- */
-export interface ReaderSnippet {
-  id: string;
-  text: string;
-  /** The text it was saved from, so the list can point back at it. */
-  readerItemId: string;
-  readerItemTitle: string;
-  /**
-   * What the snippet points back at: a saved reader text, or — when it was
-   * picked out of the reader view inside a convo — the convo itself.
-   */
-  kind?: "reader" | "convo";
-  /**
-   * The line it was saved from. Missing when the piece was picked across more
-   * than one line — a run of words selected in the read view belongs to no
-   * single line — and missing from anything saved before the reading list kept
-   * the reference.
-   */
-  line?: ReaderSnippetLine;
-  createdAt: number;
-}
-
-/** The link that opens the text a snippet came from, on the line it came from. */
-export const getReaderSnippetHref = (snippet: ReaderSnippet) =>
-  snippet.kind === "convo"
-    ? `/convos/${snippet.readerItemId}?view=reader`
-    : getReaderViewHref(snippet.readerItemId, "focused");
-
-/**
  * The views a reader text can be opened in.
  *
  * The URL is what decides which one is showing — `/reader/:id` is focused read,
  * `/reader/:id?view=insights` the insights, and so on — so a view can be linked
  * to, bookmarked and gone back to with the browser's own back button.
+ *
+ * The words and lines you keep are not a view of their own: they live in the
+ * insights tab, beside everything else the reader records about a text.
  */
-export type ReaderViewMode =
-  | "read"
-  | "dynocloze"
-  | "focused"
-  | "insights"
-  | "reading-list";
+export type ReaderViewMode = "read" | "dynocloze" | "focused" | "insights";
 
 export const readerViewModes: ReaderViewMode[] = [
   "read",
   "dynocloze",
   "focused",
   "insights",
-  "reading-list",
 ];
 
 export const isReaderViewMode = (

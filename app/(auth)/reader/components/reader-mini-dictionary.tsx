@@ -9,7 +9,6 @@ import { getNmmLink } from "@/libs/utils/get-nmm-link";
 import Link from "next/link";
 import { useEffect, useMemo } from "react";
 
-import { useReaderStore } from "../hooks/use-reader-store";
 import { useReaderInteractionsStore } from "../hooks/use-reader-interactions";
 import { ReaderSnippetLine } from "../reader.types";
 import { highlightReaderWord } from "../utils/highlight-reader-word";
@@ -51,12 +50,6 @@ export const ReaderMiniDictionary = ({
   onClose: () => void;
   onGoToSentence: (sentenceIndex: number) => void;
 }) => {
-  const readingList = useReaderStore((state) => state.readingList);
-  const saveToReadingList = useReaderStore((state) => state.saveToReadingList);
-  const removeFromReadingList = useReaderStore(
-    (state) => state.removeFromReadingList,
-  );
-
   const recordLookup = useReaderInteractionsStore(
     (state) => state.recordLookup,
   );
@@ -75,6 +68,7 @@ export const ReaderMiniDictionary = ({
     contextSentence,
   ].join("::");
   const lookupCount = interactions[interactionKey]?.lookupCount || 0;
+  const isBookmarked = !!interactions[interactionKey]?.bookmarked;
 
   // Opening the dictionary is itself a lookup: count it so the insights tab can
   // say how many times this word was asked about.
@@ -121,30 +115,12 @@ export const ReaderMiniDictionary = ({
     [text, lang, selected],
   );
 
-  // The bookmark is the bookmark of this word on this line: the same word kept
-  // out of another line is another entry, and this one has its own state.
-  const savedSnippet = (readingList || []).find(
-    (snippet) =>
-      snippet.text === selected &&
-      snippet.readerItemId === readerItemId &&
-      snippet.line?.lineIndex === line?.lineIndex,
-  );
-
+  /**
+   * The bookmark is the bookmark of this word on this line: the same word kept
+   * out of another line is another entry. It lives in the interactions ledger,
+   * which is what the insights tab reads and what syncs to the account.
+   */
   const toggleBookmark = () => {
-    if (savedSnippet) {
-      removeFromReadingList(savedSnippet.id);
-    } else {
-      saveToReadingList({
-        text: selected,
-        readerItemId,
-        readerItemTitle,
-        ...(line ? { line } : {}),
-        kind: interactionKind,
-      });
-    }
-
-    // The same tap also marks the word in the interactions ledger, so it shows
-    // up (and syncs) in insights.
     toggleInteractionBookmark({
       readerItemId,
       readerItemTitle,
@@ -172,18 +148,16 @@ export const ReaderMiniDictionary = ({
             </h4>
 
             <button
-              title={
-                savedSnippet ? "Take off the reading list" : "Save to the reading list"
-              }
+              title={isBookmarked ? "Take off your bookmarks" : "Bookmark this word"}
               onClick={toggleBookmark}
               className={cn(
                 "transition text-xl",
-                savedSnippet
+                isBookmarked
                   ? "text-rose-400"
                   : "text-gray-500 hover:text-rose-400",
               )}
             >
-              {savedSnippet ? <Icons.bookmarkSolid /> : <Icons.bookmark />}
+              {isBookmarked ? <Icons.bookmarkSolid /> : <Icons.bookmark />}
             </button>
 
             <span className="text-sm text-gray-500">

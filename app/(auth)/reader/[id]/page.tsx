@@ -13,13 +13,13 @@ import { ReaderDynocloze } from "../components/reader-dynocloze";
 import { ReaderDock } from "../components/reader-dock";
 import { ReaderFocusedRead } from "../components/reader-focused-read";
 import { ReaderMiniDictionary } from "../components/reader-mini-dictionary";
-import { ReaderReadingList } from "../components/reader-reading-list";
 import { ReaderSideDock } from "../components/reader-side-dock";
 import { ReaderSegmentedText } from "../components/reader-segmented-text";
 import { ReaderInsights } from "../components/reader-insights";
 import { AddReaderText } from "../components/add-reader-text";
 import { useHasMounted } from "../hooks/use-has-mounted";
 import { useReaderStore } from "../hooks/use-reader-store";
+import { useReaderInteractionsStore } from "../hooks/use-reader-interactions";
 import { useReaderInteractionsSync } from "../hooks/use-reader-interactions-sync";
 import { useGetReaderItemQuery } from "@/domain/reader/use-get-reader-item";
 import {
@@ -53,13 +53,12 @@ export default function ReaderText() {
   // back as they happen.
   useReaderInteractionsSync();
 
-  const readingList = useReaderStore((state) => state.readingList);
-  const saveToReadingList = useReaderStore((state) => state.saveToReadingList);
-  const removeFromReadingList = useReaderStore(
-    (state) => state.removeFromReadingList,
-  );
   const setReadingPosition = useReaderStore(
     (state) => state.setReadingPosition,
+  );
+
+  const toggleInteractionBookmark = useReaderInteractionsStore(
+    (state) => state.toggleBookmark,
   );
 
   const [isEditing, setIsEditing] = useState(false);
@@ -73,6 +72,20 @@ export default function ReaderText() {
   const viewMode: ReaderViewMode = isReaderViewMode(viewParam)
     ? viewParam
     : defaultReaderViewMode;
+
+  // A link into a particular line of the text says so in the url. It is read
+  // once, applied, and then taken off the url again (below) so that stepping
+  // through the text is not undone by switching views and back.
+  const sentenceIndexParam = searchParams?.get("sentenceIndex");
+  const initialSentenceIndex = useMemo(() => {
+    if (sentenceIndexParam == null) {
+      return undefined;
+    }
+
+    const parsed = Number(sentenceIndexParam);
+
+    return Number.isFinite(parsed) && parsed >= 0 ? parsed : undefined;
+  }, [sentenceIndexParam]);
 
   const { readMode } = useReadModeState();
 
@@ -115,23 +128,51 @@ export default function ReaderText() {
     return () => clearTimeout(timeout);
   }, [savedNotice]);
 
+  /**
+   * A link that says which sentence to open on: remember it as the reader's
+   * place in the text, then take it off the url. Left on, it would pull the
+   * reader back to that line every time the focused view remounted.
+   */
+  useEffect(() => {
+    if (!item || sentenceIndexParam == null) {
+      return;
+    }
+
+    if (typeof initialSentenceIndex === "number") {
+      setReadingPosition(item.id, initialSentenceIndex);
+    }
+
+    router.replace(getReaderViewHref(item.id, viewMode), { scroll: false });
+  }, [
+    item,
+    sentenceIndexParam,
+    initialSentenceIndex,
+    router,
+    viewMode,
+    setReadingPosition,
+  ]);
+
   const lang = useMemo(() => detectReaderLang(item?.text || ""), [item?.text]);
 
   /**
-   * Files a piece of the text into the reading list, with the line it came out
-   * of when the view knows it: a word or a line is worth coming back to on the
-   * page it was said on, not floating loose.
+   * Files a piece of the text into the bookmarks, with the line it came out of
+   * when the view knows it: a word is worth coming back to on the page it was
+   * said on, not floating loose.
    */
   const saveSnippet = (text: string, line?: ReaderSnippetLine) => {
     if (!item || !text.trim()) {
       return;
     }
 
-    saveToReadingList({
-      text,
+    toggleInteractionBookmark({
       readerItemId: item.id,
       readerItemTitle: item.title,
-      ...(line ? { line } : {}),
+      kind: "reader",
+      type: "word",
+      text,
+      sentence: line?.line || "",
+      lineIndex: line?.lineIndex ?? null,
+      lang,
     });
 
     setSavedNotice(true);
@@ -400,22 +441,16 @@ export default function ReaderText() {
               readerItemTitle={item.title}
               text={item.text}
               lang={lang}
-              onSaveSnippet={saveSnippet}
+              onSaved={() => {
+                setSavedNotice(true);
+              }}
+              initialSentenceIndex={initialSentenceIndex}
             />
           </div>
         )}
 
         {viewMode === "insights" && (
           <ReaderInsights readerItemId={item.id} text={item.text} lang={lang} />
-        )}
-
-        {viewMode === "reading-list" && (
-          <ReaderReadingList
-            snippets={readingList || []}
-            onDelete={(snippetId) => {
-              removeFromReadingList(snippetId);
-            }}
-          />
         )}
       </div>
 
@@ -458,9 +493,9 @@ export default function ReaderText() {
       {savedNotice && (
         <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 flex items-center bg-gray-50 dark:bg-black border border-gray-200 dark:border-gray-800 rounded-full px-6 py-3 text-xs shadow-2xl shadow-zinc-900">
           <Icons.bookmarkSolid className="text-rose-400 mr-2" />
-          <span>Saved to your reading list</span>
+          <span>Saved to your bookmarks</span>
           <Link
-            href={getReaderViewHref(item.id, "reading-list")}
+            href={`${getReaderViewHref(item.id, "insights")}&tab=bookmarks`}
             scroll={false}
             className="ml-6 uppercase tracking-wider text-gray-400 hover:text-rose-400 transition"
           >

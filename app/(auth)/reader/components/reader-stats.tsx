@@ -8,7 +8,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
-import { getNmmLink } from "@/libs/utils/get-nmm-link";
 import Link from "next/link";
 import { useMemo } from "react";
 
@@ -21,6 +20,7 @@ import {
 } from "../hooks/use-reader-stats-settings";
 import { readerCard, readerCardFull } from "../reader.styles";
 import { getReaderPinyin } from "../utils/get-reader-pinyin";
+import { getReaderWordHref } from "../utils/get-reader-word-href";
 import { ReaderFrequencyItem, getReaderStats } from "../utils/get-reader-stats";
 import { useReaderCharacterMaps } from "./reader-character";
 
@@ -224,15 +224,17 @@ const ReaderStatsTile = ({
   reading,
   meaning,
   state,
+  href,
 }: {
   item: ReaderFrequencyItem;
   lang: string;
   reading?: string;
   meaning?: string;
   state: LearnState;
+  href: string;
 }) => (
   <Link
-    href={getNmmLink({ id: item.input, lang })}
+    href={href}
     className={cn(
       readerCard,
       "block rounded-xl p-4 transition hover:shadow-lg hover:shadow-zinc-900/10 dark:hover:shadow-black/40",
@@ -269,15 +271,17 @@ const ReaderStatsRow = ({
   reading,
   meaning,
   state,
+  href,
 }: {
   item: ReaderFrequencyItem;
   lang: string;
   reading?: string;
   meaning?: string;
   state: LearnState;
+  href: string;
 }) => (
   <Link
-    href={getNmmLink({ id: item.input, lang })}
+    href={href}
     className="flex items-center gap-4 rounded-xl px-4 py-4 transition hover:bg-gray-100/70 dark:hover:bg-white/5"
   >
     <span className="w-14 shrink-0 text-right text-xs tabular-nums text-gray-400">
@@ -304,9 +308,23 @@ const ReaderStatsRow = ({
  * What the text is made of: the totals, how much of it you already know, and
  * then every word or character in it — as cards, or as a list.
  *
+ * Every entry is a way into that word's own page in this text
+ * (`getReaderWordHref`), which is where the sentences that say it live.
+ *
  * Everything is counted from the text, in the browser: no API, no lesson.
  */
-export const ReaderStats = ({ text, lang }: { text: string; lang: string }) => {
+export const ReaderStats = ({
+  readerItemId,
+  text,
+  lang,
+  kind,
+}: {
+  readerItemId: string;
+  text: string;
+  lang: string;
+  /** Which surface the text belongs to; a reader text by default. */
+  kind?: "reader" | "convo";
+}) => {
   const stats = useMemo(() => getReaderStats({ text, lang }), [text, lang]);
 
   const viewType = useReaderStatsSettings((state) => state.viewType) as
@@ -545,6 +563,12 @@ export const ReaderStats = ({ text, lang }: { text: string; lang: string }) => {
               reading={readingOf(item)}
               meaning={meaningOf(item)}
               state={getLearnState(item.input, learnedCharacters)}
+              href={getReaderWordHref({
+                readerItemId,
+                word: item.input,
+                kind,
+                lang,
+              })}
             />
           ))}
         </div>
@@ -558,6 +582,12 @@ export const ReaderStats = ({ text, lang }: { text: string; lang: string }) => {
               reading={readingOf(item)}
               meaning={meaningOf(item)}
               state={getLearnState(item.input, learnedCharacters)}
+              href={getReaderWordHref({
+                readerItemId,
+                word: item.input,
+                kind,
+                lang,
+              })}
             />
           ))}
         </div>

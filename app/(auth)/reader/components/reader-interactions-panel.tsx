@@ -2,13 +2,13 @@
 
 import { Icons } from "@/components/ui/icons.v2";
 import { cn } from "@/lib/utils";
-import { getNmmLink } from "@/libs/utils/get-nmm-link";
 import Link from "next/link";
 import { useMemo } from "react";
 
 import { useReaderInteractionsStore } from "../hooks/use-reader-interactions";
 import { readerCard, readerCardFull } from "../reader.styles";
 import { getReaderPinyin } from "../utils/get-reader-pinyin";
+import { getReaderWordHref } from "../utils/get-reader-word-href";
 import { highlightReaderWord } from "../utils/highlight-reader-word";
 
 const sortByUpdated = <T extends { updatedAt: number }>(items: T[]) =>
@@ -25,9 +25,11 @@ const useReaderItemInteractions = (readerItemId: string) => {
     );
 
     return {
-      lookups: sortByUpdated(
-        items.filter((item) => item.type === "word" && item.lookupCount > 0),
-      ),
+      // Lookups are ranked by how often the word was asked about — the whole
+      // point of the tally is to see what this text kept sending you to.
+      lookups: items
+        .filter((item) => item.type === "word" && item.lookupCount > 0)
+        .sort((a, b) => b.lookupCount - a.lookupCount),
       wordBookmarks: sortByUpdated(
         items.filter((item) => item.type === "word" && item.bookmarked),
       ),
@@ -58,10 +60,10 @@ const PanelEmptyState = ({
 );
 
 /** The word of a row: how it is written, and how it is read. */
-const InteractionWord = ({ word, lang }: { word: string; lang: string }) => (
+const InteractionWord = ({ word, href }: { word: string; href: string }) => (
   <div className="w-20 shrink-0">
     <Link
-      href={getNmmLink({ id: word, lang })}
+      href={href}
       className="block truncate text-xl font-semibold text-gray-800 transition hover:text-rose-400 dark:text-gray-100"
     >
       {word}
@@ -74,8 +76,9 @@ const InteractionWord = ({ word, lang }: { word: string; lang: string }) => (
 );
 
 /**
- * The words looked up in one text, newest first: the word and its reading on the
- * left, how many times it was tapped, then the line it was tapped in.
+ * The words looked up in one text, most looked-up first: the word and its
+ * reading on the left, how many times it was tapped, then the line it was
+ * tapped in.
  */
 export const ReaderLookupsPanel = ({
   readerItemId,
@@ -103,7 +106,15 @@ export const ReaderLookupsPanel = ({
             "flex flex-wrap items-start gap-x-5 gap-y-2 rounded-xl p-4 sm:p-5",
           )}
         >
-          <InteractionWord word={item.text} lang={item.lang} />
+          <InteractionWord
+            word={item.text}
+            href={getReaderWordHref({
+              readerItemId,
+              word: item.text,
+              kind: item.kind,
+              lang: item.lang,
+            })}
+          />
 
           <span className="mt-1 shrink-0 rounded-full bg-gray-200/70 px-2.5 py-1 text-[11px] tabular-nums text-gray-600 dark:bg-gray-800 dark:text-gray-300">
             {item.lookupCount}×
@@ -121,7 +132,8 @@ export const ReaderLookupsPanel = ({
 };
 
 /**
- * The words and lines bookmarked out of one text, newest first.
+ * The words and lines bookmarked out of one text, newest first, each with the
+ * way to take it off the list again.
  */
 export const ReaderBookmarksPanel = ({
   readerItemId,
@@ -130,6 +142,24 @@ export const ReaderBookmarksPanel = ({
 }) => {
   const { wordBookmarks, sentenceBookmarks } =
     useReaderItemInteractions(readerItemId);
+
+  const toggleBookmark = useReaderInteractionsStore(
+    (state) => state.toggleBookmark,
+  );
+
+  const removeBookmark = (item: {
+    readerItemId: string;
+    readerItemTitle: string;
+    kind: "reader" | "convo";
+    type: "word" | "sentence";
+    text: string;
+    sentence: string;
+    lineIndex: number | null;
+    lang: string;
+  }) => {
+    // Toggling a bookmarked entry takes it off; the ledger syncs the change.
+    toggleBookmark(item);
+  };
 
   if (wordBookmarks.length === 0 && sentenceBookmarks.length === 0) {
     return (
@@ -158,7 +188,15 @@ export const ReaderBookmarksPanel = ({
                   "flex flex-wrap items-start gap-x-5 gap-y-2 rounded-xl p-4 sm:p-5",
                 )}
               >
-                <InteractionWord word={item.text} lang={item.lang} />
+                <InteractionWord
+                  word={item.text}
+                  href={getReaderWordHref({
+                    readerItemId,
+                    word: item.text,
+                    kind: item.kind,
+                    lang: item.lang,
+                  })}
+                />
 
                 <Icons.bookmarkSolid className="mt-1.5 shrink-0 text-sm text-rose-400" />
 
@@ -167,6 +205,16 @@ export const ReaderBookmarksPanel = ({
                     {highlightReaderWord(item.sentence, item.text)}
                   </p>
                 )}
+
+                <button
+                  title="Take off your bookmarks"
+                  onClick={() => {
+                    removeBookmark(item);
+                  }}
+                  className="ml-auto shrink-0 text-gray-400 transition hover:text-rose-400"
+                >
+                  <Icons.trash className="text-sm" />
+                </button>
               </div>
             ))}
           </div>
@@ -188,16 +236,26 @@ export const ReaderBookmarksPanel = ({
                 key={`line-bookmark-${item.id || `${item.text}::${item.sentence}`}`}
                 className={cn(
                   readerCard,
-                  "flex items-start justify-between gap-4 rounded-xl p-4 sm:p-5",
+                  "flex items-start gap-4 rounded-xl p-4 sm:p-5",
                 )}
               >
                 <p className="min-w-0 flex-1 text-base leading-8 text-gray-700 dark:text-gray-200">
                   {item.text}
                 </p>
 
-                <span className="shrink-0 text-xs uppercase tracking-wider text-gray-400">
+                <span className="shrink-0 pt-1 text-xs uppercase tracking-wider text-gray-400">
                   Line {item.lineIndex == null ? "—" : item.lineIndex + 1}
                 </span>
+
+                <button
+                  title="Take off your bookmarks"
+                  onClick={() => {
+                    removeBookmark(item);
+                  }}
+                  className="shrink-0 pt-1 text-gray-400 transition hover:text-rose-400"
+                >
+                  <Icons.trash className="text-sm" />
+                </button>
               </div>
             ))}
           </div>

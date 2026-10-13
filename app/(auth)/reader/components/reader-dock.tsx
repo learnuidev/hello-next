@@ -12,7 +12,6 @@ const VIEW_MODES: { id: ReaderViewMode; title: string; Icon: any }[] = [
   { id: "dynocloze", title: "Dynocloze", Icon: Icons.play },
   { id: "focused", title: "Focused read", Icon: Icons.glassesRound },
   { id: "insights", title: "Insights", Icon: Icons.chartColumn },
-  { id: "reading-list", title: "Reading list", Icon: Icons.bookmark },
 ];
 
 /**

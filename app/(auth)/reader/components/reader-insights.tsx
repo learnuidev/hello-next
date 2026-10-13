@@ -1,7 +1,8 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { useMemo, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useMemo } from "react";
 
 import { useReaderInteractionsStore } from "../hooks/use-reader-interactions";
 import { readerCard, readerCardShadow } from "../reader.styles";
@@ -18,6 +19,9 @@ const TABS: { id: InsightsTab; title: string }[] = [
   { id: "lookups", title: "Lookups" },
   { id: "bookmarks", title: "Bookmarks" },
 ];
+
+const isInsightsTab = (value?: string | null): value is InsightsTab =>
+  value === "general" || value === "lookups" || value === "bookmarks";
 
 /** What each tab is, said in a heading and one line. */
 const TAB_HEADINGS: Record<InsightsTab, { title: string; subtitle: string }> = {
@@ -44,12 +48,27 @@ export const ReaderInsights = ({
   readerItemId,
   text,
   lang,
+  kind,
 }: {
   readerItemId: string;
   text: string;
   lang: string;
+  /** Which surface the text belongs to; a reader text by default. */
+  kind?: "reader" | "convo";
 }) => {
-  const [tab, setTab] = useState<InsightsTab>("general");
+  // The tab lives in the url, so a bookmark can be linked straight to — the
+  // "saved" confirmation points at the Bookmarks tab by name.
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const tabParam = searchParams?.get("tab");
+  const tab: InsightsTab = isInsightsTab(tabParam) ? tabParam : "general";
+
+  const setTab = (nextTab: InsightsTab) => {
+    const params = new URLSearchParams(searchParams?.toString() || "");
+    params.set("tab", nextTab);
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+  };
 
   const interactions = useReaderInteractionsStore(
     (state) => state.interactions,
@@ -120,7 +139,13 @@ export const ReaderInsights = ({
       </div>
 
       {tab === "general" && (
-        <ReaderStats key={readerItemId} text={text} lang={lang} />
+        <ReaderStats
+          key={readerItemId}
+          readerItemId={readerItemId}
+          text={text}
+          lang={lang}
+          kind={kind}
+        />
       )}
 
       {tab === "lookups" && <ReaderLookupsPanel readerItemId={readerItemId} />}

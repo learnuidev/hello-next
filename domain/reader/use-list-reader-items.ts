@@ -1,7 +1,7 @@
 "use client";
 
 import { siteConfig } from "@/lib/config";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { useCurrentAuthUser } from "../auth/auth.queries";
 import { ListReaderItemsResponse } from "./reader.types";
 
@@ -11,7 +11,7 @@ export interface ListReaderItemsParams {
   exclusiveStartKey?: string;
 }
 
-const listReaderItems = async (
+export const listReaderItems = async (
   params: ListReaderItemsParams,
   opts: { Authorization: string },
 ): Promise<ListReaderItemsResponse> => {
@@ -53,3 +53,35 @@ export function useListReaderItemsQuery(params: ListReaderItemsParams = {}) {
     refetchOnReconnect: false,
   });
 }
+
+/**
+ * The library, one cursor page at a time: each "load more" asks the server for
+ * the next `nextToken` page instead of pulling the whole library up front.
+ */
+export function useInfiniteListReaderItemsQuery(
+  params: { limit?: number; direction?: "asc" | "desc" } = {},
+) {
+  const { data: authUser } = useCurrentAuthUser({});
+  const limit = params.limit ?? 20;
+
+  return useInfiniteQuery<ListReaderItemsResponse>({
+    queryKey: ["list-reader-items", "infinite", limit, params.direction],
+    queryFn: async ({ pageParam }) => {
+      return listReaderItems(
+        {
+          limit,
+          direction: params.direction,
+          exclusiveStartKey: pageParam as string | undefined,
+        },
+        { Authorization: authUser?.jwt },
+      );
+    },
+    initialPageParam: undefined as string | undefined,
+    getNextPageParam: (lastPage) => lastPage.pagination.nextToken ?? undefined,
+    enabled: Boolean(authUser?.jwt),
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+  });
+}
+

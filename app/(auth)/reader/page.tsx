@@ -8,34 +8,35 @@ import { useMemo, useState } from "react";
 
 import { AddReaderText } from "./components/add-reader-text";
 import { ReaderListItem } from "./components/reader-list-item";
-import {
-  ReaderPagination,
-  getReaderRangeLabel,
-  readerPageCount,
-} from "./components/reader-pagination";
 import { ReaderSyncBanner } from "./components/reader-sync-banner";
-import {
-  READER_PAGE_SIZE,
-  sortReaderItemsByCreatedAt,
-} from "./hooks/use-reader-store";
+import { sortReaderItemsByCreatedAt } from "./hooks/use-reader-store";
 import { useDeleteReaderItemMutation } from "@/domain/reader/use-delete-reader-item";
-import { useListReaderItemsQuery } from "@/domain/reader/use-list-reader-items";
+import { useInfiniteListReaderItemsQuery } from "@/domain/reader/use-list-reader-items";
 
 /**
- * The reader library: saved texts, newest first, ten at a time.
+ * The reader library: saved texts, newest first.
  *
- * The texts live on the server now, so the page lists them straight from the
- * reader API; search and paging are done in the browser over the fetched set.
+ * The texts live on the server, so the page loads one cursor page at a time and
+ * grows the list with a "Load more" button; search filters what has been loaded
+ * so far.
  */
 export default function Reader() {
-  const { data, isLoading } = useListReaderItemsQuery({ limit: 200 });
+  const {
+    data,
+    isLoading,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
+  } = useInfiniteListReaderItemsQuery({ limit: 20 });
   const deleteItem = useDeleteReaderItemMutation();
 
-  const items = data?.items || [];
+  const items = useMemo(
+    () => (data?.pages || []).flatMap((page) => page.items),
+    [data],
+  );
 
   const [isAdding, setIsAdding] = useState(false);
   const [query, setQuery] = useState("");
-  const [page, setPage] = useState(1);
 
   const sortedItems = useMemo(() => sortReaderItemsByCreatedAt(items), [items]);
 
@@ -50,16 +51,6 @@ export default function Reader() {
       `${item.title}\n${item.text}`.toLowerCase().includes(trimmedQuery),
     );
   }, [sortedItems, query]);
-
-  const totalPages = readerPageCount(filteredItems.length, READER_PAGE_SIZE);
-  // Searching shrinks the list; keep the visible page inside the new bounds
-  // instead of needing an effect that resets it.
-  const currentPage = Math.min(page, totalPages);
-
-  const pageItems = filteredItems.slice(
-    (currentPage - 1) * READER_PAGE_SIZE,
-    currentPage * READER_PAGE_SIZE,
-  );
 
   if (isAdding) {
     return (
@@ -102,20 +93,16 @@ export default function Reader() {
             value={query}
             onChange={(event) => {
               setQuery(event.target.value);
-              setPage(1);
             }}
             placeholder="Search your texts…"
             className="pl-9 rounded-full bg-transparent font-extralight"
           />
         </div>
 
-        {!isLoading && pageItems.length > 0 && (
+        {!isLoading && filteredItems.length > 0 && (
           <p className="text-[11px] uppercase tracking-wider text-gray-500 mt-8">
-            {getReaderRangeLabel({
-              page: currentPage,
-              pageSize: READER_PAGE_SIZE,
-              totalItems: filteredItems.length,
-            })}
+            <span>{filteredItems.length}</span>
+            <span> {filteredItems.length === 1 ? "text" : "texts"}</span>
           </p>
         )}
 
@@ -126,8 +113,8 @@ export default function Reader() {
         )}
 
         {!isLoading && (
-          <section className="mt-8 space-y-10 mb-32">
-            {pageItems.map((item) => (
+          <section className="mt-8 space-y-10 mb-16">
+            {filteredItems.map((item) => (
               <ReaderListItem
                 key={item.id}
                 item={item}
@@ -139,12 +126,30 @@ export default function Reader() {
           </section>
         )}
 
-        {!isLoading && pageItems.length === 0 && hasSearch && (
+        {!isLoading && hasNextPage && (
+          <div className="flex justify-center mb-32">
+            <button
+              disabled={isFetchingNextPage}
+              onClick={() => {
+                fetchNextPage();
+              }}
+              className="uppercase text-xs tracking-wider text-gray-400 border-[1px] border-gray-300 dark:border-gray-800 px-6 py-3 hover:text-rose-400 dark:hover:text-white transition disabled:opacity-50"
+            >
+              {isFetchingNextPage ? (
+                <Icons.spinner className="mr-2 animate-spin" />
+              ) : (
+                <Icons.plusIcon className="mr-2" />
+              )}
+              {isFetchingNextPage ? "Loading…" : "Load more"}
+            </button>
+          </div>
+        )}
+
+        {!isLoading && filteredItems.length === 0 && hasSearch && (
           <Nothing message={`No texts match "${query.trim()}"`}>
             <button
               onClick={() => {
                 setQuery("");
-                setPage(1);
               }}
               className="mt-6 uppercase text-xs tracking-wider text-gray-400 border-[1px] border-gray-300 dark:border-gray-800 px-4 py-2 hover:text-rose-400 dark:hover:text-white transition"
             >
@@ -153,7 +158,7 @@ export default function Reader() {
           </Nothing>
         )}
 
-        {!isLoading && pageItems.length === 0 && !hasSearch && !hasItems && (
+        {!isLoading && filteredItems.length === 0 && !hasSearch && !hasItems && (
           <Nothing
             icon={Icons.bookOpen}
             message="Nothing saved yet"
@@ -169,17 +174,6 @@ export default function Reader() {
               <span> Add your first text</span>
             </button>
           </Nothing>
-        )}
-
-        {!isLoading && (
-          <ReaderPagination
-            page={currentPage}
-            totalPages={totalPages}
-            onPageChange={(nextPage) => {
-              setPage(nextPage);
-              window.scrollTo({ top: 0, behavior: "smooth" });
-            }}
-          />
         )}
       </div>
 

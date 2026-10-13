@@ -60,16 +60,56 @@ const ReaderStat = ({ value, label }: { value: number; label: string }) => (
   </div>
 );
 
+/** A rate, written the way the app writes percentages elsewhere. */
+const formatPercent = (value: number) =>
+  new Intl.NumberFormat("en-GB", {
+    style: "percent",
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 1,
+  }).format(Number.isFinite(value) ? value : 0);
+
+/** One of the two rates the progress card reports. */
+const ReaderProgressRate = ({
+  label,
+  value,
+}: {
+  label: string;
+  value: number;
+}) => (
+  <span className="flex items-baseline gap-2">
+    <span className="text-[11px] uppercase tracking-wider text-gray-500">
+      {label}
+    </span>
+    <span className="text-lg font-semibold tabular-nums text-gray-800 dark:text-gray-100">
+      {formatPercent(value)}
+    </span>
+  </span>
+);
+
 /**
- * How much of the text is already known: one bar over the text's characters,
- * split into what you know, what is new to you, and what you have met but not
- * learned yet. Characters are the reader's unit of learning, so the progress is
- * always about them — whichever of the two views is showing.
+ * How much of the text's characters are known: one bar split into what is
+ * mastered, what is still being learned, and what is new — with the two rates
+ * that matter, how far through the text you are and how much of it you have
+ * mastered.
+ *
+ * Characters are the reader's unit of learning, so this is always about them,
+ * whichever of the two views is showing.
+ *
+ * The app marks a character "forgotten" once it has been mastered (that is what
+ * the review screen sets when you say you know it), so a record that is not
+ * `forgotten` is one still being learned.
  */
 const ReaderCharacterProgress = ({
   counts,
 }: {
-  counts: { known: number; new: number; learning: number; total: number };
+  counts: {
+    mastered: number;
+    learning: number;
+    new: number;
+    total: number;
+    progressRate: number;
+    masteryRate: number;
+  };
 }) => (
   <div className={cn(readerCardFull, "p-5 sm:p-6")}>
     <div className="flex flex-wrap items-baseline justify-between gap-2">
@@ -85,42 +125,49 @@ const ReaderCharacterProgress = ({
     <div className="mt-4 flex h-2 w-full overflow-hidden rounded-full bg-gray-200 dark:bg-gray-800">
       <div
         className="bg-emerald-400"
-        style={{ width: `${(counts.known / (counts.total || 1)) * 100}%` }}
+        style={{ width: `${(counts.mastered / (counts.total || 1)) * 100}%` }}
       />
       <div
         className="bg-amber-400"
-        style={{ width: `${(counts.new / (counts.total || 1)) * 100}%` }}
+        style={{ width: `${(counts.learning / (counts.total || 1)) * 100}%` }}
       />
       <div
         className="bg-gray-400 dark:bg-gray-600"
-        style={{ width: `${(counts.learning / (counts.total || 1)) * 100}%` }}
+        style={{ width: `${(counts.new / (counts.total || 1)) * 100}%` }}
       />
     </div>
 
-    <div className="mt-4 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-gray-500">
-      <span className="flex items-center gap-2">
-        <span className="h-2 w-2 rounded-full bg-emerald-400" />
-        <span className="tabular-nums text-gray-700 dark:text-gray-300">
-          {formatCount(counts.known)}
+    <div className="mt-4 flex flex-wrap items-center justify-between gap-x-6 gap-y-3">
+      <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-gray-500">
+        <span className="flex items-center gap-2">
+          <span className="h-2 w-2 rounded-full bg-emerald-400" />
+          <span className="tabular-nums text-gray-700 dark:text-gray-300">
+            {formatCount(counts.mastered)}
+          </span>
+          <span>mastered</span>
         </span>
-        <span>known</span>
-      </span>
 
-      <span className="flex items-center gap-2">
-        <span className="h-2 w-2 rounded-full bg-amber-400" />
-        <span className="tabular-nums text-gray-700 dark:text-gray-300">
-          {formatCount(counts.new)}
+        <span className="flex items-center gap-2">
+          <span className="h-2 w-2 rounded-full bg-amber-400" />
+          <span className="tabular-nums text-gray-700 dark:text-gray-300">
+            {formatCount(counts.learning)}
+          </span>
+          <span>learning</span>
         </span>
-        <span>new</span>
-      </span>
 
-      <span className="flex items-center gap-2">
-        <span className="h-2 w-2 rounded-full bg-gray-400 dark:bg-gray-600" />
-        <span className="tabular-nums text-gray-700 dark:text-gray-300">
-          {formatCount(counts.learning)}
+        <span className="flex items-center gap-2">
+          <span className="h-2 w-2 rounded-full bg-gray-400 dark:bg-gray-600" />
+          <span className="tabular-nums text-gray-700 dark:text-gray-300">
+            {formatCount(counts.new)}
+          </span>
+          <span>new</span>
         </span>
-        <span>still learning</span>
-      </span>
+      </div>
+
+      <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
+        <ReaderProgressRate label="Progress rate" value={counts.progressRate} />
+        <ReaderProgressRate label="Mastery rate" value={counts.masteryRate} />
+      </div>
     </div>
   </div>
 );
@@ -327,27 +374,33 @@ export const ReaderStats = ({ text, lang }: { text: string; lang: string }) => {
 
   // Progress is counted over the text's characters, whatever the view shows.
   const progress = useMemo(() => {
-    let known = 0;
-    let fresh = 0;
+    let mastered = 0;
     let learning = 0;
+    let fresh = 0;
 
     stats.charactersByFrequency.forEach((item) => {
-      const state = getLearnState(item.input, learnedCharacters);
+      const record = learnedCharacters?.[item.input];
 
-      if (state === "known") {
-        known += 1;
-      } else if (state === "new") {
+      if (!record) {
         fresh += 1;
+      } else if (record.status === "forgotten") {
+        // The app marks a character "forgotten" once it has been mastered.
+        mastered += 1;
       } else {
         learning += 1;
       }
     });
 
+    const total = stats.charactersByFrequency.length;
+
     return {
-      known,
-      new: fresh,
+      mastered,
       learning,
-      total: stats.charactersByFrequency.length,
+      new: fresh,
+      total,
+      // Learned is everything with a record; mastery is the graduated slice.
+      progressRate: total ? (mastered + learning) / total : 0,
+      masteryRate: total ? mastered / total : 0,
     };
   }, [stats.charactersByFrequency, learnedCharacters]);
 

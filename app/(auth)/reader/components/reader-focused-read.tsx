@@ -354,7 +354,7 @@ export const ReaderFocusedRead = ({
             )}
 
             {showChinglish && !!translation.chinglish && (
-              <p className="text-base text-gray-500 dark:text-gray-500 font-light italic">
+              <p className="text-lg text-gray-500 dark:text-gray-500 font-light italic">
                 {translation.chinglish}
               </p>
             )}

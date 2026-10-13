@@ -7,9 +7,10 @@ import { useListDiscoveryQuery } from "@/domain/sentence/use-list-discovery-quer
 import { cn } from "@/lib/utils";
 import { getNmmLink } from "@/libs/utils/get-nmm-link";
 import Link from "next/link";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 
 import { useReaderStore } from "../hooks/use-reader-store";
+import { useReaderInteractionsStore } from "../hooks/use-reader-interactions";
 import { ReaderSnippetLine } from "../reader.types";
 import { highlightReaderWord } from "../utils/highlight-reader-word";
 import { splitReaderSentences } from "../utils/split-reader-sentences";
@@ -56,6 +57,53 @@ export const ReaderMiniDictionary = ({
     (state) => state.removeFromReadingList,
   );
 
+  const recordLookup = useReaderInteractionsStore(
+    (state) => state.recordLookup,
+  );
+  const toggleInteractionBookmark = useReaderInteractionsStore(
+    (state) => state.toggleBookmark,
+  );
+  const interactions = useReaderInteractionsStore((state) => state.interactions);
+
+  const interactionKind = kind || "reader";
+  const contextSentence = line?.line || "";
+  const interactionKey = [
+    readerItemId,
+    interactionKind,
+    "word",
+    selected,
+    contextSentence,
+  ].join("::");
+  const lookupCount = interactions[interactionKey]?.lookupCount || 0;
+
+  // Opening the dictionary is itself a lookup: count it so the insights tab can
+  // say how many times this word was asked about.
+  useEffect(() => {
+    if (!selected.trim()) {
+      return;
+    }
+
+    recordLookup({
+      readerItemId,
+      readerItemTitle,
+      kind: interactionKind,
+      type: "word",
+      text: selected,
+      sentence: contextSentence,
+      lineIndex: line?.lineIndex ?? null,
+      lang,
+    });
+  }, [
+    readerItemId,
+    readerItemTitle,
+    interactionKind,
+    lang,
+    selected,
+    contextSentence,
+    line?.lineIndex,
+    recordLookup,
+  ]);
+
   const showEn = useBrightModeStore((state) => state.showEn);
   const { showChinglish } = useChinglishState();
 
@@ -85,15 +133,27 @@ export const ReaderMiniDictionary = ({
   const toggleBookmark = () => {
     if (savedSnippet) {
       removeFromReadingList(savedSnippet.id);
-      return;
+    } else {
+      saveToReadingList({
+        text: selected,
+        readerItemId,
+        readerItemTitle,
+        ...(line ? { line } : {}),
+        kind: interactionKind,
+      });
     }
 
-    saveToReadingList({
-      text: selected,
+    // The same tap also marks the word in the interactions ledger, so it shows
+    // up (and syncs) in insights.
+    toggleInteractionBookmark({
       readerItemId,
       readerItemTitle,
-      ...(line ? { line } : {}),
-      kind: kind || "reader",
+      kind: interactionKind,
+      type: "word",
+      text: selected,
+      sentence: contextSentence,
+      lineIndex: line?.lineIndex ?? null,
+      lang,
     });
   };
 
@@ -131,6 +191,11 @@ export const ReaderMiniDictionary = ({
                 {mentions.length}
               </span>{" "}
               {mentions.length === 1 ? "mention" : "mentions"}
+            </span>
+
+            <span className="text-sm text-gray-500">
+              looked up{" "}
+              <span className="font-semibold text-rose-500">{lookupCount}</span>×
             </span>
           </div>
 

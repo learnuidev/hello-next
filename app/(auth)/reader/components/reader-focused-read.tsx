@@ -9,6 +9,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import { useListDiscoveryQuery } from "@/domain/sentence/use-list-discovery-query";
 import { useReaderStore } from "../hooks/use-reader-store";
+import { useReaderInteractionsStore } from "../hooks/use-reader-interactions";
 import { getReaderPinyin } from "../utils/get-reader-pinyin";
 import { isHanCharacter } from "../utils/is-han-character";
 import { ReaderWord, segmentReaderWords } from "../utils/segment-reader-text";
@@ -76,6 +77,10 @@ export const ReaderFocusedRead = ({
   const showPinyin = useBrightModeStore((state) => state.showPinyin);
   const showEn = useBrightModeStore((state) => state.showEn);
   const { showChinglish } = useChinglishState();
+
+  const toggleSentenceBookmark = useReaderInteractionsStore(
+    (state) => state.toggleBookmark,
+  );
 
   const [showParent, setShowParent] = useState(false);
   // The word the mini dictionary is open on.
@@ -427,6 +432,19 @@ export const ReaderFocusedRead = ({
             onSaveSnippet(currentSentence, {
               lineIndex: currentIndex,
               line: currentSentence,
+            });
+
+            // And the line is bookmarked in the interactions ledger, so it shows
+            // (and syncs) in insights.
+            toggleSentenceBookmark({
+              readerItemId,
+              readerItemTitle,
+              kind: snippetKind || "reader",
+              type: "sentence",
+              text: currentSentence,
+              sentence: currentSentence,
+              lineIndex: currentIndex,
+              lang,
             });
           }}
         >

@@ -5,7 +5,9 @@ import { ReaderDynocloze } from "@/app/(auth)/reader/components/reader-dynocloze
 import { ReaderFocusedRead } from "@/app/(auth)/reader/components/reader-focused-read";
 import { ReaderSideDock } from "@/app/(auth)/reader/components/reader-side-dock";
 import { ReaderStats } from "@/app/(auth)/reader/components/reader-stats";
+import { ReaderInteractionsPanel } from "@/app/(auth)/reader/components/reader-interactions-panel";
 import { useReaderStore } from "@/app/(auth)/reader/hooks/use-reader-store";
+import { useReaderInteractionsSync } from "@/app/(auth)/reader/hooks/use-reader-interactions-sync";
 import { ReaderSnippetLine } from "@/app/(auth)/reader/reader.types";
 import { splitReaderSentences } from "@/app/(auth)/reader/utils/split-reader-sentences";
 import { Icons } from "@/components/ui/icons.v2";
@@ -36,6 +38,8 @@ export const ReaderContentView = ({ contentId }: { contentId: string }) => {
   const [mode, setMode] = useState<ConvoReaderMode>("focused");
 
   const saveToReadingList = useReaderStore((state) => state.saveToReadingList);
+
+  useReaderInteractionsSync();
 
   const text = useMemo(
     () =>
@@ -180,7 +184,10 @@ export const ReaderContentView = ({ contentId }: { contentId: string }) => {
         )}
 
         {mode === "insights" && (
-          <ReaderStats key={contentId} text={text} lang={lang} />
+          <>
+            <ReaderStats key={contentId} text={text} lang={lang} />
+            <ReaderInteractionsPanel readerItemId={contentId} />
+          </>
         )}
       </div>
 

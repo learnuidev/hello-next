@@ -17,9 +17,11 @@ import { ReaderReadingList } from "../components/reader-reading-list";
 import { ReaderSideDock } from "../components/reader-side-dock";
 import { ReaderSegmentedText } from "../components/reader-segmented-text";
 import { ReaderStats } from "../components/reader-stats";
+import { ReaderInteractionsPanel } from "../components/reader-interactions-panel";
 import { AddReaderText } from "../components/add-reader-text";
 import { useHasMounted } from "../hooks/use-has-mounted";
 import { useReaderStore } from "../hooks/use-reader-store";
+import { useReaderInteractionsSync } from "../hooks/use-reader-interactions-sync";
 import { useGetReaderItemQuery } from "@/domain/reader/use-get-reader-item";
 import {
   ReaderSnippetLine,
@@ -47,6 +49,10 @@ export default function ReaderText() {
   const hasMounted = useHasMounted();
 
   const { data: item, isLoading: itemLoading } = useGetReaderItemQuery(id);
+
+  // Hydrate the lookups/bookmarks ledger from the server and push local changes
+  // back as they happen.
+  useReaderInteractionsSync();
 
   const readingList = useReaderStore((state) => state.readingList);
   const saveToReadingList = useReaderStore((state) => state.saveToReadingList);
@@ -401,7 +407,10 @@ export default function ReaderText() {
         )}
 
         {viewMode === "insights" && (
-          <ReaderStats key={item.id} text={item.text} lang={lang} />
+          <>
+            <ReaderStats key={item.id} text={item.text} lang={lang} />
+            <ReaderInteractionsPanel readerItemId={item.id} />
+          </>
         )}
 
         {viewMode === "reading-list" && (

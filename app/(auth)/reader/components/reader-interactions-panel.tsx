@@ -1,11 +1,14 @@
 "use client";
 
 import { Icons } from "@/components/ui/icons.v2";
+import { cn } from "@/lib/utils";
 import { getNmmLink } from "@/libs/utils/get-nmm-link";
 import Link from "next/link";
 import { useMemo } from "react";
 
 import { useReaderInteractionsStore } from "../hooks/use-reader-interactions";
+import { readerCard, readerCardFull } from "../reader.styles";
+import { getReaderPinyin } from "../utils/get-reader-pinyin";
 import { highlightReaderWord } from "../utils/highlight-reader-word";
 
 const sortByUpdated = <T extends { updatedAt: number }>(items: T[]) =>
@@ -42,16 +45,37 @@ const PanelEmptyState = ({
   title: string;
   hint: string;
 }) => (
-  <div className="mt-24 text-center text-gray-500 font-extralight">
+  <div
+    className={cn(
+      readerCardFull,
+      "mt-6 py-16 text-center text-gray-500 font-extralight",
+    )}
+  >
     <Icons.chartColumn className="text-3xl mb-3 mx-auto" />
     <p>{title}</p>
     <p className="text-sm mt-2">{hint}</p>
   </div>
 );
 
+/** The word of a row: how it is written, and how it is read. */
+const InteractionWord = ({ word, lang }: { word: string; lang: string }) => (
+  <div className="w-20 shrink-0">
+    <Link
+      href={getNmmLink({ id: word, lang })}
+      className="block truncate text-xl font-semibold text-gray-800 transition hover:text-rose-400 dark:text-gray-100"
+    >
+      {word}
+    </Link>
+
+    <p className="mt-1 truncate text-xs text-gray-500">
+      {getReaderPinyin(word)}
+    </p>
+  </div>
+);
+
 /**
- * The words looked up in one text, newest first, each with how many times it
- * was tapped and the line it was in.
+ * The words looked up in one text, newest first: the word and its reading on the
+ * left, how many times it was tapped, then the line it was tapped in.
  */
 export const ReaderLookupsPanel = ({
   readerItemId,
@@ -70,32 +94,28 @@ export const ReaderLookupsPanel = ({
   }
 
   return (
-    <section className="mt-12 mb-32">
-      <div className="space-y-6">
-        {lookups.map((item) => (
-          <div
-            key={`lookup-${item.id || `${item.text}::${item.sentence}`}`}
-            className="flex flex-wrap items-baseline gap-x-4 gap-y-2"
-          >
-            <Link
-              href={getNmmLink({ id: item.text, lang: item.lang })}
-              className="text-2xl font-light hover:text-rose-400 transition"
-            >
-              {item.text}
-            </Link>
+    <section className="mt-6 mb-32 space-y-3">
+      {lookups.map((item) => (
+        <div
+          key={`lookup-${item.id || `${item.text}::${item.sentence}`}`}
+          className={cn(
+            readerCard,
+            "flex flex-wrap items-start gap-x-5 gap-y-2 rounded-xl p-4 sm:p-5",
+          )}
+        >
+          <InteractionWord word={item.text} lang={item.lang} />
 
-            <span className="text-xs uppercase tracking-wider text-rose-500">
-              {item.lookupCount}×
-            </span>
+          <span className="mt-1 shrink-0 rounded-full bg-gray-200/70 px-2.5 py-1 text-[11px] tabular-nums text-gray-600 dark:bg-gray-800 dark:text-gray-300">
+            {item.lookupCount}×
+          </span>
 
-            {item.sentence && (
-              <p className="w-full text-sm text-gray-500 font-light leading-7">
-                {highlightReaderWord(item.sentence, item.text)}
-              </p>
-            )}
-          </div>
-        ))}
-      </div>
+          {item.sentence && (
+            <p className="min-w-0 flex-1 text-sm leading-7 text-gray-500">
+              {highlightReaderWord(item.sentence, item.text)}
+            </p>
+          )}
+        </div>
+      ))}
     </section>
   );
 };
@@ -121,26 +141,29 @@ export const ReaderBookmarksPanel = ({
   }
 
   return (
-    <section className="mt-12 mb-32 space-y-16">
+    <section className="mt-6 mb-32 space-y-10">
       {wordBookmarks.length > 0 && (
         <div>
-          <h2 className="text-xs uppercase tracking-wider text-gray-500">
+          <h2 className="text-sm font-medium text-gray-700 dark:text-gray-300">
             <span>Words</span>
             <span className="ml-2 text-gray-400">{wordBookmarks.length}</span>
           </h2>
 
-          <div className="mt-6 space-y-6">
+          <div className="mt-4 space-y-3">
             {wordBookmarks.map((item) => (
               <div
                 key={`word-bookmark-${item.id || `${item.text}::${item.sentence}`}`}
+                className={cn(
+                  readerCard,
+                  "flex flex-wrap items-start gap-x-5 gap-y-2 rounded-xl p-4 sm:p-5",
+                )}
               >
-                <div className="flex items-baseline gap-3">
-                  <Icons.bookmarkSolid className="text-rose-400 text-sm" />
-                  <span className="text-2xl font-light">{item.text}</span>
-                </div>
+                <InteractionWord word={item.text} lang={item.lang} />
+
+                <Icons.bookmarkSolid className="mt-1.5 shrink-0 text-sm text-rose-400" />
 
                 {item.sentence && (
-                  <p className="mt-2 text-sm text-gray-500 font-light leading-7">
+                  <p className="min-w-0 flex-1 text-sm leading-7 text-gray-500">
                     {highlightReaderWord(item.sentence, item.text)}
                   </p>
                 )}
@@ -152,26 +175,29 @@ export const ReaderBookmarksPanel = ({
 
       {sentenceBookmarks.length > 0 && (
         <div>
-          <h2 className="text-xs uppercase tracking-wider text-gray-500">
+          <h2 className="text-sm font-medium text-gray-700 dark:text-gray-300">
             <span>Lines</span>
             <span className="ml-2 text-gray-400">
               {sentenceBookmarks.length}
             </span>
           </h2>
 
-          <div className="mt-6 space-y-6">
+          <div className="mt-4 space-y-3">
             {sentenceBookmarks.map((item) => (
               <div
                 key={`line-bookmark-${item.id || `${item.text}::${item.sentence}`}`}
+                className={cn(
+                  readerCard,
+                  "flex items-start justify-between gap-4 rounded-xl p-4 sm:p-5",
+                )}
               >
-                <div className="flex items-baseline gap-3">
-                  <Icons.bookmarkSolid className="text-rose-400 text-sm" />
-                  <span className="text-lg font-light">{item.text}</span>
-                </div>
-
-                <p className="mt-2 text-sm text-gray-500 font-light leading-7">
-                  line {item.lineIndex == null ? "—" : item.lineIndex + 1}
+                <p className="min-w-0 flex-1 text-base leading-8 text-gray-700 dark:text-gray-200">
+                  {item.text}
                 </p>
+
+                <span className="shrink-0 text-xs uppercase tracking-wider text-gray-400">
+                  Line {item.lineIndex == null ? "—" : item.lineIndex + 1}
+                </span>
               </div>
             ))}
           </div>

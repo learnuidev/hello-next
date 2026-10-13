@@ -34,9 +34,19 @@ export const ReaderListItem = ({
           {item.sourceUrl && (
             <>
               <span> · </span>
-              <span title={item.sourceUrl} className="text-gray-400">
-                from url
-              </span>
+              <a
+                href={item.sourceUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                title={`Open the original article: ${item.sourceUrl}`}
+                className="inline-flex items-center gap-1 text-gray-400 hover:text-rose-400 transition"
+                onClick={(event) => {
+                  event.stopPropagation();
+                }}
+              >
+                <Icons.externalLink className="text-xs" />
+                <span>Original</span>
+              </a>
             </>
           )}
         </p>

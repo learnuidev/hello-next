@@ -38,6 +38,10 @@ interface ReaderInteractionsState {
   recordLookup: (draft: ReaderInteractionDraft) => void;
   toggleBookmark: (draft: ReaderInteractionDraft) => void;
   hydrate: (items: ReaderInteraction[]) => void;
+  ingestBookmarks: (
+    items: ReaderInteractionDraft[],
+    opts?: { markDirty?: boolean },
+  ) => void;
   markClean: () => void;
   snapshot: () => ReaderInteractionInput[];
 }
@@ -112,6 +116,40 @@ export const useReaderInteractionsStore = create<ReaderInteractionsState>(
       });
 
       set({ interactions: merged });
+    },
+
+    /**
+     * Pulls bookmarks kept in localStorage-era reading lists into the ledger,
+     * marked bookmarked so the syncer can push them up. `markDirty: false` is
+     * for the case where they were just sent to the server directly and only
+     * need to appear in the local view.
+     */
+    ingestBookmarks: (items, opts) => {
+      const markDirty = opts?.markDirty ?? true;
+      const local = get().interactions;
+      const merged = { ...local };
+      const now = Date.now();
+
+      items.forEach((item) => {
+        const key = keyFor(item);
+        const existing = merged[key];
+
+        merged[key] = existing
+          ? { ...existing, bookmarked: true, updatedAt: now }
+          : {
+              id: "",
+              ...item,
+              lookupCount: 0,
+              bookmarked: true,
+              createdAt: now,
+              updatedAt: now,
+            };
+      });
+
+      set({
+        interactions: merged,
+        dirty: markDirty ? true : get().dirty,
+      });
     },
 
     markClean: () => set({ dirty: false }),

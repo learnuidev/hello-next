@@ -313,6 +313,19 @@ export default function ReaderText() {
                 <span> · </span>
                 <span>{countReaderCharacters(item.text)} characters</span>
               </p>
+
+              {item.sourceUrl && (
+                <a
+                  href={item.sourceUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title={`Open the original article: ${item.sourceUrl}`}
+                  className="inline-flex items-center gap-2 mt-4 text-xs uppercase tracking-wider text-gray-400 hover:text-rose-400 transition"
+                >
+                  <Icons.externalLink className="text-sm" />
+                  <span>View original article</span>
+                </a>
+              )}
             </>
           )}
 

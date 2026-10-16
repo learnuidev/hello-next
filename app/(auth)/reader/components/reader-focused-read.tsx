@@ -89,6 +89,13 @@ export const ReaderFocusedRead = ({
   );
 
   const [showParent, setShowParent] = useState(false);
+  /**
+   * The counter over the bar reads as lines — where you are of how many. Tapped,
+   * it swaps to the share of the text behind you; tapped again, back to the
+   * line. It is the same reader asking the same question two ways, so it is one
+   * control toggling rather than two numbers side by side.
+   */
+  const [showProgressPercent, setShowProgressPercent] = useState(false);
   // The word the mini dictionary is open on.
   const [tappedWord, setTappedWord] = useState<{
     text: string;
@@ -351,9 +358,33 @@ export const ReaderFocusedRead = ({
   return (
     <div className="mt-16">
       <p className="text-center text-xs uppercase tracking-wider text-gray-500">
-        <span>{currentIndex + 1}</span>
-        <span> / </span>
-        <span>{sentences.length}</span>
+        <button
+          type="button"
+          title={
+            showProgressPercent
+              ? "Show the line you are on"
+              : "Show how much of the text is behind you"
+          }
+          aria-label={
+            showProgressPercent
+              ? "Show the line you are on"
+              : "Show how much of the text is behind you"
+          }
+          onClick={() => setShowProgressPercent((shown) => !shown)}
+          className="tabular-nums transition-colors hover:text-gray-800 dark:hover:text-gray-300"
+        >
+          {showProgressPercent ? (
+            <span>
+              {Math.round(((currentIndex + 1) / sentences.length) * 100)}%
+            </span>
+          ) : (
+            <>
+              <span>{currentIndex + 1}</span>
+              <span> / </span>
+              <span>{sentences.length}</span>
+            </>
+          )}
+        </button>
       </p>
 
       <div className="h-[2px] w-full bg-gray-100 dark:bg-gray-900 mt-6">

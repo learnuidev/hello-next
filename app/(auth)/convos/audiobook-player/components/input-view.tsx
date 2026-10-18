@@ -5,6 +5,7 @@ import { useListContentUnknownsQuery } from "@/domain/content-unknowns/use-list-
 import { cn } from "@/lib/utils";
 import { useMemo } from "react";
 import { CurrentTranscriptionProps } from "../audiobook-player.types";
+import { useMiniDictionaryState } from "@/components/settings-dialog/use-mini-dictionary-state";
 import { useCharacterMenuBarStore } from "../hooks/use-character-menu-bar";
 import { useReadModeSweep } from "../hooks/use-read-mode-sweep";
 import { isCharacterPartOfWordMatch } from "@/lib/content-bookmark";
@@ -31,6 +32,10 @@ export function InputView({
   const setShowMenuBar = useCharacterMenuBarStore(
     (state) => state.setShowMenuBar,
   );
+
+  // Looking a word up is opt-in: with the mini dictionary off, a tap on a word
+  // plays the line it belongs to instead.
+  const { showMiniDictionary } = useMiniDictionaryState();
 
   const pieces: string[] = useMemo(
     () =>
@@ -116,6 +121,16 @@ export function InputView({
           <span
             key={`${item}-pinin-view-${idx}`}
             onClick={(e) => {
+              if (!showMiniDictionary) {
+                const start = Number(currentTranscription?.start);
+
+                if (Number.isFinite(start)) {
+                  seekAndPlay?.(start);
+                }
+
+                return;
+              }
+
               const selectedText = getSelectedText();
               const text =
                 selectedText && selectedText?.length < 36 ? selectedText : item;

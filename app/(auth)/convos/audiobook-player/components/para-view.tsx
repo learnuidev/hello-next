@@ -12,6 +12,7 @@ import { useListContentUnknownsQuery } from "@/domain/content-unknowns/use-list-
 import { isCharacterPartOfWordMatch } from "@/lib/content-bookmark";
 import { cn } from "@/lib/utils";
 import { Fragment, memo, useCallback, useMemo } from "react";
+import { useMiniDictionaryState } from "@/components/settings-dialog/use-mini-dictionary-state";
 import { useCharacterMenuBarStore } from "../hooks/use-character-menu-bar";
 import { findActiveLineIndex, useFollowStage } from "../hooks/use-follow-stage";
 import type { DynamicLoop } from "../hooks/use-dynamic-loop";
@@ -290,6 +291,10 @@ const ParagraphSentence = memo(function ParagraphSentence({
     (state) => state.setShowMenuBar,
   );
 
+  // Looking a word up is opt-in: with the mini dictionary switched off, the tap
+  // that lands on a character is the reader asking to hear that line.
+  const { showMiniDictionary } = useMiniDictionaryState();
+
   // Only the sentence holding the word being looked up re-renders when a
   // character is tapped: with a whole book on the sheet, subscribing to the
   // selection itself would re-render every sentence of it on every tap.
@@ -390,11 +395,17 @@ const ParagraphSentence = memo(function ParagraphSentence({
                 return;
               }
 
-              // Otherwise a character opens the dictionary — the same look-up
-              // the read view's own lines open — and it never moves the
-              // playhead: looking a word up is not a seek.
               event.stopPropagation();
 
+              // With the mini dictionary off, a tap is a play: it seeks the line
+              // it landed on, exactly as tapping the sentence itself does.
+              if (!showMiniDictionary) {
+                onSeek(transcription);
+                return;
+              }
+
+              // Otherwise a character opens the dictionary — the same look-up
+              // the read view's own lines open.
               const selectedText = getSelectedText();
               const text =
                 selectedText && selectedText?.length < 36

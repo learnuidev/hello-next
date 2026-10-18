@@ -20,6 +20,7 @@ import { ContentEditButton } from "@/components/youtube-page/content-edit-button
 import { usePlayerViewModeStore } from "@/components/youtube-page/player-view-mode-store";
 import { StarIconButton } from "@/components/content-collections/star-content-button";
 import { ContentToCollect } from "@/domain/content-collections/content-collections.types";
+import { useMiniDictionaryState } from "@/components/settings-dialog/use-mini-dictionary-state";
 import { FontSizeControls } from "./font-size-controls";
 
 function ViewTypeButton({
@@ -71,6 +72,9 @@ export function AudioBookSettingsPopover({
   const setIsFSM = usePlayerViewModeStore((state) => state.setIsFSM);
 
   const [isOpen, setIsOpen] = useState(false);
+
+  const { showMiniDictionary, setShowMiniDictionary } =
+    useMiniDictionaryState();
 
   const selectedContentId = contentId || content?.id;
 
@@ -145,6 +149,24 @@ export function AudioBookSettingsPopover({
                 }}
               />
             </div> */}
+
+            <div className="flex items-center space-x-2 justify-between">
+              <div>
+                <Label htmlFor="mini-dictionary">Mini Dictionary</Label>
+                <p className="text-xs text-gray-500 font-extralight">
+                  {showMiniDictionary
+                    ? "Tapping a word looks it up"
+                    : "Tapping a line plays it"}
+                </p>
+              </div>
+              <Switch
+                id="mini-dictionary"
+                checked={showMiniDictionary}
+                onCheckedChange={() => {
+                  setShowMiniDictionary((previous) => !previous);
+                }}
+              />
+            </div>
 
             <div className="flex items-center space-x-2 justify-between">
               <Label htmlFor="meta-view">Meta View</Label>

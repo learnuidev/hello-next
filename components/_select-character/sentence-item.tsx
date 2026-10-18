@@ -17,7 +17,7 @@ import {
   useSegmentTextQuery,
 } from "@/libs/utils/segment-text";
 import { chineseConverter } from "mandarino/src/utils/chinese-converter";
-import { useRef } from "react";
+import { useMemo, useRef } from "react";
 import { useReadModeState } from "../read-mode-button";
 import { useBrightModeStore } from "../settings-dialog/use-bright-mode-store";
 import { useChinglishState } from "../settings-dialog/use-chinglish-state";
@@ -28,11 +28,31 @@ import { getYablaLink } from "../youtube-page/utils/get-yabla-link";
 import { smartSplit } from "../youtube-page/utils/smart-split";
 import { YoutubeButton } from "../youtube-page/youtube-button";
 import { CharacterItem } from "./character-item";
+import { isCharacterPartOfWordMatch } from "@/lib/content-bookmark";
 import { PlayButtonV2 } from "./play-button-v2";
 import { useGetCharacterAnalytics } from "./use-get-character-analytics";
 import { isNonRomanLang, isRomanLang } from "./utils/is-non-roman-lang";
 import { WithInteractiveTitle } from "./with-interative-title";
 import { useGetContentId } from "@/app/(auth)/convos/[content-id]/hooks/use-get-content-id";
+
+/**
+ * How the component the page is about is marked in a sentence.
+ *
+ * A patch behind the glyph, and nothing on the glyph itself: a character
+ * already carries its own colour — tone, learned state, mode — and a highlight
+ * that repainted it would be lying about where the character is.
+ *
+ * Both themes are the same purple at different weights, because the glyph they
+ * sit behind is black on a white page and white on a black one. On white a thin
+ * 25% wash is enough to mark the component without staining the page; on black
+ * it goes solid, with a violet bloom so it reads as a lit mark rather than a
+ * flat rectangle.
+ */
+const COMPONENT_HIGHLIGHT =
+  "rounded-[4px] bg-purple-500/25 dark:bg-purple-500 dark:shadow-[0_0_12px_-2px_rgba(168,85,247,0.55)]";
+
+/** A run of the sentence — a character, or a word for space-split languages. */
+type SentencePart = { text: string; start: number };
 
 export const SentenceItem = (props: any) => {
   const { selectedComp, lang, currentPhrase } = props;
@@ -197,6 +217,96 @@ export const SentenceItem = (props: any) => {
 
   const selectedCompInput = currentPhrase?.input || currentPhrase?.hanzi;
 
+  // The sentence as it is drawn. `isCharacterPartOfWordMatch` is the reader's
+  // own test for "this character is part of this word", so an entry page marks
+  // its component inside a sentence exactly the way the reader marks a word
+  // inside one of its lines — same function, same answer, no second opinion on
+  // what counts as a match.
+  const phraseText = chineseConverter(
+    currentPhrase?.input || currentPhrase?.hanzi || "",
+  );
+
+  /** Whether the run of text starting at `start` holds the component. */
+  const runIsComponent = (sentence: string, text: string, start: number) => {
+    for (let index = 0; index < (text || "").length; index += 1) {
+      if (
+        isCharacterPartOfWordMatch(
+          sentence,
+          componentId,
+          text[index],
+          start + index,
+        )
+      ) {
+        return true;
+      }
+    }
+
+    return false;
+  };
+
+  /** The sentence's characters, each with the offset it starts at. */
+  const phraseParts = useMemo<SentencePart[]>(() => {
+    let offset = 0;
+
+    return (
+      smartSplit({ input: phraseText, lang: currentPhrase?.lang }) || []
+    ).map((text: string) => {
+      const start = offset;
+
+      offset += (text || "").length;
+
+      return { text, start };
+    });
+  }, [phraseText, currentPhrase?.lang]);
+
+  const phraseCharacters = useMemo<string[]>(
+    () => phraseParts.map(({ text }) => text),
+    [phraseParts],
+  );
+
+  // Read mode draws the line differently — the plain input, split by the
+  // language — so it gets its own offsets against its own text.
+  const readSentence = selectedCompInput || "";
+
+  const readParts = useMemo<SentencePart[]>(() => {
+    let offset = 0;
+
+    return (smartSplit({ input: readSentence, lang }) || []).map(
+      (text: string) => {
+        const start = offset;
+
+        offset += (text || "").length;
+
+        return { text, start };
+      },
+    );
+  }, [readSentence, lang]);
+
+  const readCharacters = useMemo<string[]>(
+    () => readParts.map(({ text }) => text),
+    [readParts],
+  );
+
+  // The segmented line is several words side by side; the offsets are measured
+  // over the words joined back into the sentence they came from.
+  const segmentSentence = useMemo(
+    () =>
+      (segmentedData || []).map((item: any) => item?.input || "").join(""),
+    [segmentedData],
+  );
+
+  const segmentStarts = useMemo<number[]>(() => {
+    let offset = 0;
+
+    return (segmentedData || []).map((item: any) => {
+      const start = offset;
+
+      offset += (item?.input || "").length;
+
+      return start;
+    });
+  }, [segmentedData]);
+
   return (
     <div className="flex flex-col items-center justify-between p-4 w-full bg-gray-50 dark:bg-[rgb(4,5,6)] my-2 rounded-2xl">
       <div role="button" className="flex flex-col w-full">
@@ -205,6 +315,15 @@ export const SentenceItem = (props: any) => {
             <div>
               {segmentedData ? (
                 segmentedData.map((item, idx) => {
+                  // Where this word's first character sits in the sentence, so
+                  // the searched component can be marked inside the word.
+                  let charCursor = segmentStarts[idx] || 0;
+
+                  const wordCharacters = smartSplit({
+                    input: item?.input,
+                    lang: lang,
+                  });
+
                   return (
                     <span
                       className={cn(
@@ -239,32 +358,41 @@ export const SentenceItem = (props: any) => {
                           openPhrase(item?.input);
                         }}
                       >
-                        {smartSplit({
-                          input: item?.input,
-                          lang: lang,
-                        })?.map((character: any, idx: any) => {
-                          return (
-                            <span
-                              key={`${character}-pinin-view-${idx}`}
-                              onClick={(event) => {
-                                if (!opensCharacters) return;
+                        {wordCharacters?.map(
+                          (character: any, charIdx: any) => {
+                            const at = charCursor;
 
-                                event.stopPropagation();
-                                openPhrase(character);
-                              }}
-                            >
-                              <CharacterItem
-                                hanzis={smartSplit({
-                                  input: item?.input,
-                                  lang: lang,
-                                })}
-                                className={"text-2xl"}
-                                character={character}
-                                onClick={() => {}}
-                              />
-                            </span>
-                          );
-                        })}
+                            charCursor += (character || "").length;
+
+                            const isComponent = runIsComponent(
+                              segmentSentence,
+                              character || "",
+                              at,
+                            );
+
+                            return (
+                              <span
+                                key={`${character}-pinin-view-${charIdx}`}
+                                onClick={(event) => {
+                                  if (!opensCharacters) return;
+
+                                  event.stopPropagation();
+                                  openPhrase(character);
+                                }}
+                              >
+                                <CharacterItem
+                                  hanzis={wordCharacters}
+                                  className={cn(
+                                    "text-2xl",
+                                    isComponent && COMPONENT_HIGHLIGHT,
+                                  )}
+                                  character={character}
+                                  onClick={() => {}}
+                                />
+                              </span>
+                            );
+                          },
+                        )}
                       </span>
                     </span>
                   );
@@ -282,41 +410,42 @@ export const SentenceItem = (props: any) => {
                     }
                   >
                     <div>
-                      {smartSplit({ input: selectedCompInput, lang })?.map(
-                        (item: string, idx: number) => {
-                          return (
-                            <Link
-                              className={
-                                selectedCompInput?.length < 4
-                                  ? "text-5xl"
-                                  : "text-2xl"
-                              }
-                              key={`character-title-${item}-${idx}-${idx}`}
-                              href={getNmmLink({
-                                id: item,
-                                contentId:
-                                  currentPhrase?.contentId || contentId,
+                      {readParts.map(({ text: item, start }, idx: number) => {
+                        const isComponent = runIsComponent(
+                          readSentence,
+                          item || "",
+                          start,
+                        );
 
-                                lang,
-                              })}
-                              // href={`/nmm/${item}?lang=${lang || "zh"}`}
-                            >
-                              <CharacterItem
-                                hanzis={smartSplit({
-                                  input: selectedCompInput,
-                                  lang,
-                                })}
-                                className={
-                                  selectedCompInput?.length < 8
-                                    ? "lg:text-4xl text-4xl"
-                                    : "text-2xl"
-                                }
-                                character={item}
-                              />
-                            </Link>
-                          );
-                        },
-                      )}
+                        return (
+                          <Link
+                            className={
+                              selectedCompInput?.length < 4
+                                ? "text-5xl"
+                                : "text-2xl"
+                            }
+                            key={`character-title-${item}-${idx}-${idx}`}
+                            href={getNmmLink({
+                              id: item,
+                              contentId: currentPhrase?.contentId || contentId,
+
+                              lang,
+                            })}
+                            // href={`/nmm/${item}?lang=${lang || "zh"}`}
+                          >
+                            <CharacterItem
+                              hanzis={readCharacters}
+                              className={cn(
+                                isComponent && COMPONENT_HIGHLIGHT,
+                                selectedCompInput?.length < 8
+                                  ? "lg:text-4xl text-4xl"
+                                  : "text-2xl",
+                              )}
+                              character={item}
+                            />
+                          </Link>
+                        );
+                      })}
                     </div>
                   </WithInteractiveTitle>
                 </div>
@@ -350,12 +479,9 @@ export const SentenceItem = (props: any) => {
               className={"text-xl"}
             >
               <span>
-                {smartSplit({
-                  input: chineseConverter(
-                    currentPhrase?.input || currentPhrase?.hanzi,
-                  ),
-                  lang: currentPhrase?.lang,
-                })?.map((val: string, idy: number) => {
+                {phraseParts.map(({ text: val, start }, idy: number) => {
+                  const isComponent = runIsComponent(phraseText, val, start);
+
                   return (
                     <span
                       key={`sentence-item-${val}-${idy}`}
@@ -393,12 +519,8 @@ export const SentenceItem = (props: any) => {
                     >
                       <CharacterItem
                         character={val}
-                        hanzis={smartSplit({
-                          input: chineseConverter(
-                            currentPhrase?.input || currentPhrase?.hanzi,
-                          ),
-                          lang: currentPhrase?.lang,
-                        })}
+                        hanzis={phraseCharacters}
+                        className={cn(isComponent && COMPONENT_HIGHLIGHT)}
                       />
                     </span>
                   );

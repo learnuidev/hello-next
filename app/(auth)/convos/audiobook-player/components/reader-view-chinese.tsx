@@ -10,6 +10,7 @@ import { formatRoman } from "@/lib/format-roman";
 import { cn } from "@/lib/utils";
 import { useMemo } from "react";
 import { CurrentTranscriptionProps } from "../audiobook-player.types";
+import { useMiniDictionaryState } from "@/components/settings-dialog/use-mini-dictionary-state";
 import { useCharacterMenuBarStore } from "../hooks/use-character-menu-bar";
 import { useReadModeSweep } from "../hooks/use-read-mode-sweep";
 import { useTranscriptionHighlight } from "../hooks/use-transcription-highlight";
@@ -58,6 +59,10 @@ export function ReaderViewChinese({
   const setShowMenuBar = useCharacterMenuBarStore(
     (state) => state.setShowMenuBar,
   );
+
+  // Looking a word up is opt-in: with the mini dictionary off, a tap on a word
+  // plays the line it belongs to instead.
+  const { showMiniDictionary } = useMiniDictionaryState();
 
   // const isLong = currentTranscription?.input?.length > 60;
 
@@ -120,6 +125,16 @@ export function ReaderViewChinese({
           return (
             <span
               onClick={(e) => {
+                if (!showMiniDictionary) {
+                  const start = Number(item?.start);
+
+                  if (Number.isFinite(start)) {
+                    seekAndPlay?.(start);
+                  }
+
+                  return;
+                }
+
                 const selectedText = getSelectedText();
 
                 const text =

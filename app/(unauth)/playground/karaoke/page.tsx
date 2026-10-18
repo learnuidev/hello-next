@@ -490,8 +490,9 @@ export default function KaraokePlayground() {
       />
 
       {/* The player scrubber, on a recording much longer than the transcriptions
-          so the empty stretches and the start marker are visible. */}
-      <div className="mt-10 rounded-2xl border border-black/10 p-4 dark:border-white/10">
+          so the empty stretches and the start marker are visible. Lifted above
+          the karaoke room, which is a full-screen fixed layer. */}
+      <div className="relative z-10 mt-10 rounded-2xl border border-black/10 p-4 dark:border-white/10">
         <p className="mb-2 px-4 text-xs uppercase tracking-widest opacity-50 sm:px-8">
           player scrubber · {Math.round(barDuration)}s recording
         </p>

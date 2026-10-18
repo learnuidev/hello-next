@@ -21,7 +21,6 @@ import { AppleKaraokeView } from "./components/karaoke/apple-karaoke-view";
 import { ParaView } from "./components/para-view";
 import { useAudioBookState } from "./hooks/use-audiobook-state";
 import { getCoverPhotoUrl } from "@/libs/utils/get-cover-photo-url";
-import { toContentToCollect } from "@/domain/content-collections/to-content-to-collect";
 
 export const AudiobookPlayerCore = ({
   content,
@@ -70,13 +69,6 @@ export const AudiobookPlayerCore = ({
 
   const isSmall = useIsSmall();
   const isVideoHidden = usePlayerViewModeStore((state) => state.isVideoHidden);
-
-  // What a playlist would remember about this content, for the singleton view's
-  // star — the same snapshot the settings menu saves.
-  const contentToCollect = useMemo(
-    () => toContentToCollect(content),
-    [content],
-  );
 
   /**
    * The one line the reader has looped outside the dynamic loop: the transcript
@@ -196,6 +188,11 @@ export const AudiobookPlayerCore = ({
                   ? "md:col-span-8 col-span-12"
                   : "md:col-span-6 col-span-12",
 
+                // The karaoke backdrop spans the full viewport width, so this
+                // column has to sit above the part of it that reaches under the
+                // video — the room is behind the picture, not over it.
+                "relative z-10",
+
                 `${isVideoHidden ? "hidden" : ""} cursor-pointer`,
               )}
             >
@@ -259,7 +256,6 @@ export const AudiobookPlayerCore = ({
               ) : viewMode === "karaoke" ? (
                 <div className="col-span-12 mx-auto w-full max-w-6xl">
                   <AppleKaraokeView
-                    contentToCollect={contentToCollect}
                     transcriptions={content.transcriptions}
                     fallbackTranscription={currentTranscription}
                     lang={content?.lang}

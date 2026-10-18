@@ -1,11 +1,9 @@
 "use client";
 
 import { isNonRomanLang } from "@/components/_select-character/utils/is-non-roman-lang";
-import { StarContentButton } from "@/components/content-collections/star-content-button";
 import { useBrightModeStore } from "@/components/settings-dialog/use-bright-mode-store";
 import { useChinglishState } from "@/components/settings-dialog/use-chinglish-state";
 import { Icons } from "@/components/ui/icons.v2";
-import { ContentToCollect } from "@/domain/content-collections/content-collections.types";
 import { cn } from "@/lib/utils";
 import { useTheme } from "next-themes";
 import {
@@ -49,11 +47,6 @@ type AppleKaraokeViewProps = {
   /** Kept for callers: the sheet's own transport gave its corner to the star. */
   onPlay?: () => void;
   onPause?: () => void;
-  /**
-   * The content being played, as a collection remembers it. When it is missing
-   * (the standalone playground, say) the star is simply not rendered.
-   */
-  contentToCollect?: ContentToCollect | null;
   /**
    * The section loop, when the player has one. While a section is being chosen
    * the sheet doubles as the picker: a tap on a line grows the section to take
@@ -158,7 +151,6 @@ export function AppleKaraokeView({
   compact = false,
   className,
   seekAndPlay,
-  contentToCollect,
   dynamicLoop,
 }: AppleKaraokeViewProps) {
   const { resolvedTheme } = useTheme();
@@ -759,18 +751,21 @@ export function AppleKaraokeView({
   return (
     <div
       className={cn(
-        "group relative isolate overflow-hidden rounded-[28px]",
-        compact
-          ? "min-h-[360px] shadow-[0_18px_60px_-30px_rgba(0,0,0,0.7)]"
-          : "min-h-[520px] shadow-[0_30px_90px_-40px_rgba(0,0,0,0.8)]",
+        // The sheet keeps its own box and its own spacing: only the room behind
+        // it is full screen, so nothing about the lyrics moves.
+        "group relative isolate",
+        compact ? "min-h-[360px]" : "min-h-[520px]",
         className,
       )}
       style={cssVars}
     >
       <KaraokeStyles />
 
-      {/* Ambient artwork, blurred and drifting like the Music app backdrop */}
-      <div className="pointer-events-none absolute inset-0">
+      {/* The room: the artwork, blurred and drifting, filling the whole screen
+          behind everything — lyrics, dock, nav and buttons all sit on top of it.
+          Fixed rather than absolute so it stays a room and not a card: the
+          backdrop does not scroll away with the sheet. */}
+      <div className="pointer-events-none fixed inset-0 overflow-hidden">
         {coverUrl ? (
           <img
             src={coverUrl}
@@ -916,23 +911,8 @@ export function AppleKaraokeView({
         </button>
       )}
 
-      {/* Star the content into a playlist without leaving the sheet — the
-          player's own transport sits in the dock below. Fades out while the
-          audio is playing, like the transport it replaces, so the sheet is
-          nothing but lyrics until you reach for it. */}
-      {contentToCollect?.contentId && (
-        <div
-          className={cn(
-            "absolute bottom-3 right-4 z-30 flex items-center gap-2 transition-opacity duration-300",
-            isPlaying && "opacity-0 group-hover:opacity-100",
-          )}
-        >
-          <StarContentButton
-            content={contentToCollect}
-            className="border border-white/15 bg-black/25 text-lg backdrop-blur-md hover:bg-black/40"
-          />
-        </div>
-      )}
+      {/* The sheet carries no actions of its own: the room is the lyrics, and
+          the player's own transport and its star sit in the dock below. */}
     </div>
   );
 }

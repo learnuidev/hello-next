@@ -1,10 +1,10 @@
+import { AddToContentCollectionDialog } from "@/components/content-collections/add-to-content-collection-dialog";
 import { Icons } from "@/components/ui/icons.v2";
+import { ContentToCollect } from "@/domain/content-collections/content-collections.types";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { AudioBookSettingsPopover } from "./audiobook-settings-popover";
 import { ContentSuggestionsDrawer } from "./content-suggestions-drawer";
-import { AddToContentCollectionDialog } from "@/components/content-collections/add-to-content-collection-dialog";
-import { ContentToCollect } from "@/domain/content-collections/content-collections.types";
 import { LoopButton } from "./loop-button";
 
 export function AudioBookPlayerControls({
@@ -107,13 +107,6 @@ export function AudioBookPlayerControls({
 
           <button onClick={seekAfter} className="p-2 rounded-full">
             <Icons.rotateRight className="text-xl" />
-          </button>
-
-          <button
-            onClick={() => setContentDrawerOpen(true)}
-            className="p-2 rounded-full"
-          >
-            <Icons.list className="text-xl" />
           </button>
 
           <AudioBookSettingsPopover

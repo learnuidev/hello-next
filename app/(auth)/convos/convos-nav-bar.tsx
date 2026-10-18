@@ -6,7 +6,6 @@ import { useConvosStore } from "@/stores/convos-store";
 
 import { Icons } from "@/components/ui/icons.v2";
 import { useIsSuperAdmin } from "@/domain/auth/auth.queries";
-import { useGetContentQuery } from "@/domain/content/content.queries";
 
 import Link from "next/link";
 import { useIsContentAuthor } from "./[content-id]/hooks/use-is-content-author";
@@ -109,14 +108,28 @@ export const ConvosNavBar = () => {
 
   const currentTime = _currentTime || searchParams.get("start") || 0;
 
-  const { data: content } = useGetContentQuery({ contentId });
-
   const isAuthor = useIsContentAuthor(contentId);
 
   const isSuperAdmin = useIsSuperAdmin();
 
   const { upsertContentAnalyticsHandler } =
     useUpsetContentAnalyticsHandler(contentId);
+
+  /**
+   * Every nav icon is at full strength — black on white, white on black — so no
+   * view is hidden behind a washed-out grey (the old `text-gray-200` was
+   * invisible on a white page). Which view you are in is said by the glyph
+   * instead: the current one is drawn with its solid variant, the rest stay
+   * outline.
+   */
+  const viewLinkClass =
+    "transition text-xl text-black hover:opacity-60 dark:text-white";
+
+  const isListen = !viewType || viewType === "listen";
+  const isDynacloze = viewType === "dynacloze";
+  const isReader = viewType === "reader";
+  const isInsights = viewType === "insights";
+  const isSettings = viewType === "settings";
 
   return (
     <div className="z-50 flex justify-between items-center w-full md:mt-2 my-2 py-2">
@@ -135,13 +148,9 @@ export const ConvosNavBar = () => {
       <div className="my-2 flex justify-center items-center space-x-8 text-xs md:text-md">
         <Link
           href={`/convos/${contentId}?view=listen&start=${currentTime}`}
-          className={`transition ${
-            !viewType || viewType === "listen"
-              ? "text-black dark:text-gray-200"
-              : "text-gray-200 dark:text-gray-600"
-          } hover:text-black dark:hover:text-white transition text-xl`}
+          className={viewLinkClass}
         >
-          <Icons.musicNoteSolid />
+          {isListen ? <Icons.musicNoteSolid /> : <Icons.musicNote />}
         </Link>
 
         <Link
@@ -149,27 +158,13 @@ export const ConvosNavBar = () => {
             setViewType("dynacloze");
           }}
           href={`/convos/${contentId}?view=dynacloze${currentTime ? `&start=${currentTime}` : ""}`}
-          className={`transition ${
-            viewType === "dynacloze"
-              ? "text-black dark:text-gray-200"
-              : "text-gray-200 dark:text-gray-600"
-          } hover:text-black dark:hover:text-white transition text-xl`}
+          className={viewLinkClass}
         >
-          <Icons.graduationCap />
-        </Link>
-
-        <Link
-          onClick={() => {
-            setViewType("speak");
-          }}
-          href={`/convos/${contentId}?view=speak&start=${currentTime}`}
-          className={`transition ${
-            viewType === "speak"
-              ? "text-black dark:text-gray-200"
-              : "text-gray-200 dark:text-gray-600"
-          } hover:text-black dark:hover:text-white transition text-xl`}
-        >
-          <Icons.microphone />
+          {isDynacloze ? (
+            <Icons.graduationCapSolid />
+          ) : (
+            <Icons.graduationCap />
+          )}
         </Link>
 
         <Link
@@ -177,43 +172,19 @@ export const ConvosNavBar = () => {
             setViewType("reader");
           }}
           href={`/convos/${contentId}?view=reader`}
-          className={`transition ${
-            viewType === "reader"
-              ? "text-black dark:text-gray-200"
-              : "text-gray-200 dark:text-gray-600"
-          } hover:text-black dark:hover:text-white transition text-xl`}
+          className={viewLinkClass}
         >
-          <Icons.reader />
+          {isReader ? <Icons.readerSolid /> : <Icons.reader />}
         </Link>
-
-        {content?.lang === "zh" && (
-          <Link
-            href={`/convos/${contentId}?view=write&start=${currentTime}`}
-            onClick={() => {
-              setViewType("write");
-            }}
-            className={`transition ${
-              viewType === "write"
-                ? "text-black dark:text-gray-200"
-                : "dark:text-gray-600 text-gray-400"
-            } hover:text-black dark:hover:text-white transition text-xl`}
-          >
-            <Icons.typeWriter />
-          </Link>
-        )}
 
         <Link
           href={`/convos/${contentId}?view=insights&start=${currentTime}`}
           onClick={() => {
             setViewType("insights");
           }}
-          className={`transition ${
-            viewType === "insights"
-              ? "text-black dark:text-gray-200"
-              : "dark:text-gray-600 text-gray-400"
-          } hover:text-black dark:hover:text-white transition text-xl`}
+          className={viewLinkClass}
         >
-          <Icons.chartColumn />
+          {isInsights ? <Icons.chartColumnSolid /> : <Icons.chartColumn />}
         </Link>
 
         {isAuthor && (
@@ -222,13 +193,9 @@ export const ConvosNavBar = () => {
               setViewType("settings");
             }}
             href={`/convos/${contentId}?view=settings&start=${currentTime}`}
-            className={`transition ${
-              viewType === "settings"
-                ? "text-black dark:text-gray-200"
-                : "dark:text-gray-600 text-gray-400"
-            } hover:text-black dark:hover:text-white transition text-xl`}
+            className={viewLinkClass}
           >
-            <Icons.gear />
+            {isSettings ? <Icons.gear /> : <Icons.gearLight />}
           </Link>
         )}
 

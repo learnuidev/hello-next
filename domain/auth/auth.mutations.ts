@@ -9,82 +9,96 @@ import {
   confirmSignInPasswordless,
 } from "@/libs/cognito/auth";
 
-export function useSignUp(options: any) {
-  return useMutation({
+type SignUpVariables = {
+  username: string;
+  password: string;
+  email: string;
+};
+
+type SignInVariables = {
+  username: string;
+  password: string;
+};
+
+type ConfirmSignUpVariables = {
+  username: string;
+  code: string;
+};
+
+/**
+ * The auth hooks are thin wrappers over the Cognito calls in
+ * `libs/cognito/auth`. Each one is explicitly typed so call sites get
+ * autocomplete and checking on `mutate(...)` variables instead of `@ts-ignore`.
+ */
+export function useSignUp(options?: any) {
+  return useMutation<
+    Awaited<ReturnType<typeof signUp>>,
+    any,
+    SignUpVariables
+  >({
     mutationFn: signUp,
-
     ...options,
-
-    onSuccess: (data: any, variables: any, context: any): void => {
-      options?.onSuccess?.(data, variables, context);
-    },
-    onError: (data, variables, context): void => {
-      options?.onError?.(data, variables, context);
-    },
   });
 }
 
-export function useSignUpPasswordless(options: any) {
-  return useMutation({
+export function useSignUpPasswordless(options?: any) {
+  return useMutation<
+    Awaited<ReturnType<typeof signUpPasswordLess>>,
+    any,
+    { email: string }
+  >({
     mutationFn: signUpPasswordLess,
     ...options,
-    onSuccess: (data, variables, context): void => {
-      options?.onSuccess?.(data, variables, context);
-    },
-    onError: (data, variables, context): void => {
-      options?.onError?.(data, variables, context);
-    },
   });
 }
 
-export function useSignInPasswordless(options: any) {
-  return useMutation({
+export function useSignInPasswordless(options?: any) {
+  return useMutation<
+    Awaited<ReturnType<typeof signInPasswordLess>>,
+    any,
+    { email: string }
+  >({
     mutationFn: signInPasswordLess,
     ...options,
-    onSuccess: (data, variables, context): void => {
-      options?.onSuccess?.(data, variables, context);
-    },
-    onError: (data, variables, context): void => {
-      options?.onError?.(data, variables, context);
-    },
   });
 }
-export function useSignIn(options: any) {
-  return useMutation({
+
+export function useSignIn(options?: any) {
+  return useMutation<
+    Awaited<ReturnType<typeof signIn>>,
+    any,
+    SignInVariables
+  >({
     mutationFn: signIn,
     ...options,
-    onSuccess: (data, variables, context): void => {
-      options?.onSuccess?.(data, variables, context);
-    },
-    onError: (data, variables, context): void => {
-      options?.onError?.(data, variables, context);
-    },
   });
 }
 
-export function useConfirmSignUp(options: any) {
-  return useMutation({
+export function useConfirmSignUp(options?: any) {
+  return useMutation<
+    Awaited<ReturnType<typeof confirmSignUp>>,
+    any,
+    ConfirmSignUpVariables
+  >({
     mutationFn: confirmSignUp,
-    onSuccess: (data, variables, context): void => {
-      options?.onSuccess?.(data, variables, context);
-    },
+    ...options,
   });
 }
 
-export function useConfirmSignInPasswordless(options: any) {
-  return useMutation({
+export function useConfirmSignInPasswordless(options?: any) {
+  return useMutation<
+    Awaited<ReturnType<typeof confirmSignInPasswordless>>,
+    any,
+    { authUser: string; code: string }
+  >({
     mutationFn: confirmSignInPasswordless,
-    onSuccess: (data, variables, context): void => {
-      options?.onSuccess?.(data, variables, context);
-    },
+    ...options,
   });
 }
 
-export function useResendCode(options: any) {
-  return useMutation({
+export function useResendCode(options?: any) {
+  return useMutation<Awaited<ReturnType<typeof resendCode>>, any, string>({
     mutationFn: resendCode,
-    onSuccess: (data, variables, context): void => {
-      options?.onSuccess?.(data, variables, context);
-    },
+    ...options,
   });
 }

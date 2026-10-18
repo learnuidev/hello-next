@@ -1,42 +1,76 @@
-// import { LockClosedIcon } from '@heroicons/react/solid';
-import { useState } from "react";
-import { Lightning, LockClosedIcon } from "@/components/ui/icons";
+"use client";
 
 import {
-  useSignInPasswordless,
-  useSignIn,
-  useConfirmSignInPasswordless,
-} from "@/domain/auth/auth.mutations";
-import { useQueryClient } from "@tanstack/react-query";
-
+  AuthAlert,
+  AuthButton,
+  AuthField,
+  AuthShell,
+  normalizeEmail,
+  validateEmail,
+} from "@/components/auth";
+import { useSignIn } from "@/domain/auth/auth.mutations";
 import { queryIds as authQueryIds } from "@/domain/auth/queryIds";
+import { useQueryClient } from "@tanstack/react-query";
+import { ArrowRight, Lock, Mail } from "lucide-react";
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { useState, type FormEvent } from "react";
 
-enum RegistrationViewTypes {
-  login,
-  confirmLogin,
-  userExists,
-  codeSent,
+/**
+ * Cognito returns a handful of deliberately vague messages. Map them onto copy
+ * that tells the user what to do next without leaking account existence.
+ */
+function getSignInError(error: unknown) {
+  const message = (error as { message?: string })?.message ?? "";
+
+  if (/not confirmed|not verified/i.test(message)) {
+    return {
+      text: "This account still needs to be verified. Enter the code we emailed you to finish signing up.",
+      needsVerification: true,
+    };
+  }
+
+  if (/password attempts exceeded|too many/i.test(message)) {
+    return {
+      text: "Too many attempts. Please wait a moment and try again.",
+      needsVerification: false,
+    };
+  }
+
+  if (
+    /incorrect username or password|user does not exist|invalid/i.test(message)
+  ) {
+    return {
+      text: "Incorrect email or password. Please check your details and try again.",
+      needsVerification: false,
+    };
+  }
+
+  return {
+    text: message || "We couldn't sign you in. Please try again.",
+    needsVerification: false,
+  };
 }
 
 export function Login() {
-  const [username, setUserName] = useState("");
-  // const [username, setUserName] = useState("");
-  const routeName = usePathname();
-
-  const [code, setCode] = useState("");
-  const [authUser, setAuthUser] = useState(null);
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [viewType, setViewtype] = useState(RegistrationViewTypes.login);
+  const [error, setError] = useState<{
+    text: string;
+    needsVerification: boolean;
+  } | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<{
+    email?: string | null;
+    password?: string | null;
+  }>({});
 
+  const routeName = usePathname();
+  const router = useRouter();
   const queryClient = useQueryClient();
 
-  const router = useRouter();
-
-  const useSignInMutation = useSignIn({
+  const signInMutation = useSignIn({
     onSuccess: (data: any) => {
-      setAuthUser(data);
-      // setViewtype(RegistrationViewTypes.confirmLogin);
+      setError(null);
 
       queryClient.invalidateQueries({
         queryKey: [authQueryIds?.currentAuthUser],
@@ -47,101 +81,112 @@ export function Login() {
       }
     },
     onError: (err: any) => {
-      console.error("ERROR YO", err.message);
-      if (err.message === "User already exists") {
-        // useResendCodeMutation.mutate(username)
-      }
+      console.error("error signing in", err);
+      setError(getSignInError(err));
     },
   });
 
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const nextErrors = {
+      email: validateEmail(email),
+      password: password ? null : "Enter your password.",
+    };
+
+    setFieldErrors(nextErrors);
+    setError(null);
+
+    if (nextErrors.email || nextErrors.password) return;
+
+    signInMutation.mutate({ username: normalizeEmail(email), password });
+  };
+
   return (
-    <>
-      <div className="min-h-full flex items-start justify-center py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-md w-full space-y-8">
-          <div>
-            <Lightning className="dark:text-rose-800 text-rose-500 mx-auto h-12 w-auto" />
-            <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-gray-200">
-              Login
-            </h2>
-            <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-300">
-              Or{" "}
-              <a
+    <AuthShell
+      eyebrow="Welcome back"
+      title="Sign in to Mandarino"
+      description="Pick up where you left off — your characters, reviews and lessons are waiting."
+      footer={
+        <>
+          <span className="text-gray-500 dark:text-gray-400">
+            New to Mandarino?{" "}
+          </span>
+          <Link
+            href="/register"
+            className="font-semibold text-rose-600 transition hover:text-rose-500 dark:text-rose-400 dark:hover:text-rose-300"
+          >
+            Create an account
+          </Link>
+        </>
+      }
+    >
+      <form onSubmit={handleSubmit} className="space-y-5" noValidate>
+        {error ? (
+          <AuthAlert variant="error">
+            <p>{error.text}</p>
+            {error.needsVerification ? (
+              <Link
                 href="/register"
-                className="font-medium text-rose-500 hover:text-rose-400"
+                className="inline-flex items-center gap-1 font-semibold underline decoration-rose-300 underline-offset-2 transition hover:decoration-rose-500"
               >
-                create a new account
-              </a>
-            </p>
-          </div>
-          <form className="mt-8 space-y-6">
-            <input type="hidden" name="remember" defaultValue="true" />
-            <div className="rounded-md shadow-sm -space-y-px">
-              <div>
-                <label htmlFor="email-address" className="sr-only">
-                  Email address
-                </label>
-                <input
-                  id="email-address"
-                  name="email"
-                  type="email"
-                  // autoComplete='email'
-                  value={username}
-                  onChange={(event) => {
-                    setUserName(() => event.target.value);
-                  }}
-                  required
-                  className="dark:bg-gray-900 dark:text-gray-200 dark:border-gray-800 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                  placeholder="Email address"
-                />
-              </div>
-            </div>
-            <div className="rounded-md shadow-sm -space-y-px">
-              <div>
-                <label htmlFor="email-address" className="sr-only">
-                  Password
-                </label>
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  // autoComplete='email'
-                  value={password}
-                  onChange={(event) => {
-                    setPassword(() => event.target.value);
-                  }}
-                  required
-                  className="dark:bg-gray-900 dark:text-gray-200 dark:border-gray-800 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                  placeholder="Password"
-                />
-              </div>
-            </div>
+                Resend verification code
+                <ArrowRight className="h-3 w-3" />
+              </Link>
+            ) : null}
+          </AuthAlert>
+        ) : null}
 
-            <div>
-              <button
-                onClick={(event) => {
-                  event.preventDefault();
+        <AuthField
+          id="login-email"
+          label="Email address"
+          type="email"
+          name="email"
+          placeholder="you@example.com"
+          autoComplete="email"
+          inputMode="email"
+          required
+          value={email}
+          onChange={(event) => {
+            setEmail(event.target.value);
+            if (fieldErrors.email) {
+              setFieldErrors((current) => ({ ...current, email: null }));
+            }
+          }}
+          icon={<Mail />}
+          error={fieldErrors.email}
+          disabled={signInMutation.isPending}
+        />
 
-                  useSignInMutation
-                    // @ts-ignore
-                    .mutate({
-                      username,
-                      password,
-                    });
-                }}
-                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-rose-500 hover:bg-rose-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              >
-                <span className="absolute left-0 inset-y-0 flex items-center pl-3">
-                  <LockClosedIcon
-                    className="h-5 w-5 text-rose-400 group-hover:text-rose-400"
-                    aria-hidden="true"
-                  />
-                </span>
-                Login
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </>
+        <AuthField
+          id="login-password"
+          label="Password"
+          type="password"
+          name="password"
+          placeholder="Enter your password"
+          autoComplete="current-password"
+          required
+          value={password}
+          onChange={(event) => {
+            setPassword(event.target.value);
+            if (fieldErrors.password) {
+              setFieldErrors((current) => ({ ...current, password: null }));
+            }
+          }}
+          icon={<Lock />}
+          error={fieldErrors.password}
+          disabled={signInMutation.isPending}
+        />
+
+        <AuthButton
+          type="submit"
+          loading={signInMutation.isPending}
+          loadingText="Signing in…"
+          icon={<ArrowRight className="h-4 w-4" />}
+        >
+          Sign in
+        </AuthButton>
+      </form>
+    </AuthShell>
   );
 }

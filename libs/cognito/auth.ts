@@ -59,7 +59,10 @@ export async function confirmSignUp({
   try {
     const resp = await Auth.confirmSignUp(username, code);
     return resp;
-  } catch (error) {}
+  } catch (error) {
+    console.error("error confirming sign up: ", error);
+    throw error;
+  }
 }
 
 export async function confirmSignInPasswordless({
@@ -117,6 +120,7 @@ export async function resendCode(username: string) {
     return resp;
   } catch (err) {
     console.error("error resending code: ", err);
+    throw err;
   }
 }
 

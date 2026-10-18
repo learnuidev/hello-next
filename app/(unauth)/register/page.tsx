@@ -43,7 +43,7 @@ export default function Home() {
     }
   };
   return (
-    <main className="">
+    <main className="min-h-screen bg-[#fdfcfd] dark:bg-[#08090c]">
       <LandingNavbar />
       <Register />
     </main>

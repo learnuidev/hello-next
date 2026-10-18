@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Nothing } from "@/app/nmm/nothing";
 import { defaultPic } from "@/data/default-image-urls";
+import { toWidescreenThumbnailUrl } from "@/libs/utils/to-widescreen-thumbnail-url";
 import { toast } from "sonner";
 import { useListContentCollectionsQuery } from "@/domain/content-collections/use-list-content-collections-query";
 import { useAddContentCollectionMutation } from "@/domain/content-collections/use-add-content-collection-mutation";
@@ -80,6 +81,9 @@ function CollectionContentCard({
   onStarClick: (content: ContentToCollect) => void;
 }) {
   const title = item.title || item.contentId;
+  // YouTube's default thumbnails carry black letterbox bars; crop them at the
+  // source so the square cover is filled edge to edge.
+  const coverUrl = toWidescreenThumbnailUrl(item.thumbnailUrl) || defaultPic;
 
   return (
     <motion.div
@@ -96,8 +100,8 @@ function CollectionContentCard({
       {/* Thumbnail: always visible, slightly scaled up on hover. */}
       <div
         aria-hidden
-        className="absolute inset-0 bg-cover bg-center transition-transform duration-300 group-hover/card:scale-[1.04]"
-        style={{ backgroundImage: `url(${item.thumbnailUrl || defaultPic})` }}
+        className="absolute inset-0 h-full w-full bg-cover bg-center transition-transform duration-300 group-hover/card:scale-[1.04]"
+        style={{ backgroundImage: `url(${coverUrl})` }}
       />
 
       {/* Scrim behind the text so it stays readable over bright covers. */}

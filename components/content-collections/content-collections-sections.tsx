@@ -5,8 +5,9 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Icons } from "@/components/ui/icons.v2";
 import { Button } from "@/components/ui/button";
+import { HorizontalScroller } from "@/components/ui/horizontal-scroller";
+import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
-import { LottieLoadingAnimation } from "@/app/nmm/lottie-loading-animation";
 import { Nothing } from "@/app/nmm/nothing";
 import { defaultPic } from "@/data/default-image-urls";
 import { toast } from "sonner";
@@ -22,6 +23,11 @@ import {
 } from "@/domain/content-collections/content-collections.types";
 import { StarIconButton } from "./star-content-button";
 import { AddToContentCollectionDialog } from "./add-to-content-collection-dialog";
+import {
+  CollectionCardsSkeleton,
+  ContentCollectionsSkeleton,
+  collectionCardWidthClassName,
+} from "./content-collections-skeletons";
 
 const springTransition = {
   type: "spring" as const,
@@ -43,8 +49,24 @@ const toCollectPayload = (item: ContentCollectionItem): ContentToCollect => ({
 });
 
 /**
- * A saved content, laid out like the cards on the /convos page: square cover
- * on the left, title and metadata on the right.
+ * Overlay text and icons stay hidden on pointer devices until the card is
+ * hovered (or focused from the keyboard). Touch screens have no hover, so the
+ * overlay is always visible there.
+ */
+const revealOnHover =
+  "opacity-100 md:opacity-0 md:group-hover/card:opacity-100 md:group-focus-within/card:opacity-100";
+
+/**
+ * The overlay is transparent on desktop at rest, so its buttons must also be
+ * unclickable then — otherwise an invisible "remove" button would sit on top
+ * of every cover.
+ */
+const revealInteractiveOnHover =
+  "pointer-events-auto md:pointer-events-none md:group-hover/card:pointer-events-auto md:group-focus-within/card:pointer-events-auto";
+
+/**
+ * A saved content, shown as a square cover. The title, metadata and the
+ * collection actions appear over the image on hover.
  */
 function CollectionContentCard({
   item,
@@ -57,73 +79,98 @@ function CollectionContentCard({
   isRemoving: boolean;
   onStarClick: (content: ContentToCollect) => void;
 }) {
+  const title = item.title || item.contentId;
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      whileHover={{ scale: 1.01 }}
+      whileHover={{ y: -4 }}
       transition={springTransition}
-      className="dark:hover:bg-[rgb(14,15,16)] dark:bg-[rgb(11,12,13)] hover:bg-gray-100 bg-gray-50 flex flex-col sm:flex-row shadow rounded-lg overflow-hidden group relative"
+      className={cn(
+        "group/card relative aspect-square snap-start overflow-hidden rounded-lg shadow",
+        collectionCardWidthClassName,
+        "bg-gray-50 dark:bg-[rgb(16,17,21)]",
+      )}
     >
+      {/* Thumbnail: always visible, slightly scaled up on hover. */}
+      <div
+        aria-hidden
+        className="absolute inset-0 bg-cover bg-center transition-transform duration-300 group-hover/card:scale-[1.04]"
+        style={{ backgroundImage: `url(${item.thumbnailUrl || defaultPic})` }}
+      />
+
+      {/* Scrim behind the text so it stays readable over bright covers. */}
+      <div
+        aria-hidden
+        className={cn(
+          "pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/0 transition-opacity duration-200",
+          revealOnHover,
+        )}
+      />
+
       <Link
         href={`/convos/${item.contentId}`}
-        className="flex flex-col sm:flex-row w-full"
+        aria-label={title}
+        className="absolute inset-0 flex flex-col justify-end p-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-rose-500/70"
       >
-        <div className="p-2">
-          <div
-            className="aspect-square sm:w-40 sm:flex-shrink-0 bg-cover bg-center"
-            style={{
-              backgroundImage: `url(${item.thumbnailUrl || defaultPic})`,
-            }}
-          />
-        </div>
+        <div
+          className={cn(
+            "pointer-events-none transition-opacity duration-200",
+            revealOnHover,
+          )}
+        >
+          <h3 className="truncate pr-12 text-sm font-semibold text-white">
+            {title}
+          </h3>
 
-        <div className="p-4 flex flex-col justify-between flex-1">
-          <div>
-            <h3 className="font-semibold text-lg truncate dark:text-white dark:hover:text-rose-500">
-              {item.title || item.contentId}
-            </h3>
-
-            <div className="flex items-center gap-2 mt-2 text-sm text-gray-500">
-              {item.lang && <span className="capitalize">{item.lang}</span>}
-              {item.author && (
-                <>
-                  <span>•</span>
-                  <span>{item.author}</span>
-                </>
-              )}
-              {!item.author && item.format && (
-                <>
-                  <span>•</span>
-                  <span className="capitalize">{item.format}</span>
-                </>
-              )}
-            </div>
-
-            {(item.description || item.subtitle) && (
-              <p className="text-sm text-gray-400 mt-2 line-clamp-2">
-                {item.description || item.subtitle}
-              </p>
+          <div className="mt-0.5 flex items-center gap-2 pr-12 text-xs text-white/80">
+            {item.lang && <span className="capitalize">{item.lang}</span>}
+            {item.author && (
+              <>
+                <span>•</span>
+                <span className="truncate">{item.author}</span>
+              </>
             )}
-          </div>
-
-          <div className="flex items-center gap-3 z-50 self-start mt-2">
-            <StarIconButton
-              size="none"
-              className="text-xl"
-              content={toCollectPayload(item)}
-              initialIsCollected
-              onClick={() => onStarClick(toCollectPayload(item))}
-            />
+            {!item.author && item.format && (
+              <>
+                <span>•</span>
+                <span className="capitalize">{item.format}</span>
+              </>
+            )}
           </div>
         </div>
       </Link>
+
+      {/* Siblings of the link, never nested inside the anchor. */}
+      <div
+        className={cn(
+          "pointer-events-none absolute bottom-2 right-2 z-10 transition-opacity duration-200",
+          revealOnHover,
+        )}
+      >
+        <StarIconButton
+          content={toCollectPayload(item)}
+          initialIsCollected
+          className={cn(
+            "bg-white/85 text-rose-500 shadow-sm backdrop-blur hover:bg-white",
+            revealInteractiveOnHover,
+          )}
+          onClick={() => onStarClick(toCollectPayload(item))}
+        />
+      </div>
 
       <button
         title="从收藏集移除"
         aria-label="从收藏集移除"
         disabled={isRemoving}
-        className="absolute top-2 right-2 z-50 p-2 text-gray-400 hover:text-red-400 opacity-0 group-hover:opacity-100 transition"
+        className={cn(
+          "absolute right-1.5 top-1.5 z-10 rounded-full bg-black/55 p-1.5 text-white/90 backdrop-blur",
+          "transition hover:bg-red-500 hover:text-white disabled:cursor-not-allowed",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70",
+          revealOnHover,
+          revealInteractiveOnHover,
+        )}
         onClick={(event) => {
           event.preventDefault();
           event.stopPropagation();
@@ -131,9 +178,9 @@ function CollectionContentCard({
         }}
       >
         {isRemoving ? (
-          <Icons.spinner className="text-sm animate-spin" />
+          <Icons.spinner className="text-xs animate-spin" />
         ) : (
-          <Icons.xMark className="text-sm" />
+          <Icons.xMark className="text-xs" />
         )}
       </button>
     </motion.div>
@@ -249,7 +296,10 @@ function ContentCollectionSection({
       </div>
 
       {isLoading ? (
-        <LottieLoadingAnimation />
+        <CollectionCardsSkeleton
+          count={Math.min(Math.max(collection.totalItems || 4, 1), 6)}
+          label={`正在加载「${collection.title}」的内容…`}
+        />
       ) : items.length === 0 ? (
         <div className="rounded-lg border border-dashed border-gray-200 dark:border-gray-800 px-6 py-8 text-center">
           <p className="text-sm text-gray-500">
@@ -257,7 +307,11 @@ function ContentCollectionSection({
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-[repeat(auto-fit,minmax(32rem,1fr))] sm:grid-cols-[repeat(2,minmax(20rem,1fr))] gap-8">
+        <HorizontalScroller
+          label={`${collection.title} 的内容`}
+          scrollLeftLabel={`向左浏览「${collection.title}」`}
+          scrollRightLabel={`向右浏览「${collection.title}」`}
+        >
           {items.map((item) => (
             <CollectionContentCard
               key={item.id}
@@ -267,7 +321,7 @@ function ContentCollectionSection({
               onStarClick={onStarClick}
             />
           ))}
-        </div>
+        </HorizontalScroller>
       )}
     </section>
   );
@@ -285,12 +339,14 @@ export function ContentCollectionsSections() {
   const { data: collectionsData, isLoading } = useListContentCollectionsQuery();
   const addCollectionMutation = useAddContentCollectionMutation();
 
-  const collections: ContentCollection[] = (
-    (collectionsData as any)?.items || []
-  )
+  // Biggest collections first, so the fullest shelves lead the page. Newest
+  // wins when two collections hold the same number of items.
+  const collections: ContentCollection[] = ((collectionsData as any)?.items || [])
     .slice()
     .sort(
-      (a: ContentCollection, b: ContentCollection) => b.createdAt - a.createdAt,
+      (a: ContentCollection, b: ContentCollection) =>
+        (b.totalItems || 0) - (a.totalItems || 0) ||
+        b.createdAt - a.createdAt,
     );
 
   const createCollection = () => {
@@ -335,7 +391,7 @@ export function ContentCollectionsSections() {
       </div>
 
       {isLoading ? (
-        <LottieLoadingAnimation />
+        <ContentCollectionsSkeleton />
       ) : collections.length === 0 ? (
         <Nothing message="暂无收藏集" icon={Icons.archive}>
           <p className="text-sm text-gray-600 mt-4 font-light">

@@ -126,19 +126,23 @@ export function AudioBookSettingsPopover({
                 />
               </div>
             </div>
-            {/* {isYoutubeOrVideo && ( */}
-            <div className="flex items-center space-x-2 justify-between">
-              <Label htmlFor="video-visible">
-                Show {isYoutubeOrVideo ? "Video" : "Image"}
-              </Label>
-              <Switch
-                checked={!isVideoHidden}
-                onCheckedChange={() => {
-                  setIsVideoHidden((isHidden: any) => !isHidden);
-                }}
-              />
-            </div>
-            {/* )} */}
+            {/* Karaoke is a full-width room with no picture in it, so the toggle
+                would be the one switch that changes nothing there: it is hidden
+                while the sing-along view is up, rather than sitting there lying
+                about what it can do. */}
+            {viewMode !== "karaoke" && (
+              <div className="flex items-center space-x-2 justify-between">
+                <Label htmlFor="video-visible">
+                  Show {isYoutubeOrVideo ? "Video" : "Image"}
+                </Label>
+                <Switch
+                  checked={!isVideoHidden}
+                  onCheckedChange={() => {
+                    setIsVideoHidden((isHidden: any) => !isHidden);
+                  }}
+                />
+              </div>
+            )}
 
             {/* <div className="flex items-center space-x-2 justify-between">
               <Label htmlFor="video-visible">Focus Mode</Label>

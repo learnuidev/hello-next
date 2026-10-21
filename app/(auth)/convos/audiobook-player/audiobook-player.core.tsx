@@ -71,6 +71,16 @@ export const AudiobookPlayerCore = ({
   const isVideoHidden = usePlayerViewModeStore((state) => state.isVideoHidden);
 
   /**
+   * Karaoke is the whole room: the backdrop already fills the screen with the
+   * cover, so a picture sitting beside the sheet (or under it) is one cover too
+   * many, and it takes the width the lyrics want. The video column is hidden —
+   * not unmounted — while the sing-along view is up, because the player element
+   * inside it is what is playing the audio.
+   */
+  const isKaraokeMode = viewMode === "karaoke";
+  const isPictureHidden = isVideoHidden || isKaraokeMode;
+
+  /**
    * The one line the reader has looped outside the dynamic loop: the transcript
    * the loop button is repeating, or the single transcript starred with the
    * repeat button beside it. Its own times are what the bar needs to become that
@@ -193,7 +203,7 @@ export const AudiobookPlayerCore = ({
                 // video — the room is behind the picture, not over it.
                 "relative z-10",
 
-                `${isVideoHidden ? "hidden" : ""} cursor-pointer`,
+                `${isPictureHidden ? "hidden" : ""} cursor-pointer`,
               )}
             >
               <div className="flex justify-center items-center sm:mt-24 mt-4">
@@ -230,7 +240,7 @@ export const AudiobookPlayerCore = ({
 
             <div
               className={cn(
-                isVideoHidden
+                isPictureHidden
                   ? "col-span-12"
                   : isFSM && isYoutubeOrVideo
                     ? "md:col-span-4 col-span-12"
@@ -263,7 +273,7 @@ export const AudiobookPlayerCore = ({
                     isPlaying={playing}
                     playerRef={playerRef}
                     coverUrl={coverPhotoUrl}
-                    compact={!isVideoHidden}
+                    compact={!isPictureHidden}
                     seekAndPlay={seekAndPlay}
                     onPlay={play}
                     onPause={pause}

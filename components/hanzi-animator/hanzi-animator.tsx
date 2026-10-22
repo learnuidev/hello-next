@@ -2,20 +2,17 @@
 
 import { useEffect, useRef, useState } from "react";
 
-import { Checkbox } from "@/components/ui/checkbox";
 import { Icons } from "@/components/ui/icons.v2";
-import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 
 const CHAR_SIZE = 90;
-const DELAY_BETWEEN_STROKES = 300;
-const DELAY_BETWEEN_CHARS = 250;
-const DELAY_BETWEEN_LOOPS = 1500;
+const PLAY_STROKE_GAP = 250;
 const REVERSE_STROKE_DURATION = 320;
 
 type AnimationResult = { canceled?: boolean };
 
 type RenderStateLike = {
+  cancelAll?: () => void;
   updateState: (changes: unknown) => void;
   state?: {
     character?: {
@@ -28,47 +25,47 @@ type RenderStateLike = {
 };
 
 type HanziWriterInstance = {
-  showCharacter: (opts?: { duration?: number }) => unknown;
-  hideCharacter: (opts?: { duration?: number }) => unknown;
-  animateCharacter: (opts?: {
-    onComplete?: (res: AnimationResult) => void;
-  }) => unknown;
   animateStroke: (
     strokeNum: number,
     opts?: { onComplete?: (res: AnimationResult) => void },
   ) => unknown;
-  /** Hanzi Writer keeps the animated state here; used to erase strokes. */
+  /** Hanzi Writer keeps the character data and animated state here. */
+  _character?: { strokes?: unknown[] };
   _renderState?: RenderStateLike;
-};
-
-const isThenable = (value: unknown): value is Promise<unknown> =>
-  Boolean(value) && typeof (value as Promise<unknown>)?.then === "function";
-
-/** Resolves once the writer's pending mutation chain settles (or is canceled). */
-const settle = (result: unknown) =>
-  new Promise<void>((resolve) => {
-    if (isThenable(result)) {
-      result.then(
-        () => resolve(),
-        () => resolve(),
-      );
-      return;
-    }
-
-    resolve();
-  });
-
-const hideWriter = async (writer: HanziWriterInstance) => {
-  try {
-    await settle(writer.hideCharacter({ duration: 0 }));
-  } catch {
-    // nothing to hide
-  }
 };
 
 type DrawStatus = "done" | "canceled" | "error";
 
-/** Draws a single stroke and reports how that draw ended. */
+const isThenable = (value: unknown): value is Promise<unknown> =>
+  Boolean(value) && typeof (value as Promise<unknown>)?.then === "function";
+
+/**
+ * Clears a character and stops whatever it was animating: every stroke is made
+ * visible-but-unwritten, which is the state the writer draws forwards from.
+ */
+const blankWriter = (writer: HanziWriterInstance, fallbackTotal = 0) => {
+  const renderState = writer._renderState;
+
+  if (!renderState?.updateState) return;
+
+  // Drop any in-flight stroke animation before overwriting the state.
+  renderState.cancelAll?.();
+
+  const total = writer._character?.strokes?.length ?? fallbackTotal;
+  const strokes: Record<number, { opacity: number; displayPortion: number }> =
+    {};
+
+  for (let i = 0; i < total; i++) {
+    strokes[i] = { opacity: 1, displayPortion: 0 };
+  }
+
+  renderState.updateState({ character: { main: { opacity: 1, strokes } } });
+};
+
+const sleep = (ms: number) =>
+  new Promise<void>((resolve) => setTimeout(resolve, ms));
+
+/** Writes a single stroke and reports how that draw ended. */
 const drawStroke = (writer: HanziWriterInstance, strokeNum: number) =>
   new Promise<DrawStatus>((resolve) => {
     let settled = false;
@@ -174,11 +171,12 @@ const unDrawStroke = (
 
 export const HanziAnimator = ({ characters }: { characters: string }) => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-  const [stepMode, setStepMode] = useState(false);
+  const [playing, setPlaying] = useState(true);
   const [strokeCounts, setStrokeCounts] = useState<Record<number, number>>({});
   const [drawnStrokes, setDrawnStrokes] = useState(0);
   const [targetStrokes, setTargetStrokes] = useState(0);
   const [writersVersion, setWritersVersion] = useState(0);
+  const [failed, setFailed] = useState<Set<number>>(new Set());
 
   const chars = Array.from(characters ?? "").filter(
     (char) => char.trim().length > 0,
@@ -188,24 +186,36 @@ export const HanziAnimator = ({ characters }: { characters: string }) => {
   const writersRef = useRef<(HanziWriterInstance | null)[]>([]);
   const failedRef = useRef<Set<number>>(new Set());
   const selectedIndexRef = useRef<number | null>(null);
+  const totalStrokesRef = useRef(0);
+  const strokeCountsRef = useRef<Record<number, number>>({});
 
-  // Step mode bookkeeping: `targetStrokesRef` is what the user asked for,
-  // `drawnStrokesRef` is what is actually on screen.
-  const targetStrokesRef = useRef(0);
+  // Playback bookkeeping: `drawnStrokesRef` is what is on screen,
+  // `targetStrokesRef` is where playback or a step is heading.
+  const playingRef = useRef(true);
   const drawnStrokesRef = useRef(0);
-  const steppingRef = useRef(false);
-  const pendingStepRef = useRef(false);
-  // Bumped whenever the stepped character resets, so a running erase can bail.
-  const stepEpochRef = useRef(0);
+  const targetStrokesRef = useRef(0);
+  const runningRef = useRef(false);
+  const pendingRunRef = useRef(false);
+  // Bumped when the focused character resets, so a running erase can bail.
+  const epochRef = useRef(0);
 
-  const [failed, setFailed] = useState<Set<number>>(new Set());
+  const totalStrokes =
+    selectedIndex !== null ? (strokeCounts[selectedIndex] ?? 0) : 0;
 
   useEffect(() => {
     selectedIndexRef.current = selectedIndex;
   }, [selectedIndex]);
 
+  useEffect(() => {
+    strokeCountsRef.current = strokeCounts;
+  }, [strokeCounts]);
+
+  useEffect(() => {
+    totalStrokesRef.current = totalStrokes;
+  }, [totalStrokes]);
+
   // Create one HanziWriter per character. Stroke order always animates and the
-  // outline is always shown, so those are no longer configurable.
+  // outline is always shown, so those are not configurable.
   useEffect(() => {
     failedRef.current = new Set();
     setFailed(new Set());
@@ -213,8 +223,10 @@ export const HanziAnimator = ({ characters }: { characters: string }) => {
     setStrokeCounts({});
     setDrawnStrokes(0);
     setTargetStrokes(0);
+    setPlaying(true);
     drawnStrokesRef.current = 0;
     targetStrokesRef.current = 0;
+    playingRef.current = true;
     writersRef.current = [];
 
     const targets = targetRefs.current.slice(0, chars.length);
@@ -243,7 +255,6 @@ export const HanziAnimator = ({ characters }: { characters: string }) => {
               strokeColor: isDark ? "#e5e7eb" : "#333333",
               outlineColor: isDark ? "#374151" : "#dddddd",
               strokeAnimationSpeed: 1,
-              delayBetweenStrokes: DELAY_BETWEEN_STROKES,
               onLoadCharDataSuccess: (data) => {
                 const total = data?.strokes?.length ?? 0;
                 if (!total) return;
@@ -279,150 +290,87 @@ export const HanziAnimator = ({ characters }: { characters: string }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [characters]);
 
-  // When stepping, start from a blank slate: strokes are only drawn on demand.
+  // Every character starts blank — strokes are drawn by playback or by a step.
   useEffect(() => {
-    const writers = writersRef.current;
-    if (!writers.length) return;
+    epochRef.current += 1;
+    drawnStrokesRef.current = 0;
+    targetStrokesRef.current = 0;
+    setDrawnStrokes(0);
+    setTargetStrokes(0);
 
-    if (stepMode) {
-      writers.forEach((writer) => {
-        if (writer) void hideWriter(writer);
-      });
+    writersRef.current.forEach((writer, index) => {
+      if (writer) blankWriter(writer, strokeCountsRef.current[index] ?? 0);
+    });
+  }, [selectedIndex, writersVersion]);
 
-      stepEpochRef.current += 1;
-      drawnStrokesRef.current = 0;
-      targetStrokesRef.current = 0;
-      setDrawnStrokes(0);
-      setTargetStrokes(0);
-      return;
-    }
-
-    // Otherwise: keep the ambient loop animation.
-    let cancelled = false;
-    const timers: ReturnType<typeof setTimeout>[] = [];
-    const clearTimers = () => {
-      timers.forEach((timer) => clearTimeout(timer));
-      timers.length = 0;
-    };
-
-    const isPlayable = (index: number) =>
-      Boolean(writers[index]) && !failedRef.current.has(index);
-
-    const hideAll = () => {
-      writers.forEach((writer) => {
-        writer?.hideCharacter({ duration: 0 });
-      });
-    };
-
-    if (selectedIndex !== null && isPlayable(selectedIndex)) {
-      const animateLoop = () => {
-        if (cancelled) return;
-        writers[selectedIndex]?.animateCharacter({
-          onComplete: () => {
-            const timer = setTimeout(() => {
-              animateLoop();
-            }, DELAY_BETWEEN_LOOPS);
-            timers.push(timer);
-          },
-        });
-      };
-
-      hideAll();
-      animateLoop();
-
-      return () => {
-        cancelled = true;
-        clearTimers();
-      };
-    }
-
-    let i = 0;
-    const advance = () => {
-      if (cancelled) return;
-
-      while (i < writers.length && !isPlayable(i)) i++;
-
-      if (i >= writers.length) {
-        const timer = setTimeout(() => {
-          if (cancelled) return;
-          hideAll();
-          i = 0;
-          advance();
-        }, DELAY_BETWEEN_LOOPS);
-        timers.push(timer);
-        return;
-      }
-
-      writers[i]?.animateCharacter({
-        onComplete: () => {
-          const timer = setTimeout(() => {
-            i += 1;
-            advance();
-          }, DELAY_BETWEEN_CHARS);
-          timers.push(timer);
-        },
-      });
-    };
-
-    hideAll();
-    advance();
-
-    return () => {
-      cancelled = true;
-      clearTimers();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [characters, stepMode, selectedIndex, writersVersion]);
-
-  // Stepping needs a character to step through: default to the first one.
+  // Focus the first character that can be animated.
   useEffect(() => {
-    if (!stepMode) return;
-    if (selectedIndex !== null) return;
+    const usable = (index: number) =>
+      Boolean(writersRef.current[index]) && !failedRef.current.has(index);
 
-    const first = chars.findIndex(
-      (_char, index) =>
-        Boolean(writersRef.current[index]) && !failedRef.current.has(index),
-    );
+    if (selectedIndex !== null && usable(selectedIndex)) return;
 
-    if (first >= 0) setSelectedIndex(first);
+    const first = chars.findIndex((_char, index) => usable(index));
+    if (first >= 0 && first !== selectedIndex) setSelectedIndex(first);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stepMode, selectedIndex, writersVersion, characters]);
+  }, [selectedIndex, writersVersion, characters, failed]);
 
-  const totalStrokes =
-    selectedIndex !== null ? (strokeCounts[selectedIndex] ?? 0) : 0;
+  // Kick playback whenever the focused character, its stroke count or the
+  // play state changes.
+  useEffect(() => {
+    if (!playing) return;
+    void driveStep();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [playing, selectedIndex, totalStrokes, writersVersion]);
 
   /**
-   * Brings the stepped character to the requested stroke count, one stroke at a
-   * time: going forward writes the next stroke, going back erases the last one
-   * by running its drawing in reverse.
+   * Brings the focused character to the requested stroke count, one stroke at a
+   * time. While playing it feeds itself the next stroke; stepping writes or
+   * erases a single stroke.
    */
   async function driveStep() {
-    // A run is already in flight — it re-reads the target on every stroke, so
+    // A run is already in flight — it re-reads the state on every stroke, so
     // just make sure it gets one more pass before it settles.
-    if (steppingRef.current) {
-      pendingStepRef.current = true;
+    if (runningRef.current) {
+      pendingRunRef.current = true;
       return;
     }
 
-    steppingRef.current = true;
+    runningRef.current = true;
 
     try {
       for (;;) {
         const index = selectedIndexRef.current;
         const writer = index === null ? null : writersRef.current[index];
+        const total = totalStrokesRef.current;
 
-        if (!writer || index === null || failedRef.current.has(index)) return;
+        if (!writer || index === null || !total) return;
+        if (failedRef.current.has(index)) return;
 
-        const target = targetStrokesRef.current;
+        // Playing: aim at the stroke after the last one drawn.
+        if (playingRef.current && targetStrokesRef.current <= drawnStrokesRef.current) {
+          if (drawnStrokesRef.current >= total) {
+            // The character is complete — stop, leaving it on screen.
+            playingRef.current = false;
+            setPlaying(false);
+            return;
+          }
+
+          const next = drawnStrokesRef.current + 1;
+          targetStrokesRef.current = next;
+          setTargetStrokes(next);
+        }
+
+        const target = Math.min(targetStrokesRef.current, total);
         const drawn = drawnStrokesRef.current;
 
         if (target === drawn) return;
 
-        const epoch = stepEpochRef.current;
+        const epoch = epochRef.current;
 
         if (target < drawn) {
           const status = await unDrawStroke(writer, drawn - 1, () => {
-            return stepEpochRef.current !== epoch;
+            return epochRef.current !== epoch;
           });
           if (status !== "done") return;
 
@@ -436,21 +384,65 @@ export const HanziAnimator = ({ characters }: { characters: string }) => {
 
         drawnStrokesRef.current = drawn + 1;
         setDrawnStrokes(drawn + 1);
+
+        // Breathe between automatic strokes; skip it once paused.
+        if (playingRef.current) {
+          await sleep(PLAY_STROKE_GAP);
+        }
       }
     } finally {
-      steppingRef.current = false;
+      runningRef.current = false;
 
-      if (pendingStepRef.current) {
-        pendingStepRef.current = false;
+      if (pendingRunRef.current) {
+        pendingRunRef.current = false;
         void driveStep();
       }
     }
   }
 
+  const focusWriter = () => {
+    const index = selectedIndexRef.current;
+    return index === null ? null : writersRef.current[index];
+  };
+
+  const clearStrokeState = () => {
+    epochRef.current += 1;
+    drawnStrokesRef.current = 0;
+    targetStrokesRef.current = 0;
+    setDrawnStrokes(0);
+    setTargetStrokes(0);
+  };
+
+  const togglePlay = () => {
+    if (playingRef.current) {
+      playingRef.current = false;
+      setPlaying(false);
+      return;
+    }
+
+    if (!totalStrokes) return;
+
+    if (drawnStrokesRef.current >= totalStrokes) {
+      // Play on a finished character starts it over.
+      clearStrokeState();
+      const writer = focusWriter();
+      if (writer) blankWriter(writer, totalStrokes);
+    }
+
+    playingRef.current = true;
+    setPlaying(true);
+    void driveStep();
+  };
+
+  /** One stroke forward (auto-play stops so the step is visible). */
   const stepForward = () => {
     if (!totalStrokes) return;
 
-    const next = Math.min(targetStrokesRef.current + 1, totalStrokes);
+    playingRef.current = false;
+    setPlaying(false);
+
+    const base = Math.max(drawnStrokesRef.current, targetStrokesRef.current);
+    const next = Math.min(base + 1, totalStrokes);
     if (next === targetStrokesRef.current) return;
 
     targetStrokesRef.current = next;
@@ -458,8 +450,13 @@ export const HanziAnimator = ({ characters }: { characters: string }) => {
     void driveStep();
   };
 
+  /** One stroke back — erases the last stroke in reverse of how it was written. */
   const stepBackward = () => {
-    const next = Math.max(targetStrokesRef.current - 1, 0);
+    playingRef.current = false;
+    setPlaying(false);
+
+    const base = Math.max(drawnStrokesRef.current, targetStrokesRef.current);
+    const next = Math.max(base - 1, 0);
     if (next === targetStrokesRef.current) return;
 
     targetStrokesRef.current = next;
@@ -467,54 +464,40 @@ export const HanziAnimator = ({ characters }: { characters: string }) => {
     void driveStep();
   };
 
-  /** Clears the stepped character instantly so stepping starts over. */
-  const resetStep = () => {
-    stepEpochRef.current += 1;
-    targetStrokesRef.current = 0;
-    drawnStrokesRef.current = 0;
-    setTargetStrokes(0);
-    setDrawnStrokes(0);
-
-    const index = selectedIndexRef.current;
-    const writer = index === null ? null : writersRef.current[index];
-    if (writer) void hideWriter(writer);
+  const restartCharacter = () => {
+    clearStrokeState();
+    const writer = focusWriter();
+    if (writer) blankWriter(writer, totalStrokesRef.current);
+    if (playingRef.current) void driveStep();
   };
 
   if (!chars.length) return null;
 
-  const canStepForward = totalStrokes > 0 && targetStrokes < totalStrokes;
-  const canStepBackward = totalStrokes > 0 && targetStrokes > 0;
+  const position = Math.max(drawnStrokes, targetStrokes);
+  const canPlay = totalStrokes > 0;
+  const canStepForward = totalStrokes > 0 && position < totalStrokes;
+  const canStepBackward = totalStrokes > 0 && position > 0;
+
+  const stepButtonClassName = (enabled: boolean) =>
+    cn(
+      "flex h-9 w-9 items-center justify-center rounded-full transition",
+      enabled
+        ? "text-gray-500 hover:bg-gray-100 hover:text-rose-400 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
+        : "cursor-not-allowed text-gray-300 dark:text-gray-700",
+    );
 
   return (
     <div className="dark:bg-[rgb(11,12,13)] bg-gray-50 mt-4 rounded-2xl p-2 sm:px-8">
-      <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-        <div>
-          <h3 className="text-sm font-bold text-black dark:text-white">
-            Stroke Order
-          </h3>
-          <p className="text-[11px] font-extralight text-gray-400">
-            See how each character is written
-          </p>
-        </div>
-
-        <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
-          <div className="flex items-center space-x-2">
-            <Checkbox
-              id="hanzi-step"
-              checked={stepMode}
-              onCheckedChange={(value) => setStepMode(Boolean(value))}
-            />
-            <Label
-              htmlFor="hanzi-step"
-              className="cursor-pointer text-xs text-black dark:text-white"
-            >
-              Step
-            </Label>
-          </div>
-        </div>
+      <div className="mt-6">
+        <h3 className="text-sm font-bold text-black dark:text-white">
+          Stroke Order
+        </h3>
+        <p className="text-[11px] font-extralight text-gray-400">
+          See how each character is written
+        </p>
       </div>
 
-      <div className="mb-6 mt-4 flex flex-wrap gap-3">
+      <div className="mt-4 flex flex-wrap gap-3">
         {chars.map((char, index) => (
           <div
             key={`${char}-${index}`}
@@ -522,15 +505,13 @@ export const HanziAnimator = ({ characters }: { characters: string }) => {
               targetRefs.current[index] = el;
             }}
             onClick={() => {
-              if (stepMode) {
-                // Clicking the character being stepped restarts it from blank.
-                if (selectedIndex === index) resetStep();
-
-                setSelectedIndex(index);
+              // Clicking the focused character starts it over.
+              if (selectedIndex === index) {
+                restartCharacter();
                 return;
               }
 
-              setSelectedIndex((prev) => (prev === index ? null : index));
+              setSelectedIndex(index);
             }}
             className={cn(
               "flex cursor-pointer items-center justify-center rounded-xl bg-white ring-1 ring-gray-100 dark:bg-[rgb(20,21,22)] dark:ring-gray-800",
@@ -543,46 +524,60 @@ export const HanziAnimator = ({ characters }: { characters: string }) => {
         ))}
       </div>
 
-      {stepMode && (
-        <div className="mb-6 flex items-center justify-between gap-4 border-t border-gray-100 pt-4 dark:border-gray-800">
+      <div className="mb-6 mt-4 flex flex-wrap items-center justify-between gap-x-6 gap-y-3 border-t border-gray-100 pt-4 dark:border-gray-800">
+        <div className="flex items-center gap-x-2">
           <button
             type="button"
+            aria-label="Previous stroke"
+            title="Previous stroke"
             disabled={!canStepBackward}
             onClick={stepBackward}
-            className={cn(
-              "flex items-center space-x-2 text-xs uppercase tracking-wider transition",
-              canStepBackward
-                ? "text-gray-400 hover:text-rose-400 dark:hover:text-white"
-                : "cursor-not-allowed text-gray-700 dark:text-gray-600",
-            )}
+            className={stepButtonClassName(canStepBackward)}
           >
             <Icons.back className="text-sm" />
-            <span>Previous</span>
           </button>
-
-          <p className="text-xs uppercase tracking-wider text-gray-500">
-            <span>Stroke </span>
-            <span>{drawnStrokes}</span>
-            <span> / </span>
-            <span>{totalStrokes || "?"}</span>
-          </p>
 
           <button
             type="button"
-            disabled={!canStepForward}
-            onClick={stepForward}
+            aria-label={playing ? "Pause" : "Play"}
+            title={playing ? "Pause" : "Play"}
+            disabled={!canPlay}
+            onClick={togglePlay}
             className={cn(
-              "flex items-center space-x-2 text-xs uppercase tracking-wider transition",
-              canStepForward
-                ? "text-gray-400 hover:text-rose-400 dark:hover:text-white"
-                : "cursor-not-allowed text-gray-700 dark:text-gray-600",
+              "flex h-10 w-10 items-center justify-center rounded-full transition",
+              canPlay
+                ? "bg-black text-white hover:bg-rose-500 dark:bg-white dark:text-black dark:hover:bg-rose-400 dark:hover:text-white"
+                : "cursor-not-allowed bg-gray-200 text-gray-400 dark:bg-gray-800 dark:text-gray-600",
             )}
           >
-            <span>Next</span>
+            {playing ? (
+              <Icons.pause className="text-sm" />
+            ) : (
+              <Icons.play className="ml-0.5 text-sm" />
+            )}
+          </button>
+
+          <button
+            type="button"
+            aria-label="Next stroke"
+            title="Next stroke"
+            disabled={!canStepForward}
+            onClick={stepForward}
+            className={stepButtonClassName(canStepForward)}
+          >
             <Icons.front className="text-sm" />
           </button>
         </div>
-      )}
+
+        <p className="text-xs uppercase tracking-wider text-gray-500">
+          <span>Stroke </span>
+          <span className="text-black dark:text-white">{drawnStrokes}</span>
+          <span> / </span>
+          <span className="text-black dark:text-white">
+            {totalStrokes || "?"}
+          </span>
+        </p>
+      </div>
     </div>
   );
 };

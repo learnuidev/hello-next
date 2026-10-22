@@ -524,8 +524,8 @@ export const HanziAnimator = ({ characters }: { characters: string }) => {
         ))}
       </div>
 
-      <div className="mb-6 mt-4 flex flex-wrap items-center justify-between gap-x-6 gap-y-3 border-t border-gray-100 pt-4 dark:border-gray-800">
-        <div className="flex items-center gap-x-2">
+      <div className="mb-6 mt-4 flex flex-col items-center gap-y-2 border-t border-gray-100 pt-4 dark:border-gray-800">
+        <div className="flex items-center gap-x-3">
           <button
             type="button"
             aria-label="Previous stroke"
@@ -534,7 +534,7 @@ export const HanziAnimator = ({ characters }: { characters: string }) => {
             onClick={stepBackward}
             className={stepButtonClassName(canStepBackward)}
           >
-            <Icons.back className="text-sm" />
+            <Icons.previousStep className="text-sm" />
           </button>
 
           <button
@@ -565,7 +565,7 @@ export const HanziAnimator = ({ characters }: { characters: string }) => {
             onClick={stepForward}
             className={stepButtonClassName(canStepForward)}
           >
-            <Icons.front className="text-sm" />
+            <Icons.nextStep className="text-sm" />
           </button>
         </div>
 

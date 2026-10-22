@@ -177,6 +177,8 @@ import { faPlay } from "@fortawesome/sharp-solid-svg-icons/faPlay";
 
 import { faChartColumn as faChartColumnSolid } from "@fortawesome/sharp-solid-svg-icons/faChartColumn";
 import { faPause } from "@fortawesome/sharp-solid-svg-icons/faPause";
+import { faBackwardStep } from "@fortawesome/sharp-solid-svg-icons/faBackwardStep";
+import { faForwardStep } from "@fortawesome/sharp-solid-svg-icons/faForwardStep";
 import { faSeedling as faSeedlingSolid } from "@fortawesome/sharp-solid-svg-icons/faSeedling";
 import { faTableTree } from "@fortawesome/sharp-solid-svg-icons/faTableTree";
 import { faTree as faTreeSolid } from "@fortawesome/sharp-solid-svg-icons/faTree";
@@ -256,6 +258,8 @@ export const Icons = {
   glassesRound: createFAIcon(faGlassesRound),
   glassesRoundSolid: createFAIcon(faGlassesRoundSolid),
   play: createFAIcon(faPlay),
+  previousStep: createFAIcon(faBackwardStep),
+  nextStep: createFAIcon(faForwardStep),
   language: createFAIcon(faLanguage),
   xMark: createFAIcon(faXmark),
   checkCircle: createFAIcon(faCheckCircle),

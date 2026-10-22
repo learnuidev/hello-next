@@ -1,5 +1,6 @@
 "use client";
 
+import { useTheme } from "next-themes";
 import { useEffect, useRef, useState } from "react";
 
 import { Icons } from "@/components/ui/icons.v2";
@@ -7,7 +8,20 @@ import { cn } from "@/lib/utils";
 
 const CHAR_SIZE = 90;
 const PLAY_STROKE_GAP = 250;
+const LOOP_PAUSE = 1200;
 const REVERSE_STROKE_DURATION = 320;
+
+/**
+ * Drawn strokes carry the ink, so they contrast with the tile: dark ink on a
+ * light tile, light ink on a dark one. The unwritten guide is the opposite.
+ */
+const STROKE_COLORS = {
+  light: { stroke: "#333333", outline: "#dddddd" },
+  dark: { stroke: "#e5e7eb", outline: "#374151" },
+} as const;
+
+const strokeColors = (isDark: boolean) =>
+  isDark ? STROKE_COLORS.dark : STROKE_COLORS.light;
 
 type AnimationResult = { canceled?: boolean };
 
@@ -29,6 +43,11 @@ type HanziWriterInstance = {
     strokeNum: number,
     opts?: { onComplete?: (res: AnimationResult) => void },
   ) => unknown;
+  updateColor: (
+    colorName: "strokeColor" | "outlineColor" | "radicalColor",
+    colorVal: string | null,
+    opts?: { duration?: number },
+  ) => unknown;
   /** Hanzi Writer keeps the character data and animated state here. */
   _character?: { strokes?: unknown[] };
   _renderState?: RenderStateLike;
@@ -40,8 +59,42 @@ const isThenable = (value: unknown): value is Promise<unknown> =>
   Boolean(value) && typeof (value as Promise<unknown>)?.then === "function";
 
 /**
- * Clears a character and stops whatever it was animating: every stroke is made
- * visible-but-unwritten, which is the state the writer draws forwards from.
+ * Recolours a writer in place, without reloading character data.
+ *
+ * Radical strokes are painted with `radicalColor`, which Hanzi Writer snapshots
+ * from the stroke colour when the writer is created. It has to be reset too,
+ * otherwise those strokes keep the previous theme's ink and the character ends
+ * up with two stroke colours — the visible "opposite" colour bug.
+ */
+const setWriterColors = (writer: HanziWriterInstance, isDark: boolean) => {
+  const { stroke, outline } = strokeColors(isDark);
+
+  const apply = (
+    colorName: "strokeColor" | "outlineColor" | "radicalColor",
+    colorVal: string | null,
+  ) => {
+    try {
+      const result = writer.updateColor(colorName, colorVal, { duration: 0 });
+      if (isThenable(result)) result.catch(() => {});
+    } catch {
+      // Still loading — creation-time colours will apply instead.
+    }
+  };
+
+  apply("strokeColor", stroke);
+  // Passing null re-ties radical strokes to the stroke colour set just above.
+  apply("radicalColor", null);
+  apply("outlineColor", outline);
+};
+
+/**
+ * Clears a character and stops whatever it was animating: every stroke keeps
+ * its guide position but is made invisible, which is the state the writer
+ * draws forwards from.
+ *
+ * Unwritten strokes are hidden with `opacity: 0` rather than a zero
+ * `displayPortion`, because Hanzi Writer renders a zero-portion stroke as a
+ * rounded dot of stroke colour at the start of every stroke.
  */
 const blankWriter = (writer: HanziWriterInstance, fallbackTotal = 0) => {
   const renderState = writer._renderState;
@@ -56,7 +109,7 @@ const blankWriter = (writer: HanziWriterInstance, fallbackTotal = 0) => {
     {};
 
   for (let i = 0; i < total; i++) {
-    strokes[i] = { opacity: 1, displayPortion: 0 };
+    strokes[i] = { opacity: 0, displayPortion: 1 };
   }
 
   renderState.updateState({ character: { main: { opacity: 1, strokes } } });
@@ -147,18 +200,23 @@ const unDrawStroke = (
 
       const progress = Math.min(1, (now - startedAt) / REVERSE_STROKE_DURATION);
       const displayed = startPortion * (1 - ease(progress));
+      const done = progress >= 1;
 
       renderState.updateState({
         character: {
           main: {
             strokes: {
-              [strokeNum]: { opacity: 1, displayPortion: displayed },
+              // A fully erased stroke is hidden rather than left at zero
+              // portion, which would render as a dot of stroke colour.
+              [strokeNum]: done
+                ? { opacity: 0, displayPortion: 1 }
+                : { opacity: 1, displayPortion: displayed },
             },
           },
         },
       });
 
-      if (progress >= 1) {
+      if (done) {
         finish("done");
         return;
       }
@@ -170,6 +228,11 @@ const unDrawStroke = (
   });
 
 export const HanziAnimator = ({ characters }: { characters: string }) => {
+  const { resolvedTheme } = useTheme();
+  // `undefined` until next-themes resolves on the client.
+  const isDark =
+    resolvedTheme === undefined ? undefined : resolvedTheme === "dark";
+
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [playing, setPlaying] = useState(true);
   const [strokeCounts, setStrokeCounts] = useState<Record<number, number>>({});
@@ -188,6 +251,17 @@ export const HanziAnimator = ({ characters }: { characters: string }) => {
   const selectedIndexRef = useRef<number | null>(null);
   const totalStrokesRef = useRef(0);
   const strokeCountsRef = useRef<Record<number, number>>({});
+
+  /**
+   * The theme Tailwind is actually painting with: next-themes' resolved value
+   * once it exists, otherwise the class on <html> (which its own script sets
+   * before hydration).
+   */
+  const isDarkNow = () => {
+    if (isDark !== undefined) return isDark;
+    if (typeof document === "undefined") return false;
+    return document.documentElement.classList.contains("dark");
+  };
 
   // Playback bookkeeping: `drawnStrokesRef` is what is on screen,
   // `targetStrokesRef` is where playback or a step is heading.
@@ -237,7 +311,8 @@ export const HanziAnimator = ({ characters }: { characters: string }) => {
     import("hanzi-writer").then(({ default: HanziWriter }) => {
       if (cancelled) return;
 
-      const isDark = document.documentElement.classList.contains("dark");
+      const { stroke: strokeColor, outline: outlineColor } =
+        strokeColors(isDarkNow());
 
       const writers: (HanziWriterInstance | null)[] = chars.map(
         (char, index) => {
@@ -252,8 +327,8 @@ export const HanziAnimator = ({ characters }: { characters: string }) => {
               padding: 5,
               showOutline: true,
               showCharacter: false,
-              strokeColor: isDark ? "#e5e7eb" : "#333333",
-              outlineColor: isDark ? "#374151" : "#dddddd",
+              strokeColor,
+              outlineColor,
               strokeAnimationSpeed: 1,
               onLoadCharDataSuccess: (data) => {
                 const total = data?.strokes?.length ?? 0;
@@ -289,6 +364,17 @@ export const HanziAnimator = ({ characters }: { characters: string }) => {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [characters]);
+
+  // Characters are created once, so a theme switch has to recolour them in
+  // place — otherwise dark mode keeps the light-mode ink.
+  useEffect(() => {
+    const dark = isDarkNow();
+
+    writersRef.current.forEach((writer) => {
+      if (writer) setWriterColors(writer, dark);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isDark, writersVersion]);
 
   // Every character starts blank — strokes are drawn by playback or by a step.
   useEffect(() => {
@@ -343,6 +429,7 @@ export const HanziAnimator = ({ characters }: { characters: string }) => {
         const index = selectedIndexRef.current;
         const writer = index === null ? null : writersRef.current[index];
         const total = totalStrokesRef.current;
+        const epoch = epochRef.current;
 
         if (!writer || index === null || !total) return;
         if (failedRef.current.has(index)) return;
@@ -350,10 +437,19 @@ export const HanziAnimator = ({ characters }: { characters: string }) => {
         // Playing: aim at the stroke after the last one drawn.
         if (playingRef.current && targetStrokesRef.current <= drawnStrokesRef.current) {
           if (drawnStrokesRef.current >= total) {
-            // The character is complete — stop, leaving it on screen.
-            playingRef.current = false;
-            setPlaying(false);
-            return;
+            // The character is complete: hold it on screen for a beat, then
+            // clear it and play it again from the first stroke.
+            await sleep(LOOP_PAUSE);
+
+            if (!playingRef.current) return;
+            if (epochRef.current !== epoch) return;
+
+            blankWriter(writer, total);
+            drawnStrokesRef.current = 0;
+            targetStrokesRef.current = 0;
+            setDrawnStrokes(0);
+            setTargetStrokes(0);
+            continue;
           }
 
           const next = drawnStrokesRef.current + 1;
@@ -365,8 +461,6 @@ export const HanziAnimator = ({ characters }: { characters: string }) => {
         const drawn = drawnStrokesRef.current;
 
         if (target === drawn) return;
-
-        const epoch = epochRef.current;
 
         if (target < drawn) {
           const status = await unDrawStroke(writer, drawn - 1, () => {

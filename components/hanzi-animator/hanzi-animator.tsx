@@ -11,8 +11,21 @@ const CHAR_SIZE = 90;
 const DELAY_BETWEEN_STROKES = 300;
 const DELAY_BETWEEN_CHARS = 250;
 const DELAY_BETWEEN_LOOPS = 1500;
+const REVERSE_STROKE_DURATION = 320;
 
 type AnimationResult = { canceled?: boolean };
+
+type RenderStateLike = {
+  updateState: (changes: unknown) => void;
+  state?: {
+    character?: {
+      main?: {
+        opacity?: number;
+        strokes?: Record<number, { displayPortion?: number; opacity?: number }>;
+      };
+    };
+  };
+};
 
 type HanziWriterInstance = {
   showCharacter: (opts?: { duration?: number }) => unknown;
@@ -24,6 +37,8 @@ type HanziWriterInstance = {
     strokeNum: number,
     opts?: { onComplete?: (res: AnimationResult) => void },
   ) => unknown;
+  /** Hanzi Writer keeps the animated state here; used to erase strokes. */
+  _renderState?: RenderStateLike;
 };
 
 const isThenable = (value: unknown): value is Promise<unknown> =>
@@ -91,6 +106,72 @@ const drawStroke = (writer: HanziWriterInstance, strokeNum: number) =>
     }
   });
 
+/** Same easing Hanzi Writer uses for its own stroke animation. */
+const ease = (progress: number) => -Math.cos(progress * Math.PI) / 2 + 0.5;
+
+/**
+ * Erases a single stroke by animating its drawn portion back to zero — the
+ * exact reverse of a stroke being written. Hanzi Writer only animates strokes
+ * forwards, so this drives its render state directly.
+ */
+const unDrawStroke = (
+  writer: HanziWriterInstance,
+  strokeNum: number,
+  isCanceled: () => boolean,
+) =>
+  new Promise<DrawStatus>((resolve) => {
+    const renderState = writer._renderState;
+
+    if (!renderState?.updateState) {
+      resolve("error");
+      return;
+    }
+
+    const startPortion =
+      renderState.state?.character?.main?.strokes?.[strokeNum]?.displayPortion ??
+      1;
+
+    let frame = 0;
+    let settled = false;
+    const startedAt = performance.now();
+
+    const finish = (status: DrawStatus) => {
+      if (settled) return;
+      settled = true;
+      cancelAnimationFrame(frame);
+      resolve(status);
+    };
+
+    const tick = (now: number) => {
+      if (isCanceled()) {
+        finish("canceled");
+        return;
+      }
+
+      const progress = Math.min(1, (now - startedAt) / REVERSE_STROKE_DURATION);
+      const displayed = startPortion * (1 - ease(progress));
+
+      renderState.updateState({
+        character: {
+          main: {
+            strokes: {
+              [strokeNum]: { opacity: 1, displayPortion: displayed },
+            },
+          },
+        },
+      });
+
+      if (progress >= 1) {
+        finish("done");
+        return;
+      }
+
+      frame = requestAnimationFrame(tick);
+    };
+
+    frame = requestAnimationFrame(tick);
+  });
+
 export const HanziAnimator = ({ characters }: { characters: string }) => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [stepMode, setStepMode] = useState(false);
@@ -114,6 +195,8 @@ export const HanziAnimator = ({ characters }: { characters: string }) => {
   const drawnStrokesRef = useRef(0);
   const steppingRef = useRef(false);
   const pendingStepRef = useRef(false);
+  // Bumped whenever the stepped character resets, so a running erase can bail.
+  const stepEpochRef = useRef(0);
 
   const [failed, setFailed] = useState<Set<number>>(new Set());
 
@@ -206,6 +289,7 @@ export const HanziAnimator = ({ characters }: { characters: string }) => {
         if (writer) void hideWriter(writer);
       });
 
+      stepEpochRef.current += 1;
       drawnStrokesRef.current = 0;
       targetStrokesRef.current = 0;
       setDrawnStrokes(0);
@@ -308,9 +392,9 @@ export const HanziAnimator = ({ characters }: { characters: string }) => {
     selectedIndex !== null ? (strokeCounts[selectedIndex] ?? 0) : 0;
 
   /**
-   * Draws (or rewinds) the selected character until it matches the requested
-   * stroke count. Strokes are drawn one at a time; rewinding resets the
-   * character and replays the earlier strokes.
+   * Brings the stepped character to the requested stroke count, one stroke at a
+   * time: going forward writes the next stroke, going back erases the last one
+   * by running its drawing in reverse.
    */
   async function driveStep() {
     // A run is already in flight — it re-reads the target on every stroke, so
@@ -334,10 +418,16 @@ export const HanziAnimator = ({ characters }: { characters: string }) => {
 
         if (target === drawn) return;
 
+        const epoch = stepEpochRef.current;
+
         if (target < drawn) {
-          await hideWriter(writer);
-          drawnStrokesRef.current = 0;
-          setDrawnStrokes(0);
+          const status = await unDrawStroke(writer, drawn - 1, () => {
+            return stepEpochRef.current !== epoch;
+          });
+          if (status !== "done") return;
+
+          drawnStrokesRef.current = drawn - 1;
+          setDrawnStrokes(drawn - 1);
           continue;
         }
 
@@ -377,11 +467,17 @@ export const HanziAnimator = ({ characters }: { characters: string }) => {
     void driveStep();
   };
 
-  /** Rewinds the stepped character back to zero strokes. */
+  /** Clears the stepped character instantly so stepping starts over. */
   const resetStep = () => {
+    stepEpochRef.current += 1;
     targetStrokesRef.current = 0;
+    drawnStrokesRef.current = 0;
     setTargetStrokes(0);
-    void driveStep();
+    setDrawnStrokes(0);
+
+    const index = selectedIndexRef.current;
+    const writer = index === null ? null : writersRef.current[index];
+    if (writer) void hideWriter(writer);
   };
 
   if (!chars.length) return null;

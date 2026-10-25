@@ -90,12 +90,13 @@ export const ReaderFocusedRead = ({
 
   const [showParent, setShowParent] = useState(false);
   /**
-   * The counter over the bar reads as lines — where you are of how many. Tapped,
-   * it swaps to the share of the text behind you; tapped again, back to the
-   * line. It is the same reader asking the same question two ways, so it is one
-   * control toggling rather than two numbers side by side.
+   * The counter over the bar reads as the share of the text behind you, since
+   * that is the question the bar itself answers. Tapped, it swaps to lines —
+   * where you are of how many; tapped again, back to the percentage. It is the
+   * same reader asking the same question two ways, so it is one control
+   * toggling rather than two numbers side by side.
    */
-  const [showProgressPercent, setShowProgressPercent] = useState(false);
+  const [showProgressPercent, setShowProgressPercent] = useState(true);
   // The word the mini dictionary is open on.
   const [tappedWord, setTappedWord] = useState<{
     text: string;

@@ -23,12 +23,14 @@ import {
 } from "@/components/ui/select";
 import { SentenceItem } from "../sentence-item";
 import { Icons } from "@/components/ui/icons.v2";
+import {
+  ALL_CONTENTS,
+  useSelectedContentStore,
+} from "./use-selected-content-store";
 
 const useSideBarViewType = create((set: any, get: any) => ({
   sideBarView: "sentences",
   setSideBarView: (sideBarView: any) => set({ sideBarView }),
-  selectedContent: "all",
-  setSelectedContent: (selectedContent: any) => set({ selectedContent }),
 }));
 
 export const CharacterOverviewViewSidebar = ({
@@ -42,8 +44,13 @@ export const CharacterOverviewViewSidebar = ({
 
   const sideBarView = useSideBarViewType((state) => state.sideBarView);
   const setSideBarView = useSideBarViewType((state) => state.setSideBarView);
-  const selectedContent = useSideBarViewType((state) => state.selectedContent);
-  const setSelectedContent = useSideBarViewType(
+
+  // Shared with the reader view, so a content picked here is the content the
+  // reader opens on.
+  const selectedContentId = useSelectedContentStore(
+    (state) => state.selectedContentId,
+  );
+  const setSelectedContent = useSelectedContentStore(
     (state) => state.setSelectedContent,
   );
 
@@ -69,33 +76,23 @@ export const CharacterOverviewViewSidebar = ({
     contentIds: uniqueIds,
   });
 
-  const uniqueContentTitles = useMemo(() => {
-    const contentTitles =
-      contentItems?.items.map((content) => content.title) || [];
+  const uniqueContents = useMemo(() => {
+    const contents =
+      contentItems?.items?.map((content: any) => ({
+        id: content?.id,
+        title: content?.title,
+      })) || [];
 
-    return [
-      { title: "all" },
-      ...contentTitles.map((title: string) => ({ title })),
-    ];
-  }, [items, contentItems?.items]);
+    return [{ id: ALL_CONTENTS, title: "all" }, ...contents];
+  }, [contentItems?.items]);
 
   const filteredItems = useMemo(() => {
-    if (selectedContent === "all") {
+    if (selectedContentId === ALL_CONTENTS) {
       return items;
     }
 
-    const selectedContentItem = contentItems?.items?.find(
-      (c: any) => c?.title === selectedContent,
-    );
-
-    if (!selectedContentItem) {
-      return items;
-    }
-
-    return items?.filter(
-      (item: any) => item?.contentId === selectedContentItem?.id,
-    );
-  }, [items, selectedContent, contentItems?.items]);
+    return items?.filter((item: any) => item?.contentId === selectedContentId);
+  }, [items, selectedContentId]);
 
   const [contentCurrentPage, setContentCurrentPage] = useState(1);
   const contentTotalPages = Math.ceil(
@@ -212,12 +209,20 @@ export const CharacterOverviewViewSidebar = ({
           </TabsContent>
 
           <TabsContent value="content-sentences">
-            {uniqueContentTitles?.length > 1 && (
+            {uniqueContents?.length > 1 && (
               <div className="mb-4">
                 <Select
-                  value={selectedContent}
+                  value={selectedContentId}
                   onValueChange={(value) => {
-                    setSelectedContent(value);
+                    const content = uniqueContents?.find(
+                      (item: any) => item?.id === value,
+                    );
+
+                    setSelectedContent(
+                      content?.id === ALL_CONTENTS
+                        ? null
+                        : { id: content?.id, title: content?.title },
+                    );
                     setContentCurrentPage(1);
                   }}
                 >
@@ -227,11 +232,11 @@ export const CharacterOverviewViewSidebar = ({
                   <SelectContent className="dark:bg-black dark:border-gray-900 w-[300px] text-xs">
                     <SelectGroup>
                       <SelectLabel>Content</SelectLabel>
-                      {uniqueContentTitles?.map((topic: any) => {
+                      {uniqueContents?.map((topic: any) => {
                         return (
                           <SelectItem
-                            value={topic?.title}
-                            key={topic?.title}
+                            value={topic?.id}
+                            key={topic?.id}
                             className="text-xs dark:hover:text-white data-[state=unchecked]:dark:text-gray-500 transition dark:data-[state=checked]:text-white"
                           >
                             {topic?.title}

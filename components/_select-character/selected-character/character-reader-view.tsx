@@ -12,6 +12,10 @@ import { cn } from "@/lib/utils";
 import { useMemo, useState } from "react";
 
 import { useGetCharacterLearningContext } from "./use-get-character-learning-context";
+import {
+  ALL_CONTENTS,
+  useSelectedContentStore,
+} from "./use-selected-content-store";
 
 /** The reading surfaces a character can be read in, as the reader offers them. */
 type CharacterReaderMode = "focused" | "read" | "dynocloze" | "insights";
@@ -57,6 +61,21 @@ export const CharacterReaderView = ({
 
   const [mode, setMode] = useState<CharacterReaderMode>("focused");
 
+  // The content picked in the sidebar's Content Examples tab. When one is
+  // picked, this reader reads that content — its lines for this word only,
+  // rather than every content the word appears in.
+  const selectedContentId = useSelectedContentStore(
+    (state) => state.selectedContentId,
+  );
+  const selectedContentTitle = useSelectedContentStore(
+    (state) => state.selectedContentTitle,
+  );
+  const setSelectedContent = useSelectedContentStore(
+    (state) => state.setSelectedContent,
+  );
+
+  const isContentScoped = selectedContentId !== ALL_CONTENTS;
+
   // Bookmarks and lookups kept here sync back to the account like the reader's
   // own, so a word saved while reading is on the reading list everywhere.
   useReaderInteractionsSync();
@@ -88,28 +107,40 @@ export const CharacterReaderView = ({
     const seen = new Set<string>();
     const gathered: { text: string; pinyin: string }[] = [];
 
-    [...(contentSentences || []), ...(dictionarySentences || [])].forEach(
-      (item: any) => {
-        const text = (item?.hanzi || item?.input || "").trim();
+    // Scoped to a content: only that content's lines. The dictionary's own
+    // examples belong to no content, so they stay out of a scoped read.
+    const sentences = isContentScoped
+      ? (contentSentences || []).filter(
+          (item: any) => item?.contentId === selectedContentId,
+        )
+      : [...(contentSentences || []), ...(dictionarySentences || [])];
 
-        if (!text || seen.has(text)) {
-          return;
-        }
+    sentences.forEach((item: any) => {
+      const text = (item?.hanzi || item?.input || "").trim();
 
-        seen.add(text);
+      if (!text || seen.has(text)) {
+        return;
+      }
 
-        gathered.push({ text, pinyin: item?.pinyin || item?.roman || "" });
-      },
-    );
+      seen.add(text);
+
+      gathered.push({ text, pinyin: item?.pinyin || item?.roman || "" });
+    });
 
     // A word looked up as a sentence has no examples of its own: the sentence is
     // what there is to read.
-    if (!gathered.length && characterId.trim().length > 4) {
+    if (!gathered.length && !isContentScoped && characterId.trim().length > 4) {
       gathered.push({ text: characterId.trim(), pinyin: "" });
     }
 
     return gathered;
-  }, [contentSentences, dictionarySentences, characterId]);
+  }, [
+    contentSentences,
+    dictionarySentences,
+    characterId,
+    isContentScoped,
+    selectedContentId,
+  ]);
 
   const text = useMemo(
     () => lines.map(({ text }) => text).join("\n"),
@@ -144,7 +175,22 @@ export const CharacterReaderView = ({
   if (!text) {
     return (
       <div className="mt-16 mb-32 text-center text-gray-500 font-extralight">
-        <p>There are no sentences to read this word in yet.</p>
+        <p>
+          {isContentScoped
+            ? `No lines of ${characterId} in ${
+                selectedContentTitle || "this content"
+              } yet.`
+            : "There are no sentences to read this word in yet."}
+        </p>
+
+        {isContentScoped && (
+          <button
+            onClick={() => setSelectedContent(null)}
+            className="mt-4 text-xs underline"
+          >
+            Read every content instead
+          </button>
+        )}
       </div>
     );
   }
@@ -176,10 +222,27 @@ export const CharacterReaderView = ({
             <p className="text-xs text-gray-500 font-light mt-2 uppercase tracking-wider">
               <span>Reader</span>
               <span> · </span>
+
+              {isContentScoped ? (
+                <span>{selectedContentTitle || "one content"}</span>
+              ) : (
+                <span>all contents</span>
+              )}
+
+              <span> · </span>
               <span>
                 {lines.length} {lines.length === 1 ? "sentence" : "sentences"}
               </span>
             </p>
+
+            {isContentScoped && (
+              <button
+                onClick={() => setSelectedContent(null)}
+                className="mt-2 text-xs text-gray-500 underline"
+              >
+                Read every content
+              </button>
+            )}
           </div>
 
           <div className="flex items-center gap-1 border-[1px] border-gray-200 dark:border-gray-800 rounded-full px-1 py-1">

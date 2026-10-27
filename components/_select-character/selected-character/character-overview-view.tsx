@@ -24,6 +24,7 @@ import { CharacterSentenceTransformations } from "../character-sentence-transfor
 import { SentenceItem } from "../sentence-item";
 import { AdvancedSearchView } from "./advanced-search-view/advanced-search-view";
 import { AntonymsView } from "./antonyms-view";
+import { CompatiblesView } from "./compatibles-view";
 import { SynonymsView } from "./synonyms-view";
 import { useGetCharacterLearningContext } from "./use-get-character-learning-context";
 
@@ -88,6 +89,15 @@ export const CharacterOverviewView = ({
                         >
                           Grammar
                         </TabsTrigger>
+
+                        {characterId?.length === 1 && (
+                          <TabsTrigger
+                            value="compatibles"
+                            className="px-0 data-[state=active]:text-black data-[state=active]:dark:text-white text-gray-500 data-[state=active]:font-bold"
+                          >
+                            Compatibles
+                          </TabsTrigger>
+                        )}
 
                         {characterLearningContext?.length > 0 && (
                           <TabsTrigger
@@ -184,6 +194,12 @@ export const CharacterOverviewView = ({
                       lang={lang || selectedComp?.lang}
                     />
                   </TabsContent>
+
+                  {characterId?.length === 1 && (
+                    <TabsContent value="compatibles">
+                      <CompatiblesView characterId={characterId} />
+                    </TabsContent>
+                  )}
                   <TabsContent value="content-sentences">
                     <div>
                       {items?.map((item: any) => {

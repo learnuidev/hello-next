@@ -173,6 +173,23 @@ export const CharacterNavbar = ({ characterId }: { characterId: string }) => {
               <Icons.pinyinChart />
             </button>
           )}
+
+          <button
+            title="Reader"
+            className={cn("text-xl transition", styleFn("reader"))}
+            onClick={() => {
+              setView("reader");
+            }}
+          >
+            <Icons.bookOpen
+              className={
+                view === "reader"
+                  ? "dark:text-white text-black"
+                  : "text-gray-500"
+              }
+            />
+          </button>
+
           <SelectedCharacterContentsButton characterId={characterId} />
         </div>
       </div>

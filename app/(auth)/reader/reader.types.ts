@@ -12,6 +12,22 @@ export interface ReaderItem {
   text: string;
   /** The url the text was parsed from, when it was added as a url. */
   sourceUrl?: string;
+  /** The subtitle file the lines came out of, when it was uploaded as one. */
+  subtitleFileName?: string;
+  /** Where that original file is kept in the assets bucket. */
+  subtitleFileKey?: string;
+  /** How big that original file is, in bytes. */
+  subtitleFileSize?: number;
+  /** A signed link to the original file, good for a day. */
+  subtitleFileUrl?: string | null;
+  /**
+   * When each line of a subtitle text is said, in milliseconds, one per line —
+   * kept beside the text rather than in it, so the times never have to be read
+   * as words. See `utils/get-reader-line-timestamps`.
+   */
+  cueStarts?: number[];
+  /** Where each line stops being said. The last one is the film's length. */
+  cueEnds?: number[];
   /** Timestamp of when the text was saved. The list is sorted by this. */
   createdAt: number;
   /** Timestamp of the last edit. */

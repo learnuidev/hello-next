@@ -35,7 +35,9 @@ import {
   findReaderLineAtOffset,
   findReaderLineAtWord,
 } from "../utils/find-reader-line";
+import { formatReaderCueTime } from "../utils/format-reader-cue-time";
 import { formatReaderDate } from "../utils/format-reader-date";
+import { getReaderLineTimestamps } from "../utils/get-reader-line-timestamps";
 import {
   ReaderSelection,
   joinReaderSelection,
@@ -153,6 +155,22 @@ export default function ReaderText() {
   ]);
 
   const lang = useMemo(() => detectReaderLang(item?.text || ""), [item?.text]);
+
+  /**
+   * When each line of a subtitle text is said, in the order the reading views
+   * step through them. Empty for every other kind of text — and for a subtitle
+   * text whose lines have been edited since, since a time that belongs to a
+   * line that is no longer there is worse than no time at all.
+   */
+  const lineTimestamps = useMemo(
+    () =>
+      getReaderLineTimestamps({
+        text: item?.text || "",
+        cueStarts: item?.cueStarts,
+        lang,
+      }),
+    [item?.text, item?.cueStarts, lang],
+  );
 
   /**
    * Files a piece of the text into the bookmarks, with the line it came out of
@@ -372,6 +390,53 @@ export default function ReaderText() {
                   <span>View original article</span>
                 </a>
               )}
+
+              {/* Where a url says where the text came from, a subtitle text says
+                  what it was cut from and how much of it there is: the file, its
+                  lines, and how long they run. The original file is kept by the
+                  API, and this is the way back to it. */}
+              {!!item.cueStarts?.length && (
+                <p className="mt-4 flex flex-wrap items-center gap-2 text-xs uppercase tracking-wider text-gray-400">
+                  <Icons.upload className="text-sm" />
+                  {item.subtitleFileName && (
+                    <span className="max-w-full break-all normal-case">
+                      {item.subtitleFileName}
+                    </span>
+                  )}
+                  <span>·</span>
+                  <span className="tabular-nums">
+                    {item.cueStarts.length} subtitles
+                  </span>
+                  {typeof item.cueEnds?.[item.cueEnds.length - 1] ===
+                    "number" && (
+                    <>
+                      <span>·</span>
+                      <span className="tabular-nums">
+                        {formatReaderCueTime(
+                          item.cueEnds[item.cueEnds.length - 1] as number,
+                        )}
+                      </span>
+                      <span>long</span>
+                    </>
+                  )}
+                  {item.subtitleFileUrl && (
+                    <a
+                      href={item.subtitleFileUrl}
+                      title="Download the subtitle file this text was made from"
+                      className="inline-flex items-center gap-1 text-gray-400 hover:text-rose-400 transition"
+                    >
+                      <Icons.externalLink className="text-sm" />
+                      <span>Original file</span>
+                      {typeof item.subtitleFileSize === "number" && (
+                        <span className="tabular-nums">
+                          · {Math.max(1, Math.round(item.subtitleFileSize / 1024))}{" "}
+                          KB
+                        </span>
+                      )}
+                    </a>
+                  )}
+                </p>
+              )}
             </>
           )}
 
@@ -441,6 +506,7 @@ export default function ReaderText() {
               readerItemTitle={item.title}
               text={item.text}
               lang={lang}
+              lineTimestamps={lineTimestamps}
               onSaved={() => {
                 setSavedNotice(true);
               }}

@@ -31,6 +31,17 @@ export const ReaderListItem = ({
           <span>{formatReaderDateShort(item.createdAt)}</span>
           <span> · </span>
           <span>{countReaderCharacters(item.text)} characters</span>
+          {!!item.cueStarts?.length && (
+            <>
+              <span> · </span>
+              <span className="inline-flex items-center gap-1 text-gray-400">
+                <Icons.upload className="text-xs" />
+                <span className="tabular-nums">
+                  {item.cueStarts.length} subtitles
+                </span>
+              </span>
+            </>
+          )}
           {item.sourceUrl && (
             <>
               <span> · </span>

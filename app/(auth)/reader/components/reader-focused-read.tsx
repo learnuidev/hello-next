@@ -10,6 +10,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useListDiscoveryQuery } from "@/domain/sentence/use-list-discovery-query";
 import { useReaderStore } from "../hooks/use-reader-store";
 import { useReaderInteractionsStore } from "../hooks/use-reader-interactions";
+import { formatReaderCueTime } from "../utils/format-reader-cue-time";
 import { getReaderPinyin } from "../utils/get-reader-pinyin";
 import { isHanCharacter } from "../utils/is-han-character";
 import { ReaderWord, segmentReaderWords } from "../utils/segment-reader-text";
@@ -45,6 +46,7 @@ export const ReaderFocusedRead = ({
   readerItemTitle,
   text,
   lang,
+  lineTimestamps,
   snippetKind,
   getLinePinyin,
   initialSentenceIndex,
@@ -54,6 +56,13 @@ export const ReaderFocusedRead = ({
   readerItemTitle: string;
   text: string;
   lang: string;
+  /**
+   * When each line is said, in the same order this view steps through them —
+   * the times of a subtitle text, so the stage can say where in the film the
+   * line belongs. Absent, or shorter than the text, for every other text, and
+   * the stage simply says nothing.
+   */
+  lineTimestamps?: (number | undefined)[];
   snippetKind?: "reader" | "convo";
   /**
    * The whole-line pinyin for a sentence, when it comes from somewhere richer
@@ -138,6 +147,12 @@ export const ReaderFocusedRead = ({
   }, [initialSentenceIndex]);
 
   const currentSentence = sentences[currentIndex] || "";
+
+  // Where in the film this line is said, for a text that came out of a subtitle
+  // file. It is a place, not a clock: it says how far into the film the line
+  // belongs, which is what a reader of subtitles is orienting by.
+  const cueStart = lineTimestamps?.[currentIndex];
+
   const words = useMemo(
     () => segmentReaderWords(currentSentence, lang),
     [currentSentence, lang],
@@ -407,6 +422,14 @@ export const ReaderFocusedRead = ({
           a background of its own so the text passes underneath it rather than
           through it. */}
       <div className="sticky top-0 z-20 mt-20 flex min-h-[14rem] flex-col justify-center bg-white text-center dark:bg-[rgb(9,10,11)] sm:min-h-[18rem]">
+        {/* The line's place in the film, for a subtitle text — small and above
+            the line, where it orients without being read as part of it. */}
+        {typeof cueStart === "number" && (
+          <p className="mb-3 text-[11px] uppercase tracking-wider text-gray-400 tabular-nums">
+            {formatReaderCueTime(cueStart)}
+          </p>
+        )}
+
         {/* With read mode off, the reading is the whole line's regular pinyin —
             the transcript's own when there is one — on a line of its own, above
             the hanzi. */}

@@ -8,6 +8,7 @@ import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 import { useMemo } from "react";
 import { CharacterContent } from "./character-content/character-content";
 import { CharacterOverviewView } from "./character-overview-view";
+import { CharacterReaderView } from "./character-reader-view";
 import { HskSuperComponentsWordView } from "./hsk-super-components-view";
 import { PinyinView } from "./pinyin-view";
 import { SimilarCharactersView } from "./similar-characters-view";
@@ -136,6 +137,11 @@ export const SelectedCharacter = ({ characterId }: { characterId: string }) => {
       return <SimilarCharactersView componentId={characterId} />;
     case "content":
       return <CharacterContent characterId={characterId} />;
+
+    // The word read the way a text is read: its own sentences in the reader's
+    // surfaces, rather than one example at a time down a page.
+    case "reader":
+      return <CharacterReaderView characterId={characterId} lang={lang} />;
 
     default:
       return <CharacterOverviewView characterId={characterId} />;

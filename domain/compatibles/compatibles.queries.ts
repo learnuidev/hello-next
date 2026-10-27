@@ -34,6 +34,10 @@ export function useListCompatiblesQuery(
 ) {
   const { data: authUser } = useCurrentAuthUser({});
 
+  // One request per character: the endpoint returns that character's whole
+  // compatible list, and searching / position filtering / sorting are done in
+  // the view. They must stay out of this query key, or every keystroke becomes
+  // a network round trip.
   return useQuery({
     queryKey: [queryIds.listCompatibles, params?.characterId],
     queryFn: async (): Promise<ListCompatiblesResponse> => {

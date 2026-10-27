@@ -7,10 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useCurrentAuthUser } from "../auth/auth.queries";
 import { siteConfig } from "@/lib/config";
 
-import {
-  CompatibleRadical,
-  ListCompatiblesResponse,
-} from "./compatibles.types";
+import { ListCompatiblesResponse } from "./compatibles.types";
 
 async function listCompatibles(
   params: { characterId: string },
@@ -39,12 +36,10 @@ export function useListCompatiblesQuery(
 
   return useQuery({
     queryKey: [queryIds.listCompatibles, params?.characterId],
-    queryFn: async (): Promise<CompatibleRadical[]> => {
-      const response = await listCompatibles(params, {
+    queryFn: async (): Promise<ListCompatiblesResponse> => {
+      return await listCompatibles(params, {
         Authorization: authUser?.jwt,
       });
-
-      return response?.parts || [];
     },
     ...options,
     enabled: Boolean(authUser?.jwt) && Boolean(params?.characterId),

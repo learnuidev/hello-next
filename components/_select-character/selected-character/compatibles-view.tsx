@@ -1,7 +1,11 @@
 "use client";
 
 import { useListCompatiblesQuery } from "@/domain/compatibles/compatibles.queries";
-import { CompatibleRadical } from "@/domain/compatibles/compatibles.types";
+import {
+  CompatibleCharacter,
+  CompatibleRadical,
+  ListCompatiblesResponse,
+} from "@/domain/compatibles/compatibles.types";
 import { useGetCurrentLang } from "@/hooks/use-get-current-lang";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
@@ -19,6 +23,9 @@ const POSITION_LABEL: Record<string, string> = {
   around: "around",
 };
 
+const positionLabel = (position: string | null, fallback = "position unknown") =>
+  (position && POSITION_LABEL[position]) || position || fallback;
+
 export const CompatiblesView = ({ characterId }: { characterId: string }) => {
   const router = useRouter();
   const lang = useGetCurrentLang();
@@ -27,7 +34,9 @@ export const CompatiblesView = ({ characterId }: { characterId: string }) => {
     characterId,
   });
 
-  const parts = (data as CompatibleRadical[]) || [];
+  const response = data as ListCompatiblesResponse | undefined;
+  const character = response?.character;
+  const parts = response?.parts || [];
 
   if (isLoading) {
     return (
@@ -56,6 +65,35 @@ export const CompatiblesView = ({ characterId }: { characterId: string }) => {
 
   return (
     <div className="space-y-10 py-4">
+      <header className="flex items-start gap-4 border-b border-gray-200 dark:border-gray-700 pb-4">
+        <div className="text-6xl leading-none dark:text-white text-black">
+          {character?.hanzi || characterId}
+        </div>
+
+        <div className="min-w-0">
+          <div className="text-sm uppercase tracking-wide text-gray-500">
+            {character?.pinyin || "—"}
+          </div>
+          <div className="text-base dark:text-gray-300 text-gray-700 truncate">
+            {character?.meaning || "no meaning"}
+          </div>
+
+          <div className="mt-1 text-xs text-gray-500">
+            {parts
+              .map(
+                (part) =>
+                  `${part.radical} (${positionLabel(
+                    part.position,
+                    part.radical === characterId
+                      ? "the character itself"
+                      : "position unknown",
+                  )})`,
+              )
+              .join("  +  ")}
+          </div>
+        </div>
+      </header>
+
       {parts.map((part: CompatibleRadical) => {
         const visible = part.compatibles.slice(0, MAX_VISIBLE);
         const isTheCharacterItself = part.radical === characterId;
@@ -72,8 +110,12 @@ export const CompatiblesView = ({ characterId }: { characterId: string }) => {
                   {part.meaning || "no meaning"}
                 </div>
                 <div className="text-xs uppercase tracking-wide text-gray-500">
-                  {POSITION_LABEL[part.position as string] ||
-                    (isTheCharacterItself ? "the character itself" : "position unknown")}
+                  {positionLabel(
+                    part.position,
+                    isTheCharacterItself
+                      ? "the character itself"
+                      : "position unknown",
+                  )}
                 </div>
               </div>
 
@@ -82,8 +124,8 @@ export const CompatiblesView = ({ characterId }: { characterId: string }) => {
               </div>
             </div>
 
-            <div className="mt-3 flex flex-wrap gap-2">
-              {visible.map((item: CompatibleRadical["compatibles"][number]) => {
+            <div className="mt-3 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2">
+              {visible.map((item: CompatibleCharacter) => {
                 const isCurrent = item.character === characterId;
 
                 return (
@@ -93,19 +135,37 @@ export const CompatiblesView = ({ characterId }: { characterId: string }) => {
                       router.push(`/nmm/${item.character}?lang=${lang || "zh"}`)
                     }
                     className={cn(
-                      "rounded-xl border px-3 py-2 text-left transition-colors",
+                      "rounded-xl border p-3 text-left transition-colors min-w-0",
                       "hover:bg-gray-100 dark:hover:bg-gray-800",
                       isCurrent
                         ? "border-black dark:border-white bg-gray-100 dark:bg-gray-800"
                         : "border-gray-200 dark:border-gray-700",
                     )}
-                    title={item.meaning || undefined}
                   >
-                    <div className="text-2xl dark:text-white text-black leading-none">
-                      {item.character}
+                    <div className="flex items-baseline gap-2">
+                      <div className="text-2xl dark:text-white text-black leading-none">
+                        {item.character}
+                      </div>
+
+                      <div
+                        className="ml-auto shrink-0 text-[10px] uppercase tracking-wide text-gray-400"
+                        title={`${part.radical} is on the ${
+                          item.position || "unknown"
+                        } of ${item.character}`}
+                      >
+                        {item.position || "—"}
+                      </div>
                     </div>
-                    <div className="mt-1 text-xs text-gray-500">
+
+                    <div className="mt-1 text-xs text-gray-500 truncate">
                       {item.pinyin || "—"}
+                    </div>
+
+                    <div
+                      className="mt-1 text-[11px] dark:text-gray-400 text-gray-600 truncate"
+                      title={item.meaning || undefined}
+                    >
+                      {item.meaning || "—"}
                     </div>
                   </button>
                 );

@@ -1,3 +1,9 @@
+export interface CharacterInfo {
+  hanzi: string;
+  pinyin: string | null;
+  meaning: string | null;
+}
+
 export interface CompatibleCharacter {
   character: string;
   pinyin: string | null;
@@ -16,5 +22,6 @@ export interface CompatibleRadical {
 
 export interface ListCompatiblesResponse {
   characterId: string;
+  character: CharacterInfo;
   parts: CompatibleRadical[];
 }

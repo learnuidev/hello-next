@@ -330,8 +330,11 @@ export const ReaderDynocloze = ({
               disabled={!!response}
               className={cn(
                 "border-[2px] p-3 text-lg transition rounded",
+                // An option waiting to be picked is black on white or white on
+                // black — the text's own two colours, with the hover filling
+                // the button in the opposite one.
                 !response &&
-                  "border-orange-400 hover:bg-orange-500 hover:text-white hover:scale-105",
+                  "border-black text-black hover:bg-black hover:text-white hover:scale-105 dark:border-white dark:text-white dark:hover:bg-white dark:hover:text-black",
                 response &&
                   isPicked &&
                   (response.type === "correct"

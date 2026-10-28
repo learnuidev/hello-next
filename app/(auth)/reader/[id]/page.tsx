@@ -337,31 +337,48 @@ export default function ReaderText() {
             the title and the saved-at line belong to the reading view. The way
             back to the library is in the bar at the bottom. */}
         {viewMode !== "focused" && (
-          <div className="mt-12 flex justify-between items-center">
-            <Link
-              href="/reader"
-              className="uppercase text-xs tracking-wider text-gray-400 hover:text-rose-400 dark:hover:text-white transition"
-            >
-              <Icons.back className="mr-2 text-xs" />
-              <span>Reader</span>
-            </Link>
+          <div
+            className={cn(
+              "mt-12 flex justify-between items-center",
+              // With neither the way back nor the editor in it, the row is
+              // empty on a wide screen in dynocloze — it holds nothing but the
+              // phone's menu there, so it goes with them.
+              viewMode === "dynocloze" && "sm:hidden",
+            )}
+          >
+            {/* Dynocloze is a screen of its own: it keeps the line being asked
+                about in the middle and nothing else, so the way back to the
+                library and the way into the editor both stay out of it — the
+                way back is in the bar at the bottom, and editing waits until
+                the text is being read rather than quizzed. */}
+            {viewMode !== "dynocloze" && (
+              <Link
+                href="/reader"
+                className="uppercase text-xs tracking-wider text-gray-400 hover:text-rose-400 dark:hover:text-white transition"
+              >
+                <Icons.back className="mr-2 text-xs" />
+                <span>Reader</span>
+              </Link>
+            )}
 
-            <div className="flex items-center gap-4 sm:gap-6">
+            <div className="flex items-center gap-4 sm:gap-6 ml-auto">
               {/* On a phone the switches live here, in a menu that opens
                   upwards, rather than in the floating dock against the right
                   edge — which stays where it is on the wide screen. */}
               <ReaderDisplayMenu />
 
-              <button
-                onClick={() => {
-                  setIsEditing(true);
-                }}
-                title="Edit this text"
-                className="uppercase text-xs tracking-wider text-gray-400 hover:text-rose-400 dark:hover:text-white transition"
-              >
-                <Icons.edit className="mr-2 text-xs" />
-                <span>Edit</span>
-              </button>
+              {viewMode !== "dynocloze" && (
+                <button
+                  onClick={() => {
+                    setIsEditing(true);
+                  }}
+                  title="Edit this text"
+                  className="uppercase text-xs tracking-wider text-gray-400 hover:text-rose-400 dark:hover:text-white transition"
+                >
+                  <Icons.edit className="mr-2 text-xs" />
+                  <span>Edit</span>
+                </button>
+              )}
 
               {readMode && (
                 <p className="uppercase text-[11px] tracking-wider text-gray-500">

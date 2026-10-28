@@ -330,12 +330,17 @@ export const ReaderDynocloze = ({
               }}
               disabled={!!response}
               className={cn(
-                "border-[2px] border-b-[4px] border-r-[8px] px-6 p-3 text-lg transition rounded-none",
+                // Only the colours transition, and the box itself never moves
+                // or resizes under the pointer: a hovered option that grows
+                // rescales its own hit area, and the browser ends up dropping
+                // and re-applying the hover every frame — the background
+                // flashing black/clear is exactly that.
+                "border-[2px] px-6 p-3 text-lg transition-colors rounded-none",
                 // An option waiting to be picked is black on white or white on
                 // black — the text's own two colours, with the hover filling
                 // the button in the opposite one.
                 !response &&
-                  "border-black text-black hover:bg-black hover:text-white hover:scale-105 dark:border-white dark:text-white dark:hover:bg-white dark:hover:text-black",
+                  "border-black text-black hover:bg-black hover:text-white dark:border-white dark:text-white dark:hover:bg-white dark:hover:text-black",
                 response &&
                   isPicked &&
                   (response.type === "correct"

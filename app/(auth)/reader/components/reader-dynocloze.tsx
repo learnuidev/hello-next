@@ -12,11 +12,13 @@ import { useChinglishState } from "@/components/settings-dialog/use-chinglish-st
 import { useListDiscoveryQuery } from "@/domain/sentence/use-list-discovery-query";
 import { useReaderStore } from "../hooks/use-reader-store";
 import { getReaderPinyin } from "../utils/get-reader-pinyin";
+import { isHanCharacter } from "../utils/is-han-character";
 import {
   getReaderWords,
   segmentReaderWords,
 } from "../utils/segment-reader-text";
 import { splitReaderSentences } from "../utils/split-reader-sentences";
+import { ReaderCharacter, useReaderCharacterMaps } from "./reader-character";
 import { ReaderMiniDictionary } from "./reader-mini-dictionary";
 
 type ReaderLearnMode = "timeline" | "stocastic";
@@ -93,6 +95,12 @@ export const ReaderDynocloze = ({
   const showEn = useBrightModeStore((state) => state.showEn);
   const { showChinglish } = useChinglishState();
   const [learnMode, setLearnMode] = useState<ReaderLearnMode>("timeline");
+
+  // The characters wear the colours of what they are to the reader — learned,
+  // forgotten, still unknown — and those colours come from the meta view the
+  // preview button steps through. Two maps fetched once for the whole text
+  // rather than one query per glyph, the way the other two views do it.
+  const characterMaps = useReaderCharacterMaps();
 
   const currentSentence = sentences[currentSentenceIndex] || "";
 
@@ -225,7 +233,10 @@ export const ReaderDynocloze = ({
 
         <p
           onMouseUp={lookUpSelection}
-          className="text-2xl sm:text-3xl font-light leading-relaxed whitespace-pre-wrap"
+          // The line is set at the reading view's size: the cloze is the same
+          // text, and a sentence that changes size when the reader steps into
+          // another view is a sentence that has to be found again.
+          className="text-lg font-light leading-9 whitespace-pre-wrap"
         >
           {segments.map((segment, index) => {
             const blanked = index === targetWord?.index;
@@ -242,8 +253,7 @@ export const ReaderDynocloze = ({
             // has, on that word.
             const highlighted =
               !!tappedWord &&
-              (tappedWord === segment.text ||
-                tappedWord.includes(segment.text));
+              (tappedWord === segment.text || tappedWord.includes(segment.text));
 
             return (
               <span
@@ -262,7 +272,25 @@ export const ReaderDynocloze = ({
                     : "hover:text-rose-400",
                 )}
               >
-                {blanked ? "__".repeat(segment.text.length) : segment.text}
+                {/* The word is drawn character by character for the same
+                    reason the reading views do it: each glyph carries the
+                    learned state the meta view recolours. A blanked word keeps
+                    its underscores — a blank is not a character. */}
+                {blanked
+                  ? "__".repeat(segment.text.length)
+                  : Array.from(segment.text).map((character, characterIndex) =>
+                      isHanCharacter(character) ? (
+                        <ReaderCharacter
+                          key={`segment-${index}-${characterIndex}`}
+                          character={character}
+                          maps={characterMaps}
+                        />
+                      ) : (
+                        <span key={`segment-${index}-${characterIndex}`}>
+                          {character}
+                        </span>
+                      ),
+                    )}
               </span>
             );
           })}

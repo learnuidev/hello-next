@@ -8,9 +8,11 @@ import Link from "next/link";
 import { ReaderViewMode, getReaderViewHref } from "../reader.types";
 
 const VIEW_MODES: { id: ReaderViewMode; title: string; Icon: any }[] = [
-  { id: "read", title: "Read", Icon: Icons.bookOpen },
-  { id: "dynocloze", title: "Dynocloze", Icon: Icons.play },
+  // Glasses lead: focused read is where a text opens, so the bar starts with
+  // the view you are already in and the rest are the ways out of it.
   { id: "focused", title: "Focused read", Icon: Icons.glassesRound },
+  { id: "dynocloze", title: "Dynocloze", Icon: Icons.play },
+  { id: "read", title: "Read", Icon: Icons.bookOpen },
   { id: "insights", title: "Insights", Icon: Icons.chartColumn },
 ];
 
@@ -29,13 +31,11 @@ export const ReaderDock = ({
   viewMode,
   selectionCount,
   onSaveSelection,
-  onEdit,
 }: {
   readerItemId: string;
   viewMode: ReaderViewMode;
   selectionCount: number;
   onSaveSelection: () => void;
-  onEdit?: () => void;
 }) => {
   return (
     <TheDock className="bottom-2" innerClassName="sm:block">
@@ -75,16 +75,6 @@ export const ReaderDock = ({
               >
                 <Icons.bookmarkSolid />
                 <span className="ml-1 text-xs">{selectionCount}</span>
-              </button>
-            )}
-
-            {onEdit && (
-              <button
-                title="Edit this text"
-                onClick={onEdit}
-                className="text-gray-500 hover:text-rose-400 dark:hover:text-white transition text-xl"
-              >
-                <Icons.edit />
               </button>
             )}
 

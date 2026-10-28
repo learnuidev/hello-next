@@ -561,9 +561,6 @@ export default function ReaderText() {
         viewMode={viewMode}
         selectionCount={selection.length}
         onSaveSelection={saveSelection}
-        onEdit={() => {
-          setIsEditing(true);
-        }}
       />
 
       {savedNotice && (

@@ -253,7 +253,8 @@ export const ReaderDynocloze = ({
             // has, on that word.
             const highlighted =
               !!tappedWord &&
-              (tappedWord === segment.text || tappedWord.includes(segment.text));
+              (tappedWord === segment.text ||
+                tappedWord.includes(segment.text));
 
             return (
               <span
@@ -329,7 +330,7 @@ export const ReaderDynocloze = ({
               }}
               disabled={!!response}
               className={cn(
-                "border-[2px] p-3 text-lg transition rounded",
+                "border-[2px] border-b-[4px] border-r-[8px] px-6 p-3 text-lg transition rounded-none",
                 // An option waiting to be picked is black on white or white on
                 // black — the text's own two colours, with the hover filling
                 // the button in the opposite one.

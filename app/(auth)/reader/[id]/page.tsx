@@ -11,6 +11,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import { ReaderDynocloze } from "../components/reader-dynocloze";
 import { ReaderDock } from "../components/reader-dock";
+import { ReaderDisplayMenu } from "../components/reader-display-menu";
 import { ReaderFocusedRead } from "../components/reader-focused-read";
 import { ReaderMiniDictionary } from "../components/reader-mini-dictionary";
 import { ReaderSideDock } from "../components/reader-side-dock";
@@ -345,7 +346,12 @@ export default function ReaderText() {
               <span>Reader</span>
             </Link>
 
-            <div className="flex items-center gap-6">
+            <div className="flex items-center gap-4 sm:gap-6">
+              {/* On a phone the switches live here, in a menu that opens
+                  upwards, rather than in the floating dock against the right
+                  edge — which stays where it is on the wide screen. */}
+              <ReaderDisplayMenu />
+
               <button
                 onClick={() => {
                   setIsEditing(true);
@@ -519,6 +525,10 @@ export default function ReaderText() {
           <ReaderInsights readerItemId={item.id} text={item.text} lang={lang} />
         )}
       </div>
+
+      {/* Focused read has no header to put the switches in, so on a phone the
+          same menu floats in the corner of the frame instead. */}
+      {viewMode === "focused" && <ReaderDisplayMenu variant="floating" />}
 
       <ReaderSideDock
         showTranslate={viewMode === "focused" || viewMode === "dynocloze"}

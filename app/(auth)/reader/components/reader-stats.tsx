@@ -98,6 +98,17 @@ const ReaderProgressRate = ({
  * The app marks a character "forgotten" once it has been mastered (that is what
  * the review screen sets when you say you know it), so a record that is not
  * `forgotten` is one still being learned.
+ *
+ * The two slices the reader knows are drawn as two steps of one gray,
+ * darkest-first: mastered is the darkest and learning the palest. In dark mode
+ * the scale turns over — there is no dark gray to step further into on a black
+ * card, so the ladder climbs towards white instead, mastered becoming the
+ * lightest and learning the dimmest.
+ *
+ * The characters the text has not met yet are not a shade of known at all:
+ * that slice is drawn in the card's own colour, white here and black in dark
+ * mode, so it reads as the gap the reading still has to fill rather than as a
+ * third thing learned.
  */
 const ReaderCharacterProgress = ({
   counts,
@@ -124,15 +135,19 @@ const ReaderCharacterProgress = ({
 
     <div className="mt-4 flex h-2 w-full overflow-hidden rounded-full bg-gray-200 dark:bg-gray-800">
       <div
-        className="bg-emerald-400"
+        className="bg-gray-800 dark:bg-gray-100"
         style={{ width: `${(counts.mastered / (counts.total || 1)) * 100}%` }}
       />
       <div
-        className="bg-amber-400"
+        className="bg-gray-300 dark:bg-gray-600"
         style={{ width: `${(counts.learning / (counts.total || 1)) * 100}%` }}
       />
       <div
-        className="bg-gray-400 dark:bg-gray-600"
+        // "New" is the characters the text has not met yet, so it is the one
+        // slice drawn in the page's own colour: white on the light card, black
+        // on the dark one. It reads as a gap in the bar rather than as another
+        // shade of known.
+        className="bg-white dark:bg-black"
         style={{ width: `${(counts.new / (counts.total || 1)) * 100}%` }}
       />
     </div>
@@ -140,7 +155,7 @@ const ReaderCharacterProgress = ({
     <div className="mt-4 flex flex-wrap items-center justify-between gap-x-6 gap-y-3">
       <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-gray-500">
         <span className="flex items-center gap-2">
-          <span className="h-2 w-2 rounded-full bg-emerald-400" />
+          <span className="h-2 w-2 rounded-full bg-gray-800 dark:bg-gray-100" />
           <span className="tabular-nums text-gray-700 dark:text-gray-300">
             {formatCount(counts.mastered)}
           </span>
@@ -148,7 +163,7 @@ const ReaderCharacterProgress = ({
         </span>
 
         <span className="flex items-center gap-2">
-          <span className="h-2 w-2 rounded-full bg-amber-400" />
+          <span className="h-2 w-2 rounded-full bg-gray-300 dark:bg-gray-600" />
           <span className="tabular-nums text-gray-700 dark:text-gray-300">
             {formatCount(counts.learning)}
           </span>
@@ -156,7 +171,9 @@ const ReaderCharacterProgress = ({
         </span>
 
         <span className="flex items-center gap-2">
-          <span className="h-2 w-2 rounded-full bg-gray-400 dark:bg-gray-600" />
+          {/* The dot sits on the card rather than on the bar's gray track, so
+              it keeps a hairline edge: white on white would otherwise vanish. */}
+          <span className="h-2 w-2 rounded-full bg-white ring-1 ring-gray-300 dark:bg-black dark:ring-gray-700" />
           <span className="tabular-nums text-gray-700 dark:text-gray-300">
             {formatCount(counts.new)}
           </span>

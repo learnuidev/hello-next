@@ -21,7 +21,8 @@ const VIEW_MODES: { id: ReaderViewMode; title: string; Icon: any }[] = [
  *
  * It carries the views of a text, and — once something has been picked out of
  * the text — the button that files it into the reading list. Read mode and
- * pinyin live in their own dock on the right, see `ReaderSideDock`.
+ * pinyin live in their own dock on the right, see `ReaderSideDock` — or, on a
+ * phone, in the menu before the edit button, see `ReaderDisplayMenu`.
  */
 export const ReaderDock = ({
   readerItemId,

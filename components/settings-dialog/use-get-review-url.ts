@@ -1,5 +1,4 @@
 import { useGetReviewParams } from "@/app/review/use-get-review-params";
-import { useUnreviwedCharacters } from "@/app/review/use-unreviewed-characters";
 
 import { useRecentlyWatchedContent } from "@/app/(auth)/convos/use-recently-watched-content-store";
 import { useDiaryParams } from "@/app/(auth)/diary/hooks/use-diary-params";
@@ -61,30 +60,6 @@ export const useGetReviewUrl = (
     reviewContentId: mode,
   };
 };
-export const useGetReviewUrlFn = () => {
-  const { mode } = useLearningMode();
-
-  const {
-    level,
-    reviewSpeed,
-    input: inputParams,
-    entryId,
-  } = useGetReviewParams();
-
-  const { data: unReviewedCharacters } = useUnreviwedCharacters();
-
-  return ({ reviewMode, character, input } = {} as any) =>
-    `/review?${getReviewSearchParams({
-      mode,
-      level,
-      entryId,
-      input: input || inputParams,
-      character: character || unReviewedCharacters?.[0]?.hanzi,
-      reviewSpeed,
-      reviewMode,
-    })}`;
-};
-
 export const getReviewUrl = ({
   mode,
   character,

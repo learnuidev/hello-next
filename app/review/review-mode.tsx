@@ -5,23 +5,11 @@ import { useState } from "react";
 import { useLearningMode } from "@/components/settings-dialog/learning-mode.store";
 import { Icons } from "@/components/ui/icons.v2";
 import { useUpdateCharacterStatusMutation } from "@/domain/lesson/character.mutations";
-import { useListCharacterReviewList } from "@/hooks/use-character-review-list";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { reviewCounterStore } from "./review-counter-store";
 import { useGetReviewParams } from "./use-get-review-params";
 
 import { SpeakComponent } from "@/components/_select-character/speak-component";
-import { usePreviousPathnameStore } from "@/components/language-selector/use-previous-path-name-store";
-import { useGetReviewUrl } from "@/components/settings-dialog/use-get-review-url";
-import {
-  listCharactersQueryId,
-  listCharactersQueryMapId,
-  useListCharactersMapQuery,
-  useListCharactersQuery,
-} from "@/domain/lesson/character.queries";
-import { useQueryClient } from "@tanstack/react-query";
 import { BackButton } from "./back-button";
 import { useClozeReviewTimer } from "./cloze-review-timer-store";
 import { useGetCurrentReviewCharacter } from "./use-get-current-review-character";
@@ -53,69 +41,22 @@ export function ReviewModeClassic(props: any) {
   const [startTime, setStartTime] = useState(Date.now());
   const [endTime, setEndTime] = useState(Date.now());
 
-  const queryClient = useQueryClient();
+  const updateCharacterStatusMutation = useUpdateCharacterStatusMutation();
 
-  const { reviewUrl, reviewContentId } = useGetReviewUrl();
-
-  const updateCharacterStatusMutation = useUpdateCharacterStatusMutation({
-    onSuccess: () => {
-      queryClient.refetchQueries({
-        queryKey: [listCharactersQueryId, reviewContentId],
-      });
-      queryClient.refetchQueries({
-        queryKey: [listCharactersQueryMapId],
-      });
-    },
-  });
-
-  const {
-    data: learnedCharacters,
-    isLoading,
-    isRefetching,
-  } = useListCharacterReviewList(reviewContentId);
-
-  const router = useRouter();
-
-  const {
-    date,
-    level,
-    input,
-    entryId,
-    reviewMode,
-    mode: hskMode,
-    lang: langParams,
-    character: nextCharacter,
-    reviewSpeed,
-  } = useGetReviewParams();
+  const { date, input, mode: hskMode, reviewSpeed } = useGetReviewParams();
 
   const { mode } = useLearningMode();
 
-  const reviewCounts = reviewCounterStore((state: any) => state?.reviewCounts);
-  const setReviewCount = reviewCounterStore(
-    (state: any) => state?.setReviewCount,
-  )(date);
-  const resetReviewCount = reviewCounterStore(
-    (state: any) => state?.resetReviewCount,
-  )(date);
-
-  const reviewCount = reviewCounts?.[date] || 0;
-
   const {
     currentCharacter,
-    hasReviewedAll,
     currentComponent,
     goToNextChar,
     remainingItems,
     isContent,
-    isEntry,
+    isRefetching,
     lang,
     hasNoChars,
   } = useGetCurrentReviewCharacter();
-
-  const { isLoading: listCharactersLoading } = useListCharactersQuery();
-  const { isLoading: listCharactersMapLoading } = useListCharactersMapQuery();
-
-  const { setPreviousPath, previousPath } = usePreviousPathnameStore();
 
   const {
     startTime: _startTime,
@@ -140,10 +81,6 @@ export function ReviewModeClassic(props: any) {
     meaningDiscovery?.en || currentCharacter?.en || currentComponent?.en;
 
   const diff = endTime - startTime + clozeTime;
-
-  if (isLoading || listCharactersLoading || listCharactersMapLoading) {
-    return <div className="">...</div>;
-  }
 
   const ReviewHeader = () => {
     return (
@@ -223,7 +160,6 @@ export function ReviewModeClassic(props: any) {
         setReveal(false);
         setStartTime(startTime);
         setEndTime(startTime);
-        setReviewCount(reviewCount + 1);
         setEmotion("");
         goToNextChar();
       });
@@ -349,7 +285,6 @@ export function ReviewModeClassic(props: any) {
                           setStartTime(startTime);
                           setEndTime(startTime);
                           setEmotion("");
-                          setReviewCount(reviewCount + 1);
 
                           goToNextChar();
                         });
@@ -414,7 +349,6 @@ export function ReviewModeClassic(props: any) {
                           setStartTime(startTime);
                           setEndTime(startTime);
                           setEmotion("");
-                          setReviewCount(reviewCount + 1);
 
                           goToNextChar();
                         });
@@ -476,7 +410,6 @@ export function ReviewModeClassic(props: any) {
                         setStartTime(startTime);
                         setEndTime(startTime);
                         setEmotion("");
-                        setReviewCount(reviewCount + 1);
 
                         goToNextChar();
                       });

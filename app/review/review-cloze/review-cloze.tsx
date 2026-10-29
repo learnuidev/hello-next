@@ -17,6 +17,12 @@ import { useMemo, useRef, useState } from "react";
 import { ReviewItemHanzi } from "../review-cloze-content/review-item-hanzi";
 import { useIsContent } from "../use-is-content";
 import { useHskLevel, useReviewModeView } from "../use-review-mode";
+import {
+  ClozeWord,
+  getClozeDistractors,
+  getClozeWordText,
+  splitSentenceWords,
+} from "./utils/split-sentence-words";
 import { getRandomWords } from "./utils/get-random-words";
 import { shuffleArray } from "./utils/shuffle-array";
 import { getNmmLink } from "@/libs/utils/get-nmm-link";
@@ -175,34 +181,91 @@ export function ReviewCloze({
     [sentences, questionIndex],
   );
 
-  const { data: grammar, isLoading: isGrammarLoading } = useListGrammarsQuery({
-    sentenceId: sentence?.input || sentence?.hanzi,
-    content: sentence?.input || sentence?.hanzi,
-    lang: sentence?.lang,
+  const sentenceText = sentence?.hanzi || sentence?.input;
+  const sentenceLang = sentence?.lang || lang;
+
+  // Still fetched — but no longer waited on. The question is built from the
+  // words the sentence already has, and the analysis takes over from the next
+  // question on, once it is in the cache.
+  const { data: grammar } = useListGrammarsQuery({
+    sentenceId: sentenceText,
+    content: sentenceText,
+    lang: sentenceLang,
   });
 
-  const shuffledGrammar = useMemo(() => {
+  const grammarWords = useMemo(() => {
     if (!grammar) {
-      return [];
+      return [] as ClozeWord[];
     }
 
     return shuffleArray(
       grammar?.grammarAnalysis?.filter(
         (analysis) =>
-          analysis?.input?.toLowerCase() !==
-          (sentence?.input || sentence?.hanzi)?.toLowerCase(),
+          (analysis?.input || analysis?.hanzi)?.toLowerCase() !==
+          sentenceText?.toLowerCase(),
       ),
-    );
-  }, [grammar, sentence?.hanzi, sentence?.input]);
+    ) as ClozeWord[];
+  }, [grammar, sentenceText]);
 
-  const selectedGrammar = useMemo(
-    () => shuffledGrammar?.[wordIndex],
-    [shuffledGrammar, wordIndex],
+  // Read mode's splitter, standing in while the analysis is on its way: the
+  // words of the sentence cost nothing to find in the browser.
+  const splitWords = useMemo(
+    () => splitSentenceWords(sentenceText, sentenceLang),
+    [sentenceText, sentenceLang],
+  );
+
+  /**
+   * The words one question is built from, fixed when the question opens: the
+   * analysis if it had already arrived by then, the sentence's own split if it
+   * had not.
+   *
+   * A question finishes on whatever it started on. Re-blanking the sentence
+   * the moment the analysis landed would move the question out from under an
+   * answer being picked, or worse, from under one already picked.
+   */
+  const questionWords = useRef<{ key: string; words: ClozeWord[] } | null>(
+    null,
+  );
+
+  // The character and the sentence are part of the key: the same component
+  // asks the next character's questions, and it must not answer them with the
+  // words of the one before.
+  const questionKey = `${currentCharacter}|${sentenceText}|${clozeIndex}:${questionIndex}`;
+
+  const clozeWords = useMemo(() => {
+    if (!sentenceText) {
+      return [] as ClozeWord[];
+    }
+
+    if (
+      !questionWords.current?.words?.length ||
+      questionWords.current?.key !== questionKey
+    ) {
+      const words = grammarWords?.length ? grammarWords : splitWords;
+
+      // A sentence with no words in it has nothing to ask; the next render
+      // (the analysis, or the sentence arriving) gets another try.
+      if (!words?.length) {
+        return [] as ClozeWord[];
+      }
+
+      questionWords.current = { key: questionKey, words };
+    }
+
+    return questionWords.current?.words || ([] as ClozeWord[]);
+  }, [sentenceText, questionKey, grammarWords, splitWords]);
+
+  const selectedWord = useMemo(
+    () =>
+      clozeWords?.length
+        ? clozeWords[wordIndex % clozeWords.length]
+        : undefined,
+    [clozeWords, wordIndex],
   );
 
   const relevantHanzi = useMemo(
-    () => selectedGrammar?.input || selectedGrammar?.hanzi,
-    [selectedGrammar?.hanzi],
+    () => getClozeWordText(selectedWord),
+    [selectedWord],
   );
 
   const futureSentence = useMemo(
@@ -211,31 +274,24 @@ export function ReviewCloze({
   );
 
   const randomThreeOptions = useMemo(
-    () =>
-      getRandomWords(
-        [
-          ...new Set(
-            shuffledGrammar?.filter(
-              (item: any) =>
-                (item?.input || item.hanzi) !==
-                (selectedGrammar?.input || selectedGrammar?.hanzi),
-            ),
-          ),
-        ],
-        3,
-      ),
-    [relevantHanzi, shuffledGrammar],
+    () => getClozeDistractors(clozeWords, relevantHanzi),
+    [clozeWords, relevantHanzi],
   );
+
   const shuffledOptions = useMemo(
-    () => shuffleArray([...randomThreeOptions, selectedGrammar]),
-    [randomThreeOptions, _relevantHanzi, questionIndex, sentence],
+    () => shuffleArray([...randomThreeOptions, selectedWord]),
+    [randomThreeOptions, selectedWord],
   );
 
   const sentenceHanzi = useMemo(
-    () =>
-      (sentence?.hanzi || sentence?.input)?.replace(relevantHanzi, " ____ "),
-    [relevantHanzi, sentence?.hanzi, sentence?.input],
+    () => sentenceText?.replaceAll(relevantHanzi, " ____ "),
+    [relevantHanzi, sentenceText],
   );
+
+  // English for an option is the analysis' own — a split word has none. So the
+  // switch that swaps the options into English only appears once the analysis
+  // is in, rather than swapping to the same words back.
+  const canShowEn = !!grammar?.grammarAnalysis?.length;
 
   const checkAnswer = (answer: string) => {
     if (answer === relevantHanzi) {
@@ -253,12 +309,10 @@ export function ReviewCloze({
     return <DynoClozeLoader message="Loading..." />;
   }
 
+  // The sentence is the question; there is nothing to ask before it arrives.
+  // The grammar analysis is not — it joins the question rather than gates it.
   if (isSentenceLoading) {
     return <DynoClozeLoader message="Loading sentences..." />;
-  }
-
-  if (isGrammarLoading) {
-    return <DynoClozeLoader message="Loading grammars..." />;
   }
 
   if (
@@ -313,11 +367,11 @@ export function ReviewCloze({
         currentCharacter={currentCharacter}
       />
 
-      {sentence && (
+      {sentenceText && selectedWord && (
         <div className="mt-24 lg:mt-32">
           {response ? (
             <Link
-              href={`/nmm/${sentence?.hanzi || sentence?.input}?lang=${lang || sentence?.lang}`}
+              href={`/nmm/${sentenceText}?lang=${sentenceLang}`}
               className="block text-center mb-4"
             >
               {sentence?.roman || sentence?.pinyin}
@@ -329,18 +383,20 @@ export function ReviewCloze({
           )}
 
           <ReviewItemHanzi
-            input={
-              response ? sentence?.input || sentence?.hanzi : sentenceHanzi
-            }
-            lang={sentence?.lang}
+            input={response ? sentenceText : sentenceHanzi}
+            lang={sentenceLang}
           />
 
-          <Link
-            href={`/convos/${sentence?.contentId}${sentence?.start ? `?start=${sentence?.start}` : ""}`}
-            className="block"
-          >
-            <p className="text-center mt-4">{sentence?.en}</p>
-          </Link>
+          {/* No English on the sentence, no English on the screen — it shows up
+              when a sentence that has some arrives, instead of an empty line. */}
+          {!!sentence?.en && (
+            <Link
+              href={`/convos/${sentence?.contentId}${sentence?.start ? `?start=${sentence?.start}` : ""}`}
+              className="block"
+            >
+              <p className="text-center mt-4">{sentence?.en}</p>
+            </Link>
+          )}
 
           <DynoOptionsContainer>
             {shuffledOptions?.map((option: any, idx: number) => {
@@ -349,12 +405,13 @@ export function ReviewCloze({
                   <Link
                     href={getNmmLink({
                       id: option?.hanzi || option?.input,
-                      lang: sentence?.lang,
+                      lang: sentenceLang,
                     })}
                     className={cn(
                       "border-orange-400 text-black  border-[2px] p-2 dark:text-white text-lg block text-center",
                       response
-                        ? response?.answer?.en === option?.en
+                        ? response?.answer ===
+                          (option?.input || option?.hanzi)
                           ? response?.type === "correct"
                             ? "bg-green-500 border-green-600 hover:bg-green-600"
                             : "bg-red-500 hover:bg-red-600 border-red-500"
@@ -368,8 +425,11 @@ export function ReviewCloze({
                     key={`dynacloze-${idx}-${option?.en}`}
                   >
                     <span className="block">
-                      {showEn ? option?.en : option?.hanzi || option?.input}{" "}
-                      {/* {response && <span>({showEn ? option?.hanzi : option?.en})</span>} */}
+                      {/* A word of a split has no English of its own — until
+                          the analysis lands, the option stays readable. */}
+                      {showEn
+                        ? option?.en || option?.hanzi || option?.input
+                        : option?.hanzi || option?.input}{" "}
                     </span>
                   </Link>
                 );
@@ -377,13 +437,14 @@ export function ReviewCloze({
                 return (
                   <button
                     onClick={() => {
-                      checkAnswer(option);
+                      checkAnswer(option?.input || option?.hanzi);
                     }}
                     disabled={response?.type}
                     className={cn(
                       "border-orange-400 text-black  border-[2px] p-2 dark:text-white text-lg",
                       response
-                        ? response?.answer?.en === option?.en
+                        ? response?.answer ===
+                          (option?.input || option?.hanzi)
                           ? response?.type === "correct"
                             ? "bg-green-500 border-green-600 hover:bg-green-600"
                             : "bg-red-500 hover:bg-red-600 border-red-500"
@@ -397,7 +458,9 @@ export function ReviewCloze({
                     key={`dynacloze-${idx}-${option?.en}`}
                   >
                     <span className="block">
-                      {showEn ? option?.en : option?.hanzi || option?.input}{" "}
+                      {showEn
+                        ? option?.en || option?.hanzi || option?.input
+                        : option?.hanzi || option?.input}{" "}
                     </span>
                   </button>
                 );
@@ -436,12 +499,9 @@ export function ReviewCloze({
                   <button
                     onClick={() => {
                       setWordIndex(
-                        shuffledGrammar?.length === wordIndex + 1
+                        clozeWords?.length === wordIndex + 1
                           ? 0
-                          : Math.min(
-                              wordIndex + 1,
-                              shuffledGrammar?.length - 1,
-                            ),
+                          : Math.min(wordIndex + 1, clozeWords?.length - 1),
                       );
                       setResponse(null);
                     }}
@@ -489,25 +549,29 @@ export function ReviewCloze({
           )}
 
           <div className="flex justify-center items-center mt-8 gap-8">
-            <button
-              onClick={() => {
-                toggleEn();
-              }}
-            >
-              {showEn ? "Hide En" : "Show En"}
-            </button>
+            {/* Only the analysis has English for these options; before it
+                arrives there is nothing for this button to swap. */}
+            {canShowEn && (
+              <button
+                onClick={() => {
+                  toggleEn();
+                }}
+              >
+                {showEn ? "Hide En" : "Show En"}
+              </button>
+            )}
 
             {sentence?.contentId ? (
               <YoutubeButton
-                sentenceInput={sentence?.input || sentence?.hanzi}
+                sentenceInput={sentenceText}
                 contentId={sentence?.contentId}
                 transcriptId={sentence?.id}
               />
             ) : (
               <PlayButtonV2
                 customRef={customRef}
-                text={sentence?.input || sentence?.hanzi}
-                lang={sentence?.lang}
+                text={sentenceText}
+                lang={sentenceLang}
                 className={cn("text-xl")}
               />
             )}

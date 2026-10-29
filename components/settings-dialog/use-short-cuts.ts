@@ -5,18 +5,13 @@ import { useLearningMode } from "./learning-mode.store";
 import { useViewType } from "@/app/(auth)/convos/_play-v2/use-view-type";
 import { useGetReviewParams } from "@/app/review/use-get-review-params";
 import { useIsContent } from "@/app/review/use-is-content";
-import { useUnreviwedCharacters } from "@/app/review/use-unreviewed-characters";
 import { useCommonCharacterMode } from "@/stores/use-common-character-mode-store";
 import { useReadModeStore } from "@/stores/use-readmode-store";
 import { usePathname, useRouter } from "next/navigation";
 import { useReadModeState } from "../read-mode-button";
 import { useSearchQueryStore } from "../search/state";
 import { useBrightModeStore } from "./use-bright-mode-store";
-import {
-  getReviewUrl,
-  useGetReviewUrl,
-  useGetReviewUrlFn,
-} from "./use-get-review-url";
+import { getReviewUrl, useGetReviewUrl } from "./use-get-review-url";
 import { usePreviewMode } from "./use-preview-mode";
 
 export function useShortCuts() {
@@ -30,7 +25,6 @@ export function useShortCuts() {
   const routeName = usePathname();
 
   const setShowPinyin = useBrightModeStore((state) => state.setShowPinyin);
-  // const { data: unReviewedCharacters } = useUnreviwedCharacters();
 
   const { setReadMode: setReadModeV2, readMode: readModeV2 } =
     useReadModeState();
@@ -130,7 +124,6 @@ export function useShortCuts() {
     mode,
     setMode,
     router,
-    // unReviewedCharacters,
     setFocus,
     setReadMode,
     readMode,

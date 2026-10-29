@@ -11,7 +11,13 @@ const listCharacters = async (
     journeyId,
     format = "list",
     hanzis,
-  }: { journeyId?: string; format?: "list" | "map"; hanzis?: string[] },
+    contentId,
+  }: {
+    journeyId?: string;
+    format?: "list" | "map";
+    hanzis?: string[];
+    contentId?: string;
+  },
   opts: {
     Authorization: string;
   },
@@ -24,6 +30,10 @@ const listCharacters = async (
     body: JSON.stringify({
       journeyId: journeyId,
       format,
+      // A review of one content only needs that content's characters. Without
+      // the id the answer is every character the user has ever touched, which
+      // is a far longer list to send and to wait for.
+      contentId,
       // hanzis,
     }),
   });
@@ -33,6 +43,27 @@ const listCharacters = async (
 };
 
 export const listCharactersQueryId = "list-characters";
+
+/**
+ * The key of a characters query: the query id, then whatever the request was
+ * scoped to.
+ *
+ * The scope belongs in the key — the characters of one content are not the
+ * characters of another, and neither is the whole list, so one cache entry
+ * cannot answer for all three. It is only appended when there is one: the
+ * mutations in `character.mutations.ts` write into `[listCharactersQueryId]`
+ * by hand, and an unscoped key that had grown trailing placeholders would
+ * leave them writing to a query nobody asked for.
+ */
+const getCharactersQueryKey = (
+  queryId: string,
+  params?: { contentId?: string; journeyId?: string },
+): any[] => [
+  queryId,
+  ...(params?.contentId ? [params.contentId] : []),
+  ...(params?.journeyId ? [params.journeyId] : []),
+];
+
 export function useListCharactersQuery(
   params = {} as {
     journeyId?: string;
@@ -45,7 +76,7 @@ export function useListCharactersQuery(
   const { data: authUser } = useCurrentAuthUser({});
 
   return useQuery<ICharacter[], Error>({
-    queryKey: [listCharactersQueryId],
+    queryKey: getCharactersQueryKey(listCharactersQueryId, params),
     queryFn: async () => {
       // if (options.query) {
 
@@ -77,13 +108,18 @@ export function useListCharactersQuery(
 
 export const listCharactersQueryMapId = "list-characters-map";
 export function useListCharactersMapQuery(
-  params = {} as { journeyId?: string; hanzis?: string[]; from?: string },
+  params = {} as {
+    journeyId?: string;
+    hanzis?: string[];
+    from?: string;
+    contentId?: string;
+  },
   options = {} as any,
 ) {
   const { data: authUser } = useCurrentAuthUser({});
 
   return useQuery<any>({
-    queryKey: [listCharactersQueryMapId],
+    queryKey: getCharactersQueryKey(listCharactersQueryMapId, params),
 
     queryFn: async () => {
       // if (options.query) {

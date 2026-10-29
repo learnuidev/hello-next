@@ -8,6 +8,7 @@ import {
   listCharactersQueryId,
   listCharactersQueryMapId,
 } from "./character.queries";
+import { getReviewCharacterQueryId } from "./review-character.queries";
 
 export type AddCharacterParams = {
   hanzi: string;
@@ -148,6 +149,9 @@ export function useUpdateCharacterStatusMutation(options = {} as any) {
 
       queryClient.invalidateQueries({ queryKey: [listCharactersQueryId] });
       queryClient.invalidateQueries({ queryKey: [listCharactersQueryMapId] });
+      // The character to review of a content is due-ness of its characters,
+      // which this update just changed.
+      queryClient.invalidateQueries({ queryKey: [getReviewCharacterQueryId] });
     },
     cacheTime: 1000 * 60 * 300, // 30 minutes,
     refetchOnWindowFocus: false,

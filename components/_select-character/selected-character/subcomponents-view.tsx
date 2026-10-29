@@ -5,6 +5,7 @@ import Link from "next/link";
 import React from "react";
 
 import { useListComponents } from "@/domain/lesson/component.queries";
+import { decodeGlyphs } from "@/lib/decode-stroke-glyph";
 
 interface SelectedCharacterProps {
   characterId: string;
@@ -30,9 +31,16 @@ const HanziSubComponentsView = ({
   });
 
   if (characterId?.length === 1) {
+    // Decompositions can come back with stroke shapes (㇒ ㇆ コ …); decode them so
+    // the list shows the basic stroke radicals a learner can actually open, and
+    // the meaning lookup below can find their glosses.
+    const decoded = decodeGlyphs(
+      (sub_components ?? []) as Array<{ hanzi: string; en: string }>,
+    );
+
     return (
       <SubComponentContainer>
-        {sub_components?.map((comp: { hanzi: string; en: string }) => {
+        {decoded.map((comp) => {
           const component = components?.find(
             (component) => component?.hanzi === comp?.hanzi,
           );

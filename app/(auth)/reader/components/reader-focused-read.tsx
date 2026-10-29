@@ -434,7 +434,7 @@ export const ReaderFocusedRead = ({
             the transcript's own when there is one — on a line of its own, above
             the hanzi. */}
         {showLinePinyin && !!linePinyin && (
-          <p className="mx-auto mb-3 max-w-3xl text-lg text-gray-500 dark:text-gray-500 font-light">
+          <p className="mx-auto mb-3 max-w-5xl text-lg text-gray-500 dark:text-gray-500 font-light">
             {linePinyin}
           </p>
         )}
@@ -457,7 +457,7 @@ export const ReaderFocusedRead = ({
             are two readings of the same line, so they stack rather than take
             turns: chinglish appears on its own line under the english. */}
         {(showEn || showChinglish) && !!translation && (
-          <div className="mx-auto mt-4 max-w-3xl space-y-1">
+          <div className="mx-auto mt-4 max-w-5xl space-y-1">
             {showEn && !!translation.en && (
               <p className="text-lg text-gray-600 dark:text-gray-400 font-light">
                 {translation.en}

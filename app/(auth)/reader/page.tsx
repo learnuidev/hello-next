@@ -67,7 +67,7 @@ export default function Reader() {
 
   return (
     <main>
-      <div className="max-w-6xl m-auto px-4 md:px-12">
+      <div className="max-w-5xl m-auto px-4 md:px-12">
         <div className="flex justify-between items-center mt-12">
           <h1 className="text-2xl font-bold text-gray-400">
             <span>Reader</span>

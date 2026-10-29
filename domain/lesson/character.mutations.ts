@@ -50,6 +50,10 @@ export function useAddCharacterMutation(options = {} as any) {
       });
 
       queryClient.setQueryData([listCharactersQueryId], (data: any) => {
+        if (!Array.isArray(data)) {
+          return data;
+        }
+
         return data.map((item: any) => {
           if (item.id === response.id) {
             return response;
@@ -58,6 +62,10 @@ export function useAddCharacterMutation(options = {} as any) {
         });
       });
       queryClient.setQueryData([listCharactersQueryMapId], (data: any) => {
+        if (!data) {
+          return data;
+        }
+
         return {
           ...data,
           [response.hanzi]: response,
@@ -125,6 +133,13 @@ export function useUpdateCharacterStatusMutation(options = {} as any) {
       // }
 
       queryClient.setQueryData([listCharactersQueryId], (data: any) => {
+        // The review page no longer holds the whole character list, so there
+        // may be no cached list to patch. Patching an absent cache throws, and
+        // that would take the mutation's own callbacks down with it.
+        if (!Array.isArray(data)) {
+          return data;
+        }
+
         return data.map((item: any) => {
           if (item.id === response.id) {
             return response;
@@ -133,6 +148,10 @@ export function useUpdateCharacterStatusMutation(options = {} as any) {
         });
       });
       queryClient.setQueryData([listCharactersQueryMapId], (data: any) => {
+        if (!data) {
+          return data;
+        }
+
         return {
           ...data,
           [response.hanzi]: response,
@@ -194,6 +213,13 @@ export function useUpdateCharacterStoryMutation(options = {} as any) {
       });
 
       queryClient.setQueryData([listCharactersQueryId], (data: any) => {
+        // The review page no longer holds the whole character list, so there
+        // may be no cached list to patch. Patching an absent cache throws, and
+        // that would take the mutation's own callbacks down with it.
+        if (!Array.isArray(data)) {
+          return data;
+        }
+
         return data.map((item: any) => {
           if (item.id === response.id) {
             return response;
@@ -202,6 +228,10 @@ export function useUpdateCharacterStoryMutation(options = {} as any) {
         });
       });
       queryClient.setQueryData([listCharactersQueryMapId], (data: any) => {
+        if (!data) {
+          return data;
+        }
+
         return {
           ...data,
           [response.hanzi]: response,

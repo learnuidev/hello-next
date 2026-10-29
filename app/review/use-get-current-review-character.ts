@@ -18,19 +18,20 @@ export const useGetCurrentReviewCharacter = () => {
   // names no content, so there is nothing to ask about here.
   const contentId = mode || "";
 
-  const { data, isPending, isFetching } = useGetReviewCharacter({
-    contentId,
-    reviewMode,
-  });
+  const reviewCharacter = useGetReviewCharacter({ contentId, reviewMode });
+
+  const { data, isPending, isFetching } = reviewCharacter;
 
   const currentCharacter: any = data?.character || null;
   const currentComponent: any = null;
   const remainingItems = data?.remainingItems;
   const lang: any = data?.lang;
 
-  // The next character arrives with the answer's refetch; there is no list here
-  // to walk to it, and nothing to navigate to.
-  const goToNextChar = () => {};
+  // The next character is the API's answer to the same question, asked again
+  // once the review has been answered: the character just answered is no longer
+  // due, so the endpoint returns the one after it. If the answer's invalidation
+  // is already fetching, this joins it rather than asking twice.
+  const goToNextChar = () => reviewCharacter.refetch({ cancelRefetch: false });
 
   return {
     currentCharacter,

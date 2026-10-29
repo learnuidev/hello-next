@@ -65,7 +65,7 @@ export default function ReaderWordContents() {
   if (isLoading) {
     return (
       <main>
-        <div className="max-w-3xl m-auto px-4 md:px-12 mt-16">
+        <div className="max-w-6xl m-auto px-4 md:px-12 mt-16">
           <p className="text-xs uppercase tracking-wider text-gray-500">
             Loading…
           </p>
@@ -77,7 +77,7 @@ export default function ReaderWordContents() {
   if (!item) {
     return (
       <main>
-        <div className="max-w-3xl m-auto px-4 md:px-12">
+        <div className="max-w-6xl m-auto px-4 md:px-12">
           <Nothing icon={Icons.bookOpen} message="This text is not here">
             <Link
               href="/reader"
@@ -94,7 +94,7 @@ export default function ReaderWordContents() {
 
   return (
     <main>
-      <div className="max-w-3xl m-auto px-4 md:px-12">
+      <div className="max-w-6xl m-auto px-4 md:px-12">
         <div className="mt-12 flex items-center justify-between gap-4">
           <Link
             href={getReaderViewHref(item.id, "insights")}

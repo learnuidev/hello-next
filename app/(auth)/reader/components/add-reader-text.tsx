@@ -195,7 +195,7 @@ export const AddReaderText = ({
   const lastCueEnd = subtitles?.cueEnds[subtitles.cueEnds.length - 1];
 
   return (
-    <div className="max-w-3xl m-auto px-4 md:px-12">
+    <div className="max-w-6xl m-auto px-4 md:px-12">
       <div className="flex justify-between items-center mt-12 mb-8">
         <p className="uppercase text-xs tracking-wider text-gray-400">
           {isEditing ? "Edit text" : "New text"}

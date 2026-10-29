@@ -51,6 +51,7 @@ export const ReaderFocusedRead = ({
   getLinePinyin,
   initialSentenceIndex,
   onSaved,
+  progressClassName,
 }: {
   readerItemId: string;
   readerItemTitle: string;
@@ -77,6 +78,8 @@ export const ReaderFocusedRead = ({
   initialSentenceIndex?: number;
   /** Told when a line has been bookmarked, for the confirmation. */
   onSaved?: () => void;
+  /** The progress track's own classes, for callers that show a narrower bar. */
+  progressClassName?: string;
 }) => {
   const sentences = useMemo(
     () => splitReaderSentences(text, lang),
@@ -403,7 +406,12 @@ export const ReaderFocusedRead = ({
         </button>
       </p>
 
-      <div className="h-[2px] w-full bg-gray-100 dark:bg-gray-900 mt-6">
+      <div
+        className={cn(
+          "h-[2px] bg-gray-100 dark:bg-gray-900 mt-6",
+          progressClassName ?? "w-full",
+        )}
+      >
         <div
           className="h-[2px] bg-rose-500/60 transition-all"
           style={{
@@ -499,7 +507,7 @@ export const ReaderFocusedRead = ({
         </button>
       </div>
 
-      <div className="flex justify-center items-center mt-10 gap-6 text-xs uppercase tracking-wider text-gray-500">
+      <div className="flex justify-center items-center mt-10 mb-16 gap-6 text-xs uppercase tracking-wider text-gray-500">
         <button
           className="hover:text-rose-400 transition"
           onClick={() => {

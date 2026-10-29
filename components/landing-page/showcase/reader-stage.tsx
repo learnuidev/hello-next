@@ -27,6 +27,7 @@ export const ReaderStage = () => {
       lang={exampleLang}
       lineTimestamps={exampleTranscriptions.map((line) => line.start)}
       getLinePinyin={(sentence) => exampleLinePinyin.get(sentence) ?? ""}
+      progressClassName="w-full max-w-xl mx-auto"
     />
   );
 };

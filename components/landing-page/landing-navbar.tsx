@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Icons } from "../ui/icons.v2";
 import { usePathname } from "next/navigation";
+import { ReaderThemeToggle } from "@/app/(auth)/reader/components/reader-theme-toggle";
 import { cn } from "@/lib/utils";
 
 const LandingNavBarItem = ({ href, text }: { href: string; text: string }) => {
@@ -47,20 +48,9 @@ export const LandingNavbar = () => {
           </Link>
         </div>
       </div>
-      <div className="hidden md:block">
-        <Link
-          href="/login"
-          className="flex items-center text-sm space-x-2 hover:text-rose-400 transition"
-        >
-          <Icons.fingerPrint className="" />
-          <p>Login</p>
-        </Link>
-      </div>
+      <div className="flex items-center space-x-6">
+        <ReaderThemeToggle />
 
-      <div className="block md:hidden">
-        {/* <button className="text-2xl">
-          <Icons.bars />
-        </button> */}
         <Link
           href="/login"
           className="flex items-center text-sm space-x-2 hover:text-rose-400 transition"

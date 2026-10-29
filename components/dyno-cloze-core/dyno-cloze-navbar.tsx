@@ -25,11 +25,11 @@ export const DynaClozeNavbar = ({
         </button>
       </div>
       <div className="flex-1 flex justify-center px-4">
-        <h1 className="text-center text-2xl font-mono">dynacloze</h1>
+        <h1 className="text-center text-2xl font-mono">dynocloze</h1>
       </div>
       <div className="flex-1 flex justify-end px-4">
         {hideDynaClozeR ? null : (
-          <Link href={`/review?input=${input}`}> DynaClozeR</Link>
+          <Link href={`/review?input=${input}`}> DynoClozeR</Link>
         )}
       </div>
     </nav>

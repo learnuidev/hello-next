@@ -328,10 +328,15 @@ export function ReviewClozeContent({
   // is in, rather than swapping to the same words back.
   const canShowEn = !!grammar?.grammarAnalysis?.length;
 
-  // The English joins the line as soon as any of its two sources has it.
+  // The line's own fields are only whatever the sentence object brought along;
+  // the meaning of the line is the discovery endpoint's to give. Nothing here
+  // falls back to the sentence's `en`/`pinyin`, so neither can appear unless
+  // discovery supplied it.
   const enPreview = showChinglish
-    ? summary?.chinglish || summary?.en || initSentence?.en
-    : summary?.en || initSentence?.en;
+    ? summary?.chinglish || summary?.en
+    : summary?.en;
+
+  const pinyin = showPinyin ? summary?.roman || summary?.pinyin : "";
 
   if (isLoading) {
     return <DynoClozeLoader message="Loading..." />;
@@ -429,15 +434,12 @@ export function ReviewClozeContent({
 
       {sentenceText && selectedWord && (
         <div className="mt-24 lg:mt-32">
-          {showPinyin ? (
+          {pinyin ? (
             <Link
               href={`/nmm/${sentenceText}?lang=${sentenceLang}`}
               className="block text-center mb-4"
             >
-              {summary?.roman ||
-                summary?.pinyin ||
-                initSentence?.roman ||
-                initSentence?.pinyin}
+              {pinyin}
             </Link>
           ) : (
             <p className="block text-center mb-4 dark:text-black text-white">

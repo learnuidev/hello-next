@@ -7,7 +7,7 @@ import { persist, createJSONStorage } from "zustand/middleware";
 const usePlaySpeedStore = create(
   persist(
     (set: any, get: any) => ({
-      playbackRate: 0.8,
+      playbackRate: 1,
       setPlaybackRate: (playbackRate: number) => set({ playbackRate }),
     }),
     {

@@ -2,6 +2,7 @@
 import Link from "next/link";
 
 import { LandingFeatures } from "./landing-features";
+import { LandingHero } from "./landing-hero";
 import { LandingNavbar } from "./landing-navbar";
 
 /**
@@ -22,31 +23,7 @@ export const LandingPage = () => {
         {/* 1. Hero */}
         <section className="relative mx-auto mt-[100px] min-h-[530px] px-8 md:mt-[180px] md:px-32">
           <div className="flex w-full flex-col-reverse gap-8 sm:flex-row">
-            <div className="z-50 flex flex-1 flex-col">
-              <h2 className="mt-6 max-w-[580px] text-[24px] font-medium leading-tight text-[#878787] md:mt-10 md:text-[36px]">
-                Grammar Analysis, Context Learning, Automatic Sentence Mining,
-                Content Tracking, Analytics &amp; your own language learning
-                superapp
-              </h2>
-
-              <div className="mt-8 md:mt-10">
-                <div className="flex items-center space-x-4">
-                  <Link
-                    href="/register"
-                    className="inline-flex h-11 items-center justify-center border border-transparent bg-primary px-5 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none"
-                  >
-                    Try it for free
-                  </Link>
-
-                  <Link
-                    href="/login"
-                    className="inline-flex h-11 items-center justify-center border border-transparent bg-[#F2F1EF] px-6 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none dark:bg-[#1D1D1D]"
-                  >
-                    Log in
-                  </Link>
-                </div>
-              </div>
-            </div>
+            <LandingHero />
 
             <div className="z-10 mt-10 flex-1 scale-100 sm:scale-100 md:mt-0 md:scale-[0.9] lg:scale-[1.2] 2xl:-top-[20px] 2xl:scale-[1.35]">
               <div style={{ opacity: 1, transform: "none" }}>

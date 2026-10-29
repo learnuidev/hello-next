@@ -9,60 +9,126 @@ import { cn } from "@/lib/utils";
 /**
  * The box a feature is shown in.
  *
- * Two things live here. The frame keeps a full-screen sized screen inside a
- * page-sized space: the karaoke view paints its room with `position: fixed`, so
- * a transformed wrapper — which becomes the containing block for fixed children
- * — is what keeps the room in this box instead of over the whole page.
+ * The frame keeps a full-screen sized screen inside a page-sized space: the
+ * karaoke view paints its room with `position: fixed`, so a transformed wrapper
+ * — which becomes the containing block for fixed children — is what keeps the
+ * room in this box instead of over the whole page.
  *
- * And the button in the corner hands the same box to the Fullscreen API, so the
- * one element that changes the layout is the frame and not the app inside it.
- * The button sits inside the frame for that reason: everything outside it is
- * hidden while it is on screen.
+ * Going full screen grows the same box to the viewport rather than handing it to
+ * the Fullscreen API. The player's settings popover, the collection dialog and
+ * the suggestions drawer are all portalled to `document.body`, and while the
+ * browser owns the screen everything outside the fullscreen element is hidden —
+ * so the controls at the bottom would open nothing anyone could see. A fixed
+ * overlay keeps the whole document visible, which is what keeps those controls
+ * working.
  */
 export const FeatureFrame = ({
   children,
   className,
+  minHeight,
+  onMeasure,
 }: {
   children: React.ReactNode;
   className?: string;
+  /**
+   * How tall the frame has to be at least, so a short screen does not leave the
+   * box smaller than the screen it was standing in for. Measured by the caller
+   * off the tallest feature.
+   */
+  minHeight?: number | null;
+  /** Told how tall this screen is, for the caller to take the tallest one. */
+  onMeasure?: (height: number) => void;
 }) => {
   const frameRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   useEffect(() => {
-    const onChange = () =>
-      setIsFullscreen(document.fullscreenElement === frameRef.current);
+    const element = contentRef.current;
 
-    document.addEventListener("fullscreenchange", onChange);
-
-    return () => document.removeEventListener("fullscreenchange", onChange);
-  }, []);
-
-  const toggleFullscreen = async () => {
-    if (!frameRef.current) {
+    if (!element || !onMeasure) {
       return;
     }
 
-    if (document.fullscreenElement) {
-      await document.exitFullscreen();
+    const report = () => onMeasure(element.scrollHeight);
+
+    report();
+
+    const observer = new ResizeObserver(report);
+
+    observer.observe(element);
+
+    return () => observer.disconnect();
+  }, [onMeasure]);
+
+  // Full screen is a mode of this frame, so Escape and the page scroll are its
+  // to look after.
+  useEffect(() => {
+    if (!isFullscreen) {
       return;
     }
 
-    await frameRef.current.requestFullscreen();
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsFullscreen(false);
+      }
+    };
+
+    const previousOverflow = document.body.style.overflow;
+
+    document.body.style.overflow = "hidden";
+    document.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", onKeyDown);
+
+      // Full screen takes the frame out of the flow, which shortens the page
+      // and drags the scroll position up to the new end of it. The frame is
+      // back in the flow by the next frame, so that is when the page can be
+      // put back where it was.
+      const scrollTop = scrollRef.current;
+
+      requestAnimationFrame(() => {
+        window.scrollTo({ top: scrollTop });
+      });
+    };
+  }, [isFullscreen]);
+
+  const toggleFullscreen = () => {
+    if (!isFullscreen) {
+      scrollRef.current = window.scrollY;
+    }
+
+    setIsFullscreen((current) => !current);
   };
 
   const label = isFullscreen ? "Exit full screen" : "Full screen";
 
   return (
-    <div className={cn("relative mx-auto w-full max-w-5xl", className)}>
+    <div
+      className={cn("relative mx-auto w-full max-w-5xl", className)}
+      // While the frame is out of the flow, this holds its place so the page
+      // keeps its height (and its scroll position) underneath.
+      style={isFullscreen && minHeight ? { minHeight: `${minHeight}px` } : undefined}
+    >
       <div
         ref={frameRef}
+        style={
+          !isFullscreen && minHeight
+            ? { minHeight: `${minHeight}px` }
+            : undefined
+        }
         className={cn(
           "relative overflow-y-auto overflow-x-hidden bg-background",
           isFullscreen
-            ? "h-screen w-screen"
+            ? // The same layer as the page's own floating bits (z-50) and later
+              // in the document than all of them, so it covers the page; the
+              // app's portalled popovers are later still, so they cover it.
+              "fixed inset-0 z-50 h-screen w-screen"
             : "max-h-[80vh] rounded-xl border border-border",
-          // The containing block the karaoke room is confined to.
+          // The containing block the app's fixed layers are confined to.
           "[transform:translateZ(0)]",
         )}
       >
@@ -82,7 +148,7 @@ export const FeatureFrame = ({
           )}
         </button>
 
-        {children}
+        <div ref={contentRef}>{children}</div>
       </div>
     </div>
   );

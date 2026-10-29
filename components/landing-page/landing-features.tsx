@@ -1,5 +1,7 @@
 "use client";
 
+import { useCallback, useRef, useState } from "react";
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { ClozeStage } from "./showcase/cloze-stage";
@@ -34,6 +36,27 @@ const features = [
 ];
 
 export const LandingFeatures = () => {
+  /**
+   * The frame is as tall as the tallest feature, through all of its own taller
+   * screens: the content player is the reference, and switching to a shorter
+   * tab must not shrink the box under it.
+   */
+  const tallestRef = useRef(0);
+  const [minHeight, setMinHeight] = useState<number | null>(null);
+
+  const handleMeasure = useCallback((height: number) => {
+    // Capped by the frame's own max height, so the measurement can never push
+    // the box past the space the page gives it.
+    const capped = Math.min(height, window.innerHeight * 0.8);
+
+    if (capped <= tallestRef.current) {
+      return;
+    }
+
+    tallestRef.current = capped;
+    setMinHeight(capped);
+  }, []);
+
   return (
     <section id="features" className="px-4 md:px-12 my-16 md:my-32">
       <div className="mx-auto max-w-6xl">
@@ -65,7 +88,9 @@ export const LandingFeatures = () => {
               value={feature.value}
               className="mt-8"
             >
-              <FeatureFrame>{feature.stage}</FeatureFrame>
+              <FeatureFrame minHeight={minHeight} onMeasure={handleMeasure}>
+                {feature.stage}
+              </FeatureFrame>
             </TabsContent>
           ))}
         </Tabs>

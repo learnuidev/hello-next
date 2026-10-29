@@ -25,7 +25,7 @@ export const LandingHero = () => {
 
   return (
     <div className="z-50 flex flex-1 flex-col">
-      <h1 className="mt-6 max-w-[580px] text-[28px] font-medium leading-tight text-[#878787] md:mt-10 md:text-[44px]">
+      <h1 className="mt-6 max-w-[680px] text-[30px] font-bold leading-tight text-black dark:text-white md:mt-10 md:text-[56px]">
         learn chinese from{" "}
         <span className="relative inline-block">
           <AnimatePresence mode="wait">

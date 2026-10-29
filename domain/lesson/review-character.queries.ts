@@ -5,40 +5,35 @@ import { useQuery } from "@tanstack/react-query";
 import { useCurrentAuthUser } from "../auth/auth.queries";
 import { ICharacter } from "../character/character.types";
 
+/**
+ * What the review endpoint is asked for: the content whose review it is, and
+ * whether the whole content is being walked instead of only what is due.
+ */
 export type ReviewCharacterParams = {
-  mode?: string;
-  date?: string;
-  input?: string;
-  entryId?: string;
-  level?: number;
+  contentId: string;
   reviewMode?: string;
-  lang?: string;
-  character?: string;
-  // Minutes from UTC, so a character learnt at 1am in Manila is filed under the
-  // day the review list of the day names.
-  tzOffset?: number;
-  contentId?: string;
 };
 
+/**
+ * What it answers: the character to review of that content, and how many are
+ * left after it.
+ */
 export type ReviewCharacterResponse = {
-  character: ICharacter | null;
-  component: any | null;
+  contentId: string;
   lang?: string;
-  isContent?: boolean;
-  isEntry?: boolean;
-  remainingCharacters: number;
+  character: ICharacter | null;
+  remainingItems: number;
 };
 
 export const getReviewCharacterQueryId = "get-review-character";
 
 /**
- * The character to review of whichever review the page is on, as the API
- * decides it.
+ * The character to review of one content, as the API decides it: the content's
+ * own characters, whichever of them are due, in review order.
  *
- * The whole selection is made server-side — which characters the review is of,
- * which of them is due, the order they are asked in — so the browser does not
- * need the content's text nor every character the user has ever studied to know
- * what to ask next.
+ * The whole selection is made server-side, so the browser does not need the
+ * content's text nor every character the user has ever studied to know what to
+ * ask next.
  */
 const getReviewCharacter = async (
   params: ReviewCharacterParams,
@@ -51,7 +46,10 @@ const getReviewCharacter = async (
     headers: {
       Authorization: `Bearer ${opts?.Authorization}`,
     },
-    body: JSON.stringify(params),
+    body: JSON.stringify({
+      contentId: params.contentId,
+      reviewMode: params.reviewMode,
+    }),
   });
 
   if (!res.ok) {
@@ -64,19 +62,25 @@ const getReviewCharacter = async (
 };
 
 export function useGetReviewCharacter(
-  params: ReviewCharacterParams,
+  params: { contentId?: string; reviewMode?: string },
   options = {} as any,
 ) {
   const { data: authUser } = useCurrentAuthUser({});
 
   return useQuery<ReviewCharacterResponse, Error>({
-    queryKey: [getReviewCharacterQueryId, JSON.stringify(params)],
+    queryKey: [getReviewCharacterQueryId, params?.contentId, params?.reviewMode],
     queryFn: async () =>
-      getReviewCharacter(params, {
-        Authorization: authUser?.jwt,
-      }),
+      getReviewCharacter(
+        {
+          contentId: params?.contentId as string,
+          reviewMode: params?.reviewMode,
+        },
+        {
+          Authorization: authUser?.jwt,
+        },
+      ),
     ...options,
-    enabled: Boolean(authUser?.jwt),
+    enabled: Boolean(authUser?.jwt) && Boolean(params?.contentId),
     retry: 1,
     refetchOnWindowFocus: false,
     refetchOnFocus: false,

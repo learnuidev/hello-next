@@ -1,35 +1,16 @@
 "use client";
 
-import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
-import { MandarinoLoadingBanner } from "./mandarino-loading-banner";
-
+/**
+ * Kept as the root layout's wrapper, but no longer holds anything back.
+ *
+ * It used to stall `/` behind a 2.5s logo banner, from when `/` redirected into
+ * the app. `/` is now the public landing page — the one screen that has to
+ * paint immediately — so the banner would only be a blank first impression.
+ */
 export function InitialLoadingBanner({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [isLoading, setIsLoading] = useState(true);
-  const pathname = usePathname();
-
-  useEffect(() => {
-    const shouldShowBanner = pathname === "/";
-
-    if (shouldShowBanner) {
-      new Promise<void>((resolve) => {
-        setTimeout(() => {
-          setIsLoading(false);
-          resolve();
-        }, 2500);
-      });
-    } else {
-      setIsLoading(false);
-    }
-  }, [pathname]);
-
-  if (isLoading && pathname === "/") {
-    return <MandarinoLoadingBanner />;
-  }
-
   return <>{children}</>;
 }

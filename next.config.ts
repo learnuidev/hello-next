@@ -1,16 +1,9 @@
 import { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  async redirects() {
-    return [
-      // The convos page is the app's home page.
-      {
-        source: "/",
-        destination: "/convos",
-        permanent: false,
-      },
-    ];
-  },
+  // `/` is the public landing page. Logged-in visitors are sent to `/convos`
+  // from <Authenticated>, which owns the auth gate — a redirect here would run
+  // before that gate and dump logged-out visitors into the login screen.
   images: {
     remotePatterns: [
       {

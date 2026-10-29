@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { Icons } from "../ui/icons.v2";
 import { usePathname } from "next/navigation";

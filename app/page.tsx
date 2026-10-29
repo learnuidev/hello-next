@@ -1,11 +1,12 @@
-import { redirect } from "next/navigation";
+import { LandingPage } from "@/components/landing-page/landing-page";
 
 /**
- * The convos page is the app's home page, so `/` lands there.
+ * `/` is the public landing page.
  *
- * The previous home (NewHomePage with 内容 / 系列 / 收藏 tabs) is still in
- * components/new-home-page if it is ever needed again.
+ * Logged-in visitors never actually see it: <Authenticated> (in the root
+ * layout) owns the auth gate and hands them to `/convos`. Keeping the redirect
+ * out of here means a logged-out visitor is never pushed into an app route.
  */
 export default function Home() {
-  redirect("/convos");
+  return <LandingPage />;
 }

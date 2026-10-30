@@ -22,11 +22,18 @@ import { cn } from "@/lib/utils";
  * overlay keeps the whole document visible, which is what keeps those controls
  * working.
  */
+/** How long a visitor gets to find the full screen button on their own. */
+const NUDGE_DELAY_MS = 5000;
+
+/** Where the browser remembers that the nudge has already been given. */
+const NUDGE_STORAGE_KEY = "landing-demo-fullscreen-nudged";
+
 export const FeatureFrame = ({
   children,
   className,
   minHeight,
   onMeasure,
+  nudgeFullscreen,
 }: {
   children: React.ReactNode;
   className?: string;
@@ -38,11 +45,20 @@ export const FeatureFrame = ({
   minHeight?: number | null;
   /** Told how tall this screen is, for the caller to take the tallest one. */
   onMeasure?: (height: number) => void;
+  /**
+   * Glow the full screen button at a visitor who has not pressed it yet, to
+   * point them at it. Happens once per browser: a nudge that keeps nagging is
+   * not a nudge.
+   */
+  nudgeFullscreen?: boolean;
 }) => {
   const frameRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isNudging, setIsNudging] = useState(false);
+  // Read by the nudge's timer, which is set long before it fires.
+  const hasPressedRef = useRef(false);
 
   useEffect(() => {
     const element = contentRef.current;
@@ -61,6 +77,57 @@ export const FeatureFrame = ({
 
     return () => observer.disconnect();
   }, [onMeasure]);
+
+  // The nudge: a few seconds after the frame is actually on screen — not while
+  // it is still a tab away, where a glow would be spent on nobody — the full
+  // screen button starts to glow. The clock only starts once the frame has been
+  // seen, and it is only ever the first frame the browser is shown: pressing the
+  // button, or being nudged, retires it for good.
+  useEffect(() => {
+    const element = frameRef.current;
+
+    if (!nudgeFullscreen || !element) {
+      return;
+    }
+
+    if (window.localStorage.getItem(NUDGE_STORAGE_KEY)) {
+      return;
+    }
+
+    let timer: number | undefined;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+
+        if (timer !== undefined || !entry?.isIntersecting) {
+          return;
+        }
+
+        observer.disconnect();
+
+        timer = window.setTimeout(() => {
+          if (hasPressedRef.current) {
+            return;
+          }
+
+          window.localStorage.setItem(NUDGE_STORAGE_KEY, "shown");
+          setIsNudging(true);
+        }, NUDGE_DELAY_MS);
+      },
+      { threshold: 0.2 },
+    );
+
+    observer.observe(element);
+
+    return () => {
+      observer.disconnect();
+
+      if (timer !== undefined) {
+        window.clearTimeout(timer);
+      }
+    };
+  }, [nudgeFullscreen]);
 
   // Full screen is a mode of this frame, so Escape and the page scroll are its
   // to look after.
@@ -101,6 +168,12 @@ export const FeatureFrame = ({
       scrollRef.current = window.scrollY;
     }
 
+    // Found, so the nudge has been paid attention and stops — here and on every
+    // later visit.
+    window.localStorage.setItem(NUDGE_STORAGE_KEY, "pressed");
+
+    hasPressedRef.current = true;
+    setIsNudging(false);
     setIsFullscreen((current) => !current);
   };
 
@@ -139,7 +212,13 @@ export const FeatureFrame = ({
           onClick={toggleFullscreen}
           title={label}
           aria-label={label}
-          className="fixed bottom-4 right-4 z-[60] flex h-9 w-9 items-center justify-center rounded-full border border-border bg-background/85 text-gray-500 backdrop-blur-sm transition hover:text-rose-400 dark:hover:text-white"
+          className={cn(
+            "fixed bottom-4 right-4 z-[60] flex h-9 w-9 items-center justify-center rounded-full border border-border bg-background/85 text-gray-500 backdrop-blur-sm transition hover:text-rose-400 dark:hover:text-white",
+            // The animation's own timing is in the keyframes, so it runs while
+            // the state lasts and leaves nothing behind when it stops.
+            isNudging &&
+              "animate-[mandarino-fullscreen-glow_1.8s_ease-in-out_infinite]",
+          )}
         >
           {isFullscreen ? (
             <Minimize className="h-4 w-4" />

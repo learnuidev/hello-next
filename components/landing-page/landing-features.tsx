@@ -88,7 +88,13 @@ export const LandingFeatures = () => {
               value={feature.value}
               className="mt-8"
             >
-              <FeatureFrame minHeight={minHeight} onMeasure={handleMeasure}>
+              <FeatureFrame
+                minHeight={minHeight}
+                onMeasure={handleMeasure}
+                // Only the content player: it is the one with a full screen of
+                // its own, and the one a visitor is being invited into.
+                nudgeFullscreen={feature.value === "player"}
+              >
                 {feature.stage}
               </FeatureFrame>
             </TabsContent>

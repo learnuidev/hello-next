@@ -78,7 +78,12 @@ export const ReaderFocusedRead = ({
   initialSentenceIndex?: number;
   /** Told when a line has been bookmarked, for the confirmation. */
   onSaved?: () => void;
-  /** The progress track's own classes, for callers that show a narrower bar. */
+  /**
+   * The progress track's own classes, for callers that show a narrower bar.
+   *
+   * The parent text is read in this same measure — see `measureClassName` — so a
+   * caller that narrows the bar narrows the text with it.
+   */
   progressClassName?: string;
 }) => {
   const sentences = useMemo(
@@ -366,6 +371,18 @@ export const ReaderFocusedRead = ({
     );
   };
 
+  /**
+   * The measure of the bar — and of the text read under it.
+   *
+   * The parent is one block of prose with no measure of its own, so it would
+   * otherwise start wherever its container starts while the bar starts
+   * somewhere else entirely: on a page that centres a narrow bar, the first
+   * character of the parent sat a good margin to the left of the first pixel of
+   * the bar. Reading the parent in the bar's own measure lines them up, and
+   * keeps them lined up if a caller ever changes the bar.
+   */
+  const measureClassName = progressClassName ?? "w-full";
+
   if (!sentences.length) {
     return (
       <div className="mt-16 text-center text-gray-500 font-extralight">
@@ -409,7 +426,7 @@ export const ReaderFocusedRead = ({
       <div
         className={cn(
           "h-[2px] bg-gray-100 dark:bg-gray-900 mt-6",
-          progressClassName ?? "w-full",
+          measureClassName,
         )}
       >
         <div
@@ -573,7 +590,13 @@ export const ReaderFocusedRead = ({
           the reading position to that line, and the line being read is the one at
           full strength while the rest wait in the dim.
         */
-        <div className="mt-12 text-lg font-extralight leading-9 text-gray-800 dark:text-gray-200">
+        <div
+          className={cn(
+            "mt-12 text-lg font-extralight leading-9 text-gray-800 dark:text-gray-200",
+            // The parent starts where the bar above it starts.
+            measureClassName,
+          )}
+        >
           {parentParagraphs.map((paragraph, paragraphIndex) => {
             // A blank line is a break in the text, not an empty sentence: the
             // read tab keeps it as a gap and so does this.

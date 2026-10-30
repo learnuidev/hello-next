@@ -1,6 +1,12 @@
 "use client";
 
-import { Suspense, useCallback, useEffect, useState } from "react";
+import {
+  Suspense,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from "react";
 
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
@@ -8,6 +14,7 @@ import { useRouter } from "next/navigation";
 import { ConvoDetails } from "@/app/(auth)/convos/convo-details";
 import { ConvosNavBar } from "@/app/(auth)/convos/convos-nav-bar";
 import { AutoHideOnIdle } from "@/components/auto-hide-on-idle";
+import { usePlayerViewModeStore } from "@/components/youtube-page/player-view-mode-store";
 import { getContentQueryId } from "@/domain/content/content.queries";
 
 import { exampleIContent } from "../example-content";
@@ -52,6 +59,26 @@ export const PlayerStage = () => {
 
     return true;
   });
+
+  /**
+   * The demo opens on the sing-along view.
+   *
+   * Karaoke is the screen the product is most itself in — the lyrics sweeping
+   * with the song, in a room of its own — and it is the one a visitor reading a
+   * landing page would not otherwise get to see. It is the player's own switch,
+   * so the demo is still the real player drawing it; only the first view is
+   * chosen here, and the visitor is free to switch back to Paragraph from the
+   * settings popover.
+   *
+   * Set before the first paint: laid out, rather than committed as an effect,
+   * because a paragraph that turns into lyrics a frame later is worse than
+   * either.
+   */
+  useLayoutEffect(() => {
+    if (usePlayerViewModeStore.getState().viewMode !== "karaoke") {
+      usePlayerViewModeStore.setState({ viewMode: "karaoke" });
+    }
+  }, []);
 
   // Restore the view the demo was left on.
   useEffect(() => {
